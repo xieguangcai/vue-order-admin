@@ -4,22 +4,21 @@ import store from "@/store";
 
 export interface ITagsViewState {
   visitedViews: Route[];
+  cachedViews: String[];
 }
-
 @Module({ dynamic: true, store, name: 'tagsView' })
 class TagsView extends VuexModule {
   visitedViews:ITagsViewState['visitedViews'] = [];
-  cachedViews:string[] = [];
-
+  cachedViews:ITagsViewState['cachedViews'] = [];
 
   @Mutation
   ADD_VISITED_VIEWS(view: Route) {
-    if (this.visitedViews.some(v => v.path === view.path)) return
+    if (this.visitedViews.some(v => v.path === view.path)) return;
     this.visitedViews.push(
       Object.assign({}, view, {
         title: view.meta.title || 'no-name'
       })
-    )
+    );
     if (!view.meta.noCache) {
       this.cachedViews.push(view.name || '')
     }
@@ -61,8 +60,8 @@ class TagsView extends VuexModule {
 
   @Mutation
   DEL_ALL_VIEWS() {
-    this.visitedViews = []
-    this.cachedViews = []
+    this.visitedViews = [];
+    this.cachedViews = [];
   }
 
   @Action({ commit: 'ADD_VISITED_VIEWS' })
@@ -70,40 +69,31 @@ class TagsView extends VuexModule {
     return view;
   }
 
-  @Action({ commit: 'DEL_VISITED_VIEWS' })
-  async delVisitedViews(view:Route) {
+  @Action
+  delVisitedViews(view:Route) {
     return new Promise(resolve => {
+      this.commit("DEL_VISITED_VIEWS", view);
       resolve([...this.visitedViews]);
       return view
     })
   }
 
   @Action({ commit: 'DEL_OTHERS_VIEWS' })
-  delOthersViews(state: ITagsViewState, view: Route) {
+  delOthersViews(view: Route) {
     return new Promise(resolve => {
-      resolve([...state.visitedViews])
+      this.commit("DEL_OTHERS_VIEWS");
+      resolve([...this.visitedViews]);
       return view;
     })
   }
 
-  @Action({ commit: 'DEL_ALL_VIEWS' })
+  @Action
   delAllViews(state: ITagsViewState) {
     return new Promise(resolve => {
+      this.commit("DEL_ALL_VIEWS");
       resolve([...state.visitedViews])
     })
   }
 }
-const tagsView = {
-  state: {
-    visitedViews: [],
-    cachedViews: []
-  },
-  mutations: {
 
-  },
-  actions: {
-
-  }
-}
-
-export default tagsView
+export default TagsView
