@@ -9,7 +9,7 @@ Vue.use(Vuex);
 export interface IRootState {
   app: IAppState;
   user: IUserState;
-  tagsView:ITagsViewState;
+  tagsView: ITagsViewState;
 }
 
 // Declare empty store first, dynamically register all modules later.
