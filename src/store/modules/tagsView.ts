@@ -21,7 +21,7 @@ class TagsView extends VuexModule {
     this.visitedViews.push(
       Object.assign({}, view, {
         title: view.meta.title || 'no-name',
-      })
+      }),
     );
     if (!view.meta.noCache) {
       this.cachedViews.push(view.name || '');
