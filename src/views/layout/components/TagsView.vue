@@ -9,7 +9,7 @@
         :key="tag.path"
         class="tags-view-item"
         @contextmenu.prevent.native="openMenu(tag,$event)">
-        tag.title
+        {{tag.title}}
         <span class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"/>
       </router-link>
     </scroll-pane>
@@ -26,6 +26,7 @@
 
   import ScrollPane from '@/components/ScrollPane/index.vue';
   import {Route} from 'vue-router';
+  import {TagsViewModule} from "../../../store/modules/tagsView";
 
 
   @Component({
@@ -40,7 +41,10 @@
     selectedTag = {};
 
     get visitedViews() {
-      return this.$store.state.tagsView.visitedViews;
+      return TagsViewModule.visitedViews;
+    }
+    mounted() {
+      this.addViewTags()
     }
 
     @Watch('$route')
@@ -48,7 +52,14 @@
       this.addViewTags();
       this.moveToCurrentTag();
     }
-
+    @Watch('visible')
+    handlerVisible(value: boolean) {
+      if (value) {
+        document.body.addEventListener('click', this.closeMenu)
+      } else {
+        document.body.removeEventListener('click', this.closeMenu)
+      }
+    }
     generateRoute() {
       if (this.$route.name) {
         return this.$route;
@@ -69,21 +80,22 @@
     }
 
     moveToCurrentTag() {
-      // const tags = this.$refs.tag as Vue;
-      // this.$nextTick(() => {
-      //   for (const tag of tags) {
-      //     if (tag.to.path === this.$route.path) {
-      //       //let scrollPane = (this.$refs.scrollPane) as IScrollPane;
-      //       //scrollPane.moveToTarget(tag.$el);
-      //       break;
-      //     }
-      //   }
-      // });
+      const tags = this.$refs.tag as Vue;
+      this.$nextTick(() => {
+        for (const tag of tags) {
+          if (tag.to.path === this.$route.path) {
+            let scrollPane = (this.$refs.scrollPane) as ScrollPane;
+            scrollPane.moveToTarget(tag.$el);
+            break;
+          }
+        }
+      });
     }
 
     closeSelectedTag(view: Route) {
-      this.$store.dispatch('delVisitedViews', view).then((views) => {
+      this.$store.dispatch('delVisitedViews', view).then(() => {
         if (this.isActive(view)) {
+          const views = this.$store.state.tagsView.visitedViews;
           const latestView = views.slice(-1)[0];
           if (latestView) {
             this.$router.push(latestView);

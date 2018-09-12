@@ -74,28 +74,26 @@ class TagsView extends VuexModule {
   }
 
   @Action
-  delVisitedViews({commit, state}: ActionContext<ITagsViewState, any>, view: Route) {
+  delVisitedViews(view: Route) {
     return new Promise((resolve) => {
-      commit('DEL_VISITED_VIEWS', view);
-      resolve([...state.visitedViews]);
-      return view;
+      store.commit('DEL_VISITED_VIEWS', view);
+      resolve();
     });
   }
 
   @Action
-  delOthersViews({commit, state}: ActionContext<ITagsViewState, any>, view: Route) {
+  delOthersViews(view: Route) {
     return new Promise((resolve) => {
-      commit('DEL_OTHERS_VIEWS', view);
-      resolve([...state.visitedViews]);
-      return view;
+      store.commit('DEL_OTHERS_VIEWS', view);
+      resolve();
     });
   }
 
   @Action
-  delAllViews({commit, state}: ActionContext<ITagsViewState, any>) {
+  delAllViews() {
     return new Promise((resolve) => {
-      commit('DEL_ALL_VIEWS');
-      resolve([...state.visitedViews]);
+      store.commit('DEL_ALL_VIEWS');
+      resolve();
     });
   }
 }
