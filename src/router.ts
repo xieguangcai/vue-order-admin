@@ -131,6 +131,27 @@ export default new Router({
         },
       ],
     },
+    {
+      path: '/movie-orders',
+      component: Layout,
+      name: '会员信息管理',
+      meta: { title: '会员信息管理', icon: 'nested' },
+      children: [
+        {
+          path: 'order-list',
+          name: '会员订单列表',
+          component: () => import(/* webpackChunkName: "order-list" */ '@/views/movie-orders/order-list/index.vue'),
+          meta: {title: '会员订单列表', icon: 'link'},
+        },
+        {
+          path: 'product-list',
+          name: '产品列表',
+          component: () => import(/* webpackChunkName: "order-list" */ '@/views/movie-orders/product-list/index.vue'),
+          meta: {title: '产品列表', icon: 'link'},
+
+        }
+      ]
+    },
     { path: '*', redirect: '/404' },
   ],
 });
