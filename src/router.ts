@@ -149,8 +149,8 @@ export default new Router({
           component: () => import(/* webpackChunkName: "order-list" */ '@/views/movie-orders/product-list/index.vue'),
           meta: {title: '产品列表', icon: 'link'},
 
-        }
-      ]
+        },
+      ],
     },
     { path: '*', redirect: '/404' },
   ],

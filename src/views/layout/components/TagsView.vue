@@ -27,6 +27,7 @@ import {Component, Vue, Prop, Watch} from 'vue-property-decorator';
 import ScrollPane from '@/components/ScrollPane/index.vue';
 import {Route} from 'vue-router';
 import {TagsViewModule} from '../../../store/modules/tagsView';
+import {ElBreadcrumbItem} from 'element-ui/types/breadcrumb-item';
 
 
 @Component({
@@ -80,10 +81,11 @@ export default class TagsView extends Vue {
   }
 
   moveToCurrentTag() {
-    const tags = this.$refs.tag as Vue;
+    const tags = this.$refs.tag as ElBreadcrumbItem[];
     this.$nextTick(() => {
       for (const tag of tags) {
-        if (tag.to.path === this.$route.path) {
+        const route = tag.to as Route;
+        if (route.path === this.$route.path) {
           const scrollPane = (this.$refs.scrollPane) as ScrollPane;
           scrollPane.moveToTarget(tag.$el);
           break;
