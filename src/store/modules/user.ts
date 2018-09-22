@@ -46,7 +46,7 @@ class User extends VuexModule {
     if (data.roles && data.roles.length > 0) {
       return {
         roles: data.roles,
-        name: data.name,
+        name: data.userName,
         avatar: data.avatar,
       };
     } else {

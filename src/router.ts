@@ -152,6 +152,27 @@ export default new Router({
         },
       ],
     },
+    {
+      path: '/union-manager',
+      component: Layout,
+      name: '系统管理',
+      meta: { title: '系统管理', icon: 'nested' },
+      children: [
+        {
+          path: 'account-list',
+          name: '系统用户管理',
+          component: () => import(/* webpackChunkName: "account-list" */ '@/views/account/index.vue'),
+          meta: {title: '系统用户列表', icon: 'link'},
+        },
+        {
+          path: 'app-list',
+          name: '接入应用管理',
+          component: () => import(/* webpackChunkName: "app-list" */ '@/views/app/index.vue'),
+          meta: {title: '接入应用列表', icon: 'link'},
+        },
+      ],
+    },
+
     { path: '*', redirect: '/404' },
   ],
 });
