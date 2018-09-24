@@ -2,12 +2,14 @@ import { VuexModule, Module, MutationAction, Mutation, Action, getModule } from 
 import { login, logout, getInfo } from '@/api/login';
 import { getToken, setToken, removeToken } from '@/utils/auth';
 import store from '@/store';
+import {StatusInfo} from '@/api';
 
 export interface IUserState {
   token: string;
   name: string;
   avatar: string;
   roles: string[];
+  accountStatus: StatusInfo[];
 }
 
 @Module({ dynamic: true, store, name: 'user' })
@@ -16,6 +18,7 @@ class User extends VuexModule {
   name: IUserState['name'] = '';
   avatar: IUserState['avatar'] = '';
   roles: IUserState['roles'] = [];
+  accountStatus: IUserState['accountStatus'] = [{value: 1, label: '正常'}, {value: 2, label: '禁止登录'}];
 
   @Mutation
   SET_TOKEN(token: string) {

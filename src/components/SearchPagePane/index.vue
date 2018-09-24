@@ -1,6 +1,7 @@
 <template>
   <div class="search-page-panel">
     <el-pagination
+      background
       :current-page="pageInfo.page + 1"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -13,30 +14,30 @@
 </template>
 
 <script lang="ts">
-  import {Component, Prop, Vue} from "vue-property-decorator";
+import {Component, Prop, Vue} from 'vue-property-decorator';
 
-  export interface PageInfo {
-    page: number,
-    size: number,
-    total: number
+export interface PageInfo {
+  page: number,
+  size: number,
+  total: number
+}
+
+@Component({
+  name:'SearchPagePane'
+})
+export default class SearchPagePane extends Vue {
+
+  @Prop({default: {page: 0, size: 50, total: 0}})
+  pageInfo: PageInfo;
+
+  handleSizeChange(evt) {
+    this.$emit('size-change', evt);
   }
 
-  @Component({
-    name:'SearchPagePane'
-  })
-  export default class SearchPagePane extends Vue {
-
-    @Prop({default: {page: 0, size: 50, total: 0}})
-    pageInfo: PageInfo;
-
-    handleSizeChange(evt) {
-      this.$emit('size-change', evt);
-    }
-
-    handleCurrentChange(evt) {
-      this.$emit('current-change', evt);
-    }
+  handleCurrentChange(evt) {
+    this.$emit('current-change', evt);
   }
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

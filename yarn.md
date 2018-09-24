@@ -31,3 +31,13 @@ npm uninstall --save-dev [package]	yarn remove [package]
 npm uninstall --save-optional [package]	yarn remove [package]
 npm cache clean	yarn cache clean
 rm -rf node_modules && npm install	yarn upgrade
+
+
+
+
+typescript 声明文件管理工具
+https://www.cnblogs.com/dhcn/p/7722248.html
+typings 
+安装 npm install typings -g
+安装依赖库如：
+ypings install dt~async --global
