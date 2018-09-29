@@ -10,6 +10,7 @@ export interface IRootState {
   app: IAppState;
   user: IUserState;
   tagsView: ITagsViewState;
+  role: IRootState;
 }
 
 const store = new Vuex.Store<IRootState>({

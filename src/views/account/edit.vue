@@ -1,6 +1,5 @@
 <template>
-  <div class="cc-edit-form">
-    <el-form :model="accountInfo" ref="editForm" :rules="rules">
+    <el-form :model="accountInfo" ref="editForm" :rules="rules" :size="formSize">
       <el-form-item label="部门" :label-width="formLabelWidth" prop="department">
         <el-input v-model="accountInfo.department"></el-input>
       </el-form-item>
@@ -8,7 +7,7 @@
         <el-input v-model="accountInfo.userName" auto-complete="off"></el-input>
       </el-form-item>
       <el-form-item label="登录账号" :label-width="formLabelWidth" prop="nickName">
-        <el-input v-model="accountInfo.nickName" ></el-input>
+        <el-input v-model="accountInfo.nickName"></el-input>
       </el-form-item>
       <el-form-item label="密码" :label-width="formLabelWidth">
         <el-input type="password" v-model="accountInfo.pwd" auto-complete="off"></el-input>
@@ -18,84 +17,109 @@
       </el-form-item>
       <el-form-item label="账号状态" :label-width="formLabelWidth">
         <el-select v-model="accountInfo.accountStatus" placeholder="请选择状态">
-          <el-option v-for="item in getAccountStatus()" :label="item.label" :value="item.value" :key="item.value" />
+          <el-option v-for="item in accountStatus" :label="item.label" :value="item.value" :key="item.value"/>
         </el-select>
       </el-form-item>
+      {{accountInfo}}
     </el-form>
-    {{accountInfo}}
-    <div class="cc-edit-button">
-        <el-button type="primary" icon="el-icon-edit" @click="save">保存</el-button>
-        <el-button type="info" icon="el-icon-close" @click="cancel">取消</el-button>
-        <el-button type="success" icon="el-icon-edit" @click="saveThenNew">保存并新增</el-button>
-    </div>
-  </div>
 </template>
 
 <script lang="ts">
-  import {Component, Prop, Vue} from 'vue-property-decorator';
-  import {AccountInfo} from "../../api";
-  import {saveUser} from "../../api/account";
-  import {UserModule } from '../../store/modules/user';
-  import {ElForm} from "element-ui/types/form";
-  import {newUser} from "../../api/account";
+import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
+import {AccountInfo} from '../../types/index';
+import {getAccountInfo, saveUser} from '../../api/account';
+import {UserModule} from '../../store/modules/user';
+import {newUser} from '../../api/account';
+import EditFormPane from '../../components/EditFormPane/index.vue';
+import BaseEdit from '../../components/BaseEdit';
+import {AppModule} from '../../store/modules/app';
 
-  @Component({
-    name: 'AccountEdit'
-  })
-  export default class AccountEdit extends Vue {
-    @Prop({default:{accountStatus:1}})
-    accountInfo: AccountInfo;
-    formLabelWidth = '120px';
-    rules = {
-      userName:[{ required: true, message: '请输入用户名', trigger: 'blur'}],
-      nickName:[{ required: true, message: '请输入登录账号', trigger: 'blur'},{ min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }],
-      email:[{ required: true, message: '请输入email', trigger: 'blur'}, { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }],
-      department:[{ required: true, message: '请输入部门', trigger: 'blur'}],
-    };
+@Component({
+  name: 'AccountEdit',
+  components: {EditFormPane},
+})
+export default class AccountEdit extends BaseEdit {
 
-    getAccountStatus(){
-      return UserModule.accountStatus;
-    }
+  accountInfo: AccountInfo = {accountStatus: 1};
 
-    saveThenNew(){
-      this.saveForm(()=> this.$emit('save-success-then-new'));
-    }
+  @Prop({type: Number, default: 0})
+  accountId: number = 0;
 
-    cancel(){
-      const form = this.$refs['editForm'] as ElForm;
-      form.resetFields();
-      this.$emit('cancel');
-    }
+  formLabelWidth = '120px';
+  rules = {
+    userName: [{required: true, message: '请输入用户名', trigger: 'blur'}],
+    nickName: [{required: true, message: '请输入登录账号', trigger: 'blur'}, {
+      min: 3,
+      max: 50,
+      message: '长度在 3 到 50 个字符',
+      trigger: 'blur',
+    }],
+    email: [{required: true, message: '请输入email', trigger: 'blur'}, {
+      type: 'email',
+      message: '请输入正确的邮箱地址',
+      trigger: ['blur', 'change'],
+    }],
+    department: [{required: true, message: '请输入部门', trigger: 'blur'}],
+  };
 
-    save(){
-      this.saveForm(()=> this.$emit('save-success'));
-    }
+  get formSize() {
+    return AppModule.formSize;
+  }
 
-    saveForm(cb:()=>{}){
-      const form = this.$refs['editForm'] as ElForm;
-      form.validate(async (valid)=>{
-        if(!valid){
-          return false;
-        }else{
-          if(this.accountInfo.accountId !=null){
-            await saveUser(this.accountInfo);
-          }else{
-            await newUser(this.accountInfo);
-          }
-          this.$message.success('保存成功');
-          form.resetFields();
-          cb();
-        }
+  get accountStatus() {
+    return UserModule.accountStatus;
+  }
+
+  @Watch('accountId', {immediate: true})
+  handleAccountInfoChange(newVal: number | undefined, oldVal: number| undefined) {
+    if ( null == newVal || newVal === 0) {
+      this.accountInfo = {accountStatus: 1};
+    } else {
+      getAccountInfo(this.accountId).then((resolve) => {
+        console.log()
+        this.accountInfo = resolve.data.data;
       });
     }
   }
+
+  @Watch('accountInfo', {immediate: true})
+  handleInternalAccountInfoChange(newVal: AccountInfo, oldVal?: AccountInfo) {
+    console.log(newVal);
+    if(newVal.accountId != this.accountInfo.accountId){
+      this.accountIdChange(newVal.accountId, this.accountInfo.accountId);
+    }
+
+  }
+
+  @Emit('update:accountId')
+  accountIdChange(accountId: number, accountId2: number) {
+  }
+
+  async saveFormData() {
+    if (this.accountInfo.accountId != null) {
+      await saveUser(this.accountInfo);
+    } else {
+      await newUser(this.accountInfo);
+    }
+  }
+
+  // saveForm(cb: () => {}) {
+  //   const form = this.$refs.editForm as ElForm;
+  //   form.validate(async (valid) => {
+  //     if (!valid) {
+  //       return false;
+  //     } else {
+  //       if (this.accountInfo.accountId != null) {
+  //         await saveUser(this.accountInfo);
+  //       } else {
+  //         await newUser(this.accountInfo);
+  //       }
+  //       this.$message.success('保存成功');
+  //       form.resetFields();
+  //       cb();
+  //     }
+  //   });
+  // }
+}
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-  .cc-edit-button{
-    margin-left:120px;
-  }
-  .cc-edit-form{
-    margin:0px 30px 0px 0px;
-  }
-</style>

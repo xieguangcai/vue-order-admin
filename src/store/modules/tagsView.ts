@@ -1,7 +1,6 @@
 import {VuexModule, Module, MutationAction, Mutation, Action, getModule} from 'vuex-module-decorators';
 import {Route} from 'vue-router';
 import store from '@/store';
-import {ActionContext} from 'vuex';
 
 export interface ITagsViewState {
   visitedViews: Route[];

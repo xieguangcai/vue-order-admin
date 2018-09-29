@@ -1,6 +1,9 @@
 import Cookies from 'js-cookie';
-import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
+import {VuexModule, Module, Mutation, Action, getModule, MutationAction} from 'vuex-module-decorators';
 import store from '@/store';
+import {ElementUIComponentSize} from 'element-ui/types/component';
+import {getToken, removeToken} from '@/utils/auth';
+import {logout} from '@/api/login';
 
 export enum DeviceType {
   Mobile,
@@ -13,6 +16,7 @@ export interface IAppState {
     opened: boolean;
     withoutAnimation: boolean;
   };
+  formSize: ElementUIComponentSize;
 }
 
 @Module({ dynamic: true, store, name: 'app' })
@@ -22,6 +26,7 @@ class App extends VuexModule {
     withoutAnimation: false,
   };
   device: IAppState['device'] = DeviceType.Desktop;
+  formSize: IAppState['formSize'] = 'small';
 
   @Mutation
   TOGGLE_SIDEBAR(withoutAnimation: boolean) {
@@ -55,6 +60,14 @@ class App extends VuexModule {
   @Action({ commit: 'TOGGLE_DEVICE' })
   ToggleDevice(device: DeviceType) {
     return device;
+  }
+
+
+  @MutationAction({ mutate: [ 'formSize' ] })
+  async SetFormSize(size: ElementUIComponentSize) {
+    return {
+      formSize: size,
+    };
   }
 }
 

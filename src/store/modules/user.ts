@@ -2,7 +2,7 @@ import { VuexModule, Module, MutationAction, Mutation, Action, getModule } from 
 import { login, logout, getInfo } from '@/api/login';
 import { getToken, setToken, removeToken } from '@/utils/auth';
 import store from '@/store';
-import {StatusInfo} from '@/api';
+import {StatusInfo} from '@/types/index';
 
 export interface IUserState {
   token: string;

@@ -2,41 +2,38 @@
   <div class="search-page-panel">
     <el-pagination
       background
-      :current-page="pageInfo.page + 1"
+      :current-page="page + 1"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :page-sizes="[1,50, 100, 200, 300]"
-      :page-size="pageInfo.size || 1"
+      :page-size="size || 1"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="pageInfo.total">
+      :total="total">
     </el-pagination>
   </div>
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
-
-export interface PageInfo {
-  page: number,
-  size: number,
-  total: number
-}
+import {Component, Emit, Prop, Vue} from 'vue-property-decorator';
 
 @Component({
-  name:'SearchPagePane'
+  name: 'SearchPagePane',
 })
 export default class SearchPagePane extends Vue {
 
-  @Prop({default: {page: 0, size: 50, total: 0}})
-  pageInfo: PageInfo;
+  @Prop({ type: Number, default: 1})
+  page: number = 1;
+  @Prop({ type: Number, default: 50})
+  size: number = 50;
+  @Prop({ type: Number, default: 0})
+  total: number = 0;
 
-  handleSizeChange(evt) {
-    this.$emit('size-change', evt);
-  }
+  @Emit('size-change')
+  handleSizeChange(evt: number) {}
 
-  handleCurrentChange(evt) {
-    this.$emit('current-change', evt);
-  }
+  @Emit('current-change')
+  handleCurrentChange(evt: number) {}
+
 }
 </script>
 

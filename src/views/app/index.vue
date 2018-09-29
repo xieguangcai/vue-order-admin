@@ -70,29 +70,30 @@
 
 
 <script lang="ts">
-  import { getList } from '@/api/account';
-  import { Component, Vue } from 'vue-property-decorator';
+import {getList} from '@/api/account';
+import {Component, Vue} from 'vue-property-decorator';
 
-  @Component({
-    filters: {
+@Component({
+  filters: {
 
-    },
-  })
-  export default class AppList extends Vue {
-    list = null;
-    listLoading = true;
-    listQuery : {userName, nickName} = {} ;
+  },
+})
+export default class AppList extends Vue {
+  list = null;
+  listLoading = true;
+  listQuery: {userName: string, nickName: string} = {nickName: '', userName: ''} ;
 
-    created() {
-      this.fetchData();
-    }
-
-    fetchData() {
-      this.listLoading = true;
-      getList(this.listQuery).then((response) => {
-        this.list = response.data;
-        this.listLoading = false;
-      });
-    }
+  created() {
+    this.fetchData();
   }
+
+  fetchData() {
+    this.listLoading = true;
+    // getList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<AccountInfo>>>) => {
+    //   const responseData = response.data.data;
+    //   this.list = responseData.content;
+    //   this.listLoading = false;
+    // });
+  }
+}
 </script>
