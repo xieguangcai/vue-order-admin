@@ -1,10 +1,10 @@
 
 import {Component, Vue} from 'vue-property-decorator';
 import {ElForm} from 'element-ui/types/form';
+import {AxiosPromise} from 'axios';
+import any = jasmine.any;
 
-@Component({
-  name: 'BaseEdit',
-})
+@Component
 export default class BaseEdit extends Vue {
 
   saveThenNew() {
@@ -24,13 +24,13 @@ export default class BaseEdit extends Vue {
     this.saveForm(() => this.$emit('save-success'));
   }
 
-  saveForm(cb: () => {}) {
+  saveForm(cb: () => void): void {
     const form = this.getEditForm();
-    form.validate((valid) => {
+    form.validate(async (valid) => {
       if (!valid) {
         return false;
       } else {
-        this.saveFormData();
+        await this.saveFormData();
         this.$message.success('保存成功');
         form.resetFields();
         cb();
@@ -38,7 +38,5 @@ export default class BaseEdit extends Vue {
     });
   }
 
-  saveFormData() {
-    console.warn('正在保存数据...子组件应该重写此方法实现保存逻辑');
-  }
+  saveFormData(): AxiosPromise  | any {  }
 }

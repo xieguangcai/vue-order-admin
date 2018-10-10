@@ -20,6 +20,13 @@
           <el-option v-for="item in accountStatus" :label="item.label" :value="item.value" :key="item.value"/>
         </el-select>
       </el-form-item>
+
+      <div class="cc-edit-button">
+          <el-button type="primary" icon="el-icon-edit" @click="save">保存</el-button>
+          <el-button type="info" icon="el-icon-close" @click="cancel">取消</el-button>
+          <el-button type="success" icon="el-icon-edit" @click="saveThenNew">保存并新增</el-button>
+      </div>
+
       {{accountInfo}}
     </el-form>
 </template>
@@ -33,12 +40,14 @@ import {newUser} from '../../api/account';
 import EditFormPane from '../../components/EditFormPane/index.vue';
 import BaseEdit from '../../components/BaseEdit';
 import {AppModule} from '../../store/modules/app';
+import {AxiosPromise} from 'axios';
 
 @Component({
   name: 'AccountEdit',
   components: {EditFormPane},
+  mixins: [ BaseEdit ],
 })
-export default class AccountEdit extends BaseEdit {
+export default class AccountEdit extends Vue {
 
   accountInfo: AccountInfo = {accountStatus: 1};
 
@@ -76,50 +85,32 @@ export default class AccountEdit extends BaseEdit {
       this.accountInfo = {accountStatus: 1};
     } else {
       getAccountInfo(this.accountId).then((resolve) => {
-        console.log()
+        console.log();
         this.accountInfo = resolve.data.data;
       });
     }
   }
 
   @Watch('accountInfo', {immediate: true})
-  handleInternalAccountInfoChange(newVal: AccountInfo, oldVal?: AccountInfo) {
+  handleInternalAccountInfoChange(newVal: AccountInfo, oldVal?: AccountInfo): void {
     console.log(newVal);
-    if(newVal.accountId != this.accountInfo.accountId){
+    if (newVal.accountId !== null && newVal.accountId !== this.accountInfo.accountId) {
       this.accountIdChange(newVal.accountId, this.accountInfo.accountId);
     }
 
   }
 
   @Emit('update:accountId')
-  accountIdChange(accountId: number, accountId2: number) {
+  accountIdChange(accountId: number | undefined, accountId2: number | undefined): void {
   }
 
-  async saveFormData() {
+  saveFormData(): AxiosPromise {
     if (this.accountInfo.accountId != null) {
-      await saveUser(this.accountInfo);
+      return saveUser(this.accountInfo);
     } else {
-      await newUser(this.accountInfo);
+      return newUser(this.accountInfo);
     }
   }
-
-  // saveForm(cb: () => {}) {
-  //   const form = this.$refs.editForm as ElForm;
-  //   form.validate(async (valid) => {
-  //     if (!valid) {
-  //       return false;
-  //     } else {
-  //       if (this.accountInfo.accountId != null) {
-  //         await saveUser(this.accountInfo);
-  //       } else {
-  //         await newUser(this.accountInfo);
-  //       }
-  //       this.$message.success('保存成功');
-  //       form.resetFields();
-  //       cb();
-  //     }
-  //   });
-  // }
 }
 </script>
 
