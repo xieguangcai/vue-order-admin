@@ -29,8 +29,8 @@ let groupPrevAppId: number = 0;
 })
 export default class EditUserRole extends Vue {
   @Prop({type: Number, default: 0})
-  accountId: number;
-  userRoles: number [] = [];
+  accountId: number = 0;
+  userRoles: Array<number | undefined> = [];
 
   cancel() {
     this.$emit('cancel');
@@ -52,11 +52,13 @@ export default class EditUserRole extends Vue {
     return false;
   }
 
-  async save(): void {
-    await saveAccountRoles(this.accountId, this.userRoles);
-    this.$message.success('用户角色修改成功');
+  async save() {
+    if (this.accountId != null) {
+      await saveAccountRoles(this.accountId, this.userRoles);
+      this.$message.success('用户角色修改成功');
 
-    this.$emit('save-success');
+      this.$emit('save-success');
+    }
   }
 
   @Watch('accountId', {immediate: true})
@@ -71,11 +73,21 @@ export default class EditUserRole extends Vue {
         console.log(resolve.data.data);
         const roles: RoleInfo[] = resolve.data.data;
         this.userRoles = [];
-        roles.sort((a, b) => {
-          return a.application.appId - b.application.appId;
-        });
-        for (const role of roles) {
-          this.userRoles.push(role.roleId);
+        if (null != roles) {
+          roles.sort((a, b) => {
+            if (null != a.application && null != b.application) {
+              if (a.application.appId != null && b.application.appId != null) {
+                return a.application.appId - b.application.appId;
+              } else {
+                return 0;
+              }
+            } else {
+              return 0;
+            }
+          });
+          for (const role of roles) {
+            this.userRoles.push(role.roleId);
+          }
         }
       });
     }

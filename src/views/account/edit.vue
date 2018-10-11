@@ -17,7 +17,7 @@
       </el-form-item>
       <el-form-item label="账号状态" :label-width="formLabelWidth">
         <el-select v-model="accountInfo.accountStatus" placeholder="请选择状态">
-          <el-option v-for="item in accountStatus" :label="item.label" :value="item.value" :key="item.value"/>
+          <el-option v-for="item in recordeStatus" :label="item.label" :value="item.value" :key="item.value"/>
         </el-select>
       </el-form-item>
 
@@ -26,8 +26,6 @@
           <el-button type="info" icon="el-icon-close" @click="cancel">取消</el-button>
           <el-button type="success" icon="el-icon-edit" @click="saveThenNew">保存并新增</el-button>
       </div>
-
-      {{accountInfo}}
     </el-form>
 </template>
 
@@ -39,7 +37,6 @@ import {UserModule} from '../../store/modules/user';
 import {newUser} from '../../api/account';
 import EditFormPane from '../../components/EditFormPane/index.vue';
 import BaseEdit from '../../components/BaseEdit';
-import {AppModule} from '../../store/modules/app';
 import {AxiosPromise} from 'axios';
 
 @Component({
@@ -54,7 +51,6 @@ export default class AccountEdit extends Vue {
   @Prop({type: Number, default: 0})
   accountId: number = 0;
 
-  formLabelWidth = '120px';
   rules = {
     userName: [{required: true, message: '请输入用户名', trigger: 'blur'}],
     nickName: [{required: true, message: '请输入登录账号', trigger: 'blur'}, {
@@ -71,13 +67,6 @@ export default class AccountEdit extends Vue {
     department: [{required: true, message: '请输入部门', trigger: 'blur'}],
   };
 
-  get formSize() {
-    return AppModule.formSize;
-  }
-
-  get accountStatus() {
-    return UserModule.accountStatus;
-  }
 
   @Watch('accountId', {immediate: true})
   handleAccountInfoChange(newVal: number | undefined, oldVal: number| undefined) {
@@ -85,23 +74,27 @@ export default class AccountEdit extends Vue {
       this.accountInfo = {accountStatus: 1};
     } else {
       getAccountInfo(this.accountId).then((resolve) => {
-        console.log();
         this.accountInfo = resolve.data.data;
       });
     }
   }
 
   @Watch('accountInfo', {immediate: true})
-  handleInternalAccountInfoChange(newVal: AccountInfo, oldVal?: AccountInfo): void {
-    console.log(newVal);
-    if (newVal.accountId !== null && newVal.accountId !== this.accountInfo.accountId) {
-      this.accountIdChange(newVal.accountId, this.accountInfo.accountId);
+  handleInternalDomainInfoChange(newVal: AccountInfo, oldVal?: AccountInfo): void {
+    if (null == newVal && null == oldVal) {
+      return;
     }
-
+    if (newVal != null && oldVal != null) {
+      this.domainIdChange(newVal.accountId, oldVal.accountId);
+    } else if (oldVal != null) {
+      this.domainIdChange(0, oldVal.accountId);
+    } else if (newVal != null) {
+      this.domainIdChange(newVal.accountId, 0);
+    }
   }
 
   @Emit('update:accountId')
-  accountIdChange(accountId: number | undefined, accountId2: number | undefined): void {
+  domainIdChange(accountId: number | undefined, accountId2: number | undefined): void {
   }
 
   saveFormData(): AxiosPromise {

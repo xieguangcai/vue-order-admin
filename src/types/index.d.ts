@@ -16,7 +16,10 @@ export interface AccountListQuery extends IPageinfo {
   createTime?: string[];
   accountStatus?: number[];
 }
-
+export interface ApplicationListQuery extends IPageinfo {
+  name: string;
+  appKey: string;
+}
 export interface ResponseResult<T> {
   success: boolean;
   message: string;

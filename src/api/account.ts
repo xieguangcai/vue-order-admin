@@ -53,7 +53,7 @@ export function getAccountRoles(id: number): AxiosPromise<ResponseResult<RoleInf
   });
 }
 
-export function saveAccountRoles(accountId: number, roleIds: number[]): AxiosPromise<ResponseResult<boolean>> {
+export function saveAccountRoles(accountId: number, roleIds: Array<number | undefined>): AxiosPromise<ResponseResult<boolean>> {
   return request({
     url: '/user/save/roles',
     method: 'get',
@@ -98,7 +98,7 @@ export function getAllValidRoleList() {
   });
 }
 
-export function deleteRole(ids: number[]) {
+export function deleteRole(ids: Array<number | undefined>) {
   return request({
     url : '/role/delete',
     method: 'get',
@@ -139,7 +139,7 @@ export function getAppList(params: any) {
   });
 }
 
-export function deleteApp(ids: number[]) {
+export function deleteApp(ids: Array<number | undefined>) {
   return request({
     url : '/application/delete',
     method: 'get',
@@ -149,7 +149,13 @@ export function deleteApp(ids: number[]) {
     },
   });
 }
-
+export function getAppInfo(id: number): AxiosPromise<ResponseResult<ApplicationInfo>> {
+  return request({
+    url : '/application/detail',
+    method: 'post',
+    params: {id},
+  });
+}
 export function saveApp(data: ApplicationInfo) {
   return request({
     url : '/application/update',

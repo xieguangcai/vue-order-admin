@@ -4,6 +4,7 @@ import store from '@/store';
 import {ElementUIComponentSize} from 'element-ui/types/component';
 import {getToken, removeToken} from '@/utils/auth';
 import {logout} from '@/api/login';
+import {StatusInfo} from '@/types';
 
 export enum DeviceType {
   Mobile,
@@ -17,6 +18,8 @@ export interface IAppState {
     withoutAnimation: boolean;
   };
   formSize: ElementUIComponentSize;
+  formLabelWidth: string;
+  recordeStatus: StatusInfo[];
 }
 
 @Module({ dynamic: true, store, name: 'app' })
@@ -27,6 +30,8 @@ class App extends VuexModule {
   };
   device: IAppState['device'] = DeviceType.Desktop;
   formSize: IAppState['formSize'] = 'small';
+  formLabelWidth: IAppState['formLabelWidth'] = '120px';
+  recordeStatus: IAppState['recordeStatus'] = [{value: 1, label: '正常'}, {value: 2, label: '禁用'}];
 
   @Mutation
   TOGGLE_SIDEBAR(withoutAnimation: boolean) {
