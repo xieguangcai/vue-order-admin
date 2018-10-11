@@ -90,7 +90,7 @@
               <el-button type="info" circle size="mini" icon="el-icon-document"
                          @click="handleSetRoles(scope.$index, scope.row)"></el-button>
             </el-tooltip>
-            <el-tooltip content="编辑" slot="reference">
+            <el-tooltip content="删除" slot="reference">
               <el-button type="danger" circle size="mini" icon="el-icon-delete"
                          @click="handleDelete(scope.$index, scope.row)"></el-button>
             </el-tooltip>
@@ -106,10 +106,16 @@
                         slot="page">
       </search-page-pane>
     </list-table-pane>
-    <el-dialog title="编辑用户" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width="600px">
-      <account-edit @cancel="dialogFormVisible=false" :account-id="editDomain.accountId"
+    <el-dialog title="编辑用户" :visible.sync="dialogEditFormVisible" :close-on-click-modal="false" width="600px">
+      <account-edit @cancel="dialogEditFormVisible=false" :account-id="editDomainInfo.editAccountId"
                     @save-success-then-new="saveThenNew"
-                    @save-success="()=>{dialogFormVisible=false;fetchData();}"/>
+                    @save-success="()=>{this.dialogEditFormVisible=false;fetchData();this.editDomainInfo.editAccountId = 0;}"/>
+    </el-dialog>
+
+    <el-dialog title="编辑用户所属角色" :visible.sync="dialogEditUserRoleFormVisible" :close-on-click-modal="false"
+               width="600px">
+      <edit-user-role @cancel="dialogEditUserRoleFormVisible=false" :account-id="editDomainInfo.editRoleAccountId"
+                    @save-success="()=>{this.dialogEditUserRoleFormVisible=false; this.editDomainInfo.editRoleAccountId = 0;}"/>
     </el-dialog>
   </div>
 </template>
@@ -117,22 +123,29 @@
 
 <script lang="ts">
 import {getList, deleteUser} from '@/api/account';
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Vue, Watch} from 'vue-property-decorator';
 import SearchPane from '@/components/SearchPane/index.vue';
 import SearchPagePane from '@/components/SearchPagePane/index.vue';
 import {AccountInfo, AccountListQuery, IPageinfo, Pageable, ResponseResult} from '../../types/index';
 import ListTablePane from '@/components/ListTablePane/index.vue';
 import AccountEdit from './edit.vue';
+import EditUserRole from './editUserRole.vue';
 import {AxiosResponse} from 'axios';
 import {UserModule} from '../../store/modules/user';
 
+interface EditDomain {
+  editRoleAccountId: number | undefined;
+  editAccountId: number | undefined;
+}
+
 @Component({
-  components: {AccountEdit, ListTablePane, SearchPane, SearchPagePane},
+  components: {AccountEdit, ListTablePane, SearchPane, SearchPagePane, EditUserRole},
   filters: {},
 })
 export default class AccountList extends Vue {
-  dialogFormVisible: boolean = false;
-  editDomain: AccountInfo = {accountStatus: 1};
+  dialogEditFormVisible: boolean = false;
+  dialogEditUserRoleFormVisible: boolean = false;
+  editDomainInfo: EditDomain = { editAccountId: 0, editRoleAccountId: 0};
 
   data: AccountInfo[] = [];
   listLoading: boolean = true;
@@ -144,14 +157,21 @@ export default class AccountList extends Vue {
   }
 
   handleEdit(index: number, row: AccountInfo) {
-    this.editDomain = row;
-    this.dialogFormVisible = true;
+    this.dialogEditFormVisible = true;
+    this.$nextTick(() => this.editDomainInfo.editAccountId = row.accountId);
+  }
+
+  handleSetRoles(index: number, row: AccountInfo) {
+    console.log('点击的用户ID为' + row.accountId);
+    // 顺序不能变
+    this.dialogEditUserRoleFormVisible = true;
+    this.$nextTick(() => this.editDomainInfo.editRoleAccountId = row.accountId);
   }
 
   handleNew() {
     // 创建新用户弹窗
-    this.editDomain = {accountStatus: 1};
-    this.dialogFormVisible = true;
+    this.dialogEditFormVisible = true;
+    this.editDomainInfo.editAccountId = 0;
   }
 
   created() {
@@ -159,7 +179,7 @@ export default class AccountList extends Vue {
   }
 
   saveThenNew() {
-    this.editDomain = {accountStatus: 1};
+    this.editDomainInfo.editAccountId = 0;
     this.fetchData();
   }
 

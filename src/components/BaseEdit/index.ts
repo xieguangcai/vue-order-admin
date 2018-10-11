@@ -2,7 +2,6 @@
 import {Component, Vue} from 'vue-property-decorator';
 import {ElForm} from 'element-ui/types/form';
 import {AxiosPromise} from 'axios';
-import any = jasmine.any;
 
 @Component
 export default class BaseEdit extends Vue {
@@ -15,8 +14,6 @@ export default class BaseEdit extends Vue {
   }
 
   cancel() {
-    const form = this.getEditForm();
-    form.resetFields();
     this.$emit('cancel');
   }
 

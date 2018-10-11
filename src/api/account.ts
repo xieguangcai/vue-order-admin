@@ -44,6 +44,26 @@ export function getAccountInfo(id: number): AxiosPromise<ResponseResult<AccountI
     params: {id},
   });
 }
+
+export function getAccountRoles(id: number): AxiosPromise<ResponseResult<RoleInfo[]>> {
+  return request({
+    url : '/user/roles',
+    method: 'get',
+    params: {id},
+  });
+}
+
+export function saveAccountRoles(accountId: number, roleIds: number[]): AxiosPromise<ResponseResult<boolean>> {
+  return request({
+    url: '/user/save/roles',
+    method: 'get',
+    params : {accountId, roleIds},
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
+
 export function newUser(data: AccountInfo) {
   return request({
     url : '/user/new',
@@ -51,6 +71,7 @@ export function newUser(data: AccountInfo) {
     data,
   });
 }
+
 /**
  * --------------------account相关接口-------------------------
  */
