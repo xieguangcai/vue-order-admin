@@ -124,6 +124,15 @@ export function newRole(data: RoleInfo) {
     data,
   });
 }
+
+
+export function getRoleInfo(id: number): AxiosPromise<ResponseResult<RoleInfo>> {
+  return request({
+    url : '/role/detail',
+    method: 'post',
+    params: {id},
+  });
+}
 /**
  * --------------------role相关接口-------------------------
  */

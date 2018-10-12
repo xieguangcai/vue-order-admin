@@ -9,20 +9,23 @@
       </search-pane>
       <el-button-group slot="action" class="cc-action-button-group">
         <el-button type="success" icon="el-icon-circle-plus" size="mini" @click="handleNew">新增系统</el-button>
-        <el-button type="danger" icon="el-icon-circle-close" size="mini" @click="handleDel">删除系统</el-button>
+        <el-button type="danger" icon="el-icon-circle-close" size="mini" @click="handleDel">删除选中系统</el-button>
       </el-button-group>
       <el-table v-loading="listLoading"
                 :data="data"
                 element-loading-text="Loading"
+                @selection-change="handleSelectionChange"
                 border
                 fit
                 highlight-current-row>
-        <el-table-column label="ID">
+        <el-table-column type="selection" with="55">
+        </el-table-column>
+        <el-table-column label="ID"  with="80">
           <template slot-scope="scope">
             {{ scope.row.appId }}
           </template>
         </el-table-column>
-        <el-table-column label="登录名">
+        <el-table-column label="系统名称">
           <template slot-scope="scope">
             {{ scope.row.name }}
           </template>

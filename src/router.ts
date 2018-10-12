@@ -160,15 +160,21 @@ export default new Router({
       children: [
         {
           path: 'account-list',
-          name: '系统用户管理',
+          name: '系统账户管理',
           component: () => import(/* webpackChunkName: "account-list" */ '@/views/account/index.vue'),
-          meta: {title: '系统用户列表', icon: 'link'},
+          meta: {title: '系统账户列表', icon: 'link'},
         },
         {
           path: 'app-list',
           name: '接入应用管理',
           component: () => import(/* webpackChunkName: "app-list" */ '@/views/app/index.vue'),
           meta: {title: '接入应用列表', icon: 'link'},
+        },
+        {
+          path: 'role-list',
+          name: '系统角色管理',
+          component: () => import(/* webpackChunkName: "role-list" */ '@/views/role/index.vue'),
+          meta: {title: '角色列表', icon: 'link'},
         },
       ],
     },

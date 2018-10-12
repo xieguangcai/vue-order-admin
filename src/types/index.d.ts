@@ -20,6 +20,10 @@ export interface ApplicationListQuery extends IPageinfo {
   name: string;
   appKey: string;
 }
+export interface RoleListQuery extends IPageinfo {
+  name: string;
+  roleKey: string;
+}
 export interface ResponseResult<T> {
   success: boolean;
   message: string;

@@ -23,12 +23,12 @@
       </search-pane>
       <el-button-group slot="action" class="cc-action-button-group">
         <el-button type="success" icon="el-icon-circle-plus" size="mini" @click="handleNew">新增用户</el-button>
-        <el-button type="danger" icon="el-icon-circle-close" size="mini" @click="handleNew">删除用户</el-button>
+        <el-button type="danger" icon="el-icon-circle-close" size="mini" @click="handleNew">删除选中用户</el-button>
       </el-button-group>
       <el-table v-loading="listLoading"
                 :data="data"
                 element-loading-text="Loading"
-                @select-change="handleSelectionChange"
+                @selection-change="handleSelectionChange"
                 border
                 fit
                 highlight-current-row>
