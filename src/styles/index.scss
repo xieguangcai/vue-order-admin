@@ -81,3 +81,11 @@ a:hover {
 .app-container {
   padding: 20px;
 }
+// 全局table状态
+.el-table .warning-row {
+  background: #fddae6;
+}
+
+.el-table .success-row {
+  background: #f0f9eb;
+}

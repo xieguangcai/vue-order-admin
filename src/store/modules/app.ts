@@ -20,9 +20,11 @@ export interface IAppState {
   formSize: ElementUIComponentSize;
   formLabelWidth: string;
   recordeStatus: StatusInfo[];
+  orderStatus: StatusInfo[];
+  appTypeCodeStatus: StatusInfo[];
 }
 
-@Module({ dynamic: true, store, name: 'app' })
+@Module({dynamic: true, store, name: 'app'})
 class App extends VuexModule {
   sidebar: IAppState['sidebar'] = {
     opened: Cookies.get('sidebarStatus') !== 'closed',
@@ -32,6 +34,25 @@ class App extends VuexModule {
   formSize: IAppState['formSize'] = 'small';
   formLabelWidth: IAppState['formLabelWidth'] = '120px';
   recordeStatus: IAppState['recordeStatus'] = [{value: 1, label: '正常'}, {value: 2, label: '禁用'}];
+  orderStatus: IAppState['orderStatus'] = [
+    {value: 'CC00501', label: '待支付',},
+    {value: 'CC00502', label: '待授信',},
+    {value: 'CC00503', label: '完成',},
+    {value: 'CC00504', label: '取消	',},
+    {value: 'CC00505', label: '已发货',},
+    {value: 'CC00506', label: '支付中'}];
+  appTypeCodeStatus: IAppState['orderStatus'] = [
+    {value: 'CC01201', label: '影视'},
+    {value: 'CC01202', label: '游戏'},
+    {value: 'CC01203', label: 'PC商城'},
+    {value: 'CC01204', label: '购物'},
+    {value: 'CC01205', label: '教育'},
+    {value: 'CC01206', label: '其他'},
+    {value: 'CC01207', label: '旅游'},
+    {value: 'CC01208', label: '音乐'},
+    {value: 'CC01209', label: '广告'},
+    {value: 'CC01210', label: '体育'},
+  ];
 
   @Mutation
   TOGGLE_SIDEBAR(withoutAnimation: boolean) {
@@ -43,32 +64,36 @@ class App extends VuexModule {
     this.sidebar.opened = !this.sidebar.opened;
     this.sidebar.withoutAnimation = withoutAnimation;
   }
+
   @Mutation
   CLOSE_SIDEBAR(withoutAnimation: boolean) {
     Cookies.set('sidebarStatus', 'closed');
     this.sidebar.opened = false;
     this.sidebar.withoutAnimation = withoutAnimation;
   }
+
   @Mutation
   TOGGLE_DEVICE(device: DeviceType) {
     this.device = device;
   }
 
-  @Action({ commit: 'TOGGLE_SIDEBAR' })
+  @Action({commit: 'TOGGLE_SIDEBAR'})
   ToggleSideBar(withoutAnimation: boolean) {
     return withoutAnimation;
   }
-  @Action({ commit: 'CLOSE_SIDEBAR' })
+
+  @Action({commit: 'CLOSE_SIDEBAR'})
   CloseSideBar(withoutAnimation: boolean) {
     return withoutAnimation;
   }
-  @Action({ commit: 'TOGGLE_DEVICE' })
+
+  @Action({commit: 'TOGGLE_DEVICE'})
   ToggleDevice(device: DeviceType) {
     return device;
   }
 
 
-  @MutationAction({ mutate: [ 'formSize' ] })
+  @MutationAction({mutate: ['formSize']})
   async SetFormSize(size: ElementUIComponentSize) {
     return {
       formSize: size,
