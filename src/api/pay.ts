@@ -1,5 +1,5 @@
 import request from '@/utils/request-pay';
-import {OrderInfo, OrderInfoListQuery, Pageable, ResponseResult} from "@/types";
+import {OrderInfo, OrderInfoListQuery, Pageable, ResponseResult} from '@/types';
 // @ts-ignore
 import qs from 'qs';
 import {AxiosPromise, AxiosResponse} from 'axios';

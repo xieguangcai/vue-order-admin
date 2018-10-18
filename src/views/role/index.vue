@@ -85,111 +85,111 @@
 
 
 <script lang="ts">
-  import {getList, deleteApp} from '@/api/account';
-  import {Component, Vue, Watch} from 'vue-property-decorator';
-  import SearchPane from '@/components/SearchPane/index.vue';
-  import SearchPagePane from '@/components/SearchPagePane/index.vue';
-  import ListTablePane from '@/components/ListTablePane/index.vue';
-  import RoleEdit from './edit.vue';
-  import {AxiosResponse} from 'axios';
-  import {Pageable, ResponseResult, RoleInfo, RoleListQuery} from '../../types';
-  import {deleteRole, getRoleList} from '../../api/account';
-  import BaseList from "../../components/BaseList";
+import {getList, deleteApp} from '@/api/account';
+import {Component, Vue, Watch} from 'vue-property-decorator';
+import SearchPane from '@/components/SearchPane/index.vue';
+import SearchPagePane from '@/components/SearchPagePane/index.vue';
+import ListTablePane from '@/components/ListTablePane/index.vue';
+import RoleEdit from './edit.vue';
+import {AxiosResponse} from 'axios';
+import {Pageable, ResponseResult, RoleInfo, RoleListQuery} from '../../types';
+import {deleteRole, getRoleList} from '../../api/account';
+import BaseList from '../../components/BaseList';
 
 
-  interface EditDomain {
-    editDomainId: number | undefined;
+interface EditDomain {
+  editDomainId: number | undefined;
+}
+
+@Component({
+  filters: {},
+  mixins: [BaseList],
+  components: {RoleEdit, ListTablePane, SearchPane, SearchPagePane},
+})
+export default class RoleList extends Vue {
+  dialogEditFormVisible: boolean = false;
+  editDomainInfo: EditDomain = {editDomainId: 0};
+  data: RoleInfo[] = [];
+  listLoading: boolean = true;
+  listQuery: RoleListQuery = {name: '', roleKey: '', page: 0, size: 50, total: 0};
+
+
+  handleEdit(index: number, row: RoleInfo): void {
+    this.dialogEditFormVisible = true;
+    this.$nextTick(() => this.editDomainInfo.editDomainId = row.roleId);
   }
 
-  @Component({
-    filters: {},
-    mixins: [BaseList],
-    components: {RoleEdit, ListTablePane, SearchPane, SearchPagePane},
-  })
-  export default class RoleList extends Vue {
-    dialogEditFormVisible: boolean = false;
-    editDomainInfo: EditDomain = {editDomainId: 0};
-    data: RoleInfo[] = [];
-    listLoading: boolean = true;
-    listQuery: RoleListQuery = {name: '', roleKey: '', page: 0, size: 50, total: 0};
+  handleNew() {
+    // 创建新用户弹窗
+    this.dialogEditFormVisible = true;
+    this.editDomainInfo.editDomainId = 0;
+  }
 
+  created() {
+    this.fetchData();
+  }
 
-    handleEdit(index: number, row: RoleInfo): void {
-      this.dialogEditFormVisible = true;
-      this.$nextTick(() => this.editDomainInfo.editDomainId = row.roleId);
+  saveThenNew() {
+    this.editDomainInfo.editDomainId = 0;
+    this.fetchData();
+  }
+
+  handleSizeChange(size: number) {
+    this.listQuery.size = size;
+    this.fetchData();
+  }
+
+  handleCurrentChange(page: number) {
+    this.listQuery.page = page - 1;
+    this.fetchData();
+  }
+
+  handleDelete(index: number, row: RoleInfo) {
+    this.handleDelRows([row]);
+  }
+
+  handleDelRows(row: RoleInfo[]) {
+    if (row.length === 0) {
+      return;
     }
 
-    handleNew() {
-      // 创建新用户弹窗
-      this.dialogEditFormVisible = true;
-      this.editDomainInfo.editDomainId = 0;
-    }
+    const rowsId: number[] = [];
+    row.forEach((item) => rowsId.push(item.roleId));
 
-    created() {
-      this.fetchData();
-    }
-
-    saveThenNew() {
-      this.editDomainInfo.editDomainId = 0;
-      this.fetchData();
-    }
-
-    handleSizeChange(size: number) {
-      this.listQuery.size = size;
-      this.fetchData();
-    }
-
-    handleCurrentChange(page: number) {
-      this.listQuery.page = page - 1;
-      this.fetchData();
-    }
-
-    handleDelete(index: number, row: RoleInfo) {
-      this.handleDelRows([row]);
-    }
-
-    handleDelRows(row: RoleInfo[]){
-      if(row.length == 0){
-        return;
-      }
-
-      let rowsId = [];
-      row.forEach(item=>rowsId.push(item.roleId));
-
-      this.$confirm('确认永久删除该系统应用信息吗?', '提示', {
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }).then(async () => {
-        // 删除
-        const {data} = await deleteRole(rowsId);
-        this.$message({
-          type: 'success',
-          message: '删除成功',
-        });
-        this.fetchData();
-
-      }).catch(() => {
+    this.$confirm('确认永久删除该系统应用信息吗?', '提示', {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(async () => {
+      // 删除
+      const {data} = await deleteRole(rowsId);
+      this.$message({
+        type: 'success',
+        message: '删除成功',
       });
-    }
+      this.fetchData();
 
-    fetchData() {
-      this.listLoading = true;
-      try {
-        getRoleList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<RoleInfo>>>) => {
-          const responseData = response.data.data;
-          this.data = responseData.content;
-          this.listQuery.page = responseData.number;
-          this.listQuery.size = responseData.size;
-          this.listQuery.total = responseData.totalElements;
-          this.listLoading = false;
-        }, (reason: any) => {
-          this.listLoading = false;
-        });
-      } catch (e) {
-        this.listLoading = false;
-      }
-    }
-
+    }).catch(() => {
+    });
   }
+
+  fetchData() {
+    this.listLoading = true;
+    try {
+      getRoleList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<RoleInfo>>>) => {
+        const responseData = response.data.data;
+        this.data = responseData.content;
+        this.listQuery.page = responseData.number;
+        this.listQuery.size = responseData.size;
+        this.listQuery.total = responseData.totalElements;
+        this.listLoading = false;
+      }, (reason: any) => {
+        this.listLoading = false;
+      });
+    } catch (e) {
+      this.listLoading = false;
+    }
+  }
+
+}
 </script>

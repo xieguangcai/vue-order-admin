@@ -46,7 +46,6 @@
                 @selection-change="handleSelectionChange"
                 border
                 fit
-                :row-class-name="tableRowClassName2"
                 highlight-current-row>
 
         <el-table-column align="left" label="单号信息" width="300" fixed>
@@ -63,7 +62,7 @@
             <div>
               <span>支付账号：</span>{{ scope.row.phoneNo}}<br/>
               <span>mac地址：</span>{{ scope.row.mac}}<br/>
-              <span class="{{tableRowClassName(scope.row.orderStatus)}}">订单状态：{{orderStatusName(scope.row.orderStatus)}}</span>
+              <span :class="tableRowClassName(scope.row.orderStatus)">订单状态：{{orderStatusName(scope.row.orderStatus)}}</span>
             </div>
           </template>
         </el-table-column>
@@ -107,98 +106,98 @@
 
 
 <script lang="ts">
-  import {Component, Vue, Watch} from 'vue-property-decorator';
-  import SearchPane from '../../../components/SearchPane/index.vue';
-  import SearchPagePane from '../../../components/SearchPagePane/index.vue';
-  import {OrderInfo, IPageinfo, OrderInfoListQuery, Pageable, ResponseResult} from '../../../types/index';
-  import ListTablePane from '../../../components/ListTablePane/index.vue';
-  import {AxiosResponse} from 'axios';
-  import {getOrderInfoList} from "../../../api/pay";
-  import {AppModule} from "../../../store/modules/app";
+import {Component, Vue, Watch} from 'vue-property-decorator';
+import SearchPane from '../../../components/SearchPane/index.vue';
+import SearchPagePane from '../../../components/SearchPagePane/index.vue';
+import {OrderInfo, IPageinfo, OrderInfoListQuery, Pageable, ResponseResult} from '../../../types';
+import ListTablePane from '../../../components/ListTablePane/index.vue';
+import {AxiosResponse} from 'axios';
+import {getOrderInfoList} from '../../../api/pay';
+import {AppModule} from '../../../store/modules/app';
 
-  interface EditDomain {
-    editRoleAccountId: number | undefined;
-    editAccountId: number | undefined;
+interface EditDomain {
+  editRoleAccountId: number | undefined;
+  editAccountId: number | undefined;
+}
+
+@Component({
+  components: {ListTablePane, SearchPane, SearchPagePane},
+  filters: {},
+})
+export default class AccountList extends Vue {
+  dialogEditFormVisible: boolean = false;
+  dialogEditUserRoleFormVisible: boolean = false;
+  editDomainInfo: EditDomain = {editAccountId: 0, editRoleAccountId: 0};
+
+  data: OrderInfo[] = [];
+  listLoading: boolean = true;
+  listQuery: OrderInfoListQuery = {mac: '', page: 0, size: 50, total: 0};
+  mutipleSelection: OrderInfo[] = [];
+
+  tableRowClassName(orderStatus: string) {
+    if (orderStatus === 'CC00502') {
+      return 'warning-row';
+    } else if (orderStatus === 'CC00503') {
+      return 'success-row';
+    }
+    return '';
   }
 
-  @Component({
-    components: {ListTablePane, SearchPane, SearchPagePane},
-    filters: {},
-  })
-  export default class AccountList extends Vue {
-    dialogEditFormVisible: boolean = false;
-    dialogEditUserRoleFormVisible: boolean = false;
-    editDomainInfo: EditDomain = {editAccountId: 0, editRoleAccountId: 0};
 
-    data: OrderInfo[] = [];
-    listLoading: boolean = true;
-    listQuery: OrderInfoListQuery = {mac: '', page: 0, size: 50, total: 0};
-    mutipleSelection: OrderInfo[] = [];
+  get orderStatus() {
+    return AppModule.orderStatus;
+  }
+  created() {
+    this.fetchData();
+  }
+  orderStatusName(code: string) {
+    let name = code;
+    this.orderStatus.forEach((item) => {if (item.value === code) {name = item.label; return false; }});
+    return name;
+  }
+  saveThenNew() {
+    this.editDomainInfo.editAccountId = 0;
+    this.fetchData();
+  }
 
-    tableRowClassName(orderStatus: string) {
-      if (orderStatus === 'CC00502') {
-        return 'warning-row';
-      } else if (orderStatus === 'CC00503') {
-        return 'success-row';
-      }
-      return '';
-    }
-
-
-    get orderStatus(){
-      return AppModule.orderStatus;
-    }
-    created() {
+  handlePageInfoChange(pageInfo: IPageinfo) {
+    if (null != pageInfo) {
+      this.listQuery.size = pageInfo.size;
+      this.listQuery.page = pageInfo.page;
       this.fetchData();
     }
-    orderStatusName(code){
-      let name = code;
-      this.orderStatus.forEach((item)=>{if(item.value == code){name = item.label; return false}});
-      return name;
-    }
-    saveThenNew() {
-      this.editDomainInfo.editAccountId = 0;
-      this.fetchData();
-    }
+  }
 
-    handlePageInfoChange(pageInfo: IPageinfo) {
-      if (null != pageInfo) {
-        this.listQuery.size = pageInfo.size;
-        this.listQuery.page = pageInfo.page;
-        this.fetchData();
-      }
-    }
+  handleSizeChange(size: number) {
+    this.listQuery.size = size;
+    this.fetchData();
+  }
 
-    handleSizeChange(size: number) {
-      this.listQuery.size = size;
-      this.fetchData();
-    }
+  handleCurrentChange(page: number) {
+    this.listQuery.page = page - 1;
+    this.fetchData();
+  }
 
-    handleCurrentChange(page: number) {
-      this.listQuery.page = page - 1;
-      this.fetchData();
-    }
+  handleSelectionChange(val: OrderInfo[]) {
+    this.mutipleSelection = val;
+  }
 
-    handleSelectionChange(val: OrderInfo[]) {
-      this.mutipleSelection = val;
-    }
-
-    fetchData() {
-      this.listLoading = true;
-      try {
-        getOrderInfoList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<OrderInfo>>>) => {
-          const responseData = response.data.data;
-          this.data = responseData.content;
-          this.listQuery.page = responseData.number;
-          this.listQuery.size = responseData.size;
-          this.listQuery.total = responseData.totalElements;
-          this.listLoading = false;
-        }, (reason: any) => {
-          this.listLoading = false;
-        });
-      } catch (e) {
+  fetchData() {
+    this.listLoading = true;
+    try {
+      getOrderInfoList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<OrderInfo>>>) => {
+        const responseData = response.data.data;
+        this.data = responseData.content;
+        this.listQuery.page = responseData.number;
+        this.listQuery.size = responseData.size;
+        this.listQuery.total = responseData.totalElements;
         this.listLoading = false;
-      }
+      }, (reason: any) => {
+        this.listLoading = false;
+      });
+    } catch (e) {
+      this.listLoading = false;
     }
   }
+}
 </script>

@@ -17,7 +17,7 @@ export default class BaseList extends Vue {
     this.handleDelRows(this.mutipleSelection);
   }
 
-  handleDelRows(row: any){
+  handleDelRows(row: any) {
 
   }
 

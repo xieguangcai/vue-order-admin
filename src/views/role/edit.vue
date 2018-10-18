@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
-import {ApplicationInfo, Pageable, ResponseResult, RoleInfo} from '../../types/index';
+import {ApplicationInfo, Pageable, ResponseResult, RoleInfo} from '../../types';
 import {getAppList, getRoleInfo, newRole, saveRole} from '../../api/account';
 import EditFormPane from '../../components/EditFormPane/index.vue';
 import BaseEdit from '../../components/BaseEdit';
@@ -40,7 +40,7 @@ import {AxiosPromise, AxiosResponse} from 'axios';
   mixins: [ BaseEdit ],
 })
 export default class RoleEdit extends Vue {
-  domainInfo: RoleInfo = {status: 1, application:{appId: 1}};
+  domainInfo: RoleInfo = {roleId: 0, status: 1, application: {appId: 1}};
   @Prop({type: Number, default: 0})
   domainId: number = 0;
   apps: ApplicationInfo[] = [];
@@ -73,7 +73,7 @@ export default class RoleEdit extends Vue {
   @Watch('domainId', {immediate: true})
   handleDomainIdChange(newVal: number | undefined, oldVal: number| undefined) {
     if ( null == newVal || newVal === 0) {
-      this.domainInfo = {status: 1, application: {appId: 1}};
+      this.domainInfo = {roleId: 0, status: 1, application: {appId: 1}};
     } else {
       getRoleInfo(this.domainId).then((resolve) => {
         this.domainInfo = resolve.data.data;

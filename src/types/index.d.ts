@@ -68,7 +68,7 @@ export interface AccountInfo {
 export type RoleStatus = 1|2;
 
 export interface RoleInfo {
-  roleId?: number;
+  roleId: number;
   roleKey?: string;
   name?: string;
   status?: RoleStatus;
@@ -92,7 +92,7 @@ export interface ApplicationInfo {
 }
 
 
-//------------pay------------
+// ------------pay------------
 export interface OrderInfo {
   orderId: number;
   orderNo: string;
@@ -153,23 +153,23 @@ export interface OrderInfo {
 }
 
 export interface OrderInfoExtend {
-  extendId : number;
-  orderId : number;
-  activatedId? : string;
-  openId? : string;
-  bindTime? : string;
-  extend1? : string;
-  extend2? : string;
-  extend3? : string;
-  extend4? : string;
-  extend5? : string;
-  extend6? : string;
-  extend7? : string;
-  extend8? : string;
-  extend9? : string;
-  extend10? : string;
-  extend11? : string;
-  extend12? : string;
+  extendId: number;
+  orderId: number;
+  activatedId?: string;
+  openId?: string;
+  bindTime?: string;
+  extend1?: string;
+  extend2?: string;
+  extend3?: string;
+  extend4?: string;
+  extend5?: string;
+  extend6?: string;
+  extend7?: string;
+  extend8?: string;
+  extend9?: string;
+  extend10?: string;
+  extend11?: string;
+  extend12?: string;
 }
 export interface OrderOpenidInfo {
   id: number;
@@ -248,8 +248,8 @@ export interface TrnInfo {
   createdTime?: string;
   remark?: string;
 }
-//查询
-export interface OrderInfoListQuery extends IPageinfo{
+// 查询
+export interface OrderInfoListQuery extends IPageinfo {
   mac?: string;
   phoneNo?: string;
   orderNo?: string;
@@ -261,4 +261,4 @@ export interface OrderInfoListQuery extends IPageinfo{
   orderTime?: string[];
   payTime?: string[];
 }
-//------------pay------------
+// ------------pay------------
