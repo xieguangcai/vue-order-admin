@@ -1,13 +1,20 @@
 /* icon font path, required */
+/* 改变主题色变量 */
+
+@import './variables.scss';
+$--color-primary: #fa7b11;
+
+/* 改变 icon 字体路径变量，必需 */
 $--font-path: '~element-ui/lib/theme-chalk/fonts';
 @import "~element-ui/packages/theme-chalk/src/index";
 
-@import './variables.scss';
 @import './mixin.scss';
 @import './transition.scss';
 @import './element-ui.scss';
 @import './sidebar.scss';
 @import './svgicon.scss';
+@import './editForm.scss';
+@import './eyehealth.scss';
 
 body {
   height: 100%;
@@ -83,9 +90,11 @@ a:hover {
 }
 // 全局table状态
 .el-table .warning-row {
-  background: #fddae6;
+  color: #ff374e;
 }
 
 .el-table .success-row {
-  background: #f0f9eb;
+  color: #f98a0c;
 }
+//不伤眼的色彩  苹果绿 RGB 204,255,204 #CCFFCC  杏仁黄 rgb 250 249 222 #FAF9DE 海天蓝 rgb 220 226 241  #DCE2F1  青草绿 rgb 227 237 205 #E3EDCD
+// 豆沙绿 #c7edcc 灰色 #ebebe4

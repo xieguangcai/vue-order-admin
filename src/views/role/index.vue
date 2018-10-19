@@ -11,7 +11,6 @@
         <el-button type="success" icon="el-icon-circle-plus" size="mini" @click="handleNew">新增角色</el-button>
         <el-button type="danger" icon="el-icon-circle-close" size="mini" @click="handleDel">删除选中角色</el-button>
       </el-button-group>
-      {{mutipleSelection}}
       <el-table v-loading="listLoading"
                 :data="data"
                 element-loading-text="Loading"

@@ -34,11 +34,6 @@
                 highlight-current-row>
         <el-table-column type="selection" with="55">
         </el-table-column>
-        <el-table-column align="center" label="序号" width="95">
-          <template slot-scope="scope">
-            {{ scope.$index + ((listQuery.page) * listQuery.size)+ 1}}
-          </template>
-        </el-table-column>
         <el-table-column align="center" label="ID" width="95">
           <template slot-scope="scope">
             {{ scope.row.accountId}}
@@ -79,7 +74,7 @@
             {{ scope.row.department }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" align="center" fixed="right" width="140">
           <template slot-scope="scope">
             <el-tooltip content="编辑">
               <el-button type="primary" size="mini" circle icon="el-icon-edit"

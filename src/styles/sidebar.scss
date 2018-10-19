@@ -116,4 +116,14 @@
       transition: none;
     }
   }
+  //调整保护色更改
+  .sidebar-container .el-menu{
+    background: $menuBg;
+  }
+  .sidebar-container .menu-wrapper{
+    border-bottom: 1px solid $menuLineColor;
+  }
+  .sidebar-container .el-menu-item{
+    border-bottom: 1px solid $menuLineColor;
+  }
 }

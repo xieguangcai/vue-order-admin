@@ -41,13 +41,3 @@
     }
   }
 </script>
-
-<style rel="stylesheet/scss" lang="scss" scoped>
-  .cc-edit-button {
-    margin-left: 120px;
-  }
-
-  .cc-edit-form {
-    margin: 0px 30px 0px 0px;
-  }
-</style>

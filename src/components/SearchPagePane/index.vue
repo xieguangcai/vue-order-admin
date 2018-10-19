@@ -36,10 +36,3 @@ export default class SearchPagePane extends Vue {
 
 }
 </script>
-
-<style rel="stylesheet/scss" lang="scss" scoped>
-  .search-page-panel {
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-</style>

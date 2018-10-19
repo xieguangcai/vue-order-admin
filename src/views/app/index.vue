@@ -55,7 +55,7 @@
             {{ scope.row.memo }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" align="center" fixed="right" width="100">
           <template slot-scope="scope">
             <el-tooltip content="编辑">
               <el-button type="primary" size="mini" circle icon="el-icon-edit"

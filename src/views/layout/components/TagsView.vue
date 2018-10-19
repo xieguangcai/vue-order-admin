@@ -135,11 +135,13 @@ export default class TagsView extends Vue {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+  @import '../../../../src/styles/variables.scss';
+
   .tags-view-container {
     .tags-view-wrapper {
-      background: #fff;
+      background: $tagsWrapperBg;
       height: 34px;
-      border-bottom: 1px solid #d8dce5;
+      border-bottom: 1px solid $tagsWrapperBbBg;
       box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
       .tags-view-item {
         display: inline-block;

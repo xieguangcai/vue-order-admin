@@ -1,0 +1,44 @@
+//编辑弹窗的样式
+.main-container {
+  .cc-edit-button {
+    margin-left: 120px;
+  }
+
+  .cc-edit-form {
+    margin: 0px 30px 0px 0px;
+  }
+  //搜索页面的样式、
+  .search-page-panel {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .search-panel {
+    margin-bottom: 10px;
+    display: inline;
+    font-size: 14px;
+  }
+
+  .search-panel .el-input {
+    width: 150px;
+    margin: 2px 2px;
+  }
+
+  .search-panel .el-date-editor {
+    width: 180px;
+    margin: 2px 2px;
+  }
+
+  .search-panel .el-range-editor {
+    width: 220px;
+    margin: 2px 2px;
+  }
+
+  .search-panel .el-button {
+    margin-left: 10px;
+  }
+
+  .search-panel .el-select {
+    margin: 2px 2px;
+  }
+}

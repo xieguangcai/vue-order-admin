@@ -26,6 +26,8 @@ export default class BaseEdit extends Vue {
   }
 
   cancel() {
+    const form = this.getEditForm();
+    form.resetFields();
     this.$emit('cancel');
   }
 
