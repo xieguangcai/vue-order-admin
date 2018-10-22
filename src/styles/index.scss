@@ -3,6 +3,8 @@
 
 @import './variables.scss';
 $--color-primary: #fa7b11;
+$--collapse-content-fill:$collapseBg;
+$--collapse-header-fill:$collapseHeaderBg;
 
 /* 改变 icon 字体路径变量，必需 */
 $--font-path: '~element-ui/lib/theme-chalk/fonts';
@@ -89,12 +91,26 @@ a:hover {
   padding: 20px;
 }
 // 全局table状态
-.el-table .warning-row {
+.el-table .warning-row ,.cc-order-table .warning-row{
   color: #ff374e;
 }
-
-.el-table .success-row {
+.el-table .success-row ,.cc-order-table .success-row{
   color: #f98a0c;
 }
+.cc-order-table{
+  width:100%;
+  border-left:1px solid #ccc;
+  border-top:1px solid #ccc;
+}
+.cc-order-table .order-amount{
+  color: #ff741b; font-size:16px; font-weight: bold;
+}
+.cc-order-table tr td, .cc-order-table tr th{
+  padding:5px; border-right:1px solid #ccc; border-bottom:1px solid #ccc;
+}
+.cc-inline-title-table tr td:nth-child(2n+1){
+  font-size:15px;
+}
+
 //不伤眼的色彩  苹果绿 RGB 204,255,204 #CCFFCC  杏仁黄 rgb 250 249 222 #FAF9DE 海天蓝 rgb 220 226 241  #DCE2F1  青草绿 rgb 227 237 205 #E3EDCD
 // 豆沙绿 #c7edcc 灰色 #ebebe4

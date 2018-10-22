@@ -4,7 +4,9 @@
 //   total: number;
 // }
 
-export interface IPageinfo {
+import {Dictionary} from 'vue-router/types/router';
+
+export interface IPageinfo extends Dictionary<any> {
   page: number;
   size: number;
   total: number;
@@ -16,20 +18,24 @@ export interface AccountListQuery extends IPageinfo {
   createTime?: string[];
   accountStatus?: number[];
 }
+
 export interface ApplicationListQuery extends IPageinfo {
   name: string;
   appKey: string;
 }
+
 export interface RoleListQuery extends IPageinfo {
   name: string;
   roleKey: string;
 }
+
 export interface ResponseResult<T> {
   success: boolean;
   message: string;
   code: string;
   data: T;
 }
+
 export interface Pageable<T = any> {
   content: T[];
   number: number;
@@ -41,9 +47,10 @@ export interface Pageable<T = any> {
 }
 
 
-export type AccountStatus = 1|2;
+export type AccountStatus = 1 | 2;
+
 export interface StatusInfo {
-  value: number|string;
+  value: number | string;
   label: string;
 }
 
@@ -65,7 +72,7 @@ export interface AccountInfo {
   roles?: RoleInfo[];
 }
 
-export type RoleStatus = 1|2;
+export type RoleStatus = 1 | 2;
 
 export interface RoleInfo {
   roleId: number;
@@ -77,8 +84,9 @@ export interface RoleInfo {
   application?: ApplicationInfo;
 }
 
-export type AppStatus = 1|2;
-export type AppType = 1|2;
+export type AppStatus = 1 | 2;
+export type AppType = 1 | 2;
+
 export interface ApplicationInfo {
   appId?: number;
   appKey?: string;
@@ -95,25 +103,25 @@ export interface ApplicationInfo {
 // ------------pay------------
 export interface OrderInfo {
   orderId: number;
-  orderNo: string;
-  origiOrderNo: string;
+  orderNo?: string;
+  origiOrderNo?: string;
   prodCatalog?: string;
   payMod?: string;
-  prodName: string;
-  orderTime: string;
+  prodName?: string;
+  orderTime?: string;
   payTime?: string;
   completedTime?: string;
-  orderAmount: number;
+  orderAmount?: number;
   actualAmount?: number;
   royaltyRate?: string;
   delyDetailAddr?: string;
   orderStatus?: string;
   isReturn?: string;
   appTypeCode?: string;
-  appCode: string;
-  appName: string;
-  userId: number;
-  phoneNo: string;
+  appCode?: string;
+  appName?: string;
+  userId?: number;
+  phoneNo?: string;
   mac?: string;
   shopNo?: string;
   apkPackageName?: string;
@@ -171,6 +179,7 @@ export interface OrderInfoExtend {
   extend11?: string;
   extend12?: string;
 }
+
 export interface OrderOpenidInfo {
   id: number;
   orderId: number;
@@ -182,6 +191,7 @@ export interface OrderOpenidInfo {
   appTypeCode?: string;
   createTime?: string;
 }
+
 export interface OrderSerialInfo {
   serialId: number;
   serialNo: string;
@@ -197,6 +207,7 @@ export interface OrderSerialInfo {
   createdDate?: string;
   lastUpdateDate?: string;
 }
+
 export interface PaySerialInfo {
   id: number;
   orderId: number;
@@ -213,6 +224,7 @@ export interface PaySerialInfo {
   remark3?: string;
   payMod?: string;
 }
+
 export interface PayExpInfo {
   payExpId: number;
   expType: string;
@@ -227,6 +239,7 @@ export interface PayExpInfo {
   modifiedTime?: string;
 
 }
+
 export interface TrnInfo {
   trnId: number;
   userId: number;
@@ -248,6 +261,7 @@ export interface TrnInfo {
   createdTime?: string;
   remark?: string;
 }
+
 // 查询
 export interface OrderInfoListQuery extends IPageinfo {
   mac?: string;
@@ -258,7 +272,270 @@ export interface OrderInfoListQuery extends IPageinfo {
   serialNo?: string;
   appCode?: string;
   orderStatus?: string;
-  orderTime?: string[];
-  payTime?: string[];
+  orderTimes?: string[];
+  payTimes?: string[];
 }
+
+export interface UserInfoFull {
+  userId: number;
+  phoneNo?: string;
+  nickname?: string;
+  userName?: string;
+  userType?: string;
+  userGradeId?: string;
+  appTypeCode?: string;
+  appTypeName?: string;
+  verifiCode?: string;
+  bindQty?: string;
+  registerTime?: string;
+  userStatus?: string;
+  idcardNo?: string;
+  sex?: string;
+  birthday?: string;
+  postcode?: string;
+  regionCode?: string;
+  regionName?: string;
+  address?: string;
+  email?: string;
+  occupation?: string;
+  eduGrd?: string;
+  annualIncome?: string;
+  hobbies?: string;
+  viewingPrefer?: string;
+  shoppingPrefer?: string;
+  moviePrefer?: string;
+  gamePrefer?: string;
+  userPwd?: string;
+  pwdMask?: string;
+  remark?: string;
+  modifiedBy?: string;
+  modifiedTime?: string;
+
+  protocols?: AutomaticDeductionProtocol[];
+  noPassportSigns?: PayNoPassportSign[];
+}
+
+export interface AutomaticDeductionProtocol {
+  id: number;
+  userId?: number;
+  phoneNo?: string;
+  appCode?: string;
+  scene?: string;
+  externalSignNo?: string;
+  agreementNo?: string;
+  signTime?: string;
+  validTime?: string;
+  invalidTime?: string;
+  openId?: string;
+  status: number;
+  modifyTime?: string;
+  prodName?: string;
+  memo?: string;
+  price?: string;
+  originalPrice?: string;
+  priceUnit?: string;
+  clientType?: string;
+  notifyUrl?: string;
+  unsignTime?: string;
+}
+export interface PayNoPassportSign {
+  id: number;
+  userId: number;
+  payMethod?: string;
+  mobile?: string;
+  status: number;
+  validTime?: string;
+  invalidTime?: string;
+  signScene?: string;
+  signTime?: string;
+  signModifyTime?: string;
+  createTime?: string;
+  modifyTime?: string;
+  signUserId?: string;
+  signInfo?: string;
+  orderId?: number;
+  noPassportSignAuths?: PayNoPassportSignAuth[];
+}
+export interface PayNoPassportSignAuth {
+ id: number;
+ deviceId?: string;
+ userId: number;
+ mobile?: string;
+ authTime?: string;
+ status?: string;
+ createTime?: string;
+ modifyTime?: string;
+}
+
 // ------------pay------------
+
+
+// --------passport---------------
+export interface SysAccount {
+  accountId: number;
+  skyId?: string;
+  reservedId?: string;
+  visitNum?: number;
+  userName?: string;
+  nickName?: string;
+  mobile?: string;
+  email?: string;
+  salt?: string;
+  passwordType?: string;
+  password?: string;
+  verifyStatus?: string;
+  accountType?: string;
+  accountStatus?: string;
+  score?: string;
+  externalFlag?: string;
+  externalId?: string;
+  lastTime?: string;
+  lastIp?: string;
+  adminType?: string;
+  clientId?: string;
+  createDate?: string;
+  updater?: string;
+  updateDate?: string;
+  creator?: string;
+  reservedFlag?: string;
+  openId?: string;
+  balance?: string;
+  bindDevices?: SysAccountBindDevice[];
+  bindExternals?: SysAccountBindExternal[];
+  eduVips?: SysAccountEduVip[];
+  bindLogs?: SysAccountBindLog[];
+  user?: SysUser[];
+  fromMergeInfos?: SysUserMergeInfo[];
+  toMergeInfos?: SysUserMergeInfo[];
+}
+
+export interface SysAccountBindDevice {
+  bindId: number;
+  accountId?: number;
+  deviceId?: string;
+  cUdid?: string;
+  deviceType?: string;
+  deviceName?: string;
+  isBind?: string;
+  lastIp?: string;
+  bindTime?: string;
+}
+
+export interface SysAccountBindExternal {
+  bindId: number;
+  accountId: number;
+  externalFlag: string;
+  externalId: string;
+  bindTime?: string;
+  externalNickname?: string;
+  externalAvatar?: string;
+  vuserid?: string;
+  vusession?: string;
+  unionid?: string;
+}
+
+export interface SysAccountEduVip {
+  vipId?: number;
+  accountId?: number;
+  createdDate?: string;
+  openDate?: string;
+  endDate?: string;
+  openStatus?: string;
+  openContent?: string;
+  orderNo?: string;
+  rightsName?: string;
+}
+
+export interface SysAccountBindLog {
+  bindLogId?: number;
+  externalFlag?: string;
+  externalId?: string;
+  bindStatus?: string;
+  createTime?: string;
+  bindFrom?: string;
+  memo?: string;
+  sysAccountByAccountId?: string;
+  accountId?: string;
+}
+
+export interface SysUser {
+  userId: number;
+  regionId?: string;
+  address?: string;
+  postcode?: string;
+  idcard?: string;
+  userType?: string;
+  userStatus?: string;
+  gender?: string;
+  birthday?: string;
+  email2?: string;
+  tel1?: string;
+  tel2?: string;
+  avatar?: string;
+  slogan?: string;
+  birthRegion?: string;
+  birthAddress?: string;
+  hobbies?: string;
+  revenue?: string;
+  industryId?: string;
+  occupation?: string;
+  school?: string;
+  corp?: string;
+  qq?: string;
+  wechat?: string;
+  weibo?: string;
+  skype?: string;
+  line?: string;
+  homeUrl?: string;
+  lastName?: string;
+  firtstName?: string;
+  createDate?: string;
+  updateDate?: string;
+  creator?: string;
+  updater?: string;
+  educationGrade?: string;
+  updateImageTimes?: string;
+}
+
+export interface JscnUserInfo {
+  id?: number;
+  userId?: string;
+  lastUpdateTime?: string;
+  userPassword?: string;
+  smartCardId?: string;
+  tvCode?: string;
+  settopboxId?: string;
+  imsNumber?: string;
+  userName?: string;
+  customerGroup?: string;
+  education?: string;
+  familyInfo?: string;
+  phoneNumber?: string;
+  districtCode?: string;
+  districtName?: string;
+  customerType?: string;
+  customerLevel?: string;
+  status?: string;
+  userType?: string;
+  customerCode?: string;
+  email?: string;
+  managementStationId?: string;
+  managementStationName?: string;
+  baseStatus?: string;
+  interactiveStatus?: string;
+  stbMac?: string;
+  cmMac?: string;
+}
+
+export interface SysUserMergeInfo {
+  id?: number;
+  fromOpenId?: string;
+  toOpenId?: string;
+  fromUserInfo?: string;
+  toUserInfo?: string;
+  fromExtUserInfo?: string;
+  toExtUserInfo?: string;
+  createTime?: string;
+  modifyTime?: string;
+}
+// --------passport---------------

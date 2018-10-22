@@ -50,6 +50,7 @@ export default class TagsView extends Vue {
 
   @Watch('$route')
   routeChange() {
+    console.log('路由变了...');
     this.addViewTags();
     this.moveToCurrentTag();
   }

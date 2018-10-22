@@ -30,7 +30,6 @@
 <script lang="ts">
 import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
 import {ApplicationInfo} from '../../types/index';
-import {UserModule} from '../../store/modules/user';
 import {getAppInfo, newApp, newUser, saveApp} from '../../api/account';
 import EditFormPane from '../../components/EditFormPane/index.vue';
 import BaseEdit from '../../components/BaseEdit';
@@ -102,7 +101,7 @@ export default class ApplicationEdit extends Vue {
   }
 
   saveFormData(): AxiosPromise {
-    if (this.domainInfo.appId != null) {
+    if (this.domainInfo.appId != null && this.domainInfo.appId !== 0) {
       return saveApp(this.domainInfo);
     } else {
       return newApp(this.domainInfo);

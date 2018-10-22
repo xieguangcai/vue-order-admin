@@ -1,7 +1,7 @@
 <template>
   <div>
     <list-table-pane>
-      <search-pane slot="searchpane" @click="fetchData">
+      <search-pane slot="searchpane" @click="refetchData">
         手机号
         <el-input v-model="listQuery.phoneNo" size="mini"></el-input>
         订单号
@@ -16,34 +16,35 @@
         <el-input v-model="listQuery.appCode" size="mini"></el-input>
         mac地址
         <el-input v-model="listQuery.mac" size="mini"></el-input>
-        <!--订单状态-->
-        <!--<el-select size="mini" v-model="listQuery.orderStatus">-->
-          <!--<el-option value="" label="全部"/>-->
-          <!--<el-option v-for="item in orderStatus" :label="item.label" :value="item.value" :key="item.value"/>-->
-        <!--</el-select>-->
+        订单状态
+        <el-select size="mini" v-model="listQuery.orderStatus">
+        <el-option value="" label="全部"/>
+        <el-option v-for="item in orderStatus" :label="item.label" :value="item.value" :key="item.value"/>
+        </el-select>
         订单创建时间
         <el-date-picker size="mini"
-                        v-model="listQuery.orderTime"
+                        v-model="listQuery.orderTimes"
                         type="daterange"
                         range-separator="-"
-                        value-format="yyyy-MM-dd"
+                        value-format="yyyy-MM-dd HH:mm:ss"
+                        :default-time="['00:00:00','23:59:59']"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期">
         </el-date-picker>
         订单支付时间
         <el-date-picker size="mini"
-                        v-model="listQuery.payTime"
+                        v-model="listQuery.payTimes"
                         type="daterange"
                         range-separator="-"
-                        value-format="yyyy-MM-dd"
+                        value-format="yyyy-MM-dd HH:mm:ss"
+                        :default-time="['00:00:00','23:59:59']"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期">
         </el-date-picker>
       </search-pane>
-      <el-table v-loading="listLoading" height="600"  style="width: 100%"
+      <el-table v-loading="listLoading" height="600" style="width: 100%"
                 :data="data"
                 element-loading-text="Loading"
-                @selection-change="handleSelectionChange"
                 border
                 fit
                 highlight-current-row>
@@ -57,12 +58,13 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column align="left" label="订单状态" width="200" >
+        <el-table-column align="left" label="订单状态" width="200">
           <template slot-scope="scope">
             <div>
-              <span>支付账号：</span>{{ scope.row.phoneNo}}<br/>
+              <span>支付账号：</span>{{ scope.row.phoneNo === '-1' ? '无账号' : scope.row.phoneNo }}<br/>
               <span>mac地址：</span>{{ scope.row.mac}}<br/>
-              <span :class="tableRowClassName(scope.row.orderStatus)">订单状态：{{orderStatusName(scope.row.orderStatus)}}</span>
+              <span
+                :class="tableRowClassName(scope.row.orderStatus)">订单状态：{{orderStatusToName(scope.row.orderStatus)}}</span>
             </div>
           </template>
         </el-table-column>
@@ -88,18 +90,22 @@
           <template slot-scope="scope">
             <el-tooltip content="查看该订单详情">
               <el-button type="primary" size="mini" circle icon="el-icon-search"
-                         @click="handleEdit(scope.$index, scope.row)"></el-button>
+                         @click="handleViewOrderInfoDetail(scope.$index, scope.row)"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
-      <search-page-pane @size-change="handleSizeChange"
+     <search-page-pane @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
-                        :size="listQuery.size"
-                        :total="listQuery.total"
-                        :page="listQuery.page + 1"
+                        :size="size"
+                        :total="total"
+                        :page="page"
                         slot="page">
       </search-page-pane>
+      <el-dialog title="oss订单详情" :visible.sync="dialogOrderInfoDetilVisible"  :append-to-body="true" :modal-append-to-body="false" width="80%" @close="editDomainInfo.editDomainId = 0">
+        <order-info-detail :domain-id="editDomainInfo.editDomainId"/>
+      </el-dialog>
+
     </list-table-pane>
   </div>
 </template>
@@ -109,95 +115,59 @@
 import {Component, Vue, Watch} from 'vue-property-decorator';
 import SearchPane from '../../../components/SearchPane/index.vue';
 import SearchPagePane from '../../../components/SearchPagePane/index.vue';
-import {OrderInfo, IPageinfo, OrderInfoListQuery, Pageable, ResponseResult} from '../../../types';
+import {OrderInfo, OrderInfoListQuery, Pageable, ResponseResult} from '../../../types';
 import ListTablePane from '../../../components/ListTablePane/index.vue';
 import {AxiosResponse} from 'axios';
-import {getOrderInfoList} from '../../../api/pay';
+import {getOrderInfoList, orderStatusClass, orderStatusName} from '../../../api/pay';
 import {AppModule} from '../../../store/modules/app';
+import OrderInfoDetail from './detail.vue';
+// @ts-ignore
+import qs from 'qs';
+import BaseList from '../../../components/BaseList';
 
 interface EditDomain {
-  editRoleAccountId: number | undefined;
-  editAccountId: number | undefined;
+  editDomainId: number | undefined;
 }
 
 @Component({
-  components: {ListTablePane, SearchPane, SearchPagePane},
+  components: {OrderInfoDetail, ListTablePane, SearchPane, SearchPagePane},
   filters: {},
+  mixins: [BaseList],
 })
 export default class AccountList extends Vue {
-  dialogEditFormVisible: boolean = false;
-  dialogEditUserRoleFormVisible: boolean = false;
-  editDomainInfo: EditDomain = {editAccountId: 0, editRoleAccountId: 0};
+  dialogOrderInfoDetilVisible: boolean = false;
+  editDomainInfo: EditDomain = {editDomainId: 0};
 
   data: OrderInfo[] = [];
-  listLoading: boolean = true;
-  listQuery: OrderInfoListQuery = {mac: '', page: 0, size: 50, total: 0};
-  mutipleSelection: OrderInfo[] = [];
+  listQuery: OrderInfoListQuery = { page: 0, size: 50, total: 0};
 
-  tableRowClassName(orderStatus: string) {
-    if (orderStatus === 'CC00502') {
-      return 'warning-row';
-    } else if (orderStatus === 'CC00503') {
-      return 'success-row';
-    }
-    return '';
+  tableRowClassName(orderStatus: string): string {
+    return orderStatusClass(orderStatus);
   }
 
 
   get orderStatus() {
     return AppModule.orderStatus;
   }
-  created() {
-    this.fetchData();
-  }
-  orderStatusName(code: string) {
-    let name = code;
-    this.orderStatus.forEach((item) => {if (item.value === code) {name = item.label; return false; }});
-    return name;
-  }
-  saveThenNew() {
-    this.editDomainInfo.editAccountId = 0;
-    this.fetchData();
+
+  orderStatusToName(code: string) {
+    return orderStatusName(code);
   }
 
-  handlePageInfoChange(pageInfo: IPageinfo) {
-    if (null != pageInfo) {
-      this.listQuery.size = pageInfo.size;
-      this.listQuery.page = pageInfo.page;
-      this.fetchData();
-    }
+  handleViewOrderInfoDetail(index: number, row: OrderInfo) {
+    this.dialogOrderInfoDetilVisible = true;
+    console.log('点击选择的订单id为' + row.orderId);
+    this.$nextTick(() => this.editDomainInfo.editDomainId = row.orderId);
   }
 
-  handleSizeChange(size: number) {
-    this.listQuery.size = size;
-    this.fetchData();
-  }
-
-  handleCurrentChange(page: number) {
-    this.listQuery.page = page - 1;
-    this.fetchData();
-  }
-
-  handleSelectionChange(val: OrderInfo[]) {
-    this.mutipleSelection = val;
-  }
-
-  fetchData() {
-    this.listLoading = true;
-    try {
-      getOrderInfoList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<OrderInfo>>>) => {
-        const responseData = response.data.data;
-        this.data = responseData.content;
-        this.listQuery.page = responseData.number;
-        this.listQuery.size = responseData.size;
-        this.listQuery.total = responseData.totalElements;
-        this.listLoading = false;
-      }, (reason: any) => {
-        this.listLoading = false;
-      });
-    } catch (e) {
-      this.listLoading = false;
-    }
+  realFetchData() {
+    return getOrderInfoList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<OrderInfo>>>) => {
+      const responseData = response.data.data;
+      this.data = responseData.content;
+      this.listQuery.page = responseData.number;
+      this.listQuery.size = responseData.size;
+      this.listQuery.total = responseData.totalElements;
+    });
   }
 }
 </script>

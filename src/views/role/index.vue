@@ -2,7 +2,7 @@
   <div>
     <list-table-pane>
       <search-pane slot="searchpane" @click="fetchData">
-        系统名称
+        角色名称
         <el-input v-model="listQuery.name" size="mini"></el-input>
         roleKey
         <el-input v-model="listQuery.roleKey" size="mini"></el-input>
@@ -59,7 +59,7 @@
 
             <el-tooltip content="删除" slot="reference">
               <el-button type="danger" circle size="mini" icon="el-icon-delete"
-                         @click="handleDelete(scope.$index, scope.row)"></el-button>
+                         @click="handleDelRows([scope.row])"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -94,7 +94,7 @@ import {AxiosResponse} from 'axios';
 import {Pageable, ResponseResult, RoleInfo, RoleListQuery} from '../../types';
 import {deleteRole, getRoleList} from '../../api/account';
 import BaseList from '../../components/BaseList';
-
+import BaseTableDelete from '../../components/BaseTableDelete';
 
 interface EditDomain {
   editDomainId: number | undefined;
@@ -102,14 +102,13 @@ interface EditDomain {
 
 @Component({
   filters: {},
-  mixins: [BaseList],
+  mixins: [BaseList, BaseTableDelete],
   components: {RoleEdit, ListTablePane, SearchPane, SearchPagePane},
 })
 export default class RoleList extends Vue {
   dialogEditFormVisible: boolean = false;
   editDomainInfo: EditDomain = {editDomainId: 0};
   data: RoleInfo[] = [];
-  listLoading: boolean = true;
   listQuery: RoleListQuery = {name: '', roleKey: '', page: 0, size: 50, total: 0};
 
 
@@ -124,27 +123,9 @@ export default class RoleList extends Vue {
     this.editDomainInfo.editDomainId = 0;
   }
 
-  created() {
-    this.fetchData();
-  }
-
   saveThenNew() {
     this.editDomainInfo.editDomainId = 0;
     this.fetchData();
-  }
-
-  handleSizeChange(size: number) {
-    this.listQuery.size = size;
-    this.fetchData();
-  }
-
-  handleCurrentChange(page: number) {
-    this.listQuery.page = page - 1;
-    this.fetchData();
-  }
-
-  handleDelete(index: number, row: RoleInfo) {
-    this.handleDelRows([row]);
   }
 
   handleDelRows(row: RoleInfo[]) {
@@ -155,7 +136,7 @@ export default class RoleList extends Vue {
     const rowsId: number[] = [];
     row.forEach((item) => rowsId.push(item.roleId));
 
-    this.$confirm('确认永久删除该系统应用信息吗?', '提示', {
+    this.$confirm('确认永久删除该系统角色信息吗?', '提示', {
       confirmButtonText: '确认',
       cancelButtonText: '取消',
       type: 'warning',
@@ -172,23 +153,14 @@ export default class RoleList extends Vue {
     });
   }
 
-  fetchData() {
-    this.listLoading = true;
-    try {
-      getRoleList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<RoleInfo>>>) => {
-        const responseData = response.data.data;
-        this.data = responseData.content;
-        this.listQuery.page = responseData.number;
-        this.listQuery.size = responseData.size;
-        this.listQuery.total = responseData.totalElements;
-        this.listLoading = false;
-      }, (reason: any) => {
-        this.listLoading = false;
-      });
-    } catch (e) {
-      this.listLoading = false;
-    }
+  realFetchData() {
+    return getRoleList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<RoleInfo>>>) => {
+      const responseData = response.data.data;
+      this.data = responseData.content;
+      this.listQuery.page = responseData.number;
+      this.listQuery.size = responseData.size;
+      this.listQuery.total = responseData.totalElements;
+    });
   }
-
 }
 </script>

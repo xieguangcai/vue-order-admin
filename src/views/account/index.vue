@@ -16,14 +16,15 @@
                         v-model="listQuery.createTime"
                         type="daterange"
                         range-separator="-"
-                        value-format="yyyy-MM-dd"
+                        value-format="yyyy-MM-dd HH:mm:ss"
+                        :default-time="['00:00:00','23:59:59']"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期">
         </el-date-picker>
       </search-pane>
       <el-button-group slot="action" class="cc-action-button-group">
         <el-button type="success" icon="el-icon-circle-plus" size="mini" @click="handleNew">新增用户</el-button>
-        <el-button type="danger" icon="el-icon-circle-close" size="mini" @click="handleNew">删除选中用户</el-button>
+        <el-button type="danger" icon="el-icon-circle-close" size="mini" @click="handleDel">删除选中用户</el-button>
       </el-button-group>
       <el-table v-loading="listLoading"
                 :data="data"
@@ -87,7 +88,7 @@
             </el-tooltip>
             <el-tooltip content="删除" slot="reference">
               <el-button type="danger" circle size="mini" icon="el-icon-delete"
-                         @click="handleDelete(scope.$index, scope.row)"></el-button>
+                         @click="handleDelRows([scope.row])"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -127,6 +128,8 @@ import AccountEdit from './edit.vue';
 import EditUserRole from './editUserRole.vue';
 import {AxiosResponse} from 'axios';
 import {UserModule} from '../../store/modules/user';
+import BaseTableDelete from '../../components/BaseTableDelete';
+import BaseList from '../../components/BaseList';
 
 interface EditDomain {
   editRoleAccountId: number | undefined;
@@ -136,6 +139,7 @@ interface EditDomain {
 @Component({
   components: {AccountEdit, ListTablePane, SearchPane, SearchPagePane, EditUserRole},
   filters: {},
+  mixins: [BaseList, BaseTableDelete],
 })
 export default class AccountList extends Vue {
   dialogEditFormVisible: boolean = false;
@@ -143,9 +147,7 @@ export default class AccountList extends Vue {
   editDomainInfo: EditDomain = { editAccountId: 0, editRoleAccountId: 0};
 
   data: AccountInfo[] = [];
-  listLoading: boolean = true;
   listQuery: AccountListQuery = {userName: '', nickName: '', page: 0, size: 50, total: 0, createTime: []};
-  mutipleSelection: AccountInfo[] = [];
 
   get accountStatus() {
     return UserModule.accountStatus;
@@ -169,45 +171,26 @@ export default class AccountList extends Vue {
     this.editDomainInfo.editAccountId = 0;
   }
 
-  created() {
-    this.fetchData();
-  }
-
   saveThenNew() {
     this.editDomainInfo.editAccountId = 0;
     this.fetchData();
   }
 
-  handlePageInfoChange(pageInfo: IPageinfo) {
-    if (null != pageInfo) {
-      this.listQuery.size = pageInfo.size;
-      this.listQuery.page = pageInfo.page;
-      this.fetchData();
+  handleDelRows(row: AccountInfo[]) {
+    if (row.length === 0) {
+      return;
     }
-  }
 
-  handleSizeChange(size: number) {
-    this.listQuery.size = size;
-    this.fetchData();
-  }
+    const rowsId: number[] = [];
+    row.forEach((item) => rowsId.push(item.accountId));
 
-  handleCurrentChange(page: number) {
-    this.listQuery.page = page - 1;
-    this.fetchData();
-  }
-
-  handleSelectionChange(val: AccountInfo[]) {
-    this.mutipleSelection = val;
-  }
-
-  handleDelete(index: number, row: AccountInfo) {
     this.$confirm('确认永久删除该用户信息吗?', '提示', {
       confirmButtonText: '确认',
       cancelButtonText: '取消',
       type: 'warning',
     }).then(async () => {
       // 删除
-      const {data} = await deleteUser([row.accountId]);
+      const {data} = await deleteUser(rowsId);
       this.$message({
         type: 'success',
         message: '删除成功',
@@ -222,22 +205,14 @@ export default class AccountList extends Vue {
     });
   }
 
-  fetchData() {
-    this.listLoading = true;
-    try {
-      getList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<AccountInfo>>>) => {
-        const responseData = response.data.data;
-        this.data = responseData.content;
-        this.listQuery.page = responseData.number;
-        this.listQuery.size = responseData.size;
-        this.listQuery.total = responseData.totalElements;
-        this.listLoading = false;
-      }, (reason: any) => {
-        this.listLoading = false;
-      });
-    } catch (e) {
-      this.listLoading = false;
-    }
+  realFetchData() {
+    return getList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<AccountInfo>>>) => {
+      const responseData = response.data.data;
+      this.data = responseData.content;
+      this.listQuery.page = responseData.number;
+      this.listQuery.size = responseData.size;
+      this.listQuery.total = responseData.totalElements;
+    });
   }
 }
 </script>

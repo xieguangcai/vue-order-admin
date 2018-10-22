@@ -20,7 +20,7 @@
                 highlight-current-row>
         <el-table-column type="selection" with="55">
         </el-table-column>
-        <el-table-column label="ID"  with="80">
+        <el-table-column label="ID" with="80">
           <template slot-scope="scope">
             {{ scope.row.appId }}
           </template>
@@ -64,19 +64,31 @@
 
             <el-tooltip content="删除" slot="reference">
               <el-button type="danger" circle size="mini" icon="el-icon-delete"
-                         @click="handleDelete(scope.$index, scope.row)"></el-button>
+                         @click="handleDelRows([scope.row])"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
 
-      <search-page-pane @size-change="handleSizeChange"
+      <div class="search-page-panel" slot="page">
+        <el-pagination
+          background
+          :current-page="page"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :page-sizes="[1,50, 100, 200, 300]"
+          :page-size="size || 1"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total">
+        </el-pagination>
+      </div>
+      <!--<search-page-pane @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
                         :size="listQuery.size"
                         :total="listQuery.total"
                         :page="listQuery.page + 1"
                         slot="page">
-      </search-page-pane>
+      </search-page-pane>-->
     </list-table-pane>
 
     <el-dialog title="编辑接入系统" :visible.sync="dialogEditFormVisible" :close-on-click-modal="false" width="600px">
@@ -98,6 +110,8 @@ import ApplicationEdit from './edit.vue';
 import {AxiosResponse} from 'axios';
 import {ApplicationInfo, ApplicationListQuery, Pageable, ResponseResult} from '../../types';
 import {getAppList} from '../../api/account';
+import BaseList from '../../components/BaseList';
+import BaseTableDelete from '../../components/BaseTableDelete';
 
 
 interface EditDomain {
@@ -106,15 +120,14 @@ interface EditDomain {
 
 @Component({
   filters: {},
+  mixins: [BaseList, BaseTableDelete],
   components: {ApplicationEdit, ListTablePane, SearchPane, SearchPagePane},
 })
 export default class ApplicationList extends Vue {
   dialogEditFormVisible: boolean = false;
   editDomainInfo: EditDomain = {editDomainId: 0};
   data: ApplicationInfo[] = [];
-  listLoading: boolean = true;
   listQuery: ApplicationListQuery = {name: '', appKey: '', page: 0, size: 50, total: 0};
-  mutipleSelection: ApplicationInfo[] = [];
 
 
   handleEdit(index: number, row: ApplicationInfo): void {
@@ -128,37 +141,25 @@ export default class ApplicationList extends Vue {
     this.editDomainInfo.editDomainId = 0;
   }
 
-  created() {
-    this.fetchData();
-  }
-
   saveThenNew() {
     this.editDomainInfo.editDomainId = 0;
     this.fetchData();
   }
 
-  handleSizeChange(size: number) {
-    this.listQuery.size = size;
-    this.fetchData();
-  }
+  handleDelRows(row: ApplicationInfo[]) {
+    if (row.length === 0) {
+      return;
+    }
+    const rowsId: number[] = [];
+    row.forEach((item) => rowsId.push(item.appId));
 
-  handleCurrentChange(page: number) {
-    this.listQuery.page = page - 1;
-    this.fetchData();
-  }
-
-  handleSelectionChange(val: ApplicationInfo[]) {
-    this.mutipleSelection = val;
-  }
-
-  handleDelete(index: number, row: ApplicationInfo) {
     this.$confirm('确认永久删除该系统应用信息吗?', '提示', {
       confirmButtonText: '确认',
       cancelButtonText: '取消',
       type: 'warning',
     }).then(async () => {
       // 删除
-      const {data} = await deleteApp([row.appId]);
+      const {data} = await deleteApp(rowsId);
       this.$message({
         type: 'success',
         message: '删除成功',
@@ -169,22 +170,14 @@ export default class ApplicationList extends Vue {
     });
   }
 
-  fetchData() {
-    this.listLoading = true;
-    try {
-      getAppList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<ApplicationInfo>>>) => {
-        const responseData = response.data.data;
-        this.data = responseData.content;
-        this.listQuery.page = responseData.number;
-        this.listQuery.size = responseData.size;
-        this.listQuery.total = responseData.totalElements;
-        this.listLoading = false;
-      }, (reason: any) => {
-        this.listLoading = false;
-      });
-    } catch (e) {
-      this.listLoading = false;
-    }
+  realFetchData() {
+    return getAppList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<ApplicationInfo>>>) => {
+      const responseData = response.data.data;
+      this.data = responseData.content;
+      this.listQuery.page = responseData.number;
+      this.listQuery.size = responseData.size;
+      this.listQuery.total = responseData.totalElements;
+    });
   }
 
 }

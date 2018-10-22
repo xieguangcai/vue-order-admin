@@ -100,7 +100,7 @@ export default class RoleEdit extends Vue {
   }
 
   saveFormData(): AxiosPromise {
-    if (this.domainInfo.roleId != null) {
+    if (this.domainInfo.roleId !== 0) {
       return saveRole(this.domainInfo);
     } else {
       return newRole(this.domainInfo);
