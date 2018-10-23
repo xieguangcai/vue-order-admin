@@ -33,12 +33,17 @@
     width: 220px;
     margin: 2px 2px;
   }
-
+  .search-panel .el-date-editor--datetimerange{
+    width:310px;    margin: 2px 2px;
+  }
   .search-panel .el-button {
     margin-left: 10px;
   }
 
   .search-panel .el-select {
     margin: 2px 2px;
+  }
+  .search-panel .search-con-container{
+    display: inline;
   }
 }

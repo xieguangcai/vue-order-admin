@@ -5,15 +5,15 @@
         手机号
         <el-input v-model="listQuery.phoneNo" size="mini"></el-input>
         订单号
-        <el-input v-model="listQuery.orderNo" size="mini"></el-input>
+        <el-input v-model="listQuery.orderNo" size="mini" style="width:180px;"></el-input>
         支付订单号
-        <el-input v-model="listQuery.ybDealNo" size="mini"></el-input>
+        <el-input v-model="listQuery.ybDealNo" size="mini" style="width:220px"></el-input>
         业务订单号
-        <el-input v-model="listQuery.origiOrderNo" size="mini"></el-input>
+        <el-input v-model="listQuery.origiOrderNo" size="mini" style="width:220px"></el-input>
         支付流水号
-        <el-input v-model="listQuery.serialNo" size="mini"></el-input>
+        <el-input v-model="listQuery.serialNo" size="mini" style="width:220px"></el-input>
         appCode
-        <el-input v-model="listQuery.appCode" size="mini"></el-input>
+        <el-input v-model="listQuery.appCode" size="mini" style="width:100px"></el-input>
         mac地址
         <el-input v-model="listQuery.mac" size="mini"></el-input>
         订单状态
@@ -24,20 +24,22 @@
         订单创建时间
         <el-date-picker size="mini"
                         v-model="listQuery.orderTimes"
-                        type="daterange"
+                        type="datetimerange"
                         range-separator="-"
                         value-format="yyyy-MM-dd HH:mm:ss"
                         :default-time="['00:00:00','23:59:59']"
+                        :picker-options="pickerOptions"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期">
         </el-date-picker>
         订单支付时间
         <el-date-picker size="mini"
                         v-model="listQuery.payTimes"
-                        type="daterange"
+                        type="datetimerange"
                         range-separator="-"
                         value-format="yyyy-MM-dd HH:mm:ss"
                         :default-time="['00:00:00','23:59:59']"
+                        :picker-options="pickerOptions"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期">
         </el-date-picker>

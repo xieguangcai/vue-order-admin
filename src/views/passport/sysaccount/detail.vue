@@ -286,14 +286,12 @@ export default class SysAccountDetail extends Vue {
   payUserInfo: UserInfoFull = {userId: 0,
     protocols: [],
     noPassportSigns: [],
-    noPassportSignAuths: [],
   };
 
   get defPayUserInfo(): UserInfoFull {
     return {userId: 0,
       protocols: [],
       noPassportSigns: [],
-      noPassportSignAuths: [],
     };
   }
 

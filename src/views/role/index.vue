@@ -67,9 +67,9 @@
 
       <search-page-pane @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
-                        :size="listQuery.size"
-                        :total="listQuery.total"
-                        :page="listQuery.page + 1"
+                        :size="size"
+                        :total="total"
+                        :page="page"
                         slot="page">
       </search-page-pane>
     </list-table-pane>

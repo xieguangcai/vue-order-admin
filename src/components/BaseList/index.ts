@@ -4,6 +4,8 @@ import {IPageinfo} from '@/types';
 import qs from 'qs';
 import {AxiosPromise} from 'axios';
 import {getAppInfo} from '@/api/account';
+import {AppModule} from "@/store/modules/app";
+import {pickerOptions} from "@/utils/validate";
 
 @Component
 export default class BaseList extends Vue {
@@ -11,16 +13,19 @@ export default class BaseList extends Vue {
 
   listQuery: IPageinfo = {page: 0, size: 50, total: 0};
 
-  get total(){
+  get total(): number{
     return this.listQuery.total;
   }
-  get size(){
+  get size(): number{
     return this.listQuery.size;
   }
-  get page(){
+  get page(): number{
     return this.listQuery.page;
   }
 
+  get pickerOptions(): any{
+    return pickerOptions();
+  }
   created() {
     this.onCreated();
     const pageInfo: IPageinfo = {page: 0, size: 50, total: 0};

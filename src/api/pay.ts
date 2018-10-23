@@ -69,4 +69,13 @@ export function orderStatusName(code: string) {
   });
   return name;
 }
-
+export function ossOrderSourceName(code: number){
+  let name = code + '';
+  AppModule.ossOrderSource.forEach((item) => {
+    if (item.value === code) {
+      name = item.label;
+      return false;
+    }
+  });
+  return name;
+}

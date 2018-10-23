@@ -5,6 +5,7 @@ import {ElementUIComponentSize} from 'element-ui/types/component';
 import {getToken, removeToken} from '@/utils/auth';
 import {logout} from '@/api/login';
 import {StatusInfo} from '@/types';
+import {ElDatePicker} from "element-ui/types/date-picker";
 
 export enum DeviceType {
   Mobile,
@@ -22,6 +23,7 @@ export interface IAppState {
   recordeStatus: StatusInfo[];
   orderStatus: StatusInfo[];
   appTypeCodeStatus: StatusInfo[];
+  ossOrderSource: StatusInfo[];
 }
 
 @Module({dynamic: true, store, name: 'app'})
@@ -52,6 +54,13 @@ class App extends VuexModule {
     {value: 'CC01208', label: '音乐'},
     {value: 'CC01209', label: '广告'},
     {value: 'CC01210', label: '体育'},
+  ];
+  ossOrderSource: IAppState['orderStatus'] = [
+    {value: 1, label: 'tv端'},
+    {value: 2, label: 'pc端'},
+    {value: 3, label: '自动续费'},
+    {value: 4, label: '移动端'},
+    {value: 5, label: 'v1版支付'},
   ];
 
   @Mutation

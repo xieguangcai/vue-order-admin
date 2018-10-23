@@ -69,26 +69,13 @@
           </template>
         </el-table-column>
       </el-table>
-
-      <div class="search-page-panel" slot="page">
-        <el-pagination
-          background
-          :current-page="page"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :page-sizes="[1,50, 100, 200, 300]"
-          :page-size="size || 1"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total">
-        </el-pagination>
-      </div>
-      <!--<search-page-pane @size-change="handleSizeChange"
+      <search-page-pane @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
-                        :size="listQuery.size"
-                        :total="listQuery.total"
-                        :page="listQuery.page + 1"
+                        :size="size"
+                        :total="total"
+                        :page="page"
                         slot="page">
-      </search-page-pane>-->
+      </search-page-pane>
     </list-table-pane>
 
     <el-dialog title="编辑接入系统" :visible.sync="dialogEditFormVisible" :close-on-click-modal="false" width="600px">

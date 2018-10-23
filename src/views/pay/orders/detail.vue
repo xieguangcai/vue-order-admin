@@ -12,8 +12,8 @@
             <td colspan="5"><span class="order-amount">[{{domainInfo.orderAmount}}元]</span>{{ domainInfo.prodName }}</td>
           </tr>
           <tr>
-            <td>业务类型</td>
-            <td>{{ domainInfo.appTypeCodeValue }}</td>
+            <td>mac地址</td>
+            <td>{{ domainInfo.mac }}</td>
             <td>支付方式</td>
             <td>
               <template v-if="domainInfo.payModValue" >{{ domainInfo.payModValue }}</template>
@@ -49,6 +49,18 @@
           <tr>
             <td>供应商</td>
             <td colspan="7">[{{domainInfo.appCode}}]{{ domainInfo.appName }}</td>
+          </tr>
+          <tr>
+            <td>应用名称</td>
+            <td colspan="3">{{ domainInfo.appRealName }}</td>
+            <td>业务类型</td>
+            <td>{{ domainInfo.appTypeCodeValue }}</td>
+            <td>订单来源</td>
+            <td>{{ ossOrderSourceToName(domainInfo.orderSource) }}</td>
+          </tr>
+          <tr>
+            <td>回调地址</td>
+            <td colspan="7">{{ domainInfo.callBackUrl }}</td>
           </tr>
         </table>
       </el-collapse-item>
@@ -110,7 +122,7 @@
 <script lang="ts">
 import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
 import {OrderInfo, OrderInfoExtend, OrderOpenidInfo, OrderSerialInfo, PayExpInfo} from '../../../types';
-import {getOrderInfo, orderStatusClass, orderStatusName} from '../../../api/pay';
+import {getOrderInfo, orderStatusClass, orderStatusName, ossOrderSourceName} from '../../../api/pay';
 import SysAccountDetail from '../../passport/sysaccount/detail.vue';
 
 @Component({
@@ -133,7 +145,9 @@ export default class OrderInfoDetail extends Vue {
   orderStatusToName(code: string) {
     return orderStatusName(code);
   }
-
+  ossOrderSourceToName(code: number){
+    return ossOrderSourceName(code);
+  }
   get payExpInfos(): PayExpInfo | null {
     if (this.domainInfo.payExpInfos != null && this.domainInfo.payExpInfos.length > 0) {
       return this.domainInfo.payExpInfos[0];
