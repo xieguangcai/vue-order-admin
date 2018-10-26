@@ -5,13 +5,13 @@
         <el-collapse-item title="酷开用户详情" name="1">
           <table class="cc-order-table" cellpadding="0" cellspacing="0">
             <tr>
-              <td colspan="4" rowspan="5">
-                <img :src="getAvatar" style="width: 100%;height:100%;"/>
+              <td colspan="4" rowspan="5" width="200">
+                <img :src="getAvatar" style="width: 200px;height:200px;"/>
               </td>
-              <td>昵称</td>
-              <td>{{domainInfo.nickName}}</td>
-              <td>用户id</td>
-              <td>{{ domainInfo.accountId }}</td>
+              <td width="10%">昵称</td>
+              <td width="30%">{{domainInfo.nickName}}</td>
+              <td width="10%">用户id</td>
+              <td width="30%">{{ domainInfo.accountId }}</td>
             </tr>
             <tr>
               <td>openId</td>
