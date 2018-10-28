@@ -4,7 +4,6 @@ import {IPageinfo} from '@/types';
 import qs from 'qs';
 import {AxiosPromise} from 'axios';
 import {getAppInfo} from '@/api/account';
-import {AppModule} from "@/store/modules/app";
 import {pickerOptions} from "@/utils/validate";
 
 @Component

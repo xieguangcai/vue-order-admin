@@ -30,16 +30,17 @@ export function getOrderInfo(orderId: number): AxiosPromise<ResponseResult<Order
   });
 }
 
-export function getUserInfoFull(userId: string): AxiosPromise<ResponseResult<UserInfoFull>> {
+export function getOrderInfoByorigiOrderNo(origiOrderNo: string): AxiosPromise<ResponseResult<OrderInfo>> {
   return request({
-    url: '/pay/user-info/detail',
+    url: '/pay/order/detail',
     method: 'get',
-    params: {userId},
+    params: {origiOrderNo},
     paramsSerializer(p: any) {
       return qs.stringify(p, {arrayFormat: 'repeat'});
     },
   });
 }
+
 export function getUserInfoFullByOpenId(openId: string): AxiosPromise<ResponseResult<UserInfoFull>> {
   return request({
     url: '/pay/user-info/detail',

@@ -58,7 +58,7 @@ export default new Router({
         {
           path: 'movies-order-list',
           name: '业务订单列表',
-          component: () => import(/* webpackChunkName: "movies-order-list" */ '@/views/movie-orders/product/index.vue'),
+          component: () => import(/* webpackChunkName: "movies-order-list" */ '@/views/authentication/orders/index.vue'),
           meta: {title: '业务订单列表', icon: 'link'},
 
         },

@@ -98,12 +98,22 @@
         </el-table-column>
       </el-table>
      <search-page-pane @size-change="handleSizeChange"
-                        @current-change="handleCurrentChange"
-                        :size="size"
-                        :total="total"
-                        :page="page"
-                        slot="page">
+                       @current-change="handleCurrentChange"
+                       :size="size"
+                       :page="page"
+                       :total="total"
+                       slot="page">
       </search-page-pane>
+      <!--<el-pagination-->
+        <!--background-->
+        <!--:current-page="page + 1"-->
+        <!--@size-change="handleSizeChange"-->
+        <!--@current-change="handleCurrentChange"-->
+        <!--:page-sizes="[1,50, 100, 200, 300]"-->
+        <!--:page-size="size"-->
+        <!--layout="total, sizes, prev, pager, next, jumper"-->
+        <!--:total="totalElements">-->
+      <!--</el-pagination>-->
       <el-dialog title="oss订单详情" :visible.sync="dialogOrderInfoDetilVisible"  :append-to-body="true" :modal-append-to-body="false" width="80%" @close="editDomainInfo.editDomainId = 0">
         <order-info-detail :domain-id="editDomainInfo.editDomainId"/>
       </el-dialog>
@@ -136,7 +146,7 @@ interface EditDomain {
   filters: {},
   mixins: [BaseList],
 })
-export default class AccountList extends Vue {
+export default class OrderInfoList extends Vue {
   dialogOrderInfoDetilVisible: boolean = false;
   editDomainInfo: EditDomain = {editDomainId: 0};
 
@@ -166,9 +176,11 @@ export default class AccountList extends Vue {
     return getOrderInfoList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<OrderInfo>>>) => {
       const responseData = response.data.data;
       this.data = responseData.content;
-      this.listQuery.page = responseData.number;
-      this.listQuery.size = responseData.size;
-      this.listQuery.total = responseData.totalElements;
+      this.$nextTick(()=>{
+        this.listQuery.page = responseData.number;
+        this.listQuery.size = responseData.size;
+        this.listQuery.total = responseData.totalElements;
+      })
     });
   }
 }

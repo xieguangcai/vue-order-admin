@@ -71,7 +71,7 @@
             <td width="40%">{{orderInfoExtend.activatedId}}</td>
             <td width="10%">用户openId</td>
             <td width="40%">{{orderInfoExtend.openId}}
-              <el-button v-if="orderInfoExtend.openId" type="primary"  @click="viewAccountDetail(orderInfoExtend.openId)">查看用户详情</el-button>
+              <el-button v-if="orderInfoExtend.openId" size="mini" type="primary"  @click="viewAccountDetail(orderInfoExtend.openId)">查看用户详情</el-button>
             </td>
           </tr>
           <tr v-for="item in orderOpenidInfo">
@@ -122,7 +122,13 @@
 <script lang="ts">
 import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
 import {OrderInfo, OrderInfoExtend, OrderOpenidInfo, OrderSerialInfo, PayExpInfo} from '../../../types';
-import {getOrderInfo, orderStatusClass, orderStatusName, ossOrderSourceName} from '../../../api/pay';
+import {
+  getOrderInfo,
+  getOrderInfoByorigiOrderNo,
+  orderStatusClass,
+  orderStatusName,
+  ossOrderSourceName
+} from '../../../api/pay';
 import SysAccountDetail from '../../passport/sysaccount/detail.vue';
 
 @Component({
@@ -136,7 +142,11 @@ export default class OrderInfoDetail extends Vue {
   accountDetailOpenId = '';
 
   @Prop({type: Number, default: 0})
-  domainId: number = 0;
+  domainId: number;
+
+  @Prop({type: String, default: ''})
+  origiOrderNo: string;
+
 
   tableRowClassName(orderStatus: string) {
     return orderStatusClass(orderStatus);
@@ -186,6 +196,18 @@ export default class OrderInfoDetail extends Vue {
       this.domainInfo = {orderId: 0};
     } else {
       getOrderInfo(this.domainId).then((resolve) => {
+        this.domainInfo = resolve.data.data;
+      });
+    }
+  }
+
+  @Watch('origiOrderNo', {immediate: true})
+  handleDomainIdhange(newVal: string | undefined, oldVal: string | undefined) {
+    console.log('变更了记录-' + newVal);
+    if (null == newVal || newVal == '') {
+      this.domainInfo = {orderId: 0};
+    } else {
+      getOrderInfoByorigiOrderNo(this.origiOrderNo).then((resolve) => {
         this.domainInfo = resolve.data.data;
       });
     }

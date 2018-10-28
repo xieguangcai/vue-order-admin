@@ -539,3 +539,187 @@ export interface SysUserMergeInfo {
   modifyTime?: string;
 }
 // --------passport---------------
+
+
+// --------authentication---------
+
+export interface BaseMoviesIqiyiOrderBase {
+  id? : number;
+  orderNo? : string;
+  orderSource? : string;
+  thirdData? : string;
+  payTradeNo? : string;
+  synTradeNo? : string;
+  payCardNo? : string;
+  thirdCardNo? : string;
+  activityId? : string;
+  coocaaOpenId? : string;
+  thirdOpenId? : string;
+  wxVuOpenId? : string;
+  thirdAppid? : string;
+  appcode? : string;
+  sourceId? : number;
+  sourceSign? : string;
+  productId? : number;
+  productType? : string;
+  movieId? : string;
+  movieType? : string;
+  payPrice? : number;
+  buyCount? : number;
+  totalFee? : number;
+  totalDiscountFee? : number;
+  totalPayFee? : number;
+  title? : string;
+  description? : string;
+  mac? : string;
+  tvId? : string;
+  clientType? : string;
+  paymentMode? :string;
+  ip? :string;
+  mobile? :string;
+  createTime? :string;
+  lastUpdateTime? :string;
+  payTime? :string;
+  payFlag? :number;
+  payDesc? :string;
+  synFlag? :number;
+  synTimes? :string;
+  modifyPermissionFlag? :number;
+  beginTime? :string;
+  dueTime? :string;
+  testFlag? :number;
+  serviceStatus? :number;
+  orderType? :string;
+  synWay? :string;
+  synParams? :string;
+  synDatetime? :string;
+  flag? :number;
+  orderProduct?: BaseOrderProducts;
+  baseOrderSource?: BaseOrderSource;
+}
+
+export interface BaseMoviesIqiyiOrder extends BaseMoviesIqiyiOrderBase{
+
+}
+
+export interface BaseMoviesIqiyiOrder2017History extends BaseMoviesIqiyiOrderBase{
+
+}
+
+export interface BaseMoviesIqiyiOrderHistory extends BaseMoviesIqiyiOrderBase{
+
+}
+
+export interface BaseOrderProducts {
+  productId?: number;
+  openType?: number;
+  uniqueCode?: string;
+  erpCode?: string;
+  productType?: string;
+  ticketId?: number;
+  sourceId?: number;
+  sourceSign?: string;
+  productName?: string;
+  productTitle?: string;
+  productLevel?: number;
+  unitFee?: number;
+  discountFee?: number;
+  buyCount?: number;
+  baseDescription?: string;
+  validCount?: number;
+  validUnit?: string;
+  clientSort?: number;
+  isAlert?: number;
+  supportOtherDiscount?: number;
+  orderPrefix?: string;
+  productSynWay?: number;
+  openServiceSetting?: string;
+  openServiceParams?: string;
+  description?: string;
+  showStlye?: number;
+  icon?: string;
+  v1ThumbImage?: string;
+  v2ThumbImage?: string;
+  webThumbImage?: string;
+  openMaParams?: string;
+  openMaStartTime?: string;
+  openMaEndTime?: string;
+  openCardToken?: string;
+  isThreeTerminal?: number;
+  extendedAttribute?: string;
+  totalCount?: string;
+  isUnpaid?: number;
+  userLimitTimes?: string;
+  userLimitBuyNotice?: string;
+  creater?: string;
+  createdDate?: string;
+  modifier?: string;
+  lastUpdateDate?: string;
+  flag?: number;
+  productStatus?: number;
+  productModel?: number;
+  unpayMsgPush?: number;
+}
+
+export interface BaseOrderSource {
+  sourceId?: number;
+  sourceModel?: number;
+  businessType?: number;
+  sourceType?: number;
+  sourceSign?: string;
+  sourceName?: string;
+  recommendBuyPid?: number;
+  keeppayPid?: number;
+  pushType?: number;
+  clientSort?: number;
+  company?: string;
+  cmdAction?: string;
+  cmdActionserver?: string;
+  description?: string;
+  sourceIcon?: string;
+  v1ThumbImage?: string;
+  v1DescImage?: string;
+  v1ChildBgImage?: string;
+  v2ThumbImage?: string;
+  v2DescImage?: string;
+  icon?: string;
+  weixinBgImage?: string;
+  v2BgImage?: string;
+  v2ChildBgImage?: string;
+  v2CmdAction?: string;
+  v2CmdActionParams?: string;
+  webVipcenterBg?: string;
+  buttonTitle?: string;
+  buttonAction?: string;
+  buttonActionParams?: string;
+  validWay?: number;
+  flag?: number;
+  sourceStatus?: number;
+  creater?: number;
+  createdDate?: string;
+  modifier?: number;
+  lastUpdateDate?: string;
+  authenticationSubject?: number;
+  backUrl?: string;
+}
+
+
+export type SearchHistoryModel = '0' | '1' | '2'; //为了能与url地址带查询条件联合在一起，查询条件中需要定义字符类型的查询否则下拉列表中的转换会出错。
+export type SearchFlag = '' | OrderFlag;
+export type OrderFlag = 0 | 1;
+
+export interface BaseMoviesIqiyiOrderBaseListQuery extends IPageinfo {
+  searchHistory: SearchHistoryModel; //0 为查询历史订单
+  orderNo?: string;
+  coocaaOpenId?: string;
+  thirdOpenId?: string;
+  productId?: string;
+  productType?: string;
+  mac?: string;
+  tvId?: string;
+  payFlag?: SearchFlag;
+  synFlag?: SearchFlag;
+  createTimes?: string[];
+  payTimes?: string[];
+}
+// --------authentication---------

@@ -2,7 +2,7 @@
   <div class="search-page-panel">
     <el-pagination
       background
-      :current-page="innerPage"
+      :current-page="innerPage + 1"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :page-sizes="[1,50, 100, 200, 300]"
@@ -14,28 +14,27 @@
 </template>
 
 <script lang="ts">
-import {Component, Emit, Prop, Vue} from 'vue-property-decorator';
+  import {Component, Emit, Model, Prop, Vue, Watch} from 'vue-property-decorator';
 
 @Component({
   name: 'SearchPagePane',
 })
 export default class SearchPagePane extends Vue {
-
-  get innerPage(){
+  get innerPage(): number{
     return this.page + 1;
   }
   get innerSize():number{
     return this.size || 1;
   }
   get innerTotal():number{
-    return this.total;
+    return this.total || 0 ;
   }
   @Prop({ type: Number, default: 0})
-  page: number = 0;
+  page: number;
   @Prop({ type: Number, default: 50})
-  size: number = 50;
+  size: number;
   @Prop({ type: Number, default: 0})
-  total: number = 0;
+  total: number;
 
   @Emit('size-change')
   handleSizeChange(evt: number) {}
