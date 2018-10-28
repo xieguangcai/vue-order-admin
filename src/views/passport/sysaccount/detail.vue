@@ -295,8 +295,8 @@ export default class SysAccountDetail extends Vue {
     };
   }
 
-  @Prop({type: String, default: 0})
-  openId: string = '';
+  @Prop({type: String, default: ''})
+  openId: string;
 
   get getAvatar(): string {
     const user = this.getUser;
