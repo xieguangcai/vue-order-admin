@@ -29,8 +29,9 @@ class User extends VuexModule {
   async Login(userInfo: { username: string, password: string}) {
     const username = userInfo.username.trim();
     const { data } = await login(username, userInfo.password);
-    setToken(data.token);
-    return data.token;
+    const token = data.access_token;
+    setToken(token, data.token_type);
+    return token;
   }
 
   @Action({ commit: 'SET_TOKEN' })
@@ -46,10 +47,14 @@ class User extends VuexModule {
       throw Error('GetInfo: token is undefined!');
     }
     const { data } = await getInfo(token);
-    if (data.roles && data.roles.length > 0) {
+    if (data.authorities && data.authorities.length > 0) {
+      let roles: string[] = [];
+      data.authorities.forEach((i: any)=>{
+        roles.push(i.authority);
+      })
       return {
-        roles: data.roles,
-        name: data.userName,
+        roles: roles,
+        name: data.name,
         avatar: data.avatar,
       };
     } else {

@@ -9,7 +9,7 @@ import {AxiosPromise, AxiosResponse} from 'axios';
  */
 export function getList(params: any): AxiosPromise<ResponseResult<Pageable<AccountInfo>>> {
   return request({
-    url: '/user/list',
+    url: '/api/user/list',
     method: 'get',
     params,
     paramsSerializer(p: any) {
@@ -20,7 +20,7 @@ export function getList(params: any): AxiosPromise<ResponseResult<Pageable<Accou
 
 export function deleteUser(ids: Array<number | undefined>) {
   return request({
-    url : '/user/delete',
+    url : '/api/user/delete',
     method: 'get',
     params: {ids},
     paramsSerializer(p: any) {
@@ -31,14 +31,14 @@ export function deleteUser(ids: Array<number | undefined>) {
 
 export function saveUser(data: AccountInfo) {
   return request({
-    url : '/user/update',
+    url : '/api/user/update',
     method: 'post',
     data,
   });
 }
 export function getAccountInfo(id: number): AxiosPromise<ResponseResult<AccountInfo>> {
   return request({
-    url : '/user/detail',
+    url : '/api/user/detail',
     method: 'post',
     params: {id},
   });
@@ -46,7 +46,7 @@ export function getAccountInfo(id: number): AxiosPromise<ResponseResult<AccountI
 
 export function getAccountRoles(id: number): AxiosPromise<ResponseResult<RoleInfo[]>> {
   return request({
-    url : '/user/roles',
+    url : '/api/user/roles',
     method: 'get',
     params: {id},
   });
@@ -54,7 +54,7 @@ export function getAccountRoles(id: number): AxiosPromise<ResponseResult<RoleInf
 
 export function saveAccountRoles(accountId: number, roleIds: Array<number | undefined>): AxiosPromise<ResponseResult<boolean>> {
   return request({
-    url: '/user/save/roles',
+    url: '/api/user/save/roles',
     method: 'get',
     params : {accountId, roleIds},
     paramsSerializer(p: any) {
@@ -84,7 +84,7 @@ export function newUser(data: AccountInfo) {
  */
 export function getRoleList(params: any) {
   return request({
-    url: '/role/list',
+    url: '/api/role/list',
     method: 'get',
     params,
   });
@@ -92,14 +92,14 @@ export function getRoleList(params: any) {
 
 export function getAllValidRoleList() {
   return request({
-    url: '/role/valid/list',
+    url: '/api/role/valid/list',
     method: 'get',
   });
 }
 
 export function deleteRole(ids: Array<number | undefined>) {
   return request({
-    url : '/role/delete',
+    url : '/api/role/delete',
     method: 'get',
     params: {ids},
     paramsSerializer(p: any) {
@@ -110,7 +110,7 @@ export function deleteRole(ids: Array<number | undefined>) {
 
 export function saveRole(data: RoleInfo) {
   return request({
-    url : '/role/update',
+    url : '/api/role/update',
     method: 'post',
     data,
   });
@@ -118,7 +118,7 @@ export function saveRole(data: RoleInfo) {
 
 export function newRole(data: RoleInfo) {
   return request({
-    url : '/role/new',
+    url : '/api/role/new',
     method: 'post',
     data,
   });
@@ -127,7 +127,7 @@ export function newRole(data: RoleInfo) {
 
 export function getRoleInfo(id: number): AxiosPromise<ResponseResult<RoleInfo>> {
   return request({
-    url : '/role/detail',
+    url : '/api/role/detail',
     method: 'post',
     params: {id},
   });
@@ -141,7 +141,7 @@ export function getRoleInfo(id: number): AxiosPromise<ResponseResult<RoleInfo>> 
  */
 export function getAppList(params: any) {
   return request({
-    url: '/application/list',
+    url: '/api/application/list',
     method: 'get',
     params,
   });
@@ -149,7 +149,7 @@ export function getAppList(params: any) {
 
 export function deleteApp(ids: Array<number | undefined>) {
   return request({
-    url : '/application/delete',
+    url : '/api/application/delete',
     method: 'get',
     params: {ids},
     paramsSerializer(p: any) {
@@ -159,14 +159,14 @@ export function deleteApp(ids: Array<number | undefined>) {
 }
 export function getAppInfo(id: number): AxiosPromise<ResponseResult<ApplicationInfo>> {
   return request({
-    url : '/application/detail',
+    url : '/api/application/detail',
     method: 'post',
     params: {id},
   });
 }
 export function saveApp(data: ApplicationInfo) {
   return request({
-    url : '/application/update',
+    url : '/api/application/update',
     method: 'post',
     data,
   });
@@ -174,7 +174,7 @@ export function saveApp(data: ApplicationInfo) {
 
 export function newApp(data: ApplicationInfo) {
   return request({
-    url : '/application/new',
+    url : '/api/application/new',
     method: 'post',
     data,
   });

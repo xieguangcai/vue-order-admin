@@ -1,8 +1,9 @@
 import request from '@/utils/request-account';
+import {getToken} from "@/utils/auth";
 
 export function login(username: string, password: string) {
   return request({
-    url: '/user/login',
+    url: '/ums/oauth/token',
     method: 'post',
     data: {
       username,
@@ -11,17 +12,19 @@ export function login(username: string, password: string) {
   });
 }
 
-export function getInfo(token: string) {
+export function getInfo(access_token: string) {
   return request({
-    url: '/user/info',
+    url: '/ums/user',
     method: 'get',
-    params: { token },
+    params: { access_token },
   });
 }
 
 export function logout() {
+  const token = getToken();
   return request({
-    url: '/user/logout',
-    method: 'post',
+    url: '/ums/oauth/delete/token',
+    method: 'get',
+    params:{access_token: token}
   });
 }
