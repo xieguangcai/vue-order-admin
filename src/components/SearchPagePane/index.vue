@@ -21,7 +21,7 @@
 })
 export default class SearchPagePane extends Vue {
   get innerPage(): number{
-    return this.page + 1;
+    return this.page;
   }
   get innerSize():number{
     return this.size || 1;

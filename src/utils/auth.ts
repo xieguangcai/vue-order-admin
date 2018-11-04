@@ -4,10 +4,11 @@ const TokenKey = 'Admin-Token';
 const TokenType = 'Admin-Token-Type';
 
 export function getToken() {
-  return Cookies.get(TokenKey);
+  const tokenKey = Cookies.get(TokenKey);
+  return tokenKey;
 }
 export function getFullToken(){
-  const tokenKey =   Cookies.remove(TokenKey);
+  const tokenKey =   Cookies.get(TokenKey);
   if(tokenKey === undefined){
     return tokenKey;
   }

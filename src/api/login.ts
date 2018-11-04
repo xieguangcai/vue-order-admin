@@ -3,9 +3,9 @@ import {getToken} from "@/utils/auth";
 
 export function login(username: string, password: string) {
   return request({
-    url: '/ums/oauth/token',
-    method: 'post',
-    data: {
+    url: '/oauth/token',
+    method: 'get',
+    params: {
       username,
       password,
     },
@@ -14,7 +14,7 @@ export function login(username: string, password: string) {
 
 export function getInfo(access_token: string) {
   return request({
-    url: '/ums/user',
+    url: '/user',
     method: 'get',
     params: { access_token },
   });
@@ -23,7 +23,7 @@ export function getInfo(access_token: string) {
 export function logout() {
   const token = getToken();
   return request({
-    url: '/ums/oauth/delete/token',
+    url: '/oauth/delete/token',
     method: 'get',
     params:{access_token: token}
   });

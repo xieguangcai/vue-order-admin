@@ -5,6 +5,7 @@ import qs from 'qs';
 import {AxiosPromise} from 'axios';
 import {getAppInfo} from '@/api/account';
 import {pickerOptions} from "@/utils/validate";
+import {RawLocation} from "vue-router";
 
 @Component
 export default class BaseList extends Vue {
@@ -63,11 +64,28 @@ export default class BaseList extends Vue {
     this.fetchData();
   }
 
+  generateRoute() {
+    if (this.$route.name) {
+      return this.$route;
+    }
+    return false;
+  }
+
   fetchData() {
     this.listLoading = true;
     this.realFetchData().then(() => {
       const path = this.$route.path;
-      history.pushState(null, '条件查询', path + '?' + qs.stringify(this.listQuery, {arrayFormat: 'repeat'}));
+      // history.pushState(null, '条件查询', path + '?' + qs.stringify(this.listQuery, {arrayFormat: 'repeat'}));
+      let newLocation :RawLocation = {} ;
+      let oldRoute = this.$route;
+      newLocation.path = oldRoute.path;
+      newLocation.query = this.listQuery;
+      newLocation.name = oldRoute.name;
+      newLocation.params = oldRoute.params;
+      newLocation.hash = oldRoute.hash;
+      this.$router.push(newLocation, ()=>{
+        this.$store.dispatch('addVisitedViews', this.$route);
+      });
     }).finally(() => {
       this.listLoading = false;
     });

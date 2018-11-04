@@ -1,6 +1,8 @@
 import {VuexModule, Module, MutationAction, Mutation, Action, getModule} from 'vuex-module-decorators';
 import {Route} from 'vue-router';
 import store from '@/store';
+// @ts-ignore
+import qs from 'qs';
 
 export interface ITagsViewState {
   visitedViews: Route[];
@@ -14,7 +16,17 @@ class TagsView extends VuexModule {
 
   @Mutation
   ADD_VISITED_VIEWS(view: Route) {
-    if (this.visitedViews.some((v) => v.path === view.path)) {
+    let find = false;
+    this.visitedViews.forEach((v)=>{
+      if(v.path === view.path){
+        v.query = view.query;
+        // var query = qs.stringify(v.query, {arrayFormat: 'repeat'});
+        // console.log('存储的值为：' + v.path + '?' + query);
+        find = true;
+      }
+    });
+    // @ts-ignore
+    if(find === true){
       return;
     }
     this.visitedViews.push(

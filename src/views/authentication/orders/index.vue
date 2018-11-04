@@ -62,9 +62,9 @@
         <el-table-column align="left" label="单号信息" width="300" fixed>
           <template slot-scope="scope">
             <div>
-              <span>业务订单号：</span> {{ scope.row.orderNo}}<br >
-              <span>第三方订单号：</span> {{ scope.row.synTradeNo}}<br >
-              <span>机器信息：</span> {{ scope.row.mac}} <template v-if="scope.row.tvId">[{{ scope.row.tvId}} ]</template>
+              <span>业务订单号：&nbsp;</span> {{ scope.row.orderNo}}<br >
+              <span>第三方订单号：&nbsp;</span> {{ scope.row.synTradeNo}}<br >
+              <span>机器信息：&nbsp;</span> {{ scope.row.mac}} <template v-if="scope.row.tvId">[{{ scope.row.tvId}} ]</template>
             </div>
           </template>
         </el-table-column>
@@ -78,12 +78,12 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="left" label="账号信息" width="380">
+        <el-table-column align="left" label="账号信息" width="400">
           <template slot-scope="scope">
             <div>
-              <span>酷开openId：</span> <span>{{scope.row.coocaaOpenId}}</span><br/>
-              <span>第三方OpenId：</span> <span>{{ scope.row.thirdOpenId}}</span><br/>
-              <span>微信vuserid：</span> <span>{{ scope.row.wxVuOpenId}}</span><br/>
+              <span>酷开openId：&nbsp;</span> <span>{{scope.row.coocaaOpenId}}</span><br/>
+              <span>第三方OpenId：&nbsp;</span> <span>{{ scope.row.thirdOpenId}}</span><br/>
+              <span>微信vuserid：&nbsp;</span> <span>{{ scope.row.wxVuOpenId}}</span><br/>
             </div>
           </template>
         </el-table-column>

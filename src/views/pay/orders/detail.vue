@@ -113,7 +113,8 @@
         </div>
       </el-collapse-item>
     </el-collapse>
-    <el-dialog title="用户详情信息" :visible.sync="dialogAccountDetilVisible" :append-to-body="true" :modal-append-to-body="false" width="70%" @close="accountDetailOpenId = ''">
+    <el-dialog title="用户详情信息" :visible.sync="dialogAccountDetilVisible"
+               :append-to-body="true" :modal-append-to-body="false" width="70%" @close="accountDetailOpenId = ''">
       <sys-account-detail :open-id="accountDetailOpenId"/>
     </el-dialog>
   </div>
@@ -191,7 +192,6 @@ export default class OrderInfoDetail extends Vue {
 
   @Watch('domainId', {immediate: true})
   handleDomainIdhange(newVal: number | undefined, oldVal: number | undefined) {
-    console.log('变更了记录-' + newVal);
     if (null == newVal || newVal === 0) {
       this.domainInfo = {orderId: 0};
     } else {
@@ -201,10 +201,9 @@ export default class OrderInfoDetail extends Vue {
     }
   }
 
-  @Watch('origiOrderNo', {immediate: true})
-  handleDomainIdhange(newVal: string | undefined, oldVal: string | undefined) {
-    console.log('变更了记录-' + newVal);
-    if (null == newVal || newVal == '') {
+  @Watch('origiOrderNo')
+  handleOrigiOrderNoChange(newVal: string | undefined, oldVal: string | undefined) {
+    if (null === newVal || undefined === newVal  || newVal == '') {
       this.domainInfo = {orderId: 0};
     } else {
       getOrderInfoByorigiOrderNo(this.origiOrderNo).then((resolve) => {

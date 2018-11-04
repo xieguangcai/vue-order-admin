@@ -6,7 +6,7 @@
         ref="tag"
         :class="isActive(tag)?'active':''"
         :to="tag"
-        :key="tag.path"
+        :key="tag.path + '?' + formatQuery(tag) "
         class="tags-view-item"
         @contextmenu.prevent.native="openMenu(tag,$event)">
         {{tag.title}}
@@ -28,7 +28,8 @@ import ScrollPane from '@/components/ScrollPane/index.vue';
 import {Route} from 'vue-router';
 import {TagsViewModule} from '../../../store/modules/tagsView';
 import {ElBreadcrumbItem} from 'element-ui/types/breadcrumb-item';
-
+// @ts-ignore
+import qs from 'qs';
 
 @Component({
   components: {
@@ -40,6 +41,10 @@ export default class TagsView extends Vue {
   top = 0;
   left = 0;
   selectedTag = {};
+
+  formatQuery(v: Route){
+    return qs.stringify(v.query, {arrayFormat: 'repeat'})
+  }
 
   get visitedViews() {
     return TagsViewModule.visitedViews;

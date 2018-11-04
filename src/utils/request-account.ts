@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Message, MessageBox } from 'element-ui';
-import {authFilter, authHeader} from "@/utils/auth-interceptor";
+import {authFilter, authHeader, authRejectFilter} from "@/utils/auth-interceptor";
 
 // 创建axios实例
 const service = axios.create({
@@ -21,14 +21,7 @@ service.interceptors.request.use(
 // respone 拦截器
 service.interceptors.response.use(
   authFilter,
-  (error) => {
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000,
-    });
-    return Promise.reject(error);
-  },
+  authRejectFilter,
 );
 
 export default service;

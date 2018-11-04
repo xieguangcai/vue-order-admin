@@ -49,7 +49,7 @@ export default class Navbar extends Vue {
 
   logout() {
     UserModule.LogOut().then(() => {
-      location.reload(); // 为了重新实例化vue-router对象 避免bug
+      location.href="/login";//reload(); // 为了重新实例化vue-router对象 避免bug
     });
   }
 }

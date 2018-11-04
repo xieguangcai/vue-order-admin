@@ -12,6 +12,7 @@ Vue.use(Router);
     hidden: true                 if `hidden: true`, this route will not show in the sidebar (default is false)
     alwaysShow: true             if set to true, it will always show the root menu
                                  if not set, only show with nested mode if there are more than one route under its children
+    keepAlive: true              cache the view if need useful for edit from
   }
 */
 
@@ -68,13 +69,13 @@ export default new Router({
       path: '/union-manager',
       component: Layout,
       name: '系统管理',
-      meta: { title: '系统管理', icon: 'nested' },
+      meta: { title: '系统管理', icon: 'nested' ,roles: ['ROLE_ADMIN']},
       children: [
         {
           path: 'account-list',
           name: '系统账户管理',
           component: () => import(/* webpackChunkName: "account-list" */ '@/views/account/index.vue'),
-          meta: {title: '系统账户列表', icon: 'link'},
+          meta: {title: '系统账户列表', icon: 'link',roles: ['ROLE_ADMIN12']},
         },
         {
           path: 'app-list',

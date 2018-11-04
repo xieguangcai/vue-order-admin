@@ -1,7 +1,7 @@
 import router from './router';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
-import { Message } from 'element-ui';
+import {Message, MessageBox} from 'element-ui';
 import { getToken } from '@/utils/auth';
 import { Route } from 'vue-router';
 import { UserModule } from '@/store/modules/user';
@@ -20,8 +20,8 @@ router.beforeEach((to: Route, from: Route, next: any) => {
           next();
         }).catch((err) => {
           UserModule.FedLogOut().then(() => {
-            Message.error(err || 'Verification failed, please login again');
-            next({ path: '/' });
+            Message.error(err || '授权失败，请重新登录');
+            next({ path: '/login' });
           });
         });
       } else {
@@ -32,8 +32,27 @@ router.beforeEach((to: Route, from: Route, next: any) => {
     if (whiteList.indexOf(to.path) !== -1) {
       next();
     } else {
-      next('/login');
-      NProgress.done();
+      if (to.path === '/login' || from.path === '/login') {
+        NProgress.done();
+      }else{
+        if(to.path === '/'){
+          next('/login');
+          NProgress.done();
+        }else{
+          MessageBox.alert(
+            '由于太久没有操作授权已经超时，请重新登录',
+            {
+              confirmButtonText: '重新登录',
+              type: 'error',
+            }
+          ).then(
+            () => {
+              next('/login');
+              NProgress.done();
+            }
+          );
+        }
+      }
     }
   }
 });
