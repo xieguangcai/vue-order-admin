@@ -65,7 +65,7 @@ export function saveAccountRoles(accountId: number, roleIds: Array<number | unde
 
 export function newUser(data: AccountInfo) {
   return request({
-    url : '/user/new',
+    url : '/api/user/new',
     method: 'post',
     data,
   });

@@ -40,7 +40,7 @@ export default class SideBar extends Vue {
 
   rightFilter(routes:RouteConfig[]){
     routes.forEach(r=>{
-      if(r.meta && r.meta.title){
+      if(r.meta && r.meta.title && !r.meta.hidden){
         r.meta.hidden = !this.hasRight(r);
         console.log('检查用户菜单权限：'+ r.meta.title + ", " + !r.meta.hidden);
 

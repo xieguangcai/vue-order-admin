@@ -115,6 +115,8 @@
 <script lang="ts">
 import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
 import SysAccountDetail from '../../passport/sysaccount/detail.vue';
+import OrderInfoDetail from '../../pay/orders/detail.vue';
+
 import {
   clientTypeToName,
   getBaseMoviesIqiyiOrderBaseDetail,
@@ -125,7 +127,7 @@ import {BaseMoviesIqiyiOrderBase, OrderFlag, SearchHistoryModel} from "../../../
 
 @Component({
   name: 'BaseMoviesIqiyiOrderBaseDetail',
-  components: {SysAccountDetail},
+  components: {SysAccountDetail, OrderInfoDetail},
 })
 export default class BaseMoviesIqiyiOrderBaseDetail extends Vue {
   dialogAccountDetilVisible: boolean = false;

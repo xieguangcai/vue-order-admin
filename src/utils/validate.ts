@@ -1,8 +1,9 @@
 import {ElDatePicker} from "element-ui/types/date-picker";
 
 export function isValidUsername(str: string) {
-  const validMap = ['admin', 'editor'];
-  return validMap.indexOf(str.trim()) >= 0;
+  // const validMap = ['admin', 'editor'];
+  // return validMap.indexOf(str.trim()) >= 0;
+  return str.length>3;
 }
 
 export function validateURL(textval: string) {

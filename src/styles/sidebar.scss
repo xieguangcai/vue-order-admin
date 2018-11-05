@@ -1,3 +1,6 @@
+.el-submenu__title{
+  border-bottom: 1px solid $ul-border-right-color;
+}
 #app {
   // 主体区域
   .main-container {
@@ -35,6 +38,7 @@
       display: inline-block;
       width: 100%;
       overflow: hidden;
+      //border-bottom: 1px solid $ul-border-right-color;
     }
     .svg-icon {
       margin-right: 16px;
@@ -119,11 +123,12 @@
   //调整保护色更改
   .sidebar-container .el-menu{
     background: $menuBg;
+    border-right:1px solid $ul-border-right-color;
   }
   .sidebar-container .menu-wrapper{
-    border-bottom: 1px solid $menuLineColor;
+    //border-bottom: 1px solid $ul-border-right-color;
   }
   .sidebar-container .el-menu-item{
-    border-bottom: 1px solid $menuLineColor;
+    border-bottom: 1px solid $ul-border-right-color;
   }
 }

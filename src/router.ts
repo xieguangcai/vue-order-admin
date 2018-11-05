@@ -18,19 +18,21 @@ Vue.use(Router);
 
 export default new Router({
   mode: 'history',
-  scrollBehavior: () => ({ x: 0, y: 0 }),
+  scrollBehavior: () => ({x: 0, y: 0}),
   base: process.env.BASE_URL,
   routes: [
-    { path: '/login', component: () => import(/* webpackChunkName: "login" */ '@/views/login/index.vue') },
-    { path: '/404', component: () => import(/* webpackChunkName: "404" */ '@/views/404.vue') },
+    {path: '/login', component: () => import(/* webpackChunkName: "login" */ '@/views/login/index.vue')},
+    {path: '/404', component: () => import(/* webpackChunkName: "404" */ '@/views/404.vue')},
     {
       path: '/',
       component: Layout,
       redirect: '/dashboard',
       name: '智能客服系统',
-      meta: { hidden: true },
+      meta: {hidden: true, title: '智能客服系统',},
       children: [{
         path: 'dashboard',
+        name: '智能客服系统',
+        meta: {title: '仪表板'},
         component: () => import(/* webpackChunkName: "dashboard" */ '@/views/dashboard/index.vue'),
       }],
     },
@@ -39,8 +41,8 @@ export default new Router({
       component: Layout,
       children: [
         {
-          path: 'https://github.com/Armour/vue-typescript-admin-template',
-          meta: { title: 'ExternalLink', icon: 'link' },
+          path: '/',
+          meta: {title: '酷开智能客服系统', icon: 'coocaa'},
         },
       ],
     },
@@ -48,19 +50,19 @@ export default new Router({
       path: '/orders',
       component: Layout,
       name: '会员信息管理',
-      meta: { title: '会员信息管理', icon: 'nested' },
+      meta: {title: '会员信息管理', icon: 'form'},
       children: [
         {
           path: 'oss-order-list',
           name: 'oss订单列表',
           component: () => import(/* webpackChunkName: "oss-order-list" */ '@/views/pay/orders/index.vue'),
-          meta: {title: 'oss订单列表', icon: 'link'},
+          meta: {title: 'oss订单列表', icon: 'tree'},
         },
         {
           path: 'movies-order-list',
           name: '业务订单列表',
           component: () => import(/* webpackChunkName: "movies-order-list" */ '@/views/authentication/orders/index.vue'),
-          meta: {title: '业务订单列表', icon: 'link'},
+          meta: {title: '业务订单列表', icon: 'table'},
 
         },
       ],
@@ -69,29 +71,42 @@ export default new Router({
       path: '/union-manager',
       component: Layout,
       name: '系统管理',
-      meta: { title: '系统管理', icon: 'nested' ,roles: ['ROLE_ADMIN']},
+      meta: {title: '系统管理', icon: 'nested', roles: ['ROLE_ADMIN']},
       children: [
         {
           path: 'account-list',
           name: '系统账户管理',
           component: () => import(/* webpackChunkName: "account-list" */ '@/views/account/index.vue'),
-          meta: {title: '系统账户列表', icon: 'link',roles: ['ROLE_ADMIN12']},
+          meta: {title: '系统账户列表', icon: 'user'},
         },
         {
           path: 'app-list',
           name: '接入应用管理',
           component: () => import(/* webpackChunkName: "app-list" */ '@/views/app/index.vue'),
-          meta: {title: '接入应用列表', icon: 'link'},
+          meta: {title: '接入应用列表', icon: 'tree'},
         },
         {
           path: 'role-list',
           name: '系统角色管理',
           component: () => import(/* webpackChunkName: "role-list" */ '@/views/role/index.vue'),
-          meta: {title: '角色列表', icon: 'link'},
+          meta: {title: '角色列表', icon: 'role'},
         },
       ],
     },
+    {
+      path: '/me',
+      component: Layout,
+      name: '个人设置',
+      meta: {title: '个人设置', hidden: true}, children: [
+        {
+          path: 'changepwd',
+          name: '修改密码',
+          component: () => import(/* webpackChunkName: "changepwd" */ '@/views/changepwd.vue'),
+          meta: {title: '修改密码', icon: 'user', hidden: true},
+        },
+      ]
+    },
+    {path: '*', redirect: '/404'},
 
-    { path: '*', redirect: '/404' },
   ],
 });

@@ -20,7 +20,6 @@
           <el-option v-for="item in recordeStatus" :label="item.label" :value="item.value" :key="item.value"/>
         </el-select>
       </el-form-item>
-
       <div class="cc-edit-button">
           <el-button type="primary" icon="el-icon-edit" @click="save">保存</el-button>
           <el-button type="info" icon="el-icon-close" @click="cancel">取消</el-button>

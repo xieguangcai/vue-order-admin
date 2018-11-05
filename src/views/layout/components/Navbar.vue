@@ -10,11 +10,16 @@
       <el-dropdown-menu slot="dropdown" class="user-dropdown">
         <router-link class="inlineBlock" to="/">
           <el-dropdown-item>
-            Home
+            首页
+          </el-dropdown-item>
+        </router-link>
+        <router-link class="inlineBlock" to="/me/changepwd">
+          <el-dropdown-item>
+            修改密码
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
-          <span style="display:block;" @click="logout">LogOut</span>
+          <span style="display:block;" @click="logout">退出当前账号</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>

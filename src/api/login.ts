@@ -28,3 +28,11 @@ export function logout() {
     params:{access_token: token}
   });
 }
+
+export function changePwd(oldPwd: string, newPwd: string) {
+  return request({
+    url: '/api/me/changepwd',
+    method: 'post',
+    params: { oldPwd, newPwd},
+  });
+}
