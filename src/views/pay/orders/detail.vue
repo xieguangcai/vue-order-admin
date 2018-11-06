@@ -128,7 +128,7 @@ import {
   getOrderInfoByorigiOrderNo,
   orderStatusClass,
   orderStatusName,
-  ossOrderSourceName
+  ossOrderSourceName,
 } from '../../../api/pay';
 import SysAccountDetail from '../../passport/sysaccount/detail.vue';
 
@@ -143,9 +143,11 @@ export default class OrderInfoDetail extends Vue {
   accountDetailOpenId = '';
 
   @Prop({type: Number, default: 0})
+    // @ts-ignore
   domainId: number;
 
   @Prop({type: String, default: ''})
+    // @ts-ignore
   origiOrderNo: string;
 
 
@@ -156,7 +158,7 @@ export default class OrderInfoDetail extends Vue {
   orderStatusToName(code: string) {
     return orderStatusName(code);
   }
-  ossOrderSourceToName(code: number){
+  ossOrderSourceToName(code: number) {
     return ossOrderSourceName(code);
   }
   get payExpInfos(): PayExpInfo | null {
@@ -203,7 +205,7 @@ export default class OrderInfoDetail extends Vue {
 
   @Watch('origiOrderNo')
   handleOrigiOrderNoChange(newVal: string | undefined, oldVal: string | undefined) {
-    if (null === newVal || undefined === newVal  || newVal == '') {
+    if (null === newVal || undefined === newVal  || newVal === '') {
       this.domainInfo = {orderId: 0};
     } else {
       getOrderInfoByorigiOrderNo(this.origiOrderNo).then((resolve) => {

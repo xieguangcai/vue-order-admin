@@ -42,8 +42,8 @@ export default class TagsView extends Vue {
   left = 0;
   selectedTag = {};
 
-  formatQuery(v: Route){
-    return qs.stringify(v.query, {arrayFormat: 'repeat'})
+  formatQuery(v: Route) {
+    return qs.stringify(v.query, {arrayFormat: 'repeat'});
   }
 
   get visitedViews() {

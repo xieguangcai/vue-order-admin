@@ -121,9 +121,9 @@ import {
   clientTypeToName,
   getBaseMoviesIqiyiOrderBaseDetail,
   orderTypeToName,
-  payFlagClassName
-} from "../../../api/authentication";
-import {BaseMoviesIqiyiOrderBase, OrderFlag, SearchHistoryModel} from "../../../types";
+  payFlagClassName,
+} from '../../../api/authentication';
+import {BaseMoviesIqiyiOrderBase, OrderFlag, SearchHistoryModel} from '../../../types';
 
 @Component({
   name: 'BaseMoviesIqiyiOrderBaseDetail',
@@ -136,15 +136,17 @@ export default class BaseMoviesIqiyiOrderBaseDetail extends Vue {
   accountDetailOpenId = '';
 
   @Prop({type: Number, default: 0})
+    // @ts-ignore
   domainId: number;
   @Prop({type : String, default: '1'})
+    // @ts-ignore
   searchHistoryModel: SearchHistoryModel;
 
-  clientTypeToName(code: number){
+  clientTypeToName(code: number) {
     return clientTypeToName(code);
   }
 
-  orderTypeToName(code: number){
+  orderTypeToName(code: number) {
     return orderTypeToName(code);
   }
   viewAccountDetail(openId: string): void {

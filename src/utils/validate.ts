@@ -1,9 +1,9 @@
-import {ElDatePicker} from "element-ui/types/date-picker";
+import {ElDatePicker} from 'element-ui/types/date-picker';
 
 export function isValidUsername(str: string) {
   // const validMap = ['admin', 'editor'];
   // return validMap.indexOf(str.trim()) >= 0;
-  return str.length>3;
+  return str.length > 3;
 }
 
 export function validateURL(textval: string) {
@@ -27,15 +27,15 @@ export function validatAlphabets(str: string) {
 }
 
 
-export function pickerOptions() : any{
+export function pickerOptions(): any {
   const CALMONTH = 25;
-  let getNowDate = function(){
-    let nowDate = new Date();
+  const getNowDate = () => {
+    const nowDate = new Date();
     nowDate.setHours(0);
     nowDate.setMinutes(0);
     nowDate.setSeconds(0);
     nowDate.setMilliseconds(0);
-    nowDate.setTime(nowDate.getTime()+ 3600*24*1000);
+    nowDate.setTime(nowDate.getTime() + 3600 * 24 * 1000);
     return nowDate;
   };
   return {
@@ -45,12 +45,12 @@ export function pickerOptions() : any{
         const end = getNowDate();
         const start = new Date(end.getTime() - 3600 * 1000 * 24 * 7);
         picker.$emit('pick', [start, end]);
-      }
+      },
     }, {
       text: '上一个周期',
       onClick(picker: ElDatePicker) {
         const end = getNowDate();
-        if(end.getDate() <= CALMONTH){
+        if (end.getDate() <= CALMONTH) {
           end.setMonth(end.getMonth() - 1);
         }
         end.setDate(CALMONTH);
@@ -59,12 +59,12 @@ export function pickerOptions() : any{
         start.setMonth(end.getMonth() - 1);
         end.setDate(end.getDate() + 1);
         picker.$emit('pick', [start, end]);
-      }
+      },
     }, {
       text: '上三个周期',
       onClick(picker: ElDatePicker) {
         const end = getNowDate();
-        if(end.getDate() <= CALMONTH){
+        if (end.getDate() <= CALMONTH) {
           end.setMonth(end.getMonth() - 1);
         }
         end.setDate(CALMONTH);
@@ -72,7 +72,7 @@ export function pickerOptions() : any{
         start.setMonth(end.getMonth() - 3);
         end.setDate(end.getDate() + 1);
         picker.$emit('pick', [start, end]);
-      }
+      },
     }, {
       text: '近一个周期',
       onClick(picker: ElDatePicker) {
@@ -83,7 +83,7 @@ export function pickerOptions() : any{
         start.setMonth(end.getMonth() - 1);
         end.setDate(end.getDate() + 1);
         picker.$emit('pick', [start, end]);
-      }
+      },
     }, {
       text: '近三个周期',
       onClick(picker: ElDatePicker) {
@@ -93,7 +93,7 @@ export function pickerOptions() : any{
         start.setMonth(end.getMonth() - 3);
         end.setDate(end.getDate() + 1);
         picker.$emit('pick', [start, end]);
-      }
-    }]
-  }
+      },
+    }],
+  };
 }

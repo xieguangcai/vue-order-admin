@@ -17,8 +17,8 @@ class TagsView extends VuexModule {
   @Mutation
   ADD_VISITED_VIEWS(view: Route) {
     let find = false;
-    this.visitedViews.forEach((v)=>{
-      if(v.path === view.path){
+    this.visitedViews.forEach((v) => {
+      if (v.path === view.path) {
         v.query = view.query;
         // var query = qs.stringify(v.query, {arrayFormat: 'repeat'});
         // console.log('存储的值为：' + v.path + '?' + query);
@@ -26,7 +26,7 @@ class TagsView extends VuexModule {
       }
     });
     // @ts-ignore
-    if(find === true){
+    if (find === true) {
       return;
     }
     this.visitedViews.push(

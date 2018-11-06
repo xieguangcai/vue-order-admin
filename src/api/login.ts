@@ -1,5 +1,5 @@
 import request from '@/utils/request-account';
-import {getToken} from "@/utils/auth";
+import {getToken} from '@/utils/auth';
 
 export function login(username: string, password: string) {
   return request({
@@ -12,11 +12,11 @@ export function login(username: string, password: string) {
   });
 }
 
-export function getInfo(access_token: string) {
+export function getInfo(accessToken: string) {
   return request({
     url: '/user',
     method: 'get',
-    params: { access_token },
+    params: { access_token: accessToken },
   });
 }
 
@@ -25,7 +25,7 @@ export function logout() {
   return request({
     url: '/oauth/delete/token',
     method: 'get',
-    params:{access_token: token}
+    params: {access_token: token},
   });
 }
 

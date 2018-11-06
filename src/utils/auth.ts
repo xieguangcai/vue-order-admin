@@ -7,9 +7,9 @@ export function getToken() {
   const tokenKey = Cookies.get(TokenKey);
   return tokenKey;
 }
-export function getFullToken(){
+export function getFullToken() {
   const tokenKey =   Cookies.get(TokenKey);
-  if(tokenKey === undefined){
+  if (tokenKey === undefined) {
     return tokenKey;
   }
   const tokenType = Cookies.get(TokenType) || '';
@@ -25,6 +25,6 @@ export function removeToken() {
   return Cookies.remove(TokenKey);
 }
 
-export function getTokenType(){
+export function getTokenType() {
   return Cookies.get(TokenType);
 }

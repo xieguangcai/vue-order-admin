@@ -111,7 +111,7 @@
     <el-dialog title="编辑用户所属角色" :visible.sync="dialogEditUserRoleFormVisible" :close-on-click-modal="false"
                width="600px">
       <edit-user-role @cancel="dialogEditUserRoleFormVisible=false" :account-id="editDomainInfo.editRoleAccountId"
-                    @save-success="()=>{this.dialogEditUserRoleFormVisible=false; this.editDomainInfo.editRoleAccountId = 0;}"/>
+                      @save-success="()=>{this.dialogEditUserRoleFormVisible=false; this.editDomainInfo.editRoleAccountId = 0;}"/>
     </el-dialog>
   </div>
 </template>
@@ -144,7 +144,7 @@ interface EditDomain {
 export default class AccountList extends Vue {
   dialogEditFormVisible: boolean = false;
   dialogEditUserRoleFormVisible: boolean = false;
-  editDomainInfo: EditDomain = { editAccountId: 0, editRoleAccountId: 0};
+  editDomainInfo: EditDomain = {editAccountId: 0, editRoleAccountId: 0};
 
   data: AccountInfo[] = [];
   listQuery: AccountListQuery = {userName: '', nickName: '', page: 0, size: 50, total: 0, createTime: []};
@@ -173,6 +173,7 @@ export default class AccountList extends Vue {
 
   saveThenNew() {
     this.editDomainInfo.editAccountId = 0;
+    // @ts-ignore
     this.fetchData();
   }
 
@@ -181,7 +182,7 @@ export default class AccountList extends Vue {
       return;
     }
 
-    const rowsId: number[] = [];
+    const rowsId: Array<number | undefined> = [];
     row.forEach((item) => rowsId.push(item.accountId));
 
     this.$confirm('确认永久删除该用户信息吗?', '提示', {
@@ -195,6 +196,7 @@ export default class AccountList extends Vue {
         type: 'success',
         message: '删除成功',
       });
+      // @ts-ignore
       this.fetchData();
 
     }).catch(() => {

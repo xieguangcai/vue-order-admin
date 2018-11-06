@@ -150,7 +150,7 @@ import {
   BaseMoviesIqiyiOrderBaseListQuery,
   Pageable,
   ResponseResult,
-  SearchHistoryModel
+  SearchHistoryModel,
 } from '../../../types';
 import ListTablePane from '../../../components/ListTablePane/index.vue';
 import {AxiosResponse} from 'axios';
@@ -195,11 +195,11 @@ export default class BaseMoviesIqiyiOrderList extends Vue {
     return getBaseMoviesIqiyiOrderBaseList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<BaseMoviesIqiyiOrderBase>>>) => {
       const responseData = response.data.data;
       this.data = responseData.content;
-      this.$nextTick(()=>{
+      this.$nextTick(() => {
         this.listQuery.page = responseData.number;
         this.listQuery.size = responseData.size;
         this.listQuery.total = responseData.totalElements;
-      })
+      });
     });
   }
 }

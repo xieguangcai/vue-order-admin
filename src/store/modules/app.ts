@@ -5,7 +5,7 @@ import {ElementUIComponentSize} from 'element-ui/types/component';
 import {getToken, removeToken} from '@/utils/auth';
 import {logout} from '@/api/login';
 import {StatusInfo} from '@/types';
-import {ElDatePicker} from "element-ui/types/date-picker";
+import {ElDatePicker} from 'element-ui/types/date-picker';
 
 export enum DeviceType {
   Mobile,

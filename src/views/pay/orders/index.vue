@@ -176,11 +176,11 @@ export default class OrderInfoList extends Vue {
     return getOrderInfoList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<OrderInfo>>>) => {
       const responseData = response.data.data;
       this.data = responseData.content;
-      this.$nextTick(()=>{
+      this.$nextTick(() => {
         this.listQuery.page = responseData.number;
         this.listQuery.size = responseData.size;
         this.listQuery.total = responseData.totalElements;
-      })
+      });
     });
   }
 }

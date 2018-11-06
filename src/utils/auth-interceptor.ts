@@ -1,24 +1,24 @@
-import {Message, MessageBox} from "element-ui";
-import {UserModule} from "@/store/modules/user";
-import {AxiosRequestConfig, AxiosResponse} from "axios";
-import {getFullToken} from "@/utils/auth";
+import {Message, MessageBox} from 'element-ui';
+import {UserModule} from '@/store/modules/user';
+import {AxiosRequestConfig, AxiosResponse} from 'axios';
+import {getFullToken} from '@/utils/auth';
 
-export function authHeader(config: AxiosRequestConfig) : AxiosRequestConfig {
+export function authHeader(config: AxiosRequestConfig): AxiosRequestConfig {
   // if (UserModule.token) {
   const fullToken = getFullToken();
-  if(fullToken !== undefined){
-    config.headers['Authorization'] = getFullToken(); // 让每个请求携带自定义token 请根据实际情况自行修改
+  if (fullToken !== undefined) {
+    config.headers.Authorization = getFullToken(); // 让每个请求携带自定义token 请根据实际情况自行修改
   }
   return config;
 }
 
-export function authRejectFilter(error: any){
+export function authRejectFilter(error: any) {
   console.error(error);
   const response = error.response;
-  if(response !== undefined){
+  if (response !== undefined) {
     const status = response.status;
-    if(status == 401){
-      if(response.data.error == 'unauthorized'){
+    if (status === 401) {
+      if (response.data.error === 'unauthorized') {
         Message({
           message: '账号密码错误！',
           type: 'error',
@@ -40,8 +40,8 @@ export function authRejectFilter(error: any){
         });
       });
       return Promise.reject('error');
-    }else{
-      let message = response.data.error_description || response.data.message || response.data || '服务器资源访问出错';
+    } else {
+      const message = response.data.error_description || response.data.message || response.data || '服务器资源访问出错';
       Message({
         message: '服务错误：' + message,
         type: 'error',
@@ -58,9 +58,9 @@ export function authRejectFilter(error: any){
   return Promise.reject(error);
 }
 
-export function authFilter(response : AxiosResponse<any>) : AxiosResponse<any> | Promise<AxiosResponse<any>> {
+export function authFilter(response: AxiosResponse<any>): AxiosResponse<any> | Promise<AxiosResponse<any>> {
     const res = response.data;
-    if (typeof res.success != 'undefined' && !res.success) {
+    if (typeof res.success !== 'undefined' && !res.success) {
       Message({
         message: res.message,
         type: 'error',

@@ -130,6 +130,7 @@ export default class ApplicationList extends Vue {
 
   saveThenNew() {
     this.editDomainInfo.editDomainId = 0;
+    // @ts-ignore
     this.fetchData();
   }
 
@@ -137,7 +138,7 @@ export default class ApplicationList extends Vue {
     if (row.length === 0) {
       return;
     }
-    const rowsId: number[] = [];
+    const rowsId: Array<number | undefined> = [];
     row.forEach((item) => rowsId.push(item.appId));
 
     this.$confirm('确认永久删除该系统应用信息吗?', '提示', {
@@ -151,6 +152,7 @@ export default class ApplicationList extends Vue {
         type: 'success',
         message: '删除成功',
       });
+      // @ts-ignore
       this.fetchData();
 
     }).catch(() => {

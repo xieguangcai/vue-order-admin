@@ -16,35 +16,43 @@
 <script lang="ts">
   import {Component, Emit, Model, Prop, Vue, Watch} from 'vue-property-decorator';
 
-@Component({
-  name: 'SearchPagePane',
-})
-export default class SearchPagePane extends Vue {
-  get innerPage(): number{
-    return this.page;
-  }
-  get innerSize():number{
-    return this.size || 1;
-  }
-  get innerTotal():number{
-    return this.total || 0 ;
-  }
-  @Prop({ type: Number, default: 0})
-  page: number;
-  @Prop({ type: Number, default: 50})
-  size: number;
-  @Prop({ type: Number, default: 0})
-  total: number;
+  @Component({
+    name: 'SearchPagePane',
+  })
+  export default class SearchPagePane extends Vue {
+    get innerPage(): number {
+      return this.page;
+    }
 
-  @Emit('size-change')
-  handleSizeChange(evt: number) {}
+    get innerSize(): number {
+      return this.size || 1;
+    }
 
-  handleCurrentChange(evt: number) {
-    this.triggerCurrentChange(evt - 1);
+    get innerTotal(): number {
+      return this.total || 0;
+    }
+
+    @Prop({type: Number, default: 0})
+      // @ts-ignore
+    page: number;
+    @Prop({type: Number, default: 50})
+      // @ts-ignore
+    size: number;
+    @Prop({type: Number, default: 0})
+      // @ts-ignore
+    total: number;
+
+    @Emit('size-change')
+    handleSizeChange(evt: number) {
+    }
+
+    handleCurrentChange(evt: number) {
+      this.triggerCurrentChange(evt - 1);
+    }
+
+    @Emit('current-change')
+    triggerCurrentChange(evt: number) {
+    }
+
   }
-
-  @Emit('current-change')
-  triggerCurrentChange(evt: number) {}
-
-}
 </script>

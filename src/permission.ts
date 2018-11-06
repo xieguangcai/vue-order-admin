@@ -34,22 +34,22 @@ router.beforeEach((to: Route, from: Route, next: any) => {
     } else {
       if (to.path === '/login' || from.path === '/login') {
         NProgress.done();
-      }else{
-        if(to.path === '/'){
+      } else {
+        if (to.path === '/') {
           next('/login');
           NProgress.done();
-        }else{
+        } else {
           MessageBox.alert(
             '由于太久没有操作授权已经超时，请重新登录',
             {
               confirmButtonText: '重新登录',
               type: 'error',
-            }
+            },
           ).then(
             () => {
               next('/login');
               NProgress.done();
-            }
+            },
           );
         }
       }

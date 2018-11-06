@@ -20,15 +20,15 @@
 
 <script lang='ts'>
   import {Component, Vue} from 'vue-property-decorator';
-  import BaseEdit from "../components/BaseEdit";
-  import {Message} from "element-ui";
-  import {ElForm} from "element-ui/types/form";
-  import {changePwd} from "../api/login";
+  import BaseEdit from '../components/BaseEdit';
+  import {Message} from 'element-ui';
+  import {ElForm} from 'element-ui/types/form';
+  import {changePwd} from '../api/login';
 
   export interface UserChangePwd {
-    oldPwd?: string;
-    newPwd?: string;
-    confirmPwd?: string;
+    oldPwd: string;
+    newPwd: string;
+    confirmPwd: string;
   }
 
   @Component({
@@ -36,7 +36,7 @@
     mixins: [BaseEdit],
   })
   export default class ChangePwd extends Vue {
-    domainInfo: UserChangePwd = {};
+    domainInfo: UserChangePwd = {oldPwd: '', newPwd: '', confirmPwd: ''};
 
     rules = {
       oldPwd: [{required: true, message: '请输入旧密码', trigger: 'blur'}, {
@@ -54,13 +54,13 @@
       confirmPwd: [
         {required: true, message: '请输入新密码', trigger: 'blur'},
         {
-          validator: (rule, value, cb) => {
+          validator: (rule: any, value: string, cb: any) => {
             if (this.domainInfo.newPwd !== value) {
-              cb(new Error("两次输入密码不一致"));
+              cb(new Error('两次输入密码不一致'));
             } else {
               cb();
             }
-          }
+          },
         }, {
           min: 6,
           max: 50,

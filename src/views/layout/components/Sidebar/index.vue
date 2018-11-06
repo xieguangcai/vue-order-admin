@@ -15,8 +15,8 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { AppModule } from '@/store/modules/app';
 import SidebarItem from './SidebarItem.vue';
-import {RouteConfig} from "vue-router";
-import {UserModule} from "../../../../store/modules/user";
+import {RouteConfig} from 'vue-router';
+import {UserModule} from '../../../../store/modules/user';
 
 @Component({
   components: {
@@ -28,8 +28,8 @@ export default class SideBar extends Vue {
     return AppModule.sidebar;
   }
 
-  get routes():RouteConfig[] {
-    let x = (this.$router as any).options.routes;
+  get routes(): RouteConfig[] {
+    const x = (this.$router as any).options.routes;
     this.rightFilter(x);
     return x;
   }
@@ -38,25 +38,25 @@ export default class SideBar extends Vue {
     return !this.sidebar.opened;
   }
 
-  rightFilter(routes:RouteConfig[]){
-    routes.forEach(r=>{
-      if(r.meta && r.meta.title && !r.meta.hidden){
+  rightFilter(routes: RouteConfig[]) {
+    routes.forEach((r) => {
+      if (r.meta && r.meta.title && !r.meta.hidden) {
         r.meta.hidden = !this.hasRight(r);
-        console.log('检查用户菜单权限：'+ r.meta.title + ", " + !r.meta.hidden);
+        console.log('检查用户菜单权限：' + r.meta.title + ', ' + !r.meta.hidden);
 
-        if(r.children && r.children.length > 0){
+        if (r.children && r.children.length > 0) {
           this.rightFilter(r.children);
         }
       }
     });
   }
 
-  hasRight(route: RouteConfig){
-    //只需要某个权限才显示出来。
-    if(!route.meta || !route.meta.roles){
+  hasRight(route: RouteConfig) {
+    // 只需要某个权限才显示出来。
+    if (!route.meta || !route.meta.roles) {
       return true;
     }
-    return UserModule.roles.some((r)=> route.meta.roles.some(nr => nr === r));
+    return UserModule.roles.some((r: string ) => route.meta.roles.some((nr: string) => nr === r));
   }
 }
 </script>

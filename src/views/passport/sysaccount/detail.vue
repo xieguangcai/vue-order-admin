@@ -296,6 +296,7 @@ export default class SysAccountDetail extends Vue {
   }
 
   @Prop({type: String, default: ''})
+    // @ts-ignore
   openId: string;
 
   get getAvatar(): string {
@@ -303,7 +304,7 @@ export default class SysAccountDetail extends Vue {
     if (null == user) {
       return '';
     }
-    return user.avatar;
+    return user.avatar || '';
   }
 
   get getUser(): SysUser | null {

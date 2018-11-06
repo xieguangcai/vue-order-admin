@@ -48,12 +48,12 @@ class User extends VuexModule {
     }
     const { data } = await getInfo(token);
     if (data.authorities && data.authorities.length > 0) {
-      let roles: string[] = [];
-      data.authorities.forEach((i: any)=>{
+      const roles: string[] = [];
+      data.authorities.forEach((i: any) => {
         roles.push(i.authority);
-      })
+      });
       return {
-        roles: roles,
+        roles,
         name: data.name,
         avatar: data.avatar,
       };

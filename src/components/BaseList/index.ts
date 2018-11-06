@@ -4,8 +4,8 @@ import {IPageinfo} from '@/types';
 import qs from 'qs';
 import {AxiosPromise} from 'axios';
 import {getAppInfo} from '@/api/account';
-import {pickerOptions} from "@/utils/validate";
-import {RawLocation} from "vue-router";
+import {pickerOptions} from '@/utils/validate';
+import {RawLocation} from 'vue-router';
 
 @Component
 export default class BaseList extends Vue {
@@ -13,17 +13,17 @@ export default class BaseList extends Vue {
 
   listQuery: IPageinfo = {page: 0, size: 50, total: 0};
 
-  get total(): number{
+  get total(): number {
     return this.listQuery.total;
   }
-  get size(): number{
+  get size(): number {
     return this.listQuery.size;
   }
-  get page(): number{
+  get page(): number {
     return this.listQuery.page;
   }
 
-  get pickerOptions(): any{
+  get pickerOptions(): any {
     return pickerOptions();
   }
   created() {
@@ -76,14 +76,14 @@ export default class BaseList extends Vue {
     this.realFetchData().then(() => {
       const path = this.$route.path;
       // history.pushState(null, '条件查询', path + '?' + qs.stringify(this.listQuery, {arrayFormat: 'repeat'}));
-      let newLocation :RawLocation = {} ;
-      let oldRoute = this.$route;
+      const newLocation: RawLocation = {} ;
+      const oldRoute = this.$route;
       newLocation.path = oldRoute.path;
       newLocation.query = this.listQuery;
       newLocation.name = oldRoute.name;
       newLocation.params = oldRoute.params;
       newLocation.hash = oldRoute.hash;
-      this.$router.push(newLocation, ()=>{
+      this.$router.push(newLocation, () => {
         this.$store.dispatch('addVisitedViews', this.$route);
       });
     }).finally(() => {

@@ -28,7 +28,7 @@ export default new Router({
       component: Layout,
       redirect: '/dashboard',
       name: '智能客服系统',
-      meta: {hidden: true, title: '智能客服系统',},
+      meta: {hidden: true, title: '智能客服系统'},
       children: [{
         path: 'dashboard',
         name: '智能客服系统',
@@ -104,7 +104,7 @@ export default new Router({
           component: () => import(/* webpackChunkName: "changepwd" */ '@/views/changepwd.vue'),
           meta: {title: '修改密码', icon: 'user', hidden: true},
         },
-      ]
+      ],
     },
     {path: '*', redirect: '/404'},
 

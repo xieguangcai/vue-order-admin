@@ -544,71 +544,71 @@ export interface SysUserMergeInfo {
 // --------authentication---------
 
 export interface BaseMoviesIqiyiOrderBase {
-  id? : number;
-  orderNo? : string;
-  orderSource? : string;
-  thirdData? : string;
-  payTradeNo? : string;
-  synTradeNo? : string;
-  payCardNo? : string;
-  thirdCardNo? : string;
-  activityId? : string;
-  coocaaOpenId? : string;
-  thirdOpenId? : string;
-  wxVuOpenId? : string;
-  thirdAppid? : string;
-  appcode? : string;
-  sourceId? : number;
-  sourceSign? : string;
-  productId? : number;
-  productType? : string;
-  movieId? : string;
-  movieType? : string;
-  payPrice? : number;
-  buyCount? : number;
-  totalFee? : number;
-  totalDiscountFee? : number;
-  totalPayFee? : number;
-  title? : string;
-  description? : string;
-  mac? : string;
-  tvId? : string;
-  clientType? : string;
-  paymentMode? :string;
-  ip? :string;
-  mobile? :string;
-  createTime? :string;
-  lastUpdateTime? :string;
-  payTime? :string;
-  payFlag? :number;
-  payDesc? :string;
-  synFlag? :number;
-  synTimes? :string;
-  modifyPermissionFlag? :number;
-  beginTime? :string;
-  dueTime? :string;
-  testFlag? :number;
-  serviceStatus? :number;
-  orderType? :string;
-  synWay? :string;
-  synParams? :string;
-  synDatetime? :string;
-  flag? :number;
+  id?: number;
+  orderNo?: string;
+  orderSource?: string;
+  thirdData?: string;
+  payTradeNo?: string;
+  synTradeNo?: string;
+  payCardNo?: string;
+  thirdCardNo?: string;
+  activityId?: string;
+  coocaaOpenId?: string;
+  thirdOpenId?: string;
+  wxVuOpenId?: string;
+  thirdAppid?: string;
+  appcode?: string;
+  sourceId?: number;
+  sourceSign?: string;
+  productId?: number;
+  productType?: string;
+  movieId?: string;
+  movieType?: string;
+  payPrice?: number;
+  buyCount?: number;
+  totalFee?: number;
+  totalDiscountFee?: number;
+  totalPayFee?: number;
+  title?: string;
+  description?: string;
+  mac?: string;
+  tvId?: string;
+  clientType?: string;
+  paymentMode?: string;
+  ip?: string;
+  mobile?: string;
+  createTime?: string;
+  lastUpdateTime?: string;
+  payTime?: string;
+  payFlag?: number;
+  payDesc?: string;
+  synFlag?: number;
+  synTimes?: string;
+  modifyPermissionFlag?: number;
+  beginTime?: string;
+  dueTime?: string;
+  testFlag?: number;
+  serviceStatus?: number;
+  orderType?: string;
+  synWay?: string;
+  synParams?: string;
+  synDatetime?: string;
+  flag?: number;
   orderProduct?: BaseOrderProducts;
   baseOrderSource?: BaseOrderSource;
 }
 
-export interface BaseMoviesIqiyiOrder extends BaseMoviesIqiyiOrderBase{
-
-}
-
-export interface BaseMoviesIqiyiOrder2017History extends BaseMoviesIqiyiOrderBase{
-
-}
-
-export interface BaseMoviesIqiyiOrderHistory extends BaseMoviesIqiyiOrderBase{
-
-}
+// export interface BaseMoviesIqiyiOrder extends BaseMoviesIqiyiOrderBase {
+//
+// }
+//
+// export interface BaseMoviesIqiyiOrder2017History extends BaseMoviesIqiyiOrderBase {
+//
+// }
+//
+// export interface BaseMoviesIqiyiOrderHistory extends BaseMoviesIqiyiOrderBase {
+//
+// }
 
 export interface BaseOrderProducts {
   productId?: number;
@@ -704,12 +704,12 @@ export interface BaseOrderSource {
 }
 
 
-export type SearchHistoryModel = '0' | '1' | '2'; //为了能与url地址带查询条件联合在一起，查询条件中需要定义字符类型的查询否则下拉列表中的转换会出错。
+export type SearchHistoryModel = '0' | '1' | '2'; // 为了能与url地址带查询条件联合在一起，查询条件中需要定义字符类型的查询否则下拉列表中的转换会出错。
 export type SearchFlag = '' | OrderFlag;
 export type OrderFlag = 0 | 1;
 
 export interface BaseMoviesIqiyiOrderBaseListQuery extends IPageinfo {
-  searchHistory: SearchHistoryModel; //0 为查询历史订单
+  searchHistory: SearchHistoryModel; // 0 为查询历史订单
   orderNo?: string;
   coocaaOpenId?: string;
   thirdOpenId?: string;

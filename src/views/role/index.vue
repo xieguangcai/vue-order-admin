@@ -125,6 +125,7 @@ export default class RoleList extends Vue {
 
   saveThenNew() {
     this.editDomainInfo.editDomainId = 0;
+    // @ts-ignore
     this.fetchData();
   }
 
@@ -147,6 +148,7 @@ export default class RoleList extends Vue {
         type: 'success',
         message: '删除成功',
       });
+      // @ts-ignore
       this.fetchData();
 
     }).catch(() => {

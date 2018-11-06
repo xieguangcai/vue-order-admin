@@ -4,12 +4,12 @@ import {
   BaseMoviesIqiyiOrderBaseListQuery, OrderFlag,
   Pageable,
   ResponseResult, SearchHistoryModel,
-  UserInfoFull
+  UserInfoFull,
 } from '@/types';
 // @ts-ignore
 import qs from 'qs';
 import {AxiosPromise, AxiosResponse} from 'axios';
-import {AppModule} from "@/store/modules/app";
+import {AppModule} from '@/store/modules/app';
 
 
 /**
