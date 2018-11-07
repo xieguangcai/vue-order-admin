@@ -168,7 +168,7 @@
         </el-collapse-item>
       </el-collapse>
     </el-tab-pane>
-    <el-tab-pane label="账号支付相关信息">
+    <el-tab-pane label="账号支付相关信息" v-if="loadOssUserInfo">
       <el-collapse v-model="payUserActiveNames">
         <el-collapse-item :title="'免密签约协议' + (payUserInfo.noPassportSigns.length > 0 ?'' : '（无记录）')" name="1">
           <table class="cc-order-table" cellpadding="0" cellspacing="0" v-if="payUserInfo.noPassportSigns.length > 0">
@@ -258,6 +258,7 @@
 <script lang="ts">
 import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
 import {
+  ResponseResult,
   SysAccount, SysUser,
   UserInfoFull,
 } from '../../../types/index';
@@ -272,6 +273,7 @@ import {handlerCommonError} from "../../../utils/auth-interceptor";
 export default class SysAccountDetail extends Vue {
   activeNames: string[] = ['1'];
   payUserActiveNames: string[] = ['1'];
+  loadOssUserInfo: boolean = false;
 
   domainInfo: SysAccount = {
     accountId: 0,
@@ -317,6 +319,7 @@ export default class SysAccountDetail extends Vue {
 
   @Watch('openId', {immediate: true})
   handleOpenIdhange(newVal: string | undefined, oldVal: string | undefined) {
+    this.loadOssUserInfo = false;
     console.log('变更了记录-' + newVal);
     if (null == newVal || newVal === '') {
       this.domainInfo = {
@@ -336,7 +339,10 @@ export default class SysAccountDetail extends Vue {
       }).catch(handlerCommonError);
       getUserInfoFullByOpenId(this.openId).then((resolve) => {
         this.payUserInfo = resolve.data.data;
-      }).catch(handlerCommonError);
+        this.loadOssUserInfo = true;
+      }).catch((error:ResponseResult<any>)=>{
+        this.loadOssUserInfo = false;
+      });
     }
   }
 
