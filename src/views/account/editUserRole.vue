@@ -21,6 +21,7 @@ import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
 import {RoleInfo} from '../../types/index';
 import {RoleModule} from '@/store/modules/role';
 import {getAccountRoles, saveAccountRoles} from '../../api/account';
+import {handlerCommonError} from "../../utils/auth-interceptor";
 
 let groupPrevAppId: number = 0;
 
@@ -54,7 +55,7 @@ export default class EditUserRole extends Vue {
 
   async save() {
     if (this.accountId != null) {
-      await saveAccountRoles(this.accountId, this.userRoles);
+      await saveAccountRoles(this.accountId, this.userRoles).catch(handlerCommonError);
       this.$message.success('用户角色修改成功');
 
       this.$emit('save-success');
@@ -89,7 +90,7 @@ export default class EditUserRole extends Vue {
             this.userRoles.push(role.roleId);
           }
         }
-      });
+      }).catch(handlerCommonError);
     }
   }
 }

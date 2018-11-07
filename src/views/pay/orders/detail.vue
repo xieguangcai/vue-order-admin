@@ -122,7 +122,7 @@
 
 <script lang="ts">
 import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
-import {OrderInfo, OrderInfoExtend, OrderOpenidInfo, OrderSerialInfo, PayExpInfo} from '../../../types';
+import {OrderInfo, OrderInfoExtend, OrderOpenidInfo, OrderSerialInfo, PayExpInfo, ResponseResult} from '../../../types';
 import {
   getOrderInfo,
   getOrderInfoByorigiOrderNo,
@@ -199,8 +199,20 @@ export default class OrderInfoDetail extends Vue {
     } else {
       getOrderInfo(this.domainId).then((resolve) => {
         this.domainInfo = resolve.data.data;
+        this.loadEntitySucess(this.domainInfo);
+      }).catch((error: ResponseResult)=>{
+        this.noSuchEntity();
       });
     }
+  }
+  @Emit('no-such-entity')
+  noSuchEntity(){
+
+  }
+
+  @Emit("load-entity-success")
+  loadEntitySucess(orderInfo: OrderInfo){
+
   }
 
   @Watch('origiOrderNo')
@@ -210,6 +222,9 @@ export default class OrderInfoDetail extends Vue {
     } else {
       getOrderInfoByorigiOrderNo(this.origiOrderNo).then((resolve) => {
         this.domainInfo = resolve.data.data;
+        this.loadEntitySucess(this.domainInfo);
+      }).catch((error: ResponseResult)=>{
+        this.noSuchEntity();
       });
     }
   }

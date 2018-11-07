@@ -102,8 +102,10 @@
           </el-collapse-item>
         </el-collapse>
       </el-tab-pane>
-      <el-tab-pane label=OSS支付订单信息>
-        <order-info-detail :origi-order-no="domainInfo.orderNo"/>
+      <el-tab-pane label="OSS支付订单信息" v-if="loadOssDomain">
+        <order-info-detail :origi-order-no="domainInfo.orderNo"
+                           @no-such-entity="loadOssDomain = false"
+                           @load-entity-success="loadOssDomain = true"/>
       </el-tab-pane>
     </el-tabs>
     <el-dialog title="用户详情信息" :visible.sync="dialogAccountDetilVisible" :append-to-body="true" :modal-append-to-body="false" width="70%" @close="accountDetailOpenId = ''">
@@ -134,6 +136,7 @@ export default class BaseMoviesIqiyiOrderBaseDetail extends Vue {
   activeNames: string[] = ['1'];
   domainInfo: BaseMoviesIqiyiOrderBase = {id: 0};
   accountDetailOpenId = '';
+  loadOssDomain: boolean = true;
 
   @Prop({type: Number, default: 0})
     // @ts-ignore
@@ -162,6 +165,7 @@ export default class BaseMoviesIqiyiOrderBaseDetail extends Vue {
 
   @Watch('domainId', {immediate: true})
   handleDomainIdhange(newVal: number | undefined, oldVal: number | undefined) {
+    this.loadOssDomain = true;
     console.log('变更了记录-' + newVal);
     if (null == newVal || newVal === 0) {
       this.domainInfo = {id: 0};

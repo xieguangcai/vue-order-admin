@@ -34,6 +34,7 @@ import {getAppInfo, newApp, newUser, saveApp} from '../../api/account';
 import EditFormPane from '../../components/EditFormPane/index.vue';
 import BaseEdit from '../../components/BaseEdit';
 import {AxiosPromise} from 'axios';
+import {handlerCommonError} from "../../utils/auth-interceptor";
 
 @Component({
   name: 'ApplicationEdit',
@@ -78,7 +79,7 @@ export default class ApplicationEdit extends Vue {
     } else {
       getAppInfo(this.domainId).then((resolve) => {
         this.domainInfo = resolve.data.data;
-      });
+      }).catch(handlerCommonError);
     }
   }
 
@@ -102,9 +103,9 @@ export default class ApplicationEdit extends Vue {
 
   saveFormData(): AxiosPromise {
     if (this.domainInfo.appId != null && this.domainInfo.appId !== 0) {
-      return saveApp(this.domainInfo);
+      return saveApp(this.domainInfo).catch(handlerCommonError);
     } else {
-      return newApp(this.domainInfo);
+      return newApp(this.domainInfo).catch(handlerCommonError);
     }
   }
 }

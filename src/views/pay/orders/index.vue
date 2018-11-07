@@ -136,6 +136,8 @@ import OrderInfoDetail from './detail.vue';
 // @ts-ignore
 import qs from 'qs';
 import BaseList from '../../../components/BaseList';
+import {Message} from "element-ui";
+import {handlerCommonError} from "../../../utils/auth-interceptor";
 
 interface EditDomain {
   editDomainId: number | undefined;
@@ -176,12 +178,10 @@ export default class OrderInfoList extends Vue {
     return getOrderInfoList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<OrderInfo>>>) => {
       const responseData = response.data.data;
       this.data = responseData.content;
-      this.$nextTick(() => {
-        this.listQuery.page = responseData.number;
-        this.listQuery.size = responseData.size;
-        this.listQuery.total = responseData.totalElements;
-      });
-    });
+      this.listQuery.page = responseData.number;
+      this.listQuery.size = responseData.size;
+      this.listQuery.total = responseData.totalElements;
+    }).catch(handlerCommonError);
   }
 }
 </script>

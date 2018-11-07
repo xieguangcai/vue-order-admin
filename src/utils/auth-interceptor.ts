@@ -2,6 +2,7 @@ import {Message, MessageBox} from 'element-ui';
 import {UserModule} from '@/store/modules/user';
 import {AxiosRequestConfig, AxiosResponse} from 'axios';
 import {getFullToken} from '@/utils/auth';
+import {ResponseResult} from "@/types";
 
 export function authHeader(config: AxiosRequestConfig): AxiosRequestConfig {
   // if (UserModule.token) {
@@ -13,7 +14,6 @@ export function authHeader(config: AxiosRequestConfig): AxiosRequestConfig {
 }
 
 export function authRejectFilter(error: any) {
-  console.error(error);
   const response = error.response;
   if (response !== undefined) {
     const status = response.status;
@@ -58,16 +58,17 @@ export function authRejectFilter(error: any) {
   return Promise.reject(error);
 }
 
+export function handlerCommonError(error: ResponseResult<any>): void{
+  Message({
+    message: '错误：' + error.message,
+    type: 'error',
+    duration: 5 * 1000,
+  });
+}
 export function authFilter(response: AxiosResponse<any>): AxiosResponse<any> | Promise<AxiosResponse<any>> {
     const res = response.data;
     if (typeof res.success !== 'undefined' && !res.success) {
-      Message({
-        message: res.message,
-        type: 'error',
-        duration: 5 * 1000,
-      });
-      return Promise.reject('error');
-
+      return Promise.reject(res);
     } else {
       return response;
     }

@@ -263,6 +263,7 @@ import {
 } from '../../../types/index';
 import {getSysAccountInfoDetail} from '../../../api/passport';
 import {getUserInfoFullByOpenId} from '../../../api/pay';
+import {handlerCommonError} from "../../../utils/auth-interceptor";
 
 @Component({
   name: 'SysAccountDetail',
@@ -332,10 +333,10 @@ export default class SysAccountDetail extends Vue {
     } else {
       getSysAccountInfoDetail(this.openId).then((resolve) => {
         this.domainInfo = resolve.data.data;
-      });
+      }).catch(handlerCommonError);
       getUserInfoFullByOpenId(this.openId).then((resolve) => {
         this.payUserInfo = resolve.data.data;
-      });
+      }).catch(handlerCommonError);
     }
   }
 

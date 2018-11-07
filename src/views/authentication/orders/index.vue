@@ -158,6 +158,7 @@ import {getBaseMoviesIqiyiOrderBaseList} from '../../../api/authentication';
 import BaseMoviesIqiyiOrderBaseDetail from './detail.vue';
 import BaseList from '../../../components/BaseList';
 import OrderInfoDetail from '../../pay/orders/detail.vue';
+import {handlerCommonError} from "../../../utils/auth-interceptor";
 
 interface EditDomain {
   editDomainId: number | undefined;
@@ -195,12 +196,10 @@ export default class BaseMoviesIqiyiOrderList extends Vue {
     return getBaseMoviesIqiyiOrderBaseList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<BaseMoviesIqiyiOrderBase>>>) => {
       const responseData = response.data.data;
       this.data = responseData.content;
-      this.$nextTick(() => {
-        this.listQuery.page = responseData.number;
-        this.listQuery.size = responseData.size;
-        this.listQuery.total = responseData.totalElements;
-      });
-    });
+      this.listQuery.page = responseData.number;
+      this.listQuery.size = responseData.size;
+      this.listQuery.total = responseData.totalElements;
+    }).catch(handlerCommonError);
   }
 }
 </script>

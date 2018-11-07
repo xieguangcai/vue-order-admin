@@ -99,6 +99,7 @@ import {ApplicationInfo, ApplicationListQuery, Pageable, ResponseResult} from '.
 import {getAppList} from '../../api/account';
 import BaseList from '../../components/BaseList';
 import BaseTableDelete from '../../components/BaseTableDelete';
+import {handlerCommonError} from "../../utils/auth-interceptor";
 
 
 interface EditDomain {
@@ -166,7 +167,7 @@ export default class ApplicationList extends Vue {
       this.listQuery.page = responseData.number;
       this.listQuery.size = responseData.size;
       this.listQuery.total = responseData.totalElements;
-    });
+    }).catch(handlerCommonError);
   }
 
 }

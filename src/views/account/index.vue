@@ -130,6 +130,7 @@ import {AxiosResponse} from 'axios';
 import {UserModule} from '../../store/modules/user';
 import BaseTableDelete from '../../components/BaseTableDelete';
 import BaseList from '../../components/BaseList';
+import {handlerCommonError} from "../../utils/auth-interceptor";
 
 interface EditDomain {
   editRoleAccountId: number | undefined;
@@ -214,7 +215,7 @@ export default class AccountList extends Vue {
       this.listQuery.page = responseData.number;
       this.listQuery.size = responseData.size;
       this.listQuery.total = responseData.totalElements;
-    });
+    }).catch(handlerCommonError);
   }
 }
 </script>
