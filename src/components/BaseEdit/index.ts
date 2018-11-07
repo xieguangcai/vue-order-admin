@@ -49,5 +49,5 @@ export default class BaseEdit extends Vue {
     });
   }
 
-  saveFormData(): AxiosPromise  | any {  }
+  saveFormData(): Promise<any>  | any {  }
 }

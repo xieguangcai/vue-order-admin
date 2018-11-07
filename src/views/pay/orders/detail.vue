@@ -200,18 +200,18 @@ export default class OrderInfoDetail extends Vue {
       getOrderInfo(this.domainId).then((resolve) => {
         this.domainInfo = resolve.data.data;
         this.loadEntitySucess(this.domainInfo);
-      }).catch((error: ResponseResult)=>{
+      }).catch((error: ResponseResult<any>) => {
         this.noSuchEntity();
       });
     }
   }
   @Emit('no-such-entity')
-  noSuchEntity(){
+  noSuchEntity() {
 
   }
 
-  @Emit("load-entity-success")
-  loadEntitySucess(orderInfo: OrderInfo){
+  @Emit('load-entity-success')
+  loadEntitySucess(orderInfo: OrderInfo) {
 
   }
 
@@ -223,7 +223,7 @@ export default class OrderInfoDetail extends Vue {
       getOrderInfoByorigiOrderNo(this.origiOrderNo).then((resolve) => {
         this.domainInfo = resolve.data.data;
         this.loadEntitySucess(this.domainInfo);
-      }).catch((error: ResponseResult)=>{
+      }).catch((error: ResponseResult<any>) => {
         this.noSuchEntity();
       });
     }

@@ -33,7 +33,7 @@ import {getAppList, getRoleInfo, newRole, saveRole} from '../../api/account';
 import EditFormPane from '../../components/EditFormPane/index.vue';
 import BaseEdit from '../../components/BaseEdit';
 import {AxiosPromise, AxiosResponse} from 'axios';
-import {handlerCommonError} from "../../utils/auth-interceptor";
+import {handlerCommonError} from '../../utils/auth-interceptor';
 
 @Component({
   name: 'RoleEdit',
@@ -100,7 +100,7 @@ export default class RoleEdit extends Vue {
   domainIdChange(newVal: number | undefined, oldVal: number | undefined): void {
   }
 
-  saveFormData(): AxiosPromise {
+  saveFormData(): Promise<any> {
     if (this.domainInfo.roleId !== 0) {
       return saveRole(this.domainInfo).catch(handlerCommonError);
     } else {

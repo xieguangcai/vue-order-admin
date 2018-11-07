@@ -99,7 +99,7 @@ import {ApplicationInfo, ApplicationListQuery, Pageable, ResponseResult} from '.
 import {getAppList} from '../../api/account';
 import BaseList from '../../components/BaseList';
 import BaseTableDelete from '../../components/BaseTableDelete';
-import {handlerCommonError} from "../../utils/auth-interceptor";
+import {handlerCommonError} from '../../utils/auth-interceptor';
 
 
 interface EditDomain {

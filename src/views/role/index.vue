@@ -95,7 +95,7 @@ import {Pageable, ResponseResult, RoleInfo, RoleListQuery} from '../../types';
 import {deleteRole, getRoleList} from '../../api/account';
 import BaseList from '../../components/BaseList';
 import BaseTableDelete from '../../components/BaseTableDelete';
-import {handlerCommonError} from "../../utils/auth-interceptor";
+import {handlerCommonError} from '../../utils/auth-interceptor';
 
 interface EditDomain {
   editDomainId: number | undefined;

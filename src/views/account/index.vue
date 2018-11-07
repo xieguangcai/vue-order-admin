@@ -130,7 +130,7 @@ import {AxiosResponse} from 'axios';
 import {UserModule} from '../../store/modules/user';
 import BaseTableDelete from '../../components/BaseTableDelete';
 import BaseList from '../../components/BaseList';
-import {handlerCommonError} from "../../utils/auth-interceptor";
+import {handlerCommonError} from '../../utils/auth-interceptor';
 
 interface EditDomain {
   editRoleAccountId: number | undefined;

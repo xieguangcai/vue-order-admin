@@ -48,7 +48,7 @@
               <th>第三方openId</th>
               <th>绑定时间</th>
             </tr>
-            <template  v-for="item in domainInfo.bindExternals">
+            <template v-for="item in domainInfo.bindExternals">
               <tr v-if="item.externalFlag !== 'weixin' ">
                 <td>
                   <img :src="item.externalAvatar"/>
@@ -195,7 +195,8 @@
               </tr>
               <tr>
                 <td colspan="5">
-                  <table class="cc-order-table" cellpadding="0" cellspacing="0" v-if="item.noPassportSignAuths.length > 0">
+                  <table class="cc-order-table" cellpadding="0" cellspacing="0"
+                         v-if="item.noPassportSignAuths.length > 0">
                     <caption>免密签约授权设备</caption>
                     <tr>
                       <th>授权设备</th>
@@ -219,7 +220,9 @@
             无免密签约协议
           </div>
         </el-collapse-item>
-        <el-collapse-item  :title="'生效中的自动续费产品' + (payUserInfo.protocols.length > 0 ? '共' + payUserInfo.protocols.length + '个' : '（无记录）')" name="3">
+        <el-collapse-item
+          :title="'生效中的自动续费产品' + (payUserInfo.protocols.length > 0 ? '共' + payUserInfo.protocols.length + '个' : '（无记录）')"
+          name="3">
           <table class="cc-order-table" cellpadding="0" cellspacing="0" v-if="payUserInfo.protocols.length > 0">
             <tr>
               <th>序号</th>
@@ -230,7 +233,7 @@
               <th>签约时间</th>
               <th>最后修改时间</th>
             </tr>
-            <template  v-for="(item, index) in payUserInfo.protocols">
+            <template v-for="(item, index) in payUserInfo.protocols">
               <tr>
                 <td rowspan="2">{{index + 1}}</td>
                 <td>{{ item.appCode }}</td>
@@ -256,114 +259,116 @@
 </template>
 
 <script lang="ts">
-import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
-import {
-  ResponseResult,
-  SysAccount, SysUser,
-  UserInfoFull,
-} from '../../../types/index';
-import {getSysAccountInfoDetail} from '../../../api/passport';
-import {getUserInfoFullByOpenId} from '../../../api/pay';
-import {handlerCommonError} from "../../../utils/auth-interceptor";
+  import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
+  import {
+    ResponseResult,
+    SysAccount, SysUser,
+    UserInfoFull,
+  } from '../../../types/index';
+  import {getSysAccountInfoDetail} from '../../../api/passport';
+  import {getUserInfoFullByOpenId} from '../../../api/pay';
+  import {handlerCommonError} from '../../../utils/auth-interceptor';
 
-@Component({
-  name: 'SysAccountDetail',
-  components: {},
-})
-export default class SysAccountDetail extends Vue {
-  activeNames: string[] = ['1'];
-  payUserActiveNames: string[] = ['1'];
-  loadOssUserInfo: boolean = false;
+  @Component({
+    name: 'SysAccountDetail',
+    components: {},
+  })
+  export default class SysAccountDetail extends Vue {
+    activeNames: string[] = ['1'];
+    payUserActiveNames: string[] = ['1'];
+    loadOssUserInfo: boolean = false;
 
-  domainInfo: SysAccount = {
-    accountId: 0,
-    bindDevices: [],
-    bindExternals: [],
-    eduVips: [],
-    bindLogs: [],
-    user: [],
-    fromMergeInfos: [],
-    toMergeInfos: [],
-  };
+    domainInfo: SysAccount = {
+      accountId: 0,
+      bindDevices: [],
+      bindExternals: [],
+      eduVips: [],
+      bindLogs: [],
+      user: [],
+      fromMergeInfos: [],
+      toMergeInfos: [],
+    };
 
-  payUserInfo: UserInfoFull = {userId: 0,
-    protocols: [],
-    noPassportSigns: [],
-  };
-
-  get defPayUserInfo(): UserInfoFull {
-    return {userId: 0,
+    payUserInfo: UserInfoFull = {
+      userId: 0,
       protocols: [],
       noPassportSigns: [],
     };
-  }
 
-  @Prop({type: String, default: ''})
-    // @ts-ignore
-  openId: string;
-
-  get getAvatar(): string {
-    const user = this.getUser;
-    if (null == user) {
-      return '';
-    }
-    return user.avatar || '';
-  }
-
-  get getUser(): SysUser | null {
-    if (null != this.domainInfo.user && this.domainInfo.user.length > 0) {
-      return this.domainInfo.user[0];
-    }
-    return null;
-  }
-
-  @Watch('openId', {immediate: true})
-  handleOpenIdhange(newVal: string | undefined, oldVal: string | undefined) {
-    this.loadOssUserInfo = false;
-    console.log('变更了记录-' + newVal);
-    if (null == newVal || newVal === '') {
-      this.domainInfo = {
-        accountId: 0,
-        bindDevices: [],
-        bindExternals: [],
-        eduVips: [],
-        bindLogs: [],
-        user: [],
-        fromMergeInfos: [],
-        toMergeInfos: [],
+    get defPayUserInfo(): UserInfoFull {
+      return {
+        userId: 0,
+        protocols: [],
+        noPassportSigns: [],
       };
-      this.payUserInfo = this.defPayUserInfo;
-    } else {
-      getSysAccountInfoDetail(this.openId).then((resolve) => {
-        this.domainInfo = resolve.data.data;
-      }).catch(handlerCommonError);
-      getUserInfoFullByOpenId(this.openId).then((resolve) => {
-        this.payUserInfo = resolve.data.data;
-        this.loadOssUserInfo = true;
-      }).catch((error:ResponseResult<any>)=>{
-        this.loadOssUserInfo = false;
-      });
     }
-  }
 
-  @Watch('domainInfo', {immediate: true})
-  handleInternalDomainInfoChange(newVal: SysAccount, oldVal?: SysAccount): void {
-    if (null == newVal && null == oldVal) {
-      return;
-    }
-    if (newVal != null && oldVal != null) {
-      this.openIdChange(newVal.openId, oldVal.openId);
-    } else if (oldVal != null) {
-      this.openIdChange('', oldVal.openId);
-    } else if (newVal != null) {
-      this.openIdChange(newVal.openId, '');
-    }
-  }
+    @Prop({type: String, default: ''})
+      // @ts-ignore
+    openId: string;
 
-  @Emit('update:openId')
-  openIdChange(openId: string | undefined, openId2: string | undefined): void {
+    get getAvatar(): string {
+      const user = this.getUser;
+      if (null == user) {
+        return '';
+      }
+      return user.avatar || '';
+    }
+
+    get getUser(): SysUser | null {
+      if (null != this.domainInfo.user && this.domainInfo.user.length > 0) {
+        return this.domainInfo.user[0];
+      }
+      return null;
+    }
+
+    @Watch('openId', {immediate: true})
+    handleOpenIdhange(newVal: string | undefined, oldVal: string | undefined) {
+      this.loadOssUserInfo = false;
+      console.log('变更了记录-' + newVal);
+      if (null == newVal || newVal === '') {
+        this.domainInfo = {
+          accountId: 0,
+          bindDevices: [],
+          bindExternals: [],
+          eduVips: [],
+          bindLogs: [],
+          user: [],
+          fromMergeInfos: [],
+          toMergeInfos: [],
+        };
+        this.payUserInfo = this.defPayUserInfo;
+      } else {
+        getSysAccountInfoDetail(this.openId).then((resolve) => {
+          this.domainInfo = resolve.data.data;
+        }).catch(handlerCommonError);
+        getUserInfoFullByOpenId(this.openId).then((resolve) => {
+          this.payUserInfo = resolve.data.data;
+          this.loadOssUserInfo = true;
+        }).catch((error: ResponseResult<any>) => {
+          this.loadOssUserInfo = false;
+        });
+      }
+    }
+
+    @Watch('domainInfo', {immediate: true})
+    handleInternalDomainInfoChange(newVal: SysAccount, oldVal?: SysAccount): void {
+      if (null == newVal && null == oldVal) {
+        return;
+      }
+      if (newVal != null && oldVal != null) {
+        this.openIdChange(newVal.openId, oldVal.openId);
+      } else if (oldVal != null) {
+        this.openIdChange('', oldVal.openId);
+      } else if (newVal != null) {
+        this.openIdChange(newVal.openId, '');
+      }
+    }
+
+    @Emit('update:openId')
+    openIdChange(openId: string | undefined, openId2: string | undefined): void {
+    }
   }
-}
 </script>
 
 

@@ -21,7 +21,7 @@ import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
 import {RoleInfo} from '../../types/index';
 import {RoleModule} from '@/store/modules/role';
 import {getAccountRoles, saveAccountRoles} from '../../api/account';
-import {handlerCommonError} from "../../utils/auth-interceptor";
+import {handlerCommonError} from '../../utils/auth-interceptor';
 
 let groupPrevAppId: number = 0;
 

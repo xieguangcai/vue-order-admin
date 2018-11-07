@@ -2,7 +2,7 @@ import {Message, MessageBox} from 'element-ui';
 import {UserModule} from '@/store/modules/user';
 import {AxiosRequestConfig, AxiosResponse} from 'axios';
 import {getFullToken} from '@/utils/auth';
-import {ResponseResult} from "@/types";
+import {ResponseResult} from '@/types';
 
 export function authHeader(config: AxiosRequestConfig): AxiosRequestConfig {
   // if (UserModule.token) {
@@ -58,7 +58,7 @@ export function authRejectFilter(error: any) {
   return Promise.reject(error);
 }
 
-export function handlerCommonError(error: ResponseResult<any>): void{
+export function handlerCommonError(error: ResponseResult<any>): void {
   Message({
     message: '错误：' + error.message,
     type: 'error',

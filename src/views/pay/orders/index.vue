@@ -136,8 +136,8 @@ import OrderInfoDetail from './detail.vue';
 // @ts-ignore
 import qs from 'qs';
 import BaseList from '../../../components/BaseList';
-import {Message} from "element-ui";
-import {handlerCommonError} from "../../../utils/auth-interceptor";
+import {Message} from 'element-ui';
+import {handlerCommonError} from '../../../utils/auth-interceptor';
 
 interface EditDomain {
   editDomainId: number | undefined;

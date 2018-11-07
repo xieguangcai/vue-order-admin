@@ -158,7 +158,7 @@ import {getBaseMoviesIqiyiOrderBaseList} from '../../../api/authentication';
 import BaseMoviesIqiyiOrderBaseDetail from './detail.vue';
 import BaseList from '../../../components/BaseList';
 import OrderInfoDetail from '../../pay/orders/detail.vue';
-import {handlerCommonError} from "../../../utils/auth-interceptor";
+import {handlerCommonError} from '../../../utils/auth-interceptor';
 
 interface EditDomain {
   editDomainId: number | undefined;

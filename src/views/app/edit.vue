@@ -34,7 +34,7 @@ import {getAppInfo, newApp, newUser, saveApp} from '../../api/account';
 import EditFormPane from '../../components/EditFormPane/index.vue';
 import BaseEdit from '../../components/BaseEdit';
 import {AxiosPromise} from 'axios';
-import {handlerCommonError} from "../../utils/auth-interceptor";
+import {handlerCommonError} from '../../utils/auth-interceptor';
 
 @Component({
   name: 'ApplicationEdit',
@@ -101,7 +101,7 @@ export default class ApplicationEdit extends Vue {
   domainIdChange(newVal: number | undefined, oldVal: number | undefined): void {
   }
 
-  saveFormData(): AxiosPromise {
+  saveFormData(): Promise<any> {
     if (this.domainInfo.appId != null && this.domainInfo.appId !== 0) {
       return saveApp(this.domainInfo).catch(handlerCommonError);
     } else {

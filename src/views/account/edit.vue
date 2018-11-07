@@ -37,7 +37,7 @@ import {newUser} from '../../api/account';
 import EditFormPane from '../../components/EditFormPane/index.vue';
 import BaseEdit from '../../components/BaseEdit';
 import {AxiosPromise} from 'axios';
-import {handlerCommonError} from "../../utils/auth-interceptor";
+import {handlerCommonError} from '../../utils/auth-interceptor';
 
 @Component({
   name: 'AccountEdit',
@@ -97,7 +97,7 @@ export default class AccountEdit extends Vue {
   domainIdChange(accountId: number | undefined, accountId2: number | undefined): void {
   }
 
-  saveFormData(): AxiosPromise {
+  saveFormData(): Promise<any> {
     if (this.accountInfo.accountId != null) {
       return saveUser(this.accountInfo).catch(handlerCommonError);
     } else {
