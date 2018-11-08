@@ -15,7 +15,7 @@ export function authHeader(config: AxiosRequestConfig): AxiosRequestConfig {
 
 export function authRejectFilter(error: any) {
   const response = error.response;
-  debugger;
+  let message = response.data.error_description || response.data.message || response.data || '服务器资源访问出错';
   if (response !== undefined) {
     const status = response.status;
     if (status === 401) {
@@ -40,9 +40,10 @@ export function authRejectFilter(error: any) {
           location.reload(); // 为了重新实例化vue-router对象 避免bug
         });
       });
-      return Promise.reject('error');
+      let errorInfo : ResponseResult<any> = {code: response.status, message: message, success: false, data: response};
+
+      return Promise.reject(errorInfo);
     } else {
-      let message = response.data.error_description || response.data.message || response.data || '服务器资源访问出错';
       // Message({
       //   message: '服务错误：' + message,
       //   type: 'error',

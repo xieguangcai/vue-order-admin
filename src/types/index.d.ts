@@ -33,7 +33,7 @@ export interface ResponseResult<T> {
   success: boolean;
   message: string;
   code: string;
-  data?: T;
+  data: T;
 }
 
 export interface Pageable<T = any> {

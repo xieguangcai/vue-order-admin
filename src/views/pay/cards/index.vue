@@ -151,7 +151,7 @@
       return AppModule.cardInfoStatus;
     }
 
-    cardInfoStatusToName(code: number, cardBatchStatus) {
+    cardInfoStatusToName(code: number, cardBatchStatus: number) {
       if (code == 3) {
         return cardInfoStatusName(code);
       } else if (cardBatchStatus == 2) {
