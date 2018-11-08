@@ -55,7 +55,7 @@
           <template slot-scope="scope">
             <div>
               <span>名称：</span>{{ scope.row.cardResource != null ? scope.row.cardResource.cardResourceName : ''}}<br/>
-              <span>erpCode</span>{{ scope.row.cardResource != null ? scope.row.cardResource.erpCode : ''}}
+              <span>erpCode:</span>{{ scope.row.cardResource != null ? scope.row.cardResource.erpCode : ''}}
             </div>
           </template>
         </el-table-column>

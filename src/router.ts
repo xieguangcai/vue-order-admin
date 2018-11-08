@@ -69,7 +69,7 @@ export default new Router({
           path: 'card-info-list',
           name: '卡密信息列表',
           component: () => import(/* webpackChunkName: "card-info-list" */ '@/views/pay/cards/index.vue'),
-          meta: {title: '卡密信息列表', icon: 'table'},
+          meta: {title: '卡密信息列表', icon: 'card'},
 
         },
       ],

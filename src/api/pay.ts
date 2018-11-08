@@ -105,7 +105,7 @@ export function cardBatchStatusName(code: number){
 export function statusToName(code: number | string, valus: StatusInfo[]) {
   let name = code + '';
   valus.forEach((item) => {
-    if (item.value === code) {
+    if (item.value == code) {
       name = item.label;
       return false;
     }
