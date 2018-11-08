@@ -28,7 +28,7 @@ export default new Router({
       component: Layout,
       redirect: '/dashboard',
       name: '智能客服系统',
-      meta: {hidden: true, title: '智能客服系统'},
+      meta: {hidden: true},
       children: [{
         path: 'dashboard',
         name: '智能客服系统',
@@ -63,6 +63,13 @@ export default new Router({
           name: '业务订单列表',
           component: () => import(/* webpackChunkName: "movies-order-list" */ '@/views/authentication/orders/index.vue'),
           meta: {title: '业务订单列表', icon: 'table'},
+
+        },
+        {
+          path: 'card-info-list',
+          name: '卡密信息列表',
+          component: () => import(/* webpackChunkName: "card-info-list" */ '@/views/pay/cards/index.vue'),
+          meta: {title: '卡密信息列表', icon: 'table'},
 
         },
       ],

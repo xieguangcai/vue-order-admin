@@ -15,6 +15,7 @@ export function authHeader(config: AxiosRequestConfig): AxiosRequestConfig {
 
 export function authRejectFilter(error: any) {
   const response = error.response;
+  debugger;
   if (response !== undefined) {
     const status = response.status;
     if (status === 401) {
@@ -41,13 +42,14 @@ export function authRejectFilter(error: any) {
       });
       return Promise.reject('error');
     } else {
-      const message = response.data.error_description || response.data.message || response.data || '服务器资源访问出错';
-      Message({
-        message: '服务错误：' + message,
-        type: 'error',
-        duration: 5 * 1000,
-      });
-      return Promise.reject('error');
+      let message = response.data.error_description || response.data.message || response.data || '服务器资源访问出错';
+      // Message({
+      //   message: '服务错误：' + message,
+      //   type: 'error',
+      //   duration: 5 * 1000,
+      // });
+      let errorInfo : ResponseResult<any> = {code: response.status, message: message, success: false, data: response};
+      return Promise.reject(errorInfo);
     }
   }
   Message({

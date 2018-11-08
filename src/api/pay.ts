@@ -1,5 +1,13 @@
 import request from '@/utils/request-pay';
-import {OrderInfo, OrderInfoListQuery, Pageable, ResponseResult, UserInfoFull} from '@/types';
+import {
+  CardInfo,
+  CardInfoListQuery,
+  OrderInfo,
+  OrderInfoListQuery,
+  Pageable,
+  ResponseResult, StatusInfo,
+  UserInfoFull
+} from '@/types';
 // @ts-ignore
 import qs from 'qs';
 import {AxiosPromise, AxiosResponse} from 'axios';
@@ -51,6 +59,7 @@ export function getUserInfoFullByOpenId(openId: string): AxiosPromise<ResponseRe
     },
   });
 }
+
 export function orderStatusClass(orderStatus: string): string {
   if (orderStatus === 'CC00502') {
     return 'warning-row';
@@ -61,8 +70,41 @@ export function orderStatusClass(orderStatus: string): string {
 }
 
 export function orderStatusName(code: string) {
-  let name = code;
-  AppModule.orderStatus.forEach((item) => {
+  // let name = code;
+  // AppModule.orderStatus.forEach((item) => {
+  //   if (item.value === code) {
+  //     name = item.label;
+  //     return false;
+  //   }
+  // });
+  // return name;
+  return statusToName(code, AppModule.orderStatus);
+
+}
+
+export function ossOrderSourceName(code: number) {
+  // let name = code + '';
+  // AppModule.ossOrderSource.forEach((item) => {
+  //   if (item.value === code) {
+  //     name = item.label;
+  //     return false;
+  //   }
+  // });
+  // return name;
+  return statusToName(code, AppModule.ossOrderSource);
+}
+
+export function cardInfoStatusName(code: number) {
+  return statusToName(code, AppModule.cardInfoStatus);
+}
+
+export function cardBatchStatusName(code: number){
+  return statusToName(code, AppModule.cardBatchStatus);
+}
+
+export function statusToName(code: number | string, valus: StatusInfo[]) {
+  let name = code + '';
+  valus.forEach((item) => {
     if (item.value === code) {
       name = item.label;
       return false;
@@ -70,13 +112,14 @@ export function orderStatusName(code: string) {
   });
   return name;
 }
-export function ossOrderSourceName(code: number) {
-  let name = code + '';
-  AppModule.ossOrderSource.forEach((item) => {
-    if (item.value === code) {
-      name = item.label;
-      return false;
-    }
+
+export function getCardInfoList(params: CardInfoListQuery): AxiosPromise<ResponseResult<Pageable<CardInfo>>> {
+  return request({
+    url: '/pay/card-info/list',
+    method: 'get',
+    params,
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
   });
-  return name;
 }

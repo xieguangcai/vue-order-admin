@@ -33,7 +33,7 @@ export interface ResponseResult<T> {
   success: boolean;
   message: string;
   code: string;
-  data: T;
+  data?: T;
 }
 
 export interface Pageable<T = any> {
@@ -338,6 +338,7 @@ export interface AutomaticDeductionProtocol {
   notifyUrl?: string;
   unsignTime?: string;
 }
+
 export interface PayNoPassportSign {
   id: number;
   userId: number;
@@ -356,17 +357,130 @@ export interface PayNoPassportSign {
   orderId?: number;
   noPassportSignAuths?: PayNoPassportSignAuth[];
 }
+
 export interface PayNoPassportSignAuth {
- id: number;
- deviceId?: string;
- userId: number;
- mobile?: string;
- authTime?: string;
- status?: string;
- createTime?: string;
- modifyTime?: string;
+  id: number;
+  deviceId?: string;
+  userId: number;
+  mobile?: string;
+  authTime?: string;
+  status?: string;
+  createTime?: string;
+  modifyTime?: string;
 }
 
+export interface CardInfo {
+  cardId?: number;
+  cardPid?: number;
+  cardNo?: string;
+  cardPwd?: string;
+  cardStatus?: string;
+  creatDate?: string;
+  usedDate?: string;
+  openId?: string;
+  flag?: string;
+  appCode?: string;
+  orderNo?: string;
+  extOpenId?: string;
+  extAppId?: string;
+  serviceType?: string;
+  mac?: string;
+  sn?: string;
+  memo?: string;
+  warehouseId?: number;
+  resourceId?: number;
+  serviceId?: number;
+  tvModel?: string;
+  tvChip?: string;
+  activeSource?: string;
+  tvBrand?: string;
+  modifyDate?: string;
+  activeOrderNo?: string;
+  cardBatch?: CardBatch;
+  cardResource?: CardResouce;
+  cardService?: CardService;
+}
+
+export interface CardResouce {
+  id?: number;
+  cardResourceName?: string;
+  tipResourceName?: string;
+  resourceCode?: string;
+  erpCode?: string;
+  resourceSupplier?: string;
+  status?: number;
+  purchasePrice?: number;
+  salePrice?: number;
+  memo?: string;
+  createBy?: string;
+  createDate?: string;
+  modifyBy?: string;
+  modifyDate?: string;
+  waringEmail?: string;
+  waringMobile?: string;
+}
+
+export interface CardService {
+  serviceId?: number;
+  flag?: string;
+  serviceType?: string;
+  serviceName?: string;
+  createBy?: string;
+  creatDate?: string;
+  appCode?: string;
+  extAppId?: string;
+  modifyBy?: string;
+  modifyDate?: string;
+  thirdData?: string;
+  memo?: string;
+  notifyUrl?: string;
+  validTime?: number;
+  validTimeUnit?: string;
+  serviceStartTime?: string;
+  serviceEndTime?: string;
+  totalServiceNum?: number;
+  canUseNum?: number;
+  totalUseNum?: number;
+  cardType?: string;
+  cardModel?: string;
+  resourceId?: number;
+  resourceServiceType?: number;
+}
+
+export interface CardBatch {
+  cardPid?: number;
+  startDate?: string;
+  endDate?: string;
+  cardPno?: string;
+  prefix?: string;
+  useMaxNum?: number;
+  cardBatchStatus?: string;
+  cardBatchName?: string;
+  creatDate?: string;
+  createBy?: string;
+  modifyDate?: string;
+  createCarNum?: number;
+  usedCarNum?: number;
+  cardPar?: string;
+  cardSettlement?: string;
+  cardPtype?: string;
+  memo?: string;
+  cardBillDetailId?: number;
+  useCardToken?: string;
+  oaBillNo?: string;
+  waringEmail?: string;
+  waringMobile?: string;
+  isUseLimit?: number;
+}
+
+export interface CardInfoListQuery extends IPageinfo {
+  orderNo?: string;
+  cardNo?: string;
+  cardPwd?: string;
+  cardStatus?: string;
+  mac?: string;
+  usedDate?: string[];
+}
 // ------------pay------------
 
 
@@ -538,6 +652,7 @@ export interface SysUserMergeInfo {
   createTime?: string;
   modifyTime?: string;
 }
+
 // --------passport---------------
 
 
@@ -722,4 +837,5 @@ export interface BaseMoviesIqiyiOrderBaseListQuery extends IPageinfo {
   createTimes?: string[];
   payTimes?: string[];
 }
+
 // --------authentication---------

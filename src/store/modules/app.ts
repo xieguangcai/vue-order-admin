@@ -26,6 +26,8 @@ export interface IAppState {
   ossOrderSource: StatusInfo[];
   clientType: StatusInfo[];
   orderType: StatusInfo[];
+  cardInfoStatus: StatusInfo[];
+  cardBatchStatus: StatusInfo[];
 }
 
 @Module({dynamic: true, store, name: 'app'})
@@ -85,6 +87,17 @@ class App extends VuexModule {
     {value: 3, label: '用券兑换'},
     {value: 4, label: '活动赠送'},
     {value: 5, label: '线下导购'},
+  ];
+  cardInfoStatus: IAppState['cardInfoStatus'] =[
+    {value: '1', label: '正常'},
+    {value: '2', label: '开通中'},
+    {value: '3', label: '已开通'},
+    {value: '4', label: '作废'},
+  ];
+  cardBatchStatus: IAppState['cardBatchStatus'] =[
+    {value: '0', label: '未审核'},
+    {value: '1', label: '正常'},
+    {value: '2', label: '作废'},
   ];
   @Mutation
   TOGGLE_SIDEBAR(withoutAnimation: boolean) {
