@@ -89,8 +89,7 @@
   import ListTablePane from '../../../components/ListTablePane/index.vue';
   import {AxiosResponse} from 'axios';
   import {getOrderRefundInfoList} from '../../../api/pay';
-  import {AppModule} from '../../../store/modules/app';
-  import OrderRefundInfoDetail from './detail.vue';
+  import OrderInfoDetail from '../orders/detail.vue';
   // @ts-ignore
   import qs from 'qs';
   import BaseList from '../../../components/BaseList';
@@ -102,7 +101,7 @@
   }
 
   @Component({
-    components: {OrderRefundInfoDetail, ListTablePane, SearchPane, SearchPagePane},
+    components: {OrderInfoDetail, ListTablePane, SearchPane, SearchPagePane},
     filters: {},
     mixins: [BaseList],
   })
