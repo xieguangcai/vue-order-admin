@@ -18,8 +18,8 @@
         <el-input v-model="listQuery.mac" size="mini"></el-input>
         订单状态
         <el-select size="mini" v-model="listQuery.orderStatus">
-        <el-option value="" label="全部"/>
-        <el-option v-for="item in orderStatus" :label="item.label" :value="item.value" :key="item.value"/>
+          <el-option value="" label="全部"/>
+          <el-option v-for="item in orderStatus" :label="item.label" :value="item.value" :key="item.value"/>
         </el-select>
         订单创建时间
         <el-date-picker size="mini"
@@ -97,24 +97,25 @@
           </template>
         </el-table-column>
       </el-table>
-     <search-page-pane @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :size="size"
-                       :page="page"
-                       :total="total"
-                       slot="page">
+      <search-page-pane @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :size="size"
+                        :page="page"
+                        :total="total"
+                        slot="page">
       </search-page-pane>
       <!--<el-pagination-->
-        <!--background-->
-        <!--:current-page="page + 1"-->
-        <!--@size-change="handleSizeChange"-->
-        <!--@current-change="handleCurrentChange"-->
-        <!--:page-sizes="[1,50, 100, 200, 300]"-->
-        <!--:page-size="size"-->
-        <!--layout="total, sizes, prev, pager, next, jumper"-->
-        <!--:total="totalElements">-->
+      <!--background-->
+      <!--:current-page="page + 1"-->
+      <!--@size-change="handleSizeChange"-->
+      <!--@current-change="handleCurrentChange"-->
+      <!--:page-sizes="[1,50, 100, 200, 300]"-->
+      <!--:page-size="size"-->
+      <!--layout="total, sizes, prev, pager, next, jumper"-->
+      <!--:total="totalElements">-->
       <!--</el-pagination>-->
-      <el-dialog title="oss订单详情" :visible.sync="dialogOrderInfoDetilVisible"  :append-to-body="true" :modal-append-to-body="false" width="80%" @close="editDomainInfo.editDomainId = 0">
+      <el-dialog title="oss订单详情" :visible.sync="dialogOrderInfoDetilVisible" :append-to-body="true"
+                 :modal-append-to-body="false" width="80%" @close="editDomainInfo.editDomainId = 0">
         <order-info-detail :domain-id="editDomainInfo.editDomainId"/>
       </el-dialog>
 
@@ -124,64 +125,64 @@
 
 
 <script lang="ts">
-import {Component, Vue, Watch} from 'vue-property-decorator';
-import SearchPane from '../../../components/SearchPane/index.vue';
-import SearchPagePane from '../../../components/SearchPagePane/index.vue';
-import {OrderInfo, OrderInfoListQuery, Pageable, ResponseResult} from '../../../types';
-import ListTablePane from '../../../components/ListTablePane/index.vue';
-import {AxiosResponse} from 'axios';
-import {getOrderInfoList, orderStatusClass, orderStatusName} from '../../../api/pay';
-import {AppModule} from '../../../store/modules/app';
-import OrderInfoDetail from './detail.vue';
-// @ts-ignore
-import qs from 'qs';
-import BaseList from '../../../components/BaseList';
-import {Message} from 'element-ui';
-import {handlerCommonError} from '../../../utils/auth-interceptor';
+  import {Component, Vue, Watch} from 'vue-property-decorator';
+  import SearchPane from '../../../components/SearchPane/index.vue';
+  import SearchPagePane from '../../../components/SearchPagePane/index.vue';
+  import {OrderInfo, OrderInfoListQuery, Pageable, ResponseResult} from '../../../types';
+  import ListTablePane from '../../../components/ListTablePane/index.vue';
+  import {AxiosResponse} from 'axios';
+  import {getOrderInfoList, orderStatusClass, orderStatusName} from '../../../api/pay';
+  import {AppModule} from '../../../store/modules/app';
+  import OrderInfoDetail from './detail.vue';
+  // @ts-ignore
+  import qs from 'qs';
+  import BaseList from '../../../components/BaseList';
+  import {Message} from 'element-ui';
+  import {handlerCommonError} from '../../../utils/auth-interceptor';
 
-interface EditDomain {
-  editDomainId: number | undefined;
-}
-
-@Component({
-  components: {OrderInfoDetail, ListTablePane, SearchPane, SearchPagePane},
-  filters: {},
-  mixins: [BaseList],
-})
-export default class OrderInfoList extends Vue {
-  dialogOrderInfoDetilVisible: boolean = false;
-  editDomainInfo: EditDomain = {editDomainId: 0};
-
-  data: OrderInfo[] = [];
-  listQuery: OrderInfoListQuery = { page: 0, size: 50, total: 0};
-
-  tableRowClassName(orderStatus: string): string {
-    return orderStatusClass(orderStatus);
+  interface EditDomain {
+    editDomainId: number | undefined;
   }
 
+  @Component({
+    components: {OrderInfoDetail, ListTablePane, SearchPane, SearchPagePane},
+    filters: {},
+    mixins: [BaseList],
+  })
+  export default class OrderInfoList extends Vue {
+    dialogOrderInfoDetilVisible: boolean = false;
+    editDomainInfo: EditDomain = {editDomainId: 0};
 
-  get orderStatus() {
-    return AppModule.orderStatus;
-  }
+    data: OrderInfo[] = [];
+    listQuery: OrderInfoListQuery = {page: 0, size: 50, total: 0};
 
-  orderStatusToName(code: string) {
-    return orderStatusName(code);
-  }
+    tableRowClassName(orderStatus: string): string {
+      return orderStatusClass(orderStatus);
+    }
 
-  handleViewOrderInfoDetail(index: number, row: OrderInfo) {
-    this.dialogOrderInfoDetilVisible = true;
-    console.log('点击选择的订单id为' + row.orderId);
-    this.$nextTick(() => this.editDomainInfo.editDomainId = row.orderId);
-  }
 
-  realFetchData() {
-    return getOrderInfoList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<OrderInfo>>>) => {
-      const responseData = response.data.data;
-      this.data = responseData.content;
-      this.listQuery.page = responseData.number;
-      this.listQuery.size = responseData.size;
-      this.listQuery.total = responseData.totalElements;
-    }).catch(handlerCommonError);
+    get orderStatus() {
+      return AppModule.orderStatus;
+    }
+
+    orderStatusToName(code: string) {
+      return orderStatusName(code);
+    }
+
+    handleViewOrderInfoDetail(index: number, row: OrderInfo) {
+      this.dialogOrderInfoDetilVisible = true;
+      console.log('点击选择的订单id为' + row.orderId);
+      this.$nextTick(() => this.editDomainInfo.editDomainId = row.orderId);
+    }
+
+    realFetchData() {
+      return getOrderInfoList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<OrderInfo>>>) => {
+        const responseData = response.data.data;
+        this.data = responseData.content;
+        this.listQuery.page = responseData.number;
+        this.listQuery.size = responseData.size;
+        this.listQuery.total = responseData.totalElements;
+      }).catch(handlerCommonError);
+    }
   }
-}
 </script>

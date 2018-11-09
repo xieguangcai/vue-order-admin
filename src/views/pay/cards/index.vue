@@ -116,64 +116,64 @@
 
 
 <script lang="ts">
-  import {Component, Vue, Watch} from 'vue-property-decorator';
-  import SearchPane from '../../../components/SearchPane/index.vue';
-  import SearchPagePane from '../../../components/SearchPagePane/index.vue';
-  import {CardInfoListQuery, Pageable, ResponseResult, CardInfo} from '../../../types';
-  import ListTablePane from '../../../components/ListTablePane/index.vue';
-  import {AxiosResponse} from 'axios';
-  import {AppModule} from '../../../store/modules/app';
-  // @ts-ignore
-  import qs from 'qs';
-  import BaseList from '../../../components/BaseList';
-  import {handlerCommonError} from '../../../utils/auth-interceptor';
-  import {cardBatchStatusName, cardInfoStatusName, getCardInfoList} from "../../../api/pay";
+import {Component, Vue, Watch} from 'vue-property-decorator';
+import SearchPane from '../../../components/SearchPane/index.vue';
+import SearchPagePane from '../../../components/SearchPagePane/index.vue';
+import {CardInfoListQuery, Pageable, ResponseResult, CardInfo} from '../../../types';
+import ListTablePane from '../../../components/ListTablePane/index.vue';
+import {AxiosResponse} from 'axios';
+import {AppModule} from '../../../store/modules/app';
+// @ts-ignore
+import qs from 'qs';
+import BaseList from '../../../components/BaseList';
+import {handlerCommonError} from '../../../utils/auth-interceptor';
+import {cardBatchStatusName, cardInfoStatusName, getCardInfoList} from '../../../api/pay';
 
-  interface EditDomain {
-    editDomainId: number | undefined;
+interface EditDomain {
+  editDomainId: number | undefined;
+}
+
+@Component({
+  name: 'CardInfoList',
+  components: {ListTablePane, SearchPane, SearchPagePane},
+  filters: {},
+  mixins: [BaseList],
+})
+export default class CardInfoList extends Vue {
+  dialogDetilVisible: boolean = false;
+  editDomainInfo: EditDomain = {editDomainId: 0};
+
+  data: CardInfo[] = [];
+  listQuery: CardInfoListQuery = {page: 0, size: 50, total: 0};
+
+
+  get cardInfoStatus() {
+    return AppModule.cardInfoStatus;
   }
 
-  @Component({
-    name: 'CardInfoList',
-    components: {ListTablePane, SearchPane, SearchPagePane},
-    filters: {},
-    mixins: [BaseList],
-  })
-  export default class CardInfoList extends Vue {
-    dialogDetilVisible: boolean = false;
-    editDomainInfo: EditDomain = {editDomainId: 0};
-
-    data: CardInfo[] = [];
-    listQuery: CardInfoListQuery = {page: 0, size: 50, total: 0};
-
-
-    get cardInfoStatus() {
-      return AppModule.cardInfoStatus;
-    }
-
-    cardInfoStatusToName(code: number, cardBatchStatus: number) {
-      if (code == 3) {
-        return cardInfoStatusName(code);
-      } else if (cardBatchStatus == 2) {
-        return "批次" + cardBatchStatusName(cardBatchStatus);
-      } else {
-        return cardInfoStatusName(code);
-      }
-    }
-
-    handleViewCardInfoDetail(index: number, row: CardInfo) {
-      this.dialogDetilVisible = true;
-      this.$nextTick(() => this.editDomainInfo.editDomainId = row.cardId);
-    }
-
-    realFetchData() {
-      return getCardInfoList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<CardInfo>>>) => {
-        const responseData = response.data.data;
-        this.data = responseData.content;
-        this.listQuery.page = responseData.number;
-        this.listQuery.size = responseData.size;
-        this.listQuery.total = responseData.totalElements;
-      }).catch(handlerCommonError);
+  cardInfoStatusToName(code: number, cardBatchStatus: number) {
+    if (code === 3) {
+      return cardInfoStatusName(code);
+    } else if (cardBatchStatus === 2) {
+      return '批次' + cardBatchStatusName(cardBatchStatus);
+    } else {
+      return cardInfoStatusName(code);
     }
   }
+
+  handleViewCardInfoDetail(index: number, row: CardInfo) {
+    this.dialogDetilVisible = true;
+    this.$nextTick(() => this.editDomainInfo.editDomainId = row.cardId);
+  }
+
+  realFetchData() {
+    return getCardInfoList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<CardInfo>>>) => {
+      const responseData = response.data.data;
+      this.data = responseData.content;
+      this.listQuery.page = responseData.number;
+      this.listQuery.size = responseData.size;
+      this.listQuery.total = responseData.totalElements;
+    }).catch(handlerCommonError);
+  }
+}
 </script>

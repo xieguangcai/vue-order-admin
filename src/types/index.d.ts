@@ -374,7 +374,7 @@ export interface CardInfo {
   cardPid?: number;
   cardNo?: string;
   cardPwd?: string;
-  cardStatus?: string;
+  cardStatus?: number;
   creatDate?: string;
   usedDate?: string;
   openId?: string;
@@ -454,7 +454,7 @@ export interface CardBatch {
   cardPno?: string;
   prefix?: string;
   useMaxNum?: number;
-  cardBatchStatus?: string;
+  cardBatchStatus?: number;
   cardBatchName?: string;
   creatDate?: string;
   createBy?: string;
@@ -651,6 +651,37 @@ export interface SysUserMergeInfo {
   toExtUserInfo?: string;
   createTime?: string;
   modifyTime?: string;
+}
+
+export interface OrderRefundInfo {
+  id?: number;
+  refundNo?: string;
+  orderId?: number;
+  refundDate?: string;
+  returnParam?: string;
+  refundFee?: string;
+  refundId?: string;
+  transactionId?: string;
+  refundStatus?: string;
+  refundChannel?: string;
+  payMod?: string;
+  lastUpdateDate?: string;
+  serialNo?: string;
+  dealNo?: string;
+  appTypeCode?: string;
+  phoneNo?: string;
+  origiOrderNo?: string;
+}
+
+export interface OrderRefundInfoListQuery extends IPageinfo {
+  orderNo?: string;
+  origiOrderNo?: string;
+  dealNo?: string;
+  serialNo?: string;
+  appCode?: string;
+  mac?: string;
+  phoneNo?: string;
+  transactionId?: string;
 }
 
 // --------passport---------------

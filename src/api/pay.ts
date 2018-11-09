@@ -3,10 +3,10 @@ import {
   CardInfo,
   CardInfoListQuery,
   OrderInfo,
-  OrderInfoListQuery,
+  OrderInfoListQuery, OrderRefundInfo, OrderRefundInfoListQuery,
   Pageable,
   ResponseResult, StatusInfo,
-  UserInfoFull
+  UserInfoFull,
 } from '@/types';
 // @ts-ignore
 import qs from 'qs';
@@ -98,14 +98,15 @@ export function cardInfoStatusName(code: number) {
   return statusToName(code, AppModule.cardInfoStatus);
 }
 
-export function cardBatchStatusName(code: number){
+export function cardBatchStatusName(code: number) {
   return statusToName(code, AppModule.cardBatchStatus);
 }
 
 export function statusToName(code: number | string, valus: StatusInfo[]) {
   let name = code + '';
+  const strCode = code + '';
   valus.forEach((item) => {
-    if (item.value == code) {
+    if (item.value === strCode) {
       name = item.label;
       return false;
     }
@@ -123,3 +124,15 @@ export function getCardInfoList(params: CardInfoListQuery): AxiosPromise<Respons
     },
   });
 }
+
+export function getOrderRefundInfoList(params: OrderRefundInfoListQuery): AxiosPromise<ResponseResult<Pageable<OrderRefundInfo>>> {
+  return request({
+    url: '/pay/order-refund/list',
+    method: 'get',
+    params,
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
+

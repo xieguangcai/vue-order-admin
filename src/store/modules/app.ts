@@ -60,41 +60,41 @@ class App extends VuexModule {
     {value: 'CC01210', label: '体育'},
   ];
   ossOrderSource: IAppState['orderStatus'] = [
-    {value: 1, label: 'tv端'},
-    {value: 2, label: 'pc端'},
-    {value: 3, label: '自动续费'},
-    {value: 4, label: '移动端'},
-    {value: 5, label: 'v1版支付'},
+    {value: '1', label: 'tv端'},
+    {value: '2', label: 'pc端'},
+    {value: '3', label: '自动续费'},
+    {value: '4', label: '移动端'},
+    {value: '5', label: 'v1版支付'},
   ];
   clientType: IAppState['clientType'] = [
     // 下单设备类型(1TV，2天赐派，3微信，4tv-web版,5电视派APP,6IPtvWeb页面,7江苏广电线下订单,8教育订制机,9商城兑换,10试看出二维码已登录,11试看出二维码未登录)
-    {value: 1, label: 'TV老版本'},
-    {value: 2, label: '天赐派'},
-    {value: 3, label: '微信'},
-    {value: 4, label: 'tv-web版'},
-    {value: 5, label: '电视派APP'},
-    {value: 6, label: 'IPtvWeb页面'},
-    {value: 7, label: '江苏广电线下订单'},
-    {value: 8, label: '教育订制机'},
-    {value: 9, label: '商城兑换'},
-    {value: 10, label: '试看出二维码已登录'},
-    {value: 11, label: '试看出二维码未登录'},
+    {value: '1', label: 'TV老版本'},
+    {value: '2', label: '天赐派'},
+    {value: '3', label: '微信'},
+    {value: '4', label: 'tv-web版'},
+    {value: '5', label: '电视派APP'},
+    {value: '6', label: 'IPtvWeb页面'},
+    {value: '7', label: '江苏广电线下订单'},
+    {value: '8', label: '教育订制机'},
+    {value: '9', label: '商城兑换'},
+    {value: '10', label: '试看出二维码已登录'},
+    {value: '11', label: '试看出二维码未登录'},
   ];
   orderType: IAppState['orderType'] = [
-    {value: 0, label: '未知类型'},
-    {value: 1, label: '普通支付'},
-    {value: 2, label: '卡密兑换'},
-    {value: 3, label: '用券兑换'},
-    {value: 4, label: '活动赠送'},
-    {value: 5, label: '线下导购'},
+    {value: '0', label: '未知类型'},
+    {value: '1', label: '普通支付'},
+    {value: '2', label: '卡密兑换'},
+    {value: '3', label: '用券兑换'},
+    {value: '4', label: '活动赠送'},
+    {value: '5', label: '线下导购'},
   ];
-  cardInfoStatus: IAppState['cardInfoStatus'] =[
+  cardInfoStatus: IAppState['cardInfoStatus'] = [
     {value: '1', label: '正常'},
     {value: '2', label: '开通中'},
     {value: '3', label: '已开通'},
     {value: '4', label: '作废'},
   ];
-  cardBatchStatus: IAppState['cardBatchStatus'] =[
+  cardBatchStatus: IAppState['cardBatchStatus'] = [
     {value: '0', label: '未审核'},
     {value: '1', label: '正常'},
     {value: '2', label: '作废'},

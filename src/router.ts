@@ -72,6 +72,13 @@ export default new Router({
           meta: {title: '卡密信息列表', icon: 'card'},
 
         },
+        {
+          path: 'order-refund-list',
+          name: '重复支付订单列表',
+          component: () => import(/* webpackChunkName: "order-refund-list" */ '@/views/pay/orders-refund/index.vue'),
+          meta: {title: '重复支付订单列表', icon: 'card'},
+
+        },
       ],
     },
     {

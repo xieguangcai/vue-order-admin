@@ -105,6 +105,15 @@
             </div>
           </template>
         </el-table-column>
+        <el-table-column label="权益信息" width="320">
+          <template slot-scope="scope">
+            <div>
+              <span>开始时间：</span>{{ scope.row.beginTime }}<br/>
+              <span>结束时间：</span>{{ scope.row.endTime}}<br/>
+              <span>退单状态：</span>{{scope.row.serviceStatus === 1 ? '已退单': '正常'}}
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" align="center" width="100" fixed="right">
           <template slot-scope="scope">
             <el-tooltip content="查看该订单详情">
