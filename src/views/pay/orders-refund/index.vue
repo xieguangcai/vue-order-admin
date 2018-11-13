@@ -20,7 +20,7 @@
                 fit
                 highlight-current-row>
 
-        <el-table-column align="left" label="oss订单号" width="300" fixed>
+        <el-table-column align="left" label="oss订单号" width="200" fixed>
           <template slot-scope="scope">
             <div>
               {{ scope.row.transactionId}}
@@ -41,14 +41,14 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="流水号" width="540">
+        <el-table-column label="流水号" width="220">
           <template slot-scope="scope">
             <div>
               {{ scope.row.serialNo}}
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" width="540">
+        <el-table-column label="创建时间" width="180">
           <template slot-scope="scope">
             <div>
               {{ scope.row.refundDate}}

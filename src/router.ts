@@ -74,9 +74,9 @@ export default new Router({
         },
         {
           path: 'order-refund-list',
-          name: '重复支付订单列表',
+          name: '重复支付列表',
           component: () => import(/* webpackChunkName: "order-refund-list" */ '@/views/pay/orders-refund/index.vue'),
-          meta: {title: '重复支付订单列表', icon: 'card'},
+          meta: {title: '重复支付列表', icon: 'card'},
         },
       ],
     },
