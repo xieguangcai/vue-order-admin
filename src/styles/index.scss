@@ -88,7 +88,11 @@ a:hover {
 }
 
 .app-container {
-  padding: 20px;
+  //padding: 20px;
+  //padding-top:32px;
+}
+.cc-router-container{
+  padding-top:32px;
 }
 // 全局table状态
 .el-table .warning-row ,.cc-order-table .warning-row{

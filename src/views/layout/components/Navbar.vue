@@ -1,6 +1,7 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
     <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
+    <div class="cc-company">深圳市酷开网络科技有线公司</div>
     <breadcrumb />
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
@@ -61,10 +62,15 @@ export default class Navbar extends Vue {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.navbar {
+  @import "../../../../src/styles/variables.scss";
+  .cc-company{
+    color:white;float:left;
+  }
+  .navbar {
   height: 50px;
   line-height: 50px;
   border-radius: 0px !important;
+  background: $navbar-bg-color;
   .hamburger-container {
     line-height: 58px;
     height: 50px;

@@ -1,11 +1,21 @@
 <template>
   <div :class="classObj" class="app-wrapper">
     <div v-if="classObj.mobile && sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
-    <sidebar class="sidebar-container"/>
-    <div class="main-container">
-      <navbar/>
-      <tags-view/>
-      <app-main/>
+    <div>
+      <div class="cc-navbar-con">
+        <navbar/>
+      </div>
+      <div class="cc-main-con">
+        <sidebar class="sidebar-container"/>
+        <div class="main-container">
+          <div class="cc-tags-view-con">
+            <tags-view/>
+          </div>
+          <div class="cc-router-container">
+            <app-main/>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -44,6 +54,15 @@
 <style rel="stylesheet/scss" lang="scss" scoped>
   @import "src/styles/mixin.scss";
 
+  .cc-navbar-con{
+    width:100%; position:fixed;z-index:2001;
+  }
+  .cc-main-con{
+    padding-top:50px;
+  }
+  .cc-tags-view-con{
+    position:fixed;width:100%;z-index:2001;
+  }
   .app-wrapper {
     @include clearfix;
     position: relative;
@@ -64,4 +83,5 @@
     position: absolute;
     z-index: 999;
   }
+
 </style>

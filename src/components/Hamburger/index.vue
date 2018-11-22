@@ -40,6 +40,8 @@ export default class Hamburger extends Vue {
 .hamburger {
   display: inline-block;
   cursor: pointer;
+  color:white;
+  fill: currentColor;
   width: 20px;
   height: 20px;
   transform: rotate(90deg);

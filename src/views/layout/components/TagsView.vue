@@ -152,15 +152,16 @@ export default class TagsView extends Vue {
       .tags-view-item {
         display: inline-block;
         position: relative;
-        height: 26px;
-        line-height: 26px;
+        height: 32px;
+        line-height: 30px;
         border: 1px solid #d8dce5;
         color: #495060;
         background: #fff;
         padding: 0 8px;
-        font-size: 12px;
+        font-size: 14px;
         margin-left: 5px;
         margin-top: 4px;
+        border-radius: 5px;
         &:first-of-type {
           margin-left: 15px;
         }
@@ -212,7 +213,7 @@ export default class TagsView extends Vue {
       .el-icon-close {
         width: 16px;
         height: 16px;
-        vertical-align: 2px;
+        vertical-align: 5px;
         border-radius: 50%;
         text-align: center;
         transition: all .3s cubic-bezier(.645, .045, .355, 1);
@@ -221,6 +222,7 @@ export default class TagsView extends Vue {
           transform: scale(.6);
           display: inline-block;
           vertical-align: -3px;
+          font-size:14px;
         }
         &:hover {
           background-color: #b4bccc;

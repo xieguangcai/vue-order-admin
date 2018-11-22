@@ -83,9 +83,10 @@ export default class BaseList extends Vue {
       newLocation.name = oldRoute.name;
       newLocation.params = oldRoute.params;
       newLocation.hash = oldRoute.hash;
-      this.$router.push(newLocation, () => {
-        this.$store.dispatch('addVisitedViews', this.$route);
-      });
+      history.pushState(null, '条件查询', path + '?' + qs.stringify(this.listQuery, {arrayFormat: 'repeat'}));
+      // this.$router.push(newLocation, () => {
+        this.$store.dispatch('addVisitedViews',newLocation);
+      // });
     }).finally(() => {
       this.listLoading = false;
     });
