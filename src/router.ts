@@ -78,6 +78,12 @@ export default new Router({
           component: () => import(/* webpackChunkName: "order-refund-list" */ '@/views/pay/orders-refund/index.vue'),
           meta: {title: '重复支付列表', icon: 'card'},
         },
+        {
+          path: 'phone-valid-code',
+          name: '验证码',
+          component: () => import(/* webpackChunkName: "phone-valid-code" */ '@/views/passport/user/index.vue'),
+          meta: {title: '验证码', icon: 'card'},
+        },
       ],
     },
     {

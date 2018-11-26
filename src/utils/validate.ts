@@ -25,7 +25,18 @@ export function validatAlphabets(str: string) {
   const reg = /^[A-Za-z]+$/;
   return reg.test(str);
 }
+export function validPhoneNo(str: string) {
+  const reg = /^1\d{10}$/;
+  return reg.test(str);
+}
 
+export function validPhoneNoRule(rule: any, value: string, callback:((cc?:Error)=>void)) {
+  if (!validPhoneNo(value)) {
+    callback(new Error('请输入正确的手机号'));
+  } else {
+    callback();
+  }
+}
 
 export function pickerOptions(): any {
   const CALMONTH = 25;

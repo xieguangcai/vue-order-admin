@@ -16,8 +16,8 @@ export function authHeader(config: AxiosRequestConfig): AxiosRequestConfig {
 export function authRejectFilter(error: any) {
 
   const response = error.response;
-  let message = "";
-  if (typeof response === "undefined") {
+  let message = '';
+  if (typeof response === 'undefined') {
     message = error.message;
     Message({
       message: '错误：' + message,

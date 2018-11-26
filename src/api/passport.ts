@@ -1,5 +1,5 @@
 import request from '@/utils/request-passport';
-import {Pageable, ResponseResult, SysAccount} from '@/types';
+import {Pageable, RedisValueInfo, ResponseResult, SysAccount} from '@/types';
 // @ts-ignore
 import qs from 'qs';
 import {AxiosPromise, AxiosResponse} from 'axios';
@@ -18,3 +18,24 @@ export function getSysAccountInfoDetail(openId: string ): AxiosPromise<ResponseR
   });
 }
 
+export function getMoblieCode(mobile: string) : AxiosPromise<ResponseResult<RedisValueInfo>> {
+  return request({
+    url: '/passport/redis/mobile-code',
+    method: 'get',
+    params: {mobile},
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
+
+export function delMobileCheck(mobile: string) : AxiosPromise<ResponseResult<String>> {
+  return request({
+    url: '/passport/redis/del-mobile-check',
+    method: 'get',
+    params: {mobile},
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}

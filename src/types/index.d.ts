@@ -5,6 +5,7 @@
 // }
 
 import {Dictionary} from 'vue-router/types/router';
+import {inflate} from "zlib";
 
 export interface IPageinfo extends Dictionary<any> {
   page: number;
@@ -683,7 +684,57 @@ export interface OrderRefundInfoListQuery extends IPageinfo {
   phoneNo?: string;
   transactionId?: string;
 }
+export interface RedisValueInfo {
+  value?: any,
+  ttlTime?: number,
+}
 
+/**
+ *  客户端native登录ui元素类型-start
+ */
+export type UiItemType = 'COMMON'|'TEXT'| 'IMAGE'| 'BUTTON';
+
+export interface UiSwitchPageData {
+  name:string;
+  keyCode: number;
+  toPageId: number;
+}
+export interface UiItemData {
+  id?:number;
+  type: UiItemType;
+  name?: string;
+  w: number;
+  h: number;
+  x: number;
+  y: number;
+  text: string;
+  size: number;
+  color: string;
+  bold?: boolean;
+  isBG?: boolean;
+  imgUrl: string;
+  imgMd5?: string;
+  imgName?: string;
+  focusImgUrl?: string;
+  focusImgMd5?: string;
+  focusImgName?: string;
+  clickAction?: string;
+
+}
+export interface UiPageData {
+  id?: number;
+  name?: string;
+  isDefault?: boolean;
+  itemList?: UiItemData[];
+  switchPage?:UiSwitchPageData;
+}
+export interface UiContentData {
+  commonBg?:UiItemData;
+  pageList?: UiPageData[];
+}
+/**
+ *  客户端native登录ui元素类型-end
+ */
 // --------passport---------------
 
 
