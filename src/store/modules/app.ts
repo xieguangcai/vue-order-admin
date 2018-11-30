@@ -28,6 +28,7 @@ export interface IAppState {
   orderType: StatusInfo[];
   cardInfoStatus: StatusInfo[];
   cardBatchStatus: StatusInfo[];
+  uploadAction: string;
 }
 
 @Module({dynamic: true, store, name: 'app'})
@@ -99,6 +100,9 @@ class App extends VuexModule {
     {value: '1', label: '正常'},
     {value: '2', label: '作废'},
   ];
+
+  uploadAction: IAppState['uploadAction']  = process.env.VUE_APP_PASSPORT_API + 'api/authentication/file/upload';
+
   @Mutation
   TOGGLE_SIDEBAR(withoutAnimation: boolean) {
     if (this.sidebar.opened) {

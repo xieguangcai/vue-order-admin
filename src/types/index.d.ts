@@ -692,14 +692,15 @@ export interface RedisValueInfo {
 /**
  *  客户端native登录ui元素类型-start
  */
-export type UiItemType = 'COMMON'|'TEXT'| 'IMAGE'| 'BUTTON';
-
+export type UiItemType = 'COMMON'|'TEXT'| 'IMAGE'| 'BUTTON'| 'TEXT_VERSION'|'IMAGE_QR_CODE'|'COMMON_LOGIN_BY_MOBILE';
+export type UiPageSwitchType = 'up_down'| 'left_right';
 export interface UiSwitchPageData {
-  name:string;
+  name?:string;
   keyCode: number;
   toPageId: number;
 }
 export interface UiItemData {
+  zIndex?: number;
   id?:number;
   type: UiItemType;
   name?: string;
@@ -707,12 +708,12 @@ export interface UiItemData {
   h: number;
   x: number;
   y: number;
-  text: string;
-  size: number;
-  color: string;
+  text?: string;
+  size?: number;
+  color?: string;
   bold?: boolean;
   isBG?: boolean;
-  imgUrl: string;
+  imgUrl?: string;
   imgMd5?: string;
   imgName?: string;
   focusImgUrl?: string;
@@ -726,11 +727,12 @@ export interface UiPageData {
   name?: string;
   isDefault?: boolean;
   itemList?: UiItemData[];
-  switchPage?:UiSwitchPageData;
+  switchPage?:UiSwitchPageData[];
 }
 export interface UiContentData {
-  commonBg?:UiItemData;
-  pageList?: UiPageData[];
+  commonBg:UiItemData;
+  switchType: UiPageSwitchType;
+  pageList: UiPageData[];
 }
 /**
  *  客户端native登录ui元素类型-end

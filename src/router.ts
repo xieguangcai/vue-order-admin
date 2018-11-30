@@ -85,6 +85,24 @@ export default new Router({
           meta: {title: '验证码', icon: 'card'},
         },
       ],
+    },{
+      path: '/passport',
+      component: Layout,
+      name: '用户中心',
+      meta: {title: '用户中心', icon: 'form'},
+      children: [
+        {
+          path: 'new-login-layout',
+          name: '新增登录页',
+          component: () => import(/* webpackChunkName: "new-login-layout" */ '@/views/passport/tvlogin/native-view-edit.vue'),
+          meta: {title: '新增登录页', icon: 'tree'},
+        },
+        {
+          path: 'login-layout-list',
+          name: '登录页面管理',
+          component: () => import(/* webpackChunkName: "login-layout-list" */ '@/views/passport/tvlogin/index.vue'),
+          meta: {title: '登录页面管理', icon: 'table'},
+        }],
     },
     {
       path: '/union-manager',
