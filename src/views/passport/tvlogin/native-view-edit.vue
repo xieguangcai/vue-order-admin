@@ -294,12 +294,15 @@
               </el-checkbox-group>
             </el-form-item>
             <div v-if="innerViewModel === false">
-              <el-button size="mini" type="primary" icon="el-icon-edit-outline" @click="save"  v-if="domainInfo.status !== 2 ">保存</el-button>
+              <el-button size="mini" type="primary" icon="el-icon-edit-outline" @click="save"
+                         v-if="domainInfo.status !== 2 ">保存
+              </el-button>
               <el-button size="mini" type="warning" icon="el-icon-share" v-if="domainInfo.status !== 2 "
                          @click="publishTest">发布测试
               </el-button>
               <el-button size="mini" type="danger" icon="el-icon-share"
-                         v-if="domainInfo.status === 1 || domainInfo.status === 3 || domainInfo.status == 2" @click="publish">发布全网
+                         v-if="domainInfo.status === 1 || domainInfo.status === 3 || domainInfo.status == 2"
+                         @click="publish">发布全网
               </el-button>
             </div>
           </el-form>
@@ -324,650 +327,650 @@
 </template>
 
 <script lang="ts">
-import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
-import {
-  ResponseResult,
-  SysLoginLayoutModel,
-  UiContentData,
-  UiItemData,
-  UiItemType,
-  UiPageData,
-  UploadFileInfo,
-} from '../../../types';
-import {AppModule} from '../../../store/modules/app';
-import {Dictionary} from 'vuex';
-import {getFullToken} from '../../../utils/auth';
-import {pickerOptions} from '@/utils/validate';
-import {handlerCommonError} from '../../../utils/auth-interceptor';
-import {
-  addNewLoginLayout,
-  getLoginLayoutDetail, publisLoginLayout,
-  publisLoginLayoutTest,
-  updateLoginLayout,
-} from '../../../api/passport';
+  import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
+  import {
+    ResponseResult,
+    SysLoginLayoutModel,
+    UiContentData,
+    UiItemData,
+    UiItemType,
+    UiPageData,
+    UploadFileInfo,
+  } from '../../../types';
+  import {AppModule} from '../../../store/modules/app';
+  import {Dictionary} from 'vuex';
+  import {getFullToken} from '../../../utils/auth';
+  import {pickerOptions} from '@/utils/validate';
+  import {handlerCommonError} from '../../../utils/auth-interceptor';
+  import {
+    addNewLoginLayout,
+    getLoginLayoutDetail, publisLoginLayout,
+    publisLoginLayoutTest,
+    updateLoginLayout,
+  } from '../../../api/passport';
 
-@Component({
-  name: 'NativeViewEdit',
-  components: {},
-})
-export default class NativeViewEdit extends Vue {
+  @Component({
+    name: 'NativeViewEdit',
+    components: {},
+  })
+  export default class NativeViewEdit extends Vue {
 
-  @Prop({type: Number, default: 0})
-    // @ts-ignore
-  domainId: number;
-  @Prop({type: Boolean, default: false})
-    // @ts-ignore
-  viewModel: boolean;
+    @Prop({type: Number, default: 0})
+      // @ts-ignore
+    domainId: number;
+    @Prop({type: Boolean, default: false})
+      // @ts-ignore
+    viewModel: boolean;
 
-  activeNames: number[] = [];
+    activeNames: number[] = [];
 
-  innerViewModel: boolean = false;
-  innerDomainId: number = 0;
+    innerViewModel: boolean = false;
+    innerDomainId: number = 0;
 
-  platForm = ['yinhe', 'tencent', 'voole'];
-  validTime?: string[] | null  = null; // 投放方案的开始时间，结束时间
+    platForm = ['yinhe', 'tencent', 'voole'];
+    validTime?: string[] | null = null; // 投放方案的开始时间，结束时间
 
-  rules: any = {};
-  newComType: UiItemType = 'IMAGE';
-  editItem?: UiItemData;
-  maxPageId = 1;
-  currentEditPage?: UiPageData;
-  zoomValue = 0.4;
-  domainInfo?: SysLoginLayoutModel;
-  editLoginLayout?: UiContentData;
+    rules: any = {};
+    newComType: UiItemType = 'IMAGE';
+    editItem: UiItemData | null = null;
+    maxPageId = 1;
+    currentEditPage: UiPageData | null = null;
+    zoomValue = 0.4;
+    domainInfo: SysLoginLayoutModel | null = null;
+    editLoginLayout: UiContentData | null = null;
 
-  @Watch('domainId', {immediate: true})
-  handleDomainIdChange(newVal: number , oldVal?: number) {
-    this.onDomainIdChange(newVal);
-  }
+    @Watch('domainId', {immediate: true})
+    handleDomainIdChange(newVal: number, oldVal?: number) {
+      this.onDomainIdChange(newVal);
+    }
 
-  @Watch('viewModel', {immediate: true})
-  handleViewModelChange(newVal: boolean , oldVal?: boolean) {
-    this.innerViewModel = newVal;
-    console.log('innerViewModel changed ' + newVal);
-  }
+    @Watch('viewModel', {immediate: true})
+    handleViewModelChange(newVal: boolean, oldVal?: boolean) {
+      this.innerViewModel = newVal;
+      console.log('innerViewModel changed ' + newVal);
+    }
 
-  onDomainIdChange(newVal: number) {
-    this.innerDomainId = newVal;
-    if (null == newVal || newVal === 0) {
-      this.domainInfo = this.getInitData();
-      this.dataLoaded();
-    } else {
-      getLoginLayoutDetail(this.innerDomainId).then((resolve) => {
-        this.domainInfo = resolve.data.data;
+    onDomainIdChange(newVal: number) {
+      this.innerDomainId = newVal;
+      if (null == newVal || newVal === 0) {
+        this.domainInfo = this.getInitData();
         this.dataLoaded();
-      }).catch(handlerCommonError);
+      } else {
+        getLoginLayoutDetail(this.innerDomainId).then((resolve) => {
+          this.domainInfo = resolve.data.data;
+          this.dataLoaded();
+        }).catch(handlerCommonError);
+      }
     }
-  }
 
-  dataLoaded() {
-    if (this.domainInfo === undefined ) {
-      return;
+    dataLoaded() {
+      if (this.domainInfo == null) {
+        return;
+      }
+      this.editLoginLayout = this.domainInfo.uiContentData;
+      if (this.domainInfo.sourceSign !== undefined) {
+        this.platForm = this.domainInfo.sourceSign.split(',');
+      }
+      if (
+        null != this.domainInfo.startTime && undefined !== this.domainInfo.startTime && '' !== this.domainInfo.startTime &&
+        null != this.domainInfo.endTime && undefined !== this.domainInfo.endTime && '' !== this.domainInfo.endTime
+      ) {
+        this.validTime = [this.domainInfo.startTime, this.domainInfo.endTime];
+      }
+      this.initProperties();
     }
-    this.editLoginLayout = this.domainInfo.uiContentData;
-    if ( this.domainInfo.sourceSign !== undefined) {
-      this.platForm = this.domainInfo.sourceSign.split(',');
-    }
-    if (
-      null != this.domainInfo.startTime && undefined !== this.domainInfo.startTime && '' !== this.domainInfo.startTime &&
-      null != this.domainInfo.endTime && undefined !== this.domainInfo.endTime && '' !== this.domainInfo.endTime
-  ) {
-      this.validTime = [this.domainInfo.startTime, this.domainInfo.endTime];
-    }
-    this.initProperties();
-  }
 
-  uploadError(res: ResponseResult<string>) {
-    const msg = (res != null ? res.message : null) || '上传文件失败';
-    this.$message.error(msg);
-  }
-
-  get commonStyle(): any {
-    if (this.editLoginLayout === undefined) {
-      return ;
+    uploadError(res: ResponseResult<string>) {
+      const msg = (res != null ? res.message : null) || '上传文件失败';
+      this.$message.error(msg);
     }
-    const comBg = this.editLoginLayout.commonBg;
-    return {
-      width: comBg.w + 'px',
-      height: comBg.h + 'px',
-      left: comBg.x + 'px',
-      top: comBg.y + 'px',
-      background: 'url(' + comBg.imgUrl + ') center center',
-      zIndex: 0,
-      backgroundColor: comBg.color,
-    };
-  }
 
-
-  /**
-   * 按钮按下的时候，显示不同的背景，模拟获取焦点的图片
-   */
-  changeBg(parse: boolean, item: UiItemData, obj: HTMLElement) {
-    let url = '';
-    if (parse === true) {
-      url = item.focusImgUrl || '';
-    } else {
-      url = item.imgUrl || '';
+    get commonStyle(): any {
+      if (this.editLoginLayout == null) {
+        return;
+      }
+      const comBg = this.editLoginLayout.commonBg;
+      return {
+        width: comBg.w + 'px',
+        height: comBg.h + 'px',
+        left: comBg.x + 'px',
+        top: comBg.y + 'px',
+        background: 'url(' + comBg.imgUrl + ') center center',
+        zIndex: 0,
+        backgroundColor: comBg.color,
+      };
     }
-    obj.style.background = 'url(' + url + ') center center';
-  }
 
-  removeCommonBg() {
-    if (this.editItem == null) {
-      return;
-    }
-    this.editItem.imgUrl = '';
-    this.editItem.imgMd5 = '';
-    this.editItem.imgName = '';
-  }
 
-  /**
-   * 调整层次位置
-   */
-  justZIndex(down: boolean) {
-    if (this.editItem === null ||  this.currentEditPage === undefined || this.currentEditPage.itemList === undefined) {
-      return;
+    /**
+     * 按钮按下的时候，显示不同的背景，模拟获取焦点的图片
+     */
+    changeBg(parse: boolean, item: UiItemData, obj: HTMLElement) {
+      let url = '';
+      if (parse === true) {
+        url = item.focusImgUrl || '';
+      } else {
+        url = item.imgUrl || '';
+      }
+      obj.style.background = 'url(' + url + ') center center';
     }
-    for (let i = 0; i < this.currentEditPage.itemList.length; i++) {
-      const item = this.currentEditPage.itemList[i];
-      if (this.editItem === item) {
-        // 交换数组位置
-        if (down === true) {
-          if (i === 0) {
-            // 第一个
-            this.$message.info('已经是最底层了');
+
+    removeCommonBg() {
+      if (this.editItem == null) {
+        return;
+      }
+      this.editItem.imgUrl = '';
+      this.editItem.imgMd5 = '';
+      this.editItem.imgName = '';
+    }
+
+    /**
+     * 调整层次位置
+     */
+    justZIndex(down: boolean) {
+      if (this.editItem == null || this.currentEditPage == null || this.currentEditPage.itemList === undefined) {
+        return;
+      }
+      for (let i = 0; i < this.currentEditPage.itemList.length; i++) {
+        const item = this.currentEditPage.itemList[i];
+        if (this.editItem === item) {
+          // 交换数组位置
+          if (down === true) {
+            if (i === 0) {
+              // 第一个
+              this.$message.info('已经是最底层了');
+            } else {
+              const prev = this.currentEditPage.itemList[i - 1];
+              this.currentEditPage.itemList[i - 1] = item;
+              this.$set(this.currentEditPage.itemList, i, prev);
+            }
           } else {
-            const prev = this.currentEditPage.itemList[i - 1];
-            this.currentEditPage.itemList[i - 1] = item;
-            this.$set(this.currentEditPage.itemList, i, prev);
+            if (i === this.currentEditPage.itemList.length - 1) {
+              this.$message.info('已经是最上层了');
+            } else {
+              const next = this.currentEditPage.itemList[i + 1];
+              this.currentEditPage.itemList[i + 1] = item;
+              this.$set(this.currentEditPage.itemList, i, next);
+            }
           }
-        } else {
-          if (i === this.currentEditPage.itemList.length - 1) {
-            this.$message.info('已经是最上层了');
-          } else {
-            const next = this.currentEditPage.itemList[i + 1];
-            this.currentEditPage.itemList[i + 1] = item;
-            this.$set(this.currentEditPage.itemList, i, next);
-          }
-        }
-        break;
-      }
-    }
-  }
-
-  removeComponent() {
-    if (this.editItem === undefined || this.currentEditPage === undefined || this.currentEditPage.itemList === undefined) {
-      return;
-    }
-    for (let i = 0; i < this.currentEditPage.itemList.length; i++) {
-      const item = this.currentEditPage.itemList[i];
-      if (this.editItem === item) {
-        this.currentEditPage.itemList.splice(i, 1);
-        this.editItem = undefined;
-        break;
-      }
-    }
-  }
-
-  addComponent() {
-    if (this.currentEditPage == null) {
-      return;
-    }
-    const newCom = this.newComFromType(this.newComType);
-    if (null == this.currentEditPage.itemList) {
-      this.currentEditPage.itemList = [];
-    }
-    this.currentEditPage.itemList.push(newCom);
-  }
-
-  newComFromType(type: UiItemType): UiItemData {
-    // 根据不同
-    // 'COMMON'|'TEXT'| 'IMAGE'| 'BUTTON'| 'TEXT_VERSION'|'IMAGE_QR_CODE'|'COMMON_LOGIN_BY_MOBILE'
-    const itemData = {
-      type,
-      w: 200,
-      h: 60,
-      x: 100,
-      y: 100,
-      text: '新添加的组件',
-      size: 16,
-      color: '#ff8a24',
-      bold: false,
-      isBG: false,
-      imgUrl: '',
-      imgMd5: '',
-      imgName: '',
-      focusImgUrl: '',
-      focusImgMd5: '',
-      focusImgName: '',
-      clickAction: '',
-    };
-    switch (type) {
-      case 'IMAGE':
-        itemData.w = 300;
-        itemData.h = 300;
-        break;
-      case 'IMAGE_QR_CODE':
-        itemData.w = 430;
-        itemData.h = 430;
-        itemData.y = 325;
-        itemData.x = 745;
-        break;
-      case 'COMMON_LOGIN_BY_MOBILE':
-        itemData.w = 714;
-        itemData.h = 742;
-        itemData.y = 169;
-        itemData.x = 600;
-        break;
-      case 'TEXT_VERSION':
-        itemData.w = 400;
-        itemData.h = 40;
-        itemData.x = 20;
-        itemData.y = 1040;
-        itemData.size = 12;
-        break;
-    }
-    return itemData;
-  }
-
-  pageSelect(item: UiPageData) {
-    if (item !== this.currentEditPage) {
-      this.currentEditPage = item;
-      this.editItem = undefined;
-    }
-  }
-
-  getCodeName(code: number): string {
-    switch (code) {
-      case 37:
-        return '左';
-      case 38:
-        return '上';
-      case 39:
-        return '右';
-      case 40:
-        return '下';
-    }
-    return '';
-  }
-
-  removePage() {
-    if (this.editLoginLayout === undefined) {
-      return;
-    }
-    if (this.editLoginLayout.pageList.length <= 1) {
-      this.$message.error('无法删除最后一个页面');
-      return;
-    }
-    if (this.currentEditPage === undefined) {
-      return;
-    }
-    this.$confirm('确认删除该页面吗?', '警告', {
-      confirmButtonText: '确认',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }).then(async () => {
-      if (this.editLoginLayout === undefined || this.currentEditPage === undefined || this.editLoginLayout.pageList === undefined) {
-        return ;
-      }
-      for (let i = 0; i < this.editLoginLayout.pageList.length; i++) {
-        const item = this.editLoginLayout.pageList[i];
-        if (item.id === this.currentEditPage.id) {
-          // 删除此页面
-
-          this.editLoginLayout.pageList.splice(i, 1);
           break;
         }
       }
-      if (this.currentEditPage.isDefault === true) {
-        this.editLoginLayout.pageList[0].isDefault = true;
+    }
+
+    removeComponent() {
+      if (this.editItem == null || this.currentEditPage == null || this.currentEditPage.itemList === undefined) {
+        return;
       }
-      this.currentEditPage = this.editLoginLayout.pageList[0];
-      this.editItem = undefined;
+      for (let i = 0; i < this.currentEditPage.itemList.length; i++) {
+        const item = this.currentEditPage.itemList[i];
+        if (this.editItem === item) {
+          this.currentEditPage.itemList.splice(i, 1);
+          this.editItem = null;
+          break;
+        }
+      }
+    }
+
+    addComponent() {
+      if (this.currentEditPage == null) {
+        return;
+      }
+      const newCom = this.newComFromType(this.newComType);
+      if (null == this.currentEditPage.itemList) {
+        this.currentEditPage.itemList = [];
+      }
+      this.currentEditPage.itemList.push(newCom);
+    }
+
+    newComFromType(type: UiItemType): UiItemData {
+      // 根据不同
+      // 'COMMON'|'TEXT'| 'IMAGE'| 'BUTTON'| 'TEXT_VERSION'|'IMAGE_QR_CODE'|'COMMON_LOGIN_BY_MOBILE'
+      const itemData = {
+        type,
+        w: 200,
+        h: 60,
+        x: 100,
+        y: 100,
+        text: '新添加的组件',
+        size: 16,
+        color: '#ff8a24',
+        bold: false,
+        isBG: false,
+        imgUrl: '',
+        imgMd5: '',
+        imgName: '',
+        focusImgUrl: '',
+        focusImgMd5: '',
+        focusImgName: '',
+        clickAction: '',
+      };
+      switch (type) {
+        case 'IMAGE':
+          itemData.w = 300;
+          itemData.h = 300;
+          break;
+        case 'IMAGE_QR_CODE':
+          itemData.w = 430;
+          itemData.h = 430;
+          itemData.y = 325;
+          itemData.x = 745;
+          break;
+        case 'COMMON_LOGIN_BY_MOBILE':
+          itemData.w = 714;
+          itemData.h = 742;
+          itemData.y = 169;
+          itemData.x = 600;
+          break;
+        case 'TEXT_VERSION':
+          itemData.w = 400;
+          itemData.h = 40;
+          itemData.x = 20;
+          itemData.y = 1040;
+          itemData.size = 12;
+          break;
+      }
+      return itemData;
+    }
+
+    pageSelect(item: UiPageData) {
+      if (item !== this.currentEditPage) {
+        this.currentEditPage = item;
+        this.editItem = null;
+      }
+    }
+
+    getCodeName(code: number): string {
+      switch (code) {
+        case 37:
+          return '左';
+        case 38:
+          return '上';
+        case 39:
+          return '右';
+        case 40:
+          return '下';
+      }
+      return '';
+    }
+
+    removePage() {
+      if (this.editLoginLayout == null) {
+        return;
+      }
+      if (this.editLoginLayout.pageList.length <= 1) {
+        this.$message.error('无法删除最后一个页面');
+        return;
+      }
+      if (this.currentEditPage == null) {
+        return;
+      }
+      this.$confirm('确认删除该页面吗?', '警告', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(async () => {
+        if (this.editLoginLayout == null || this.currentEditPage == null || this.editLoginLayout.pageList === undefined) {
+          return;
+        }
+        for (let i = 0; i < this.editLoginLayout.pageList.length; i++) {
+          const item = this.editLoginLayout.pageList[i];
+          if (item.id === this.currentEditPage.id) {
+            // 删除此页面
+
+            this.editLoginLayout.pageList.splice(i, 1);
+            break;
+          }
+        }
+        if (this.currentEditPage.isDefault === true) {
+          this.editLoginLayout.pageList[0].isDefault = true;
+        }
+        this.currentEditPage = this.editLoginLayout.pageList[0];
+        this.editItem = null;
+        this.rebuildSwitchPageData();
+      });
+    }
+
+    /**
+     * 重新构建每个页面中的导航数据
+     */
+    rebuildSwitchPageData() {
+      if (this.editLoginLayout == null) {
+        return;
+      }
+      const length = this.editLoginLayout.pageList.length;
+      if (length === 1) {
+        this.editLoginLayout.pageList[0].switchPage = [];
+      } else if (length > 1) {
+        let preCode = 37;
+        let nextCode = 39;
+        if (this.editLoginLayout.switchType === 'up_down') {
+          preCode = 38;
+          nextCode = 40;
+        }
+        if (length > 2) {
+          // 多余2个的中间的都加上2个导航
+          for (let start = 1; start < length - 1; start++) {
+            const pre = this.editLoginLayout.pageList[start - 1];
+            const next = this.editLoginLayout.pageList[start + 1];
+            const cur = this.editLoginLayout.pageList[start];
+            cur.switchPage = [];
+            cur.switchPage.push({keyCode: preCode, toPageId: pre.id, name: pre.name});
+            cur.switchPage.push({keyCode: nextCode, toPageId: next.id, name: next.name});
+          }
+        }
+        const first = this.editLoginLayout.pageList[0];
+        const sec = this.editLoginLayout.pageList[1];
+        const last = this.editLoginLayout.pageList[length - 1];
+        const preLast = this.editLoginLayout.pageList[length - 2];
+        first.switchPage = [{keyCode: nextCode, toPageId: sec.id, name: sec.name}];
+        last.switchPage = [{keyCode: preCode, toPageId: preLast.id, name: preLast.name}];
+      }
+    }
+
+    initProperties() {
+      if (null == this.editLoginLayout) {
+        return;
+      }
+      let id = 1;
+      this.editLoginLayout.pageList.forEach((item) => {
+        if (item.id !== undefined) {
+          if (id < item.id) {
+            id = item.id;
+          }
+        }
+      });
+      this.maxPageId = id;
+      if (this.editLoginLayout.pageList.length > 0) {
+        this.currentEditPage = this.editLoginLayout.pageList[0];
+      } else {
+        this.addNewPage();
+      }
       this.rebuildSwitchPageData();
-    });
-  }
-
-  /**
-   * 重新构建每个页面中的导航数据
-   */
-  rebuildSwitchPageData() {
-    if (this.editLoginLayout === undefined) {
-      return;
     }
-    const length = this.editLoginLayout.pageList.length;
-    if (length === 1) {
-      this.editLoginLayout.pageList[0].switchPage = [];
-    } else if (length > 1) {
-      let preCode = 37;
-      let nextCode = 39;
-      if (this.editLoginLayout.switchType === 'up_down') {
-        preCode = 38;
-        nextCode = 40;
+
+    defaultPageChange(newValue: boolean, changeItem: UiPageData): void {
+      if (this.editLoginLayout == null) {
+        return;
       }
-      if (length > 2) {
-        // 多余2个的中间的都加上2个导航
-        for (let start = 1; start < length - 1; start++) {
-          const pre = this.editLoginLayout.pageList[start - 1];
-          const next = this.editLoginLayout.pageList[start + 1];
-          const cur = this.editLoginLayout.pageList[start];
-          cur.switchPage = [];
-          cur.switchPage.push({keyCode: preCode, toPageId: pre.id, name: pre.name});
-          cur.switchPage.push({keyCode: nextCode, toPageId: next.id, name: next.name});
+      this.editLoginLayout.pageList.forEach((item) => {
+        if (item.id !== changeItem.id) {
+          item.isDefault = false;
         }
+      });
+    }
+
+    /**
+     * 添加新的编辑页面，并将当前页面作为最新编辑的页面。
+     */
+    addNewPage(): UiPageData | undefined {
+      if (this.editLoginLayout == null) {
+        return;
       }
-      const first = this.editLoginLayout.pageList[0];
-      const sec = this.editLoginLayout.pageList[1];
-      const last = this.editLoginLayout.pageList[length - 1];
-      const preLast = this.editLoginLayout.pageList[length - 2];
-      first.switchPage = [{keyCode: nextCode, toPageId: sec.id, name: sec.name}];
-      last.switchPage = [{keyCode: preCode, toPageId: preLast.id, name: preLast.name}];
-    }
-  }
+      const newId = this.getNewPageId();
+      const newpage = {
+        id: newId, name: '新页面' + newId, isDefault: false, itemList: [], switchPage: [],
+      };
+      this.editLoginLayout.pageList.push(newpage);
+      this.currentEditPage = newpage;
 
-  initProperties() {
-    if (null == this.editLoginLayout) {
-      return;
+      this.rebuildSwitchPageData();
+      this.editItem = null;
+      return newpage;
     }
-    let id = 1;
-    this.editLoginLayout.pageList.forEach((item) => {
-      if (item.id !== undefined) {
-        if (id < item.id) {
-          id = item.id;
-        }
+
+    getNewPageId(): number {
+      this.maxPageId = this.maxPageId + 1;
+      return this.maxPageId;
+    }
+
+    created() {
+      // @ts-ignore
+      // let id = this.$route.query.id;
+      // // @ts-ignore
+      // let innerViewModel = this.$route.query.viewModel;
+      // this.innerViewModel = innerViewModel == 'true';
+      // if (null != id) {
+      //   this.onDomainIdChange(id);
+      // }
+      // this.initProperties();
+    }
+
+    handleFocusSuccess(res: ResponseResult<UploadFileInfo>, file: any, editItem: UiItemData) {
+      console.log(res);
+      if (res.success) {
+        editItem.focusImgUrl = res.data.url;
+        editItem.focusImgName = res.data.fileName;
+        editItem.focusImgMd5 = res.data.md5;
+      } else {
+        this.$message.error(res.message);
       }
-    });
-    this.maxPageId = id;
-    if (this.editLoginLayout.pageList.length > 0) {
-      this.currentEditPage = this.editLoginLayout.pageList[0];
-    } else {
-      this.addNewPage();
     }
-    this.rebuildSwitchPageData();
-  }
 
-  defaultPageChange(newValue: boolean, changeItem: UiPageData): void {
-    if (this.editLoginLayout === undefined) {
-      return;
+    getAuthHeader(): Dictionary<string> {
+      const headerInfo = {Authorization: getFullToken()};
+      return headerInfo;
     }
-    this.editLoginLayout.pageList.forEach((item) => {
-      if (item.id !== changeItem.id) {
-        item.isDefault = false;
+
+    getActionUrl(): string {
+      return AppModule.uploadAction;
+    }
+
+    handleSuccess(res: ResponseResult<UploadFileInfo>, file: any, editItem: UiItemData) {
+      console.log(res);
+      if (res.success) {
+        editItem.imgUrl = res.data.url;
+        editItem.imgName = res.data.fileName;
+        editItem.imgMd5 = res.data.md5;
+      } else {
+        this.$message.error(res.message);
       }
-    });
-  }
-
-  /**
-   * 添加新的编辑页面，并将当前页面作为最新编辑的页面。
-   */
-  addNewPage(): UiPageData | undefined {
-    if (this.editLoginLayout === undefined) {
-      return;
     }
-    const newId = this.getNewPageId();
-    const newpage = {
-      id: newId, name: '新页面' + newId, isDefault: false, itemList: [], switchPage: [],
-    };
-    this.editLoginLayout.pageList.push(newpage);
-    this.currentEditPage = newpage;
 
-    this.rebuildSwitchPageData();
-    this.editItem = undefined;
-    return newpage;
-  }
-
-  getNewPageId(): number {
-    this.maxPageId = this.maxPageId + 1;
-    return this.maxPageId;
-  }
-
-  created() {
-    // @ts-ignore
-    // let id = this.$route.query.id;
-    // // @ts-ignore
-    // let innerViewModel = this.$route.query.viewModel;
-    // this.innerViewModel = innerViewModel == 'true';
-    // if (null != id) {
-    //   this.onDomainIdChange(id);
-    // }
-    // this.initProperties();
-  }
-
-  handleFocusSuccess(res: ResponseResult<UploadFileInfo>, file: any , editItem: UiItemData) {
-    console.log(res);
-    if (res.success) {
-      editItem.focusImgUrl = res.data.url;
-      editItem.focusImgName = res.data.fileName;
-      editItem.focusImgMd5 = res.data.md5;
-    } else {
-      this.$message.error(res.message);
+    getFocusFileList(item: UiItemData): any {
+      return [{name: item.focusImgName, url: item.focusImgUrl}];
     }
-  }
 
-  getAuthHeader(): Dictionary<string> {
-    const headerInfo = {Authorization: getFullToken()};
-    return headerInfo;
-  }
-
-  getActionUrl(): string {
-    return AppModule.uploadAction;
-  }
-
-  handleSuccess(res: ResponseResult<UploadFileInfo>, file: any, editItem: UiItemData) {
-    console.log(res);
-    if (res.success) {
-      editItem.imgUrl = res.data.url;
-      editItem.imgName = res.data.fileName;
-      editItem.imgMd5 = res.data.md5;
-    } else {
-      this.$message.error(res.message);
+    getFileList(item: UiItemData): any {
+      return [{name: item.imgName, url: item.imgUrl}];
     }
-  }
 
-  getFocusFileList(item: UiItemData): any {
-    return [{name: item.focusImgName, url: item.focusImgUrl}];
-  }
-
-  getFileList(item: UiItemData): any {
-    return [{name: item.imgName, url: item.imgUrl}];
-  }
-
-  editItemProp(item: UiItemData) {
-    this.editItem = item;
-  }
-
-  getItemStyle(item: UiItemData, extend?: number): any {
-    const attr: any = {};
-    extend = extend || 0;
-    attr.width = (item.w + extend) + 'px';
-    attr.height = (item.h + extend) + 'px';
-    attr.left = item.x + 'px';
-    attr.top = item.y + 'px';
-    attr.color = item.color;
-    if (item.zIndex != null) {
-      attr.zIndex = item.zIndex;
+    editItemProp(item: UiItemData) {
+      this.editItem = item;
     }
-    switch (item.type) {
-      case 'TEXT':
-        attr.fontSize = item.size + 'px';
-        break;
-      case 'BUTTON':
-        attr.background = 'url(' + item.imgUrl + ') center center';
-        break;
 
-    }
-    return attr;
-  }
-
-  /**
-   * 发布
-   */
-  publish() {
-    if (this.domainInfo == null || this.domainInfo === undefined) {
-      this.$message.error('对象为空不能保存');
-      return;
-    }
-    if (this.domainInfo.status !== 1 && this.domainInfo.status !== 3) {
-      this.$message.error('推送全网环境之前必须经过测试');
-      return;
-    }
-    console.log('推送全网');
-
-    publisLoginLayout(this.domainInfo.id).then(() => {
-      this.$message.success('推送成功');
-      // 重新加载
-      if ( this.domainInfo !== undefined) {
-        this.handleDomainIdChange(this.domainInfo.id);
+    getItemStyle(item: UiItemData, extend?: number): any {
+      const attr: any = {};
+      extend = extend || 0;
+      attr.width = (item.w + extend) + 'px';
+      attr.height = (item.h + extend) + 'px';
+      attr.left = item.x + 'px';
+      attr.top = item.y + 'px';
+      attr.color = item.color;
+      if (item.zIndex != null) {
+        attr.zIndex = item.zIndex;
       }
-    }).catch(handlerCommonError);
-  }
+      switch (item.type) {
+        case 'TEXT':
+          attr.fontSize = item.size + 'px';
+          break;
+        case 'BUTTON':
+          attr.background = 'url(' + item.imgUrl + ') center center';
+          break;
 
-  /**
-   * 发布至测试
-   */
-  publishTest() {
-    if (this.domainInfo == null) {
-      this.$message.error('对象为空不能保存');
-      return;
-    }
-    if (this.domainInfo.mac == null || this.domainInfo.mac === '') {
-      this.$message.error('推送测试环境必须指定mac地址');
-      return;
-    }
-    console.log('推送测试环境');
-
-    publisLoginLayoutTest(this.domainInfo).then(() => {
-      this.$message.success('推送成功');
-      // 重新加载
-      if (this.domainInfo != null && this.domainInfo.id !== undefined) {
-        this.handleDomainIdChange(this.domainInfo.id);
       }
-    }).catch(handlerCommonError);
-  }
+      return attr;
+    }
 
-  /**
-   * 保存
-   */
-  save() {
-    console.log('保存方案');
-    console.log(this.domainInfo);
-    if (this.domainInfo == null) {
-      this.$message.error('对象为空不能保存');
-      return;
-    }
-    // 将其他关联配置信息保存到对象中
-    this.domainInfo.sourceSign = this.platForm.join(',');
-    if (this.validTime != null && this.validTime.length === 2) {
-      this.domainInfo.startTime = this.validTime[0];
-      this.domainInfo.endTime = this.validTime[1];
-    }
-    if (this.domainInfo.id !== 0 && this.domainInfo.id != null) {
-      updateLoginLayout(this.domainInfo).then(() => {
-        this.$message.success('修改成功');
-      }).catch(handlerCommonError);
-    } else {
-      addNewLoginLayout(this.domainInfo).then((response) => {
-        this.$message.success('新增成功');
-        if (null != this.domainInfo) {
-          this.domainInfo.id = response.data.data.id;
+    /**
+     * 发布
+     */
+    publish() {
+      if (this.domainInfo == null) {
+        this.$message.error('对象为空不能保存');
+        return;
+      }
+      if (this.domainInfo.status !== 1 && this.domainInfo.status !== 3) {
+        this.$message.error('推送全网环境之前必须经过测试');
+        return;
+      }
+      console.log('推送全网');
+
+      publisLoginLayout(this.domainInfo.id).then(() => {
+        this.$message.success('推送成功');
+        // 重新加载
+        if (this.domainInfo != null) {
+          this.handleDomainIdChange(this.domainInfo.id);
         }
       }).catch(handlerCommonError);
     }
-  }
 
-  getInitData(): SysLoginLayoutModel {
-    const ui: UiContentData = {
-      switchType: 'up_down',
-      commonBg: {
-        type: 'COMMON',
-        x: 0,
-        y: 0,
-        w: 1920,
-        h: 1080,
-        imgUrl: 'http://pic1.win4000.com/wallpaper/4/59881599deed4.jpg',
-      },
-      pageList: [{
-        id: 1,
-        name: '二维码页面',
-        isDefault: true,
-        itemList: [{
-          type: 'IMAGE_QR_CODE',
-          w: 430,
-          h: 430,
-          x: 745,
-          y: 325,
-          text: '新添加的组件',
-          size: 16,
-          color: '#ff8a24',
-          bold: false,
-          isBG: false,
-          imgUrl: '',
-          imgMd5: '',
-          imgName: '',
-          focusImgUrl: '',
-          focusImgMd5: '',
-          focusImgName: '',
-          clickAction: '',
+    /**
+     * 发布至测试
+     */
+    publishTest() {
+      if (this.domainInfo == null) {
+        this.$message.error('对象为空不能保存');
+        return;
+      }
+      if (this.domainInfo.mac == null || this.domainInfo.mac === '') {
+        this.$message.error('推送测试环境必须指定mac地址');
+        return;
+      }
+      console.log('推送测试环境');
+
+      publisLoginLayoutTest(this.domainInfo).then(() => {
+        this.$message.success('推送成功');
+        // 重新加载
+        if (this.domainInfo != null && this.domainInfo.id !== undefined) {
+          this.handleDomainIdChange(this.domainInfo.id);
+        }
+      }).catch(handlerCommonError);
+    }
+
+    /**
+     * 保存
+     */
+    save() {
+      console.log('保存方案');
+      console.log(this.domainInfo);
+      if (this.domainInfo == null) {
+        this.$message.error('对象为空不能保存');
+        return;
+      }
+      // 将其他关联配置信息保存到对象中
+      this.domainInfo.sourceSign = this.platForm.join(',');
+      if (this.validTime != null && this.validTime.length === 2) {
+        this.domainInfo.startTime = this.validTime[0];
+        this.domainInfo.endTime = this.validTime[1];
+      }
+      if (this.domainInfo.id !== 0 && this.domainInfo.id != null) {
+        updateLoginLayout(this.domainInfo).then(() => {
+          this.$message.success('修改成功');
+        }).catch(handlerCommonError);
+      } else {
+        addNewLoginLayout(this.domainInfo).then((response) => {
+          this.$message.success('新增成功');
+          if (null != this.domainInfo) {
+            this.domainInfo.id = response.data.data.id;
+          }
+        }).catch(handlerCommonError);
+      }
+    }
+
+    getInitData(): SysLoginLayoutModel {
+      const ui: UiContentData = {
+        switchType: 'up_down',
+        commonBg: {
+          type: 'COMMON',
+          x: 0,
+          y: 0,
+          w: 1920,
+          h: 1080,
+          imgUrl: 'http://pic1.win4000.com/wallpaper/4/59881599deed4.jpg',
+        },
+        pageList: [{
+          id: 1,
+          name: '二维码页面',
+          isDefault: true,
+          itemList: [{
+            type: 'IMAGE_QR_CODE',
+            w: 430,
+            h: 430,
+            x: 745,
+            y: 325,
+            text: '新添加的组件',
+            size: 16,
+            color: '#ff8a24',
+            bold: false,
+            isBG: false,
+            imgUrl: '',
+            imgMd5: '',
+            imgName: '',
+            focusImgUrl: '',
+            focusImgMd5: '',
+            focusImgName: '',
+            clickAction: '',
+          }, {
+            type: 'TEXT_VERSION',
+            w: 400,
+            h: 40,
+            x: 20,
+            y: 1040,
+            text: '新添加的组件',
+            size: 12,
+            color: '#ff8a24',
+            bold: false,
+            isBG: false,
+            imgUrl: '',
+            imgMd5: '',
+            imgName: '',
+            focusImgUrl: '',
+            focusImgMd5: '',
+            focusImgName: '',
+            clickAction: '',
+          }],
+          switchPage: [{keyCode: 40, toPageId: 2, name: '手机号页面'}],
         }, {
-          type: 'TEXT_VERSION',
-          w: 400,
-          h: 40,
-          x: 20,
-          y: 1040,
-          text: '新添加的组件',
-          size: 12,
-          color: '#ff8a24',
-          bold: false,
-          isBG: false,
-          imgUrl: '',
-          imgMd5: '',
-          imgName: '',
-          focusImgUrl: '',
-          focusImgMd5: '',
-          focusImgName: '',
-          clickAction: '',
+          id: 2,
+          name: '手机号页面',
+          isDefault: false,
+          itemList: [{
+            type: 'COMMON_LOGIN_BY_MOBILE',
+            w: 714,
+            h: 742,
+            x: 600,
+            y: 169,
+            text: '新添加的组件',
+            size: 16,
+            color: '#ff8a24',
+            bold: false,
+            isBG: false,
+            imgUrl: '',
+            imgMd5: '',
+            imgName: '',
+            focusImgUrl: '',
+            focusImgMd5: '',
+            focusImgName: '',
+            clickAction: '',
+          }],
+          switchPage: [{keyCode: 38, toPageId: 1, name: '二维码页面'}],
         }],
-        switchPage: [{keyCode: 40, toPageId: 2, name: '手机号页面'}],
-      }, {
-        id: 2,
-        name: '手机号页面',
-        isDefault: false,
-        itemList: [{
-          type: 'COMMON_LOGIN_BY_MOBILE',
-          w: 714,
-          h: 742,
-          x: 600,
-          y: 169,
-          text: '新添加的组件',
-          size: 16,
-          color: '#ff8a24',
-          bold: false,
-          isBG: false,
-          imgUrl: '',
-          imgMd5: '',
-          imgName: '',
-          focusImgUrl: '',
-          focusImgMd5: '',
-          focusImgName: '',
-          clickAction: '',
-        }],
-        switchPage: [{keyCode: 38, toPageId: 1, name: '二维码页面'}],
-      }],
-    };
-    const newModel: SysLoginLayoutModel = {
-      id: 0,
-      name: '新登录布局',
-      status: 0,
-      mac: '',
-      sourceSign: 'yinhe,tencent,voole',
-      priority: 1,
-      minVersion: '4100000',
-      uiContentData: ui,
-    };
-    return newModel;
-  }
+      };
+      const newModel: SysLoginLayoutModel = {
+        id: 0,
+        name: '新登录布局',
+        status: 0,
+        mac: '',
+        sourceSign: 'yinhe,tencent,voole',
+        priority: 1,
+        minVersion: '4100000',
+        uiContentData: ui,
+      };
+      return newModel;
+    }
 
-}
+  }
 </script>
 
 
