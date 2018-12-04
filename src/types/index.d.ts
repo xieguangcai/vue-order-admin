@@ -5,7 +5,7 @@
 // }
 
 import {Dictionary} from 'vue-router/types/router';
-import {inflate} from "zlib";
+import {inflate} from 'zlib';
 
 export interface IPageinfo extends Dictionary<any> {
   page: number;
@@ -685,8 +685,8 @@ export interface OrderRefundInfoListQuery extends IPageinfo {
   transactionId?: string;
 }
 export interface RedisValueInfo {
-  value?: any,
-  ttlTime?: number,
+  value?: any;
+  ttlTime?: number;
 }
 
 /**
@@ -695,13 +695,13 @@ export interface RedisValueInfo {
 export type UiItemType = 'COMMON'|'TEXT'| 'IMAGE'| 'BUTTON'| 'TEXT_VERSION'|'IMAGE_QR_CODE'|'COMMON_LOGIN_BY_MOBILE';
 export type UiPageSwitchType = 'up_down'| 'left_right';
 export interface UiSwitchPageData {
-  name?:string;
+  name?: string;
   keyCode: number;
-  toPageId: number;
+  toPageId?: number;
 }
 export interface UiItemData {
   zIndex?: number;
-  id?:number;
+  id?: number;
   type: UiItemType;
   name?: string;
   w: number;
@@ -725,14 +725,44 @@ export interface UiItemData {
 export interface UiPageData {
   id?: number;
   name?: string;
-  isDefault?: boolean;
+  isDefault: boolean;
   itemList?: UiItemData[];
-  switchPage?:UiSwitchPageData[];
+  switchPage?: UiSwitchPageData[];
 }
 export interface UiContentData {
-  commonBg:UiItemData;
+  commonBg: UiItemData;
   switchType: UiPageSwitchType;
   pageList: UiPageData[];
+}
+
+export interface SysLoginLayoutModel {
+  id: number;
+  name: string;
+  createTime?: string;
+  modifyTime?: string;
+  mac?: string;
+  minVersion?: string;
+  status?: number;
+  content?: string;
+  creator?: string;
+  editor?: string;
+  auditor?: string;
+  sourceSign?: string;
+  startTime?: string;
+  endTime?: string;
+  priority?: number;
+  uiContentData: UiContentData;
+}
+export interface SysLoginLayoutListQuery extends IPageinfo {
+  name?: string;
+  status?: string;
+  validTime?: string[];
+}
+
+export interface UploadFileInfo {
+  url: string;
+  fileName: string;
+  md5: string;
 }
 /**
  *  客户端native登录ui元素类型-end

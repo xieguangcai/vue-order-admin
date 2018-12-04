@@ -30,7 +30,7 @@ export function validPhoneNo(str: string) {
   return reg.test(str);
 }
 
-export function validPhoneNoRule(rule: any, value: string, callback:((cc?:Error)=>void)) {
+export function validPhoneNoRule(rule: any, value: string, callback: ((cc?: Error) => void)) {
   if (!validPhoneNo(value)) {
     callback(new Error('请输入正确的手机号'));
   } else {

@@ -104,16 +104,6 @@
                         :total="total"
                         slot="page">
       </search-page-pane>
-      <!--<el-pagination-->
-      <!--background-->
-      <!--:current-page="page + 1"-->
-      <!--@size-change="handleSizeChange"-->
-      <!--@current-change="handleCurrentChange"-->
-      <!--:page-sizes="[1,50, 100, 200, 300]"-->
-      <!--:page-size="size"-->
-      <!--layout="total, sizes, prev, pager, next, jumper"-->
-      <!--:total="totalElements">-->
-      <!--</el-pagination>-->
       <el-dialog title="oss订单详情" :visible.sync="dialogOrderInfoDetilVisible" :append-to-body="true"
                  :modal-append-to-body="false" width="80%" @close="editDomainInfo.editDomainId = 0">
         <order-info-detail :domain-id="editDomainInfo.editDomainId"/>
@@ -137,7 +127,6 @@
   // @ts-ignore
   import qs from 'qs';
   import BaseList from '../../../components/BaseList';
-  import {Message} from 'element-ui';
   import {handlerCommonError} from '../../../utils/auth-interceptor';
 
   interface EditDomain {

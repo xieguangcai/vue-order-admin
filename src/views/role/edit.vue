@@ -2,7 +2,7 @@
   <el-form :model="domainInfo" ref="editForm" :rules="rules" :size="formSize">
     <el-form-item label="所属系统" :label-width="formLabelWidth">
       <el-select v-model="domainInfo.application.appId">
-        <el-option v-for="app in apps" :value="app.appId" :label="app.name"></el-option>
+        <el-option v-for="app in apps" :value="app.appId" :label="app.name" :key="app.appId"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="角色名称" :label-width="formLabelWidth" prop="name">

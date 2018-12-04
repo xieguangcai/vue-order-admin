@@ -102,6 +102,10 @@ export function cardBatchStatusName(code: number) {
   return statusToName(code, AppModule.cardBatchStatus);
 }
 
+export function layoutStatusName(code: number) {
+  return statusToName(code, AppModule.layoutStatus);
+}
+
 export function statusToName(code: number | string, valus: StatusInfo[]) {
   let name = code + '';
   const strCode = code + '';

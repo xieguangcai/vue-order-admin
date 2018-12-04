@@ -7,10 +7,10 @@ export function getToken() {
   const tokenKey = Cookies.get(TokenKey);
   return tokenKey;
 }
-export function getFullToken() {
+export function getFullToken(): string {
   const tokenKey =   Cookies.get(TokenKey);
   if (tokenKey === undefined) {
-    return tokenKey;
+    return '';
   }
   const tokenType = Cookies.get(TokenType) || '';
   return tokenType + tokenKey;
