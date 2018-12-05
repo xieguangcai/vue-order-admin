@@ -18,3 +18,6 @@ body {
 .el-loading-mask {
   background: $loadingMaskBg;
 }
+.el-input.is-disabled .el-input__inner, .el-range-editor.is-disabled input, .el-checkbox__input.is-disabled + span.el-checkbox__labe{
+  color: #606266;
+}
