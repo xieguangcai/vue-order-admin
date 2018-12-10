@@ -49,7 +49,7 @@ export function delMobileCheck(mobile: string): AxiosPromise<ResponseResult<stri
 
 export function getLoginLayoutList(params: SysLoginLayoutListQuery): AxiosPromise<ResponseResult<Pageable<SysLoginLayoutModel>>> {
   return request({
-    url: '/passport/sys-login-layout/list',
+    url: '/passport/sys-login-layout/view/list',
     method: 'get',
     params,
     paramsSerializer(p: any) {
@@ -61,7 +61,7 @@ export function getLoginLayoutList(params: SysLoginLayoutListQuery): AxiosPromis
 
 export function getLoginLayoutDetail(id: number): AxiosPromise<ResponseResult<SysLoginLayoutModel>> {
   return request({
-    url: '/passport/sys-login-layout/detail',
+    url: '/passport/sys-login-layout/view/detail',
     method: 'get',
     params: {id},
     paramsSerializer(p: any) {
@@ -72,7 +72,7 @@ export function getLoginLayoutDetail(id: number): AxiosPromise<ResponseResult<Sy
 
 export function addNewLoginLayout(data: SysLoginLayoutModel): AxiosPromise<ResponseResult<SysLoginLayoutModel>> {
   return request({
-    url: '/passport/edit/sys-login-layout/add',
+    url: '/passport/sys-login-layout/edit/add',
     method: 'post',
     data,
   });
@@ -80,7 +80,7 @@ export function addNewLoginLayout(data: SysLoginLayoutModel): AxiosPromise<Respo
 
 export function updateLoginLayout(data: SysLoginLayoutModel): AxiosPromise<ResponseResult<boolean>> {
   return request({
-    url: '/passport/edit/sys-login-layout/update',
+    url: '/passport/sys-login-layout/edit/update',
     method: 'post',
     data,
   });
@@ -88,7 +88,7 @@ export function updateLoginLayout(data: SysLoginLayoutModel): AxiosPromise<Respo
 
 export function publisLoginLayoutTest(data: SysLoginLayoutModel): AxiosPromise<ResponseResult<boolean>> {
   return request({
-    url: '/passport/edit/sys-login-layout/publish-test',
+    url: '/passport/sys-login-layout/edit/publish-test',
     method: 'post',
     data,
   });
@@ -96,7 +96,7 @@ export function publisLoginLayoutTest(data: SysLoginLayoutModel): AxiosPromise<R
 
 export function publisLoginLayout(id: number): AxiosPromise<ResponseResult<boolean>> {
   return request({
-    url: '/passport/audit/sys-login-layout/publish',
+    url: '/passport/sys-login-layout/audit/publish',
     method: 'get',
     params: {id},
   });
@@ -104,7 +104,7 @@ export function publisLoginLayout(id: number): AxiosPromise<ResponseResult<boole
 
 export function offlineLoginLayout(id: number): AxiosPromise<ResponseResult<boolean>> {
   return request({
-    url: '/passport/audit/sys-login-layout/offline',
+    url: '/passport/sys-login-layout/audit/offline',
     method: 'get',
     params: {id},
   });

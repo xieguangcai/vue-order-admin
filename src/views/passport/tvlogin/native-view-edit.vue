@@ -757,6 +757,7 @@
     }
 
     handleSuccess(res: ResponseResult<UploadFileInfo>, file: any, editItem: UiItemData) {
+      debugger;
       console.log(res);
       if (res.success) {
         editItem.imgUrl = res.data.url;

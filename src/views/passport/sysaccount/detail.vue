@@ -57,9 +57,6 @@
                 <td>{{item.externalId}}</td>
                 <td>{{item.externalNickname}}</td>
                 <td>{{item.bindTime}}</td>
-                <td>{{item.vuserid}}</td>
-                <td>{{item.vusession}}</td>
-                <td>{{item.unionid}}</td>
               </tr>
               <template v-else>
                 <tr>

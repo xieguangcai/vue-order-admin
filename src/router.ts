@@ -13,6 +13,7 @@ Vue.use(Router);
     alwaysShow: true             if set to true, it will always show the root menu
                                  if not set, only show with nested mode if there are more than one route under its children
     keepAlive: true              cache the view if need useful for edit from
+    roles: []                    拥有全新到用户组
   }
 */
 
@@ -50,7 +51,7 @@ export default new Router({
       path: '/orders',
       component: Layout,
       name: '会员信息管理',
-      meta: {title: '会员信息管理', icon: 'form'},
+      meta: {title: '会员信息管理', icon: 'form', roles: ['ROLE_VIEW']},
       children: [
         {
           path: 'oss-order-list',
@@ -88,32 +89,32 @@ export default new Router({
     }, {
       path: '/passport',
       component: Layout,
-      name: '用户中心',
-      meta: {title: '用户中心', icon: 'layout'},
+      name: '登录布局',
+      meta: {title: '登录布局', icon: 'layout', roles: ['LAYOUT_ROLE_VIEW']},
       children: [
         {
           path: 'new-login-layout',
           name: '新增登录页',
           component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
-          meta: {title: '新增登录页', icon: 'layout1', keepAlive: true},
+          meta: {title: '新增登录页', icon: 'layout1', keepAlive: true, roles: ['LAYOUT_ROLE_EDIT']},
         },
         {
           path: 'edit-login-layout',
           name: '编辑',
           component: () => import(/* webpackChunkName: "edit-native-layout" */ '@/views/passport/tvlogin/edit-native-layout.vue'),
-          meta: {title: '编辑登录页面', icon: 'layout1', hidden: true, keepAlive: true},
+          meta: {title: '编辑登录页面', icon: 'layout1', hidden: true, keepAlive: true, roles: ['LAYOUT_ROLE_EDIT']},
         },
         {
           path: 'view-login-layout',
           name: '查看',
           component: () => import(/* webpackChunkName: "view-native-layout" */ '@/views/passport/tvlogin/view-native-layout.vue'),
-          meta: {title: '查看登录页面', icon: 'layout1', hidden: true},
+          meta: {title: '查看登录页面', icon: 'layout1', hidden: true, roles: ['LAYOUT_ROLE_VIEW']},
         },
         {
           path: 'login-layout-list',
-          name: '登录页面管理',
+          name: '登录布局管理',
           component: () => import(/* webpackChunkName: "login-layout-list" */ '@/views/passport/tvlogin/index.vue'),
-          meta: {title: '登录页面管理', icon: 'layout2'},
+          meta: {title: '登录布局管理', icon: 'layout2', roles: ['LAYOUT_ROLE_VIEW']},
         }],
     },
     {

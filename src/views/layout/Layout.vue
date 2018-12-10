@@ -55,13 +55,13 @@
   @import "src/styles/mixin.scss";
 
   .cc-navbar-con{
-    width:100%; position:fixed;z-index:2001;
+    width:100%; position:fixed;z-index:1000;
   }
   .cc-main-con{
     padding-top:50px;
   }
   .cc-tags-view-con{
-    position:fixed;width:100%;z-index:2001;
+    position:fixed;width:100%;z-index:1000;
   }
   .app-wrapper {
     @include clearfix;

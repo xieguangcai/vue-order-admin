@@ -16,7 +16,6 @@
         <el-option v-for="item in recordeStatus" :label="item.label" :value="item.value" :key="item.value"/>
       </el-select>
     </el-form-item>
-{{domainInfo}}
     <div class="cc-edit-button">
       <el-button type="primary" icon="el-icon-edit" @click="save">保存</el-button>
       <el-button type="info" icon="el-icon-close" @click="cancel">取消</el-button>
@@ -41,7 +40,7 @@ import {handlerCommonError} from '../../utils/auth-interceptor';
   mixins: [ BaseEdit ],
 })
 export default class RoleEdit extends Vue {
-  domainInfo: RoleInfo = {roleId: 0, status: 1, application: {appId: 1}};
+  domainInfo: RoleInfo = {roleId: 0, status: 1, application: {appId: 1}, name: '', roleKey: ''};
   @Prop({type: Number, default: 0})
   domainId: number = 0;
   apps: ApplicationInfo[] = [];
