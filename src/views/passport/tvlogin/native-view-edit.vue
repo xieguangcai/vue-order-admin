@@ -295,14 +295,14 @@
             </el-form-item>
             <div v-if="innerViewModel === false">
               <el-button size="mini" type="primary" icon="el-icon-edit-outline" @click="save"
-                         v-if="domainInfo.status !== 2 ">保存
+                         v-if="domainInfo.status !== 2 " :loading="operator">保存
               </el-button>
               <el-button size="mini" type="warning" icon="el-icon-share" v-if="domainInfo.status !== 2 "
-                         @click="publishTest">发布测试
+                         @click="publishTest" :loading="operator">发布测试
               </el-button>
               <el-button size="mini" type="danger" icon="el-icon-share"
                          v-if="domainInfo.status === 1 || domainInfo.status === 3 || domainInfo.status == 2"
-                         @click="publish">发布全网
+                         @click="publish" :loading="operator">发布全网
               </el-button>
             </div>
           </el-form>
@@ -361,6 +361,8 @@
     @Prop({type: Boolean, default: false})
       // @ts-ignore
     viewModel: boolean;
+    //是否正在操作远程数据
+    operator: boolean = false;
 
     activeNames: number[] = [];
 
@@ -757,7 +759,6 @@
     }
 
     handleSuccess(res: ResponseResult<UploadFileInfo>, file: any, editItem: UiItemData) {
-      debugger;
       console.log(res);
       if (res.success) {
         editItem.imgUrl = res.data.url;
@@ -811,19 +812,32 @@
         this.$message.error('对象为空不能保存');
         return;
       }
-      if (this.domainInfo.status !== 1 && this.domainInfo.status !== 3) {
+      if (this.domainInfo.status !== 1 && this.domainInfo.status !== 2 && this.domainInfo.status !== 3) {
         this.$message.error('推送全网环境之前必须经过测试');
         return;
       }
       console.log('推送全网');
+      this.operator = true;
 
-      publisLoginLayout(this.domainInfo.id).then(() => {
-        this.$message.success('推送成功');
-        // 重新加载
-        if (this.domainInfo != null) {
-          this.handleDomainIdChange(this.domainInfo.id);
-        }
-      }).catch(handlerCommonError);
+      this.$confirm('推送全网之前先要在测试机器验证，您确认在测试机器验证后没有问题吗？', '警告', {
+        confirmButtonText: '确认推送',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        publisLoginLayout(this.domainInfo.id).then(() => {
+          this.$message.success('推送成功');
+          // 重新加载
+          if (this.domainInfo != null) {
+            this.handleDomainIdChange(this.domainInfo.id);
+          }
+          this.operator = false;
+        }).catch((ar) => {
+          handlerCommonError(ar);
+          this.operator = false;
+        });
+      }).catch(()=>{
+        this.operator = false;
+      });
     }
 
     /**
@@ -838,7 +852,7 @@
         this.$message.error('推送测试环境必须指定mac地址');
         return;
       }
-      console.log('推送测试环境');
+      this.operator = true;
 
       publisLoginLayoutTest(this.domainInfo).then(() => {
         this.$message.success('推送成功');
@@ -846,7 +860,12 @@
         if (this.domainInfo != null && this.domainInfo.id !== undefined) {
           this.handleDomainIdChange(this.domainInfo.id);
         }
-      }).catch(handlerCommonError);
+        this.operator = false;
+
+      }).catch((ar) => {
+        handlerCommonError(ar);
+        this.operator = false;
+      });
     }
 
     /**
@@ -859,6 +878,7 @@
         this.$message.error('对象为空不能保存');
         return;
       }
+      this.operator = true;
       // 将其他关联配置信息保存到对象中
       this.domainInfo.sourceSign = this.platForm.join(',');
       if (this.validTime != null && this.validTime.length === 2) {
@@ -868,14 +888,22 @@
       if (this.domainInfo.id !== 0 && this.domainInfo.id != null) {
         updateLoginLayout(this.domainInfo).then(() => {
           this.$message.success('修改成功');
-        }).catch(handlerCommonError);
+          this.operator = false;
+        }).catch((ar) => {
+          handlerCommonError(ar);
+          this.operator = false;
+        })
       } else {
         addNewLoginLayout(this.domainInfo).then((response) => {
           this.$message.success('新增成功');
+          this.operator = false;
           if (null != this.domainInfo) {
             this.domainInfo.id = response.data.data.id;
           }
-        }).catch(handlerCommonError);
+        }).catch((ar) => {
+          handlerCommonError(ar);
+          this.operator = false;
+        });
       }
     }
 

@@ -27,6 +27,23 @@ export default class EditNativeLayout extends Vue {
     } catch (e) {
     }
   }
+
+  activated(){
+    console.log('被激活了: ' + this.domainId);
+    console.log('被激活了2: ' + this.$route.query.id);
+    try{
+      // @ts-ignore
+      const x = parseInt(this.$route.query.id, 10);
+      console.log('获取到的id为：' + x);
+      if(!isNaN(x) && this.domainId !== x){
+        console.log('正在重新设置值:' + x);
+        this.domainId = x;
+      }
+    }catch (e) {
+
+    }
+  }
+
 }
 </script>
 
