@@ -720,6 +720,7 @@ export interface UiItemData {
   focusImgMd5?: string;
   focusImgName?: string;
   clickAction?: string;
+  bgColor?: string;
 
 }
 export interface UiPageData {

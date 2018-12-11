@@ -241,10 +241,10 @@
                 <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeCommonBg">清除背景图</el-button>
               </el-form-item>
 
-              <el-form-item label="背景颜色" prop="color">
-                <el-color-picker v-model="editItem.color" show-alpha size="mini"
+              <el-form-item label="背景颜色" prop="bgColor">
+                <el-color-picker v-model="editItem.bgColor" show-alpha size="mini"
                                  :disabled="innerViewModel"></el-color-picker>
-                {{editItem.color}}
+                {{editItem.bgColor}}
               </el-form-item>
             </template>
             <el-form-item v-if="editItem !== editLoginLayout.commonBg && innerViewModel ===  false">
@@ -437,9 +437,9 @@
         height: comBg.h + 'px',
         left: comBg.x + 'px',
         top: comBg.y + 'px',
-        background: 'url(' + comBg.imgUrl + ') center center',
+        background: 'url(' + comBg.imgUrl + ') center center no-repeat',
         zIndex: 0,
-        backgroundColor: comBg.color,
+        backgroundColor: comBg.bgColor,
       };
     }
 
@@ -454,7 +454,7 @@
       } else {
         url = item.imgUrl || '';
       }
-      obj.style.background = 'url(' + url + ') center center';
+      obj.style.background = 'url(' + url + ') center center no-repeat';
     }
 
     removeCommonBg() {
@@ -536,7 +536,7 @@
         y: 100,
         text: '新添加的组件',
         size: 16,
-        color: '#ff8a24',
+        color: '',
         bold: false,
         isBG: false,
         imgUrl: '',
@@ -546,6 +546,7 @@
         focusImgMd5: '',
         focusImgName: '',
         clickAction: '',
+        bgColor:'',
       };
       switch (type) {
         case 'IMAGE':
@@ -930,7 +931,7 @@
             y: 325,
             text: '新添加的组件',
             size: 16,
-            color: '#ff8a24',
+            color: '',
             bold: false,
             isBG: false,
             imgUrl: '',
@@ -948,7 +949,7 @@
             y: 1040,
             text: '新添加的组件',
             size: 12,
-            color: '#ff8a24',
+            color: '',
             bold: false,
             isBG: false,
             imgUrl: '',
@@ -972,7 +973,7 @@
             y: 169,
             text: '新添加的组件',
             size: 16,
-            color: '#ff8a24',
+            color: '',
             bold: false,
             isBG: false,
             imgUrl: '',
