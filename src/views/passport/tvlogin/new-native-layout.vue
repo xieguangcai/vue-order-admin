@@ -1,6 +1,6 @@
 <template>
   <div>
-    <native-view-edit :domain-id="domainId" :view-model="viewModel"></native-view-edit>
+    <native-view-edit v-bind:domain-id.sync="domainId" :view-model="viewModel"></native-view-edit>
   </div>
 </template>
 
@@ -15,6 +15,12 @@ import NativeViewEdit from './native-view-edit.vue';
 export default class NewNativeLayout extends Vue {
   domainId: number = 0;
   viewModel: boolean = false;
+
+  activated() {
+    if(this.domainId != 0){
+      this.domainId = 0;
+    }
+  }
 }
 </script>
 

@@ -481,6 +481,7 @@
             if (i === 0) {
               // 第一个
               this.$message.info('已经是最底层了');
+              return;
             } else {
               const prev = this.currentEditPage.itemList[i - 1];
               this.currentEditPage.itemList[i - 1] = item;
@@ -489,6 +490,7 @@
           } else {
             if (i === this.currentEditPage.itemList.length - 1) {
               this.$message.info('已经是最上层了');
+              return;
             } else {
               const next = this.currentEditPage.itemList[i + 1];
               this.currentEditPage.itemList[i + 1] = item;
@@ -498,6 +500,7 @@
           break;
         }
       }
+      this.resetZIndex(this.currentEditPage.itemList);
     }
 
     removeComponent() {
@@ -512,6 +515,14 @@
           break;
         }
       }
+      this.resetZIndex(this.currentEditPage.itemList);
+    }
+
+    //重新计算zIndex
+    resetZIndex(itemList: UiItemData[]){
+      itemList.forEach((item, index)=>{
+        item.zIndex = index + 1;
+      });
     }
 
     addComponent() {
@@ -519,9 +530,11 @@
         return;
       }
       const newCom = this.newComFromType(this.newComType);
+
       if (null == this.currentEditPage.itemList) {
         this.currentEditPage.itemList = [];
       }
+      newCom.zIndex = this.currentEditPage.itemList.length + 1;
       this.currentEditPage.itemList.push(newCom);
     }
 
@@ -869,6 +882,10 @@
       });
     }
 
+    @Emit('update:domainId')
+    domainIdChange(newVal: number | undefined, oldVal: number | undefined): void {
+    }
+
     /**
      * 保存
      */
@@ -900,6 +917,8 @@
           this.operator = false;
           if (null != this.domainInfo) {
             this.domainInfo.id = response.data.data.id;
+            this.domainIdChange(this.domainInfo.id, 0);
+            this.innerDomainId = this.domainInfo.id;
           }
         }).catch((ar) => {
           handlerCommonError(ar);
@@ -941,6 +960,7 @@
             focusImgMd5: '',
             focusImgName: '',
             clickAction: '',
+            zIndex: 1,
           }, {
             type: 'TEXT_VERSION',
             w: 400,
@@ -959,6 +979,7 @@
             focusImgMd5: '',
             focusImgName: '',
             clickAction: '',
+            zIndex: 2,
           }],
           switchPage: [{keyCode: 40, toPageId: 2, name: '手机号页面'}],
         }, {
@@ -983,6 +1004,7 @@
             focusImgMd5: '',
             focusImgName: '',
             clickAction: '',
+            zIndex: 1,
           }],
           switchPage: [{keyCode: 38, toPageId: 1, name: '二维码页面'}],
         }],
