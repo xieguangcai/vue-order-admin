@@ -19,3 +19,6 @@ npm run build
 ```
 npm run lint
 ```
+
+### 发布测试版本
+yarn build-test
