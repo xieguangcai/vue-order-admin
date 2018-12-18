@@ -76,7 +76,8 @@
               <el-button type="primary" size="mini" circle icon="el-icon-view"
                          @click="handleViewLayoutDetail(scope.$index, scope.row)"></el-button>
             </el-tooltip>
-            <el-tooltip content="编辑" v-if="(scope.row.status === 0 || scope.row.status === 1 || scope.row.status === 3) && checkUserRole('LAYOUT_ROLE_EDIT') ">
+            <el-tooltip content="编辑" v-if="(scope.row.status === 0 || scope.row.status === 1 || scope.row.status === 3) &&
+            (checkUserRole('LAYOUT_ROLE_EDIT') || checkUserRole('LAYOUT_ROLE_AUDIT'))">
               <el-button type="warning" size="mini" circle icon="el-icon-edit"
                          @click="handleEditLayoutDetail(scope.$index, scope.row)"></el-button>
             </el-tooltip>
