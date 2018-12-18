@@ -743,7 +743,7 @@ export interface SysLoginLayoutModel {
   modifyTime?: string;
   mac?: string;
   minVersion?: string;
-  status?: number;
+  status: number;
   content?: string;
   creator?: string;
   editor?: string;

@@ -125,7 +125,7 @@ export default class LoginLayoutList extends Vue {
   listQuery: SysLoginLayoutListQuery = {page: 0, size: 50, total: 0};
 
   getViewContentName(scope: SysLoginLayoutModel){
-    if(scope.status === 1 && scope.status === 3 && checkRole('LAYOUT_ROLE_AUDIT')){
+    if((scope.status === 1 || scope.status === 3) && checkRole('LAYOUT_ROLE_AUDIT')){
       return "发布全网";
     }else{
       return "查看";
