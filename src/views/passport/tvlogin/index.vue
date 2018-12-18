@@ -72,7 +72,7 @@
 
         <el-table-column label="操作" align="center" fixed="right" width="160">
           <template slot-scope="scope">
-            <el-tooltip :content="getViewContentName(scope)">
+            <el-tooltip :content="getViewContentName(scope.row)">
               <el-button type="primary" size="mini" circle icon="el-icon-view"
                          @click="handleViewLayoutDetail(scope.$index, scope.row)"></el-button>
             </el-tooltip>
