@@ -954,3 +954,15 @@ export interface BaseMoviesIqiyiOrderBaseListQuery extends IPageinfo {
 }
 
 // --------authentication---------
+
+
+export enum Roles {
+  ROLE_VIEW = 'ROLE_VIEW',
+  ROLE_EDIT = 'ROLE_EDIT',
+  ROLE_AUDIT = 'ROLE_AUDIT',
+  ROLE_ADMIN = 'ROLE_ADMIN',
+  LAYOUT_ROLE_VIEW = 'LAYOUT_ROLE_VIEW',
+  LAYOUT_ROLE_EDIT = 'LAYOUT_ROLE_EDIT',
+  LAYOUT_ROLE_AUDIT = 'LAYOUT_ROLE_AUDIT',
+
+}

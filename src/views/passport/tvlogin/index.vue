@@ -76,11 +76,11 @@
               <el-button type="primary" size="mini" circle icon="el-icon-view"
                          @click="handleViewLayoutDetail(scope.$index, scope.row)"></el-button>
             </el-tooltip>
-            <el-tooltip content="编辑" v-if="scope.row.status === 0 || scope.row.status === 1 || scope.row.status === 3 ">
+            <el-tooltip content="编辑" v-if="(scope.row.status === 0 || scope.row.status === 1 || scope.row.status === 3) && checkUserRole('LAYOUT_ROLE_EDIT') ">
               <el-button type="warning" size="mini" circle icon="el-icon-edit"
                          @click="handleEditLayoutDetail(scope.$index, scope.row)"></el-button>
             </el-tooltip>
-            <el-tooltip content="下线" v-if="scope.row.status === 2 ">
+            <el-tooltip content="下线" v-if="scope.row.status === 2 && checkUserRole('LAYOUT_ROLE_AUDIT')">
               <el-button type="danger" size="mini" circle icon="el-icon-download"
                          @click="handleOfflineLayout(scope.$index, scope.row)"></el-button>
             </el-tooltip>
@@ -111,11 +111,12 @@ import {getLoginLayoutList, offlineLoginLayout} from '../../../api/passport';
 import {handlerCommonError} from '../../../utils/auth-interceptor';
 import {layoutStatusName} from '../../../api/pay';
 import {AppModule} from '../../../store/modules/app';
+import RightComponent from "../../../components/RightComponent";
 
 @Component({
   name: 'LoginLayoutList',
   filters: {},
-  mixins: [BaseList],
+  mixins: [BaseList, RightComponent],
   components: {ListTablePane, SearchPane, SearchPagePane},
 })
 export default class LoginLayoutList extends Vue {

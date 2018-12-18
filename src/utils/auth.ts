@@ -1,4 +1,6 @@
 import Cookies from 'js-cookie';
+import {Roles} from '@/types';
+import {UserModule} from '@/store/modules/user';
 
 const TokenKey = 'Admin-Token';
 const TokenType = 'Admin-Token-Type';
@@ -27,4 +29,17 @@ export function removeToken() {
 
 export function getTokenType() {
   return Cookies.get(TokenType);
+}
+
+/**
+ * 检查用户是否拥有某个角色
+ * @param role
+ */
+export function checkRole(role: string) {
+  return UserModule.roles.some((i, num) => {
+    if (i === role || i === 'ROLE_ADMIN') {
+      return true;
+    }
+    return false;
+  });
 }

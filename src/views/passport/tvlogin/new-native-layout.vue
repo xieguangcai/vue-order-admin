@@ -17,7 +17,7 @@ export default class NewNativeLayout extends Vue {
   viewModel: boolean = false;
 
   activated() {
-    if(this.domainId != 0){
+    if (this.domainId !== 0) {
       this.domainId = 0;
     }
   }

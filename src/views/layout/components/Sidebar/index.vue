@@ -52,7 +52,7 @@ export default class SideBar extends Vue {
   }
 
   hasRight(route: RouteConfig) {
-    if(UserModule.roles.some((r:string) => r === 'ROLE_ADMIN')){
+    if (UserModule.roles.some((r: string) => r === 'ROLE_ADMIN')) {
       return true;
     }
     // 只需要某个权限才显示出来。
