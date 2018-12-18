@@ -72,12 +72,11 @@
 
         <el-table-column label="操作" align="center" fixed="right" width="160">
           <template slot-scope="scope">
-            <el-tooltip content="查看">
+            <el-tooltip :content="getViewContentName(scope)">
               <el-button type="primary" size="mini" circle icon="el-icon-view"
                          @click="handleViewLayoutDetail(scope.$index, scope.row)"></el-button>
             </el-tooltip>
-            <el-tooltip content="编辑" v-if="(scope.row.status === 0 || scope.row.status === 1 || scope.row.status === 3) &&
-            (checkUserRole('LAYOUT_ROLE_EDIT') || checkUserRole('LAYOUT_ROLE_AUDIT'))">
+            <el-tooltip content="编辑" v-if="(scope.row.status === 0 || scope.row.status === 1 || scope.row.status === 3) && checkUserRole('LAYOUT_ROLE_EDIT')">
               <el-button type="warning" size="mini" circle icon="el-icon-edit"
                          @click="handleEditLayoutDetail(scope.$index, scope.row)"></el-button>
             </el-tooltip>
@@ -113,6 +112,7 @@ import {handlerCommonError} from '../../../utils/auth-interceptor';
 import {layoutStatusName} from '../../../api/pay';
 import {AppModule} from '../../../store/modules/app';
 import RightComponent from "../../../components/RightComponent";
+import {checkRole} from "../../../utils/auth";
 
 @Component({
   name: 'LoginLayoutList',
@@ -124,6 +124,13 @@ export default class LoginLayoutList extends Vue {
   data: SysLoginLayoutModel[] = [];
   listQuery: SysLoginLayoutListQuery = {page: 0, size: 50, total: 0};
 
+  getViewContentName(scope: SysLoginLayoutModel){
+    if(scope.status === 1 && scope.status === 3 && checkRole('LAYOUT_ROLE_AUDIT')){
+      return "发布全网";
+    }else{
+      return "查看";
+    }
+  }
   get layoutStatus() {
     return AppModule.layoutStatus;
   }

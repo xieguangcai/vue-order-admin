@@ -297,11 +297,12 @@
                 <el-checkbox label="voole">优朋源</el-checkbox>
               </el-checkbox-group>
             </el-form-item>
-            <div v-if="innerViewModel === false">
+            <div>
               <el-button size="mini" type="primary" icon="el-icon-edit-outline" @click="save"
-                         v-if="domainInfo.status !== 2 && checkUserRole('LAYOUT_ROLE_EDIT')" :loading="operator">保存
+                         v-if="innerViewModel === false && domainInfo.status !== 2 && checkUserRole('LAYOUT_ROLE_EDIT')" :loading="operator">保存
               </el-button>
-              <el-button size="mini" type="warning" icon="el-icon-share" v-if="domainInfo.status !== 2  && checkUserRole('LAYOUT_ROLE_EDIT')"
+              <el-button size="mini" type="warning" icon="el-icon-share"
+                         v-if="innerViewModel === false && domainInfo.status !== 2  && checkUserRole('LAYOUT_ROLE_EDIT')"
                          @click="publishTest" :loading="operator">发布测试
               </el-button>
               <el-button size="mini" type="danger" icon="el-icon-share"
