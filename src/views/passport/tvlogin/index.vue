@@ -5,7 +5,7 @@
         名称
         <el-input v-model="listQuery.phoneNo" size="mini"></el-input>
         状态
-        <el-select size="mini" v-model="listQuery.orderStatus">
+        <el-select size="mini" v-model="listQuery.status">
           <el-option value="" label="全部"/>
           <el-option v-for="item in layoutStatus" :label="item.label" :value="item.value" :key="item.value"/>
         </el-select>
