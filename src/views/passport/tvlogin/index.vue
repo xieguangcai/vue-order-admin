@@ -3,7 +3,7 @@
     <list-table-pane>
       <search-pane slot="searchpane" @click="refetchData">
         名称
-        <el-input v-model="listQuery.phoneNo" size="mini"></el-input>
+        <el-input v-model="listQuery.name" size="mini"></el-input>
         状态
         <el-select size="mini" v-model="listQuery.status">
           <el-option value="" label="全部"/>
@@ -11,7 +11,7 @@
         </el-select>
         有效时间
         <el-date-picker size="mini"
-                        v-model="listQuery.orderTimes"
+                        v-model="listQuery.validTime"
                         type="datetimerange"
                         range-separator="-"
                         value-format="yyyy-MM-dd HH:mm:ss"
@@ -111,8 +111,8 @@ import {getLoginLayoutList, offlineLoginLayout} from '../../../api/passport';
 import {handlerCommonError} from '../../../utils/auth-interceptor';
 import {layoutStatusName} from '../../../api/pay';
 import {AppModule} from '../../../store/modules/app';
-import RightComponent from "../../../components/RightComponent";
-import {checkRole} from "../../../utils/auth";
+import RightComponent from '../../../components/RightComponent';
+import {checkRole} from '../../../utils/auth';
 
 @Component({
   name: 'LoginLayoutList',
@@ -124,11 +124,11 @@ export default class LoginLayoutList extends Vue {
   data: SysLoginLayoutModel[] = [];
   listQuery: SysLoginLayoutListQuery = {page: 0, size: 50, total: 0};
 
-  getViewContentName(scope: SysLoginLayoutModel){
-    if((scope.status === 1 || scope.status === 3) && checkRole('LAYOUT_ROLE_AUDIT')){
-      return "发布全网";
-    }else{
-      return "查看";
+  getViewContentName(scope: SysLoginLayoutModel) {
+    if ((scope.status === 1 || scope.status === 3) && checkRole('LAYOUT_ROLE_AUDIT')) {
+      return '发布全网';
+    } else {
+      return '查看';
     }
   }
   get layoutStatus() {

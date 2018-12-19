@@ -28,6 +28,7 @@
   import {DeviceType, AppModule} from '@/store/modules/app';
 
   @Component({
+    name: 'Layout',
     components: {
       Navbar,
       Sidebar,

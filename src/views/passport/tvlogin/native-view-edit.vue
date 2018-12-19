@@ -165,7 +165,7 @@
             <el-form-item label="高度" prop="h">
               <el-input-number v-model="editItem.h" :min="0" :max="1080" :disabled="innerViewModel"></el-input-number>
             </el-form-item>
-            <template v-if="editItem.type === 'TEXT'">
+            <template v-if="editItem.type === 'TEXT' || editItem.type === 'BUTTON' ">
               <el-form-item label="文字" prop="text">
                 <el-input v-model="editItem.text" :disabled="innerViewModel"></el-input>
               </el-form-item>
@@ -267,7 +267,7 @@
               <el-input v-model="domainInfo.name" :disabled="innerViewModel"></el-input>
             </el-form-item>
             <el-form-item label="投放mac地址">
-              <el-input v-model="domainInfo.mac" :disabled="innerViewModel"></el-input>
+              <el-input v-model="domainInfo.mac" clearable="true" placeholder="以英文逗号分割多个值" :disabled="innerViewModel"></el-input>
             </el-form-item>
             <el-form-item label="最低版本">
               <el-select v-model="domainInfo.minVersion" placeholder="选择最低版本" :disabled="innerViewModel">
@@ -286,9 +286,9 @@
               </el-date-picker>
             </el-form-item>
             <el-form-item label="策略优先级">
-              <el-input v-model="domainInfo.priority" :disabled="innerViewModel"></el-input>
+              <el-input-number v-model="domainInfo.priority" :min="0" :disabled="innerViewModel"></el-input-number>
             </el-form-item>
-            <el-form-item label="平台">
+            <el-form-item label="影视源">
               <el-checkbox-group v-model="platForm" :disabled="innerViewModel">
                 <el-checkbox label="tencent">腾讯源</el-checkbox>
                 <br/>
@@ -302,11 +302,11 @@
                          v-if="innerViewModel === false && domainInfo.status !== 2 && checkUserRole('LAYOUT_ROLE_EDIT')" :loading="operator">保存
               </el-button>
               <el-button size="mini" type="warning" icon="el-icon-share"
-                         v-if="innerViewModel === false && domainInfo.status !== 2  && checkUserRole('LAYOUT_ROLE_EDIT')"
+                         v-if="innerViewModel === false && domainInfo.id > 0 && domainInfo.status !== 2  && checkUserRole('LAYOUT_ROLE_EDIT')"
                          @click="publishTest" :loading="operator">发布测试
               </el-button>
               <el-button size="mini" type="danger" icon="el-icon-share"
-                         v-if="(domainInfo.status === 1 || domainInfo.status === 3 || domainInfo.status === 2)  && checkUserRole('LAYOUT_ROLE_AUDIT')"
+                         v-if="domainInfo.id > 0 && (domainInfo.status === 1 || domainInfo.status === 3 || domainInfo.status === 2)  && checkUserRole('LAYOUT_ROLE_AUDIT')"
                          @click="publish" :loading="operator">发布全网
               </el-button>
             </div>
@@ -353,7 +353,7 @@ import {
   publisLoginLayoutTest,
   updateLoginLayout,
 } from '../../../api/passport';
-import RightComponent from "../../../components/RightComponent";
+import RightComponent from '../../../components/RightComponent';
 
 
 @Component({
@@ -834,6 +834,10 @@ export default class NativeViewEdit extends Vue {
       this.$message.error('对象为空不能保存');
       return;
     }
+    if (this.domainInfo.id <= 0){
+      this.$message.error('请先保存布局信息');
+      return;
+    }
     if (this.domainInfo.status !== 1 && this.domainInfo.status !== 2 && this.domainInfo.status !== 3) {
       this.$message.error('推送全网环境之前必须经过测试');
       return;
@@ -873,6 +877,10 @@ export default class NativeViewEdit extends Vue {
       this.$message.error('对象为空不能保存');
       return;
     }
+    if (this.domainInfo.id <= 0){
+      this.$message.error('请先保存布局信息');
+      return;
+    }
     if (this.domainInfo.name == null || this.domainInfo.name === '') {
       this.$message.error('请输入布局名称');
       return;
@@ -881,7 +889,17 @@ export default class NativeViewEdit extends Vue {
       this.$message.error('推送测试环境必须指定mac地址');
       return;
     }
+    if(!/([0-9a-f]){12}(,([0-9a-f]){12})*$/i.test(this.domainInfo.mac)){
+      this.$message.error('请输入正确的mac地址');
+      return;
+    }
+    if(this.platForm.length === 0){
+      this.$message.error('必须指定视频源');
+      return;
+    }
     this.operator = true;
+
+    this.beforSave();
 
     publisLoginLayoutTest(this.domainInfo).then(() => {
       this.$message.success('推送成功');
@@ -901,6 +919,14 @@ export default class NativeViewEdit extends Vue {
   domainIdChange(newVal: number | undefined, oldVal: number | undefined): void {
   }
 
+  beforSave(){
+    // 将其他关联配置信息保存到对象中
+    this.domainInfo.sourceSign = this.platForm.join(',');
+    if (this.validTime != null && this.validTime.length === 2) {
+      this.domainInfo.startTime = this.validTime[0];
+      this.domainInfo.endTime = this.validTime[1];
+    }
+  }
   /**
    * 保存
    */
@@ -915,13 +941,19 @@ export default class NativeViewEdit extends Vue {
       this.$message.error('请输入布局名称');
       return;
     }
-    this.operator = true;
-    // 将其他关联配置信息保存到对象中
-    this.domainInfo.sourceSign = this.platForm.join(',');
-    if (this.validTime != null && this.validTime.length === 2) {
-      this.domainInfo.startTime = this.validTime[0];
-      this.domainInfo.endTime = this.validTime[1];
+    if(this.platForm.length === 0){
+      this.$message.error('必须指定视频源');
+      return;
     }
+    if(this.domainInfo.mac != '' && this.domainInfo.mac != null){
+      if(!/([0-9a-f]){12}(,([0-9a-f]){12})*$/i.test(this.domainInfo.mac)){
+        this.$message.error('请输入正确的mac地址');
+        return;
+      }
+    }
+    this.operator = true;
+    this.beforSave();
+
     if (this.domainInfo.id !== 0 && this.domainInfo.id != null) {
       updateLoginLayout(this.domainInfo).then(() => {
         this.$message.success('修改成功');

@@ -20,6 +20,8 @@ export default class EditNativeLayout extends Vue {
     try {
       // @ts-ignore
       const x = parseInt(this.$route.query.id, 10);
+      console.log('创建了编辑对象' + x);
+
       if (!isNaN(x)) {
         this.domainId = x;
         this.viewModel = false;

@@ -96,13 +96,13 @@ export default new Router({
           path: 'new-login-layout',
           name: '新增登录页',
           component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
-          meta: {title: '新增登录页', icon: 'layout1', keepAlive: true, roles: ['LAYOUT_ROLE_EDIT']},
+          meta: {title: '新增登录页', icon: 'layout1', keepAlive: true, keepComponentName: 'NewNativeLayout', roles: ['LAYOUT_ROLE_EDIT']},
         },
         {
           path: 'edit-login-layout',
           name: '编辑',
           component: () => import(/* webpackChunkName: "edit-native-layout" */ '@/views/passport/tvlogin/edit-native-layout.vue'),
-          meta: {title: '编辑登录页面', icon: 'layout1', hidden: true, keepAlive: true, roles: ['LAYOUT_ROLE_EDIT']},
+          meta: {title: '编辑登录页面', icon: 'layout1', hidden: true, keepAlive: true, keepComponentName: 'EditNativeLayout', roles: ['LAYOUT_ROLE_EDIT']},
         },
         {
           path: 'view-login-layout',

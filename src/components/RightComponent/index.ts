@@ -1,11 +1,11 @@
 
 import {Component, Vue} from 'vue-property-decorator';
-import {checkRole} from "@/utils/auth";
+import {checkRole} from '@/utils/auth';
 
 @Component
 export default class RightComponent extends Vue {
 
-  checkUserRole(role: string){
+  checkUserRole(role: string) {
     return checkRole(role);
   }
 }
