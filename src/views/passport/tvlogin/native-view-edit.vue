@@ -834,7 +834,7 @@ export default class NativeViewEdit extends Vue {
       this.$message.error('对象为空不能保存');
       return;
     }
-    if (this.domainInfo.id <= 0){
+    if (this.domainInfo.id <= 0) {
       this.$message.error('请先保存布局信息');
       return;
     }
@@ -877,7 +877,7 @@ export default class NativeViewEdit extends Vue {
       this.$message.error('对象为空不能保存');
       return;
     }
-    if (this.domainInfo.id <= 0){
+    if (this.domainInfo.id <= 0) {
       this.$message.error('请先保存布局信息');
       return;
     }
@@ -889,11 +889,11 @@ export default class NativeViewEdit extends Vue {
       this.$message.error('推送测试环境必须指定mac地址');
       return;
     }
-    if(!/([0-9a-f]){12}(,([0-9a-f]){12})*$/i.test(this.domainInfo.mac)){
+    if (!/([0-9a-f]){12}(,([0-9a-f]){12})*$/i.test(this.domainInfo.mac)) {
       this.$message.error('请输入正确的mac地址');
       return;
     }
-    if(this.platForm.length === 0){
+    if (this.platForm.length === 0) {
       this.$message.error('必须指定视频源');
       return;
     }
@@ -919,7 +919,7 @@ export default class NativeViewEdit extends Vue {
   domainIdChange(newVal: number | undefined, oldVal: number | undefined): void {
   }
 
-  beforSave(){
+  beforSave() {
     // 将其他关联配置信息保存到对象中
     this.domainInfo.sourceSign = this.platForm.join(',');
     if (this.validTime != null && this.validTime.length === 2) {
@@ -941,12 +941,12 @@ export default class NativeViewEdit extends Vue {
       this.$message.error('请输入布局名称');
       return;
     }
-    if(this.platForm.length === 0){
+    if (this.platForm.length === 0) {
       this.$message.error('必须指定视频源');
       return;
     }
-    if(this.domainInfo.mac != '' && this.domainInfo.mac != null){
-      if(!/([0-9a-f]){12}(,([0-9a-f]){12})*$/i.test(this.domainInfo.mac)){
+    if (this.domainInfo.mac !== '' && this.domainInfo.mac != null) {
+      if (!/([0-9a-f]){12}(,([0-9a-f]){12})*$/i.test(this.domainInfo.mac)) {
         this.$message.error('请输入正确的mac地址');
         return;
       }
