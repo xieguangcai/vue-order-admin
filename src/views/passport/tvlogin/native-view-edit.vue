@@ -920,6 +920,9 @@ export default class NativeViewEdit extends Vue {
   }
 
   beforSave() {
+    if(this.domainInfo == null){
+      return;
+    }
     // 将其他关联配置信息保存到对象中
     this.domainInfo.sourceSign = this.platForm.join(',');
     if (this.validTime != null && this.validTime.length === 2) {
