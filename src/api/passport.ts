@@ -109,3 +109,10 @@ export function offlineLoginLayout(id: number): AxiosPromise<ResponseResult<bool
     params: {id},
   });
 }
+export function copyLoginLayout(id: number): AxiosPromise<ResponseResult<boolean>> {
+  return request({
+    url: '/passport/sys-login-layout/edit/copy',
+    method: 'get',
+    params: {id},
+  });
+}

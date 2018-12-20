@@ -27,6 +27,23 @@
                 border
                 fit
                 highlight-current-row>
+        <el-table-column type = "expand" fixed>
+          <template slot-scope="scope">
+            <table class="cc-order-table">
+              <tr>
+                <td>修改人</td><td>{{scope.row.editor}}</td>
+                <td>创建时间</td><td>{{scope.row.auditor}}</td>
+              </tr>
+              <tr>
+                <td>修改人</td><td>{{scope.row.createTime}}</td>
+                <td>最后修改时间</td><td>{{scope.row.modifyTime}}</td>
+              </tr>
+              <tr>
+                <td>推送mac地址</td><td colspan="3">{{scope.row.mac}}</td>
+              </tr>
+            </table>
+          </template>
+        </el-table-column>
         <el-table-column align="left" label="ID" width="60" fixed>
           <template slot-scope="scope">
             <div>
@@ -55,13 +72,6 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="推送mac地址">
-          <template slot-scope="scope">
-            <div>
-              {{ scope.row.mac }}
-            </div>
-          </template>
-        </el-table-column>
         <el-table-column align="left" label="有效期" width="320">
           <template slot-scope="scope">
             <div>
@@ -69,7 +79,13 @@
             </div>
           </template>
         </el-table-column>
-
+        <el-table-column label="创建人" width="120">
+          <template slot-scope="scope">
+            <div>
+              {{ scope.row.creator }}
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" align="center" fixed="right" width="160">
           <template slot-scope="scope">
             <el-tooltip :content="getViewContentName(scope.row)">
@@ -79,6 +95,10 @@
             <el-tooltip content="编辑" v-if="(scope.row.status === 0 || scope.row.status === 1 || scope.row.status === 3) && checkUserRole('LAYOUT_ROLE_EDIT')">
               <el-button type="warning" size="mini" circle icon="el-icon-edit"
                          @click="handleEditLayoutDetail(scope.$index, scope.row)"></el-button>
+            </el-tooltip>
+            <el-tooltip content="复制" v-if="checkUserRole('LAYOUT_ROLE_EDIT')">
+              <el-button type="warning" size="mini" circle icon="el-icon-document"
+                         @click="handleCopy(scope.$index, scope.row)"></el-button>
             </el-tooltip>
             <el-tooltip content="下线" v-if="scope.row.status === 2 && checkUserRole('LAYOUT_ROLE_AUDIT')">
               <el-button type="danger" size="mini" circle icon="el-icon-download"
@@ -107,7 +127,7 @@ import SearchPagePane from '../../../components/SearchPagePane/index.vue';
 import ListTablePane from '../../../components/ListTablePane/index.vue';
 import {Pageable, ResponseResult, SysLoginLayoutListQuery, SysLoginLayoutModel} from '../../../types';
 import {AxiosResponse} from 'axios';
-import {getLoginLayoutList, offlineLoginLayout} from '../../../api/passport';
+import {copyLoginLayout, getLoginLayoutList, offlineLoginLayout} from '../../../api/passport';
 import {handlerCommonError} from '../../../utils/auth-interceptor';
 import {layoutStatusName} from '../../../api/pay';
 import {AppModule} from '../../../store/modules/app';
@@ -147,8 +167,29 @@ export default class LoginLayoutList extends Vue {
     this.$router.push({path: 'edit-login-layout', query: {viewModel: 'false', id: '' + row.id}});
   }
 
+  handleCopy(index: number, row: SysLoginLayoutModel){
+    this.$confirm('确定要复制当前布局吗？', '提示', {
+      confirmButtonText: '复制',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then( () => {
+      copyLoginLayout(row.id).then((response) => {
+        if (!response.data.success) {
+          handlerCommonError(response.data);
+        } else {
+          this.$message({
+            type: 'success',
+            message: '成功复制方案',
+          });
+          // @ts-ignore
+          this.fetchData();
+        }
+      }).catch(handlerCommonError);
+    });
+  }
+
   handleOfflineLayout(index: number, row: SysLoginLayoutModel) {
-    this.$confirm('确定要下线当前策略吗？', '警告', {
+    this.$confirm('确定要下线当前布局吗？', '警告', {
       confirmButtonText: '下线',
       cancelButtonText: '取消',
       type: 'warning',
@@ -164,7 +205,7 @@ export default class LoginLayoutList extends Vue {
           // @ts-ignore
           this.fetchData();
         }
-      });
+      }).catch(handlerCommonError);
     });
   }
 
