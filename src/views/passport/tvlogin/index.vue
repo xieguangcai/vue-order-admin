@@ -32,10 +32,10 @@
             <table class="cc-order-table">
               <tr>
                 <td>修改人</td><td>{{scope.row.editor}}</td>
-                <td>创建时间</td><td>{{scope.row.auditor}}</td>
+                <td>创建时间</td><td>{{scope.row.createTime}}</td>
               </tr>
               <tr>
-                <td>修改人</td><td>{{scope.row.createTime}}</td>
+                <td>审核人</td><td>{{scope.row.auditor}}</td>
                 <td>最后修改时间</td><td>{{scope.row.modifyTime}}</td>
               </tr>
               <tr>
