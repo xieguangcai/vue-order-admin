@@ -607,13 +607,13 @@ export default class NativeViewEdit extends Vue {
 
   getCodeName(code: number): string {
     switch (code) {
-      case 37:
+      case 21:
         return '左';
-      case 38:
+      case 19:
         return '上';
-      case 39:
+      case 22:
         return '右';
-      case 40:
+      case 20:
         return '下';
     }
     return '';
@@ -667,11 +667,11 @@ export default class NativeViewEdit extends Vue {
     if (length === 1) {
       this.editLoginLayout.pageList[0].switchPage = [];
     } else if (length > 1) {
-      let preCode = 37;
-      let nextCode = 39;
+      let preCode = 21;
+      let nextCode = 22;
       if (this.editLoginLayout.switchType === 'up_down') {
-        preCode = 38;
-        nextCode = 40;
+        preCode = 19;
+        nextCode = 20;
       }
       if (length > 2) {
         // 多余2个的中间的都加上2个导航
