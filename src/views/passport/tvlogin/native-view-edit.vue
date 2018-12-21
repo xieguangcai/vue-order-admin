@@ -427,6 +427,7 @@ export default class NativeViewEdit extends Vue {
     ) {
       this.validTime = [this.domainInfo.startTime, this.domainInfo.endTime];
     }
+    this.editItemProp(null);
     this.initProperties();
   }
 
@@ -920,7 +921,7 @@ export default class NativeViewEdit extends Vue {
   }
 
   beforSave() {
-    if(this.domainInfo == null){
+    if (this.domainInfo == null) {
       return;
     }
     // 将其他关联配置信息保存到对象中

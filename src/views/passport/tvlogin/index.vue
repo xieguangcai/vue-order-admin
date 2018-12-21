@@ -167,7 +167,7 @@ export default class LoginLayoutList extends Vue {
     this.$router.push({path: 'edit-login-layout', query: {viewModel: 'false', id: '' + row.id}});
   }
 
-  handleCopy(index: number, row: SysLoginLayoutModel){
+  handleCopy(index: number, row: SysLoginLayoutModel) {
     this.$confirm('确定要复制当前布局吗？', '提示', {
       confirmButtonText: '复制',
       cancelButtonText: '取消',

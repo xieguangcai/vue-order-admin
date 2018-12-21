@@ -102,7 +102,7 @@ class App extends VuexModule {
     {value: '2', label: '作废'},
   ];
   layoutStatus: IAppState['layoutStatus'] = [
-    {value: '0', label: '未审核'},
+    {value: '0', label: '草稿'},
     {value: '1', label: '测试中'},
     {value: '2', label: '全网上线'},
     {value: '3', label: '下线'},
