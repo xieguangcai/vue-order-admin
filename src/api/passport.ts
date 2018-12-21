@@ -116,3 +116,11 @@ export function copyLoginLayout(id: number): AxiosPromise<ResponseResult<boolean
     params: {id},
   });
 }
+
+export function adjustPriority(id: number, priority:number): AxiosPromise<ResponseResult<boolean>> {
+  return request({
+    url: '/passport/sys-login-layout/audit/priority',
+    method: 'get',
+    params: {id, priority},
+  });
+}

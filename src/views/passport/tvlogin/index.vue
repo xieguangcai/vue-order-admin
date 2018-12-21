@@ -67,7 +67,10 @@
         </el-table-column>
         <el-table-column label="优先级" width="80">
           <template slot-scope="scope">
-            <div>
+            <div v-if="scope.row.status === 1 || scope.row.status === 2">
+              <el-input-number v-model="scope.row.priority" :min="0" @change="(newVal)=>{priorityChanged(scope.row, newVal)}" ></el-input-number>
+            </div>
+            <div v-else>
               {{ scope.row.priority }}
             </div>
           </template>
@@ -127,7 +130,7 @@ import SearchPagePane from '../../../components/SearchPagePane/index.vue';
 import ListTablePane from '../../../components/ListTablePane/index.vue';
 import {Pageable, ResponseResult, SysLoginLayoutListQuery, SysLoginLayoutModel} from '../../../types';
 import {AxiosResponse} from 'axios';
-import {copyLoginLayout, getLoginLayoutList, offlineLoginLayout} from '../../../api/passport';
+import {adjustPriority, copyLoginLayout, getLoginLayoutList, offlineLoginLayout} from '../../../api/passport';
 import {handlerCommonError} from '../../../utils/auth-interceptor';
 import {layoutStatusName} from '../../../api/pay';
 import {AppModule} from '../../../store/modules/app';
@@ -157,6 +160,23 @@ export default class LoginLayoutList extends Vue {
 
   layoutStatusToName(code: number) {
     return layoutStatusName(code);
+  }
+
+  priorityChanged(layout: SysLoginLayoutModel, newVal: number){
+    if(layout.status === 1 || layout.status === 2){
+      //更改优先级
+      adjustPriority(layout.id, newVal).then((response) => {
+        if (!response.data.success) {
+          handlerCommonError(response.data);
+        } else {
+          this.$message({
+            type: 'success',
+            message: '成功调整优先级',
+          });
+          // @ts-ignore
+          this.fetchData();
+        }}).catch(handlerCommonError);
+    }
   }
 
   handleViewLayoutDetail(index: number, row: SysLoginLayoutModel) {
