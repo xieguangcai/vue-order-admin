@@ -427,7 +427,7 @@ export default class NativeViewEdit extends Vue {
     ) {
       this.validTime = [this.domainInfo.startTime, this.domainInfo.endTime];
     }
-    this.editItemProp(null);
+    this.editItem = null;
     this.initProperties();
   }
 
