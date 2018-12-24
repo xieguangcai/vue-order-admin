@@ -162,9 +162,9 @@ export default class LoginLayoutList extends Vue {
     return layoutStatusName(code);
   }
 
-  priorityChanged(layout: SysLoginLayoutModel, newVal: number){
-    if(layout.status === 1 || layout.status === 2){
-      //更改优先级
+  priorityChanged(layout: SysLoginLayoutModel, newVal: number) {
+    if (layout.status === 1 || layout.status === 2) {
+      // 更改优先级
       adjustPriority(layout.id, newVal).then((response) => {
         if (!response.data.success) {
           handlerCommonError(response.data);

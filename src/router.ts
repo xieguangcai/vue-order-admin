@@ -51,39 +51,45 @@ export default new Router({
       path: '/orders',
       component: Layout,
       name: '会员信息管理',
-      meta: {title: '会员信息管理', icon: 'form', roles: ['ROLE_VIEW']},
+      meta: {title: '会员信息管理', icon: 'form'},
       children: [
         {
           path: 'oss-order-list',
           name: 'oss订单列表',
           component: () => import(/* webpackChunkName: "oss-order-list" */ '@/views/pay/orders/index.vue'),
-          meta: {title: 'oss订单列表', icon: 'tree'},
+          meta: {title: 'oss订单列表', icon: 'tree', roles: ['ROLE_VIEW']},
         },
         {
           path: 'movies-order-list',
           name: '业务订单列表',
           component: () => import(/* webpackChunkName: "movies-order-list" */ '@/views/authentication/orders/index.vue'),
-          meta: {title: '业务订单列表', icon: 'table'},
+          meta: {title: '业务订单列表', icon: 'table', roles: ['ROLE_VIEW']},
 
         },
         {
           path: 'card-info-list',
           name: '卡密信息列表',
           component: () => import(/* webpackChunkName: "card-info-list" */ '@/views/pay/cards/index.vue'),
-          meta: {title: '卡密信息列表', icon: 'card'},
+          meta: {title: '卡密信息列表', icon: 'card', roles: ['ROLE_VIEW']},
 
         },
         {
           path: 'order-refund-list',
           name: '重复支付列表',
           component: () => import(/* webpackChunkName: "order-refund-list" */ '@/views/pay/orders-refund/index.vue'),
-          meta: {title: '重复支付列表', icon: 'card'},
+          meta: {title: '重复支付列表', icon: 'card', roles: ['ROLE_VIEW']},
         },
         {
           path: 'phone-valid-code',
           name: '验证码',
           component: () => import(/* webpackChunkName: "phone-valid-code" */ '@/views/passport/user/index.vue'),
-          meta: {title: '验证码', icon: 'card'},
+          meta: {title: '验证码', icon: 'card', roles: ['ROLE_VIEW']},
+        },
+        {
+          path: 'account-info-detail',
+          name: '账号信息',
+          component: () => import(/* webpackChunkName: "account-info-detail" */ '@/views/passport/user/detail.vue'),
+          meta: {title: '账号信息', icon: 'user', roles: ['ROLE_VIEW', 'VIEW_USER_INFO']},
         },
       ],
     }, {

@@ -684,10 +684,25 @@ export interface OrderRefundInfoListQuery extends IPageinfo {
   phoneNo?: string;
   transactionId?: string;
 }
+
 export interface RedisValueInfo {
   value?: any;
   ttlTime?: number;
 }
+
+interface SysAccountQuery {
+  mobile?: string;
+  openId?: string;
+  externalFlag?: string;
+  externalId?: string;
+}
+interface SysAccountQueryConstructor {
+  (value?: any): SysAccountQuery;
+  readonly prototype: SysAccountQuery;
+  new(value?: any): SysAccountQuery;
+}
+
+declare const SysAccountQuery: SysAccountQueryConstructor;
 
 /**
  *  客户端native登录ui元素类型-start

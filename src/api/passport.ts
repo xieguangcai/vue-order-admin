@@ -1,5 +1,6 @@
 import request from '@/utils/request-passport';
 import {
+  SysAccountQuery,
   Pageable,
   RedisValueInfo,
   ResponseResult,
@@ -13,16 +14,30 @@ import {AxiosPromise, AxiosResponse} from 'axios';
 /**
  * --------------------pay相关接口-------------------------
  */
-export function getSysAccountInfoDetail(openId: string): AxiosPromise<ResponseResult<SysAccount>> {
+// export function getSysAccountInfoDetail(openId: string): AxiosPromise<ResponseResult<SysAccount>> {
+//   return request({
+//     url: '/passport/sys-account/detail',
+//     method: 'get',
+//     params: {openId},
+//     paramsSerializer(p: any) {
+//       return qs.stringify(p, {arrayFormat: 'repeat'});
+//     },
+//   });
+// }
+
+export function getSysAccountInfoDetail(params: SysAccountQuery): AxiosPromise<ResponseResult<SysAccount>> {
   return request({
     url: '/passport/sys-account/detail',
     method: 'get',
-    params: {openId},
+    params,
     paramsSerializer(p: any) {
       return qs.stringify(p, {arrayFormat: 'repeat'});
     },
   });
 }
+
+
+
 
 export function getMoblieCode(mobile: string): AxiosPromise<ResponseResult<RedisValueInfo>> {
   return request({
@@ -117,7 +132,7 @@ export function copyLoginLayout(id: number): AxiosPromise<ResponseResult<boolean
   });
 }
 
-export function adjustPriority(id: number, priority:number): AxiosPromise<ResponseResult<boolean>> {
+export function adjustPriority(id: number, priority: number): AxiosPromise<ResponseResult<boolean>> {
   return request({
     url: '/passport/sys-login-layout/audit/priority',
     method: 'get',

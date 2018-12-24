@@ -15,16 +15,12 @@
 </template>
 
 <script lang="ts">
-import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
+import {Component, Vue} from 'vue-property-decorator';
 import {
   RedisValueInfo,
   ResponseResult,
-  SysAccount, SysUser,
-  UserInfoFull,
 } from '../../../types/index';
-import {delMobileCheck, getMoblieCode, getSysAccountInfoDetail} from '../../../api/passport';
-import {getUserInfoFullByOpenId} from '../../../api/pay';
-import {handlerCommonError} from '../../../utils/auth-interceptor';
+import {delMobileCheck, getMoblieCode} from '../../../api/passport';
 import {ElForm} from 'element-ui/types/form';
 import {validPhoneNoRule} from '../../../utils/validate';
 import {AxiosResponse} from 'axios';

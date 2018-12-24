@@ -51,7 +51,7 @@
                 fit
                 highlight-current-row>
 
-        <el-table-column align="left" label="单号信息" width="300" fixed>
+        <el-table-column align="left" label="单号信息" width="360" fixed>
           <template slot-scope="scope">
             <div>
               <span>oss订单号：</span>{{ scope.row.orderNo}}<br/>
