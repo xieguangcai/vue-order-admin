@@ -267,7 +267,7 @@
               <el-input v-model="domainInfo.name" :disabled="innerViewModel"></el-input>
             </el-form-item>
             <el-form-item label="投放mac地址">
-              <el-input v-model="domainInfo.mac" clearable="true" placeholder="以英文逗号分割多个值" :disabled="innerViewModel"></el-input>
+              <el-input v-model="domainInfo.mac" :clearable="true" placeholder="以英文逗号分割多个值" :disabled="innerViewModel"></el-input>
             </el-form-item>
             <el-form-item label="最低版本">
               <el-select v-model="domainInfo.minVersion" placeholder="选择最低版本" :disabled="innerViewModel">
@@ -816,11 +816,10 @@ export default class NativeViewEdit extends Vue {
       attr.zIndex = item.zIndex;
     }
     switch (item.type) {
+      case 'BUTTON':
+        attr.background = 'url(' + item.imgUrl + ') center center no-repeat';
       case 'TEXT':
         attr.fontSize = item.size + 'px';
-        break;
-      case 'BUTTON':
-        attr.background = 'url(' + item.imgUrl + ') center center';
         break;
 
     }
