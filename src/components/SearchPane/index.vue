@@ -1,5 +1,5 @@
 <template>
-  <div class="search-panel">
+  <div class="search-panel" @keyup.enter="handleClick">
     <transition name="el-zoom-in-top">
     <div class="search-con-container" v-if="showSearchCon">
       <slot/>
