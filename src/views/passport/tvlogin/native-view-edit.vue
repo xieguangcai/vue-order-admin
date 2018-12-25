@@ -586,6 +586,7 @@ export default class NativeViewEdit extends Vue {
         itemData.h = 742;
         itemData.y = 169;
         itemData.x = 600;
+        itemData.bgColor = "rgba(48, 48, 48, 1)";
         break;
       case 'TEXT_VERSION':
         itemData.w = 400;
@@ -1002,7 +1003,7 @@ export default class NativeViewEdit extends Vue {
           h: 430,
           x: 745,
           y: 325,
-          text: '新添加的组件',
+          text: '二维码控件',
           size: 16,
           color: '',
           bold: false,
@@ -1021,7 +1022,7 @@ export default class NativeViewEdit extends Vue {
           h: 40,
           x: 20,
           y: 1040,
-          text: '新添加的组件',
+          text: '版本',
           size: 12,
           color: '',
           bold: false,
@@ -1046,7 +1047,7 @@ export default class NativeViewEdit extends Vue {
           h: 742,
           x: 600,
           y: 169,
-          text: '新添加的组件',
+          text: '手机号登录',
           size: 16,
           color: '',
           bold: false,
@@ -1058,6 +1059,7 @@ export default class NativeViewEdit extends Vue {
           focusImgMd5: '',
           focusImgName: '',
           clickAction: '',
+          bgColor : "rgba(48, 48, 48, 1)",
           zIndex: 1,
         }],
         switchPage: [{keyCode: 38, toPageId: 1, name: '二维码页面'}],

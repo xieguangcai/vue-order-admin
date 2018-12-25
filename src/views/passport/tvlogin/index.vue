@@ -65,10 +65,11 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="优先级" width="80">
+        <el-table-column label="优先级" width="180">
           <template slot-scope="scope">
-            <div v-if="scope.row.status === 1 || scope.row.status === 2">
-              <el-input-number v-model="scope.row.priority" :min="0" @change="(newVal)=>{priorityChanged(scope.row, newVal)}" ></el-input-number>
+            <div v-if="(scope.row.status === 2 && checkUserRole('LAYOUT_ROLE_AUDIT'))">
+              <el-input-number size="mini" v-model="scope.row.priority" :min="0"
+                               @change="(newVal)=>{priorityChanged(scope.row, newVal)}" ></el-input-number>
             </div>
             <div v-else>
               {{ scope.row.priority }}
