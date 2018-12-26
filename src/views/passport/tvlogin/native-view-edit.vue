@@ -14,18 +14,19 @@
                      @click="editItemProp(boxItem)"/>
               </template>
               <template v-if="boxItem.type === 'TEXT'">
-                <div :style="getItemStyle(boxItem)" @click="editItemProp(boxItem)">
+                <div :style="getItemStyle(boxItem)" @click="editItemProp(boxItem)" style="text-align:center;">
                   {{ boxItem.text }}
                 </div>
               </template>
               <template v-if="boxItem.type === 'BUTTON'">
                 <div :style="getItemStyle(boxItem)" @mousedown.left="(ev)=>{changeBg(true, boxItem, ev.target)}"
-                     @mouseup.left="(ev)=>{changeBg(false, boxItem, ev.target)}" @click="editItemProp(boxItem)">
+                     @mouseup.left="(ev)=>{changeBg(false, boxItem, ev.target)}" @click="editItemProp(boxItem)"
+                     style="text-align:center;">
                   {{ boxItem.text }}
                 </div>
               </template>
               <template v-if="boxItem.type === 'TEXT_VERSION'">
-                <div :style="getItemStyle(boxItem)" @click="editItemProp(boxItem)">
+                <div :style="getItemStyle(boxItem)" @click="editItemProp(boxItem)"  style="text-align:center;">
                   V1.4.4
                 </div>
               </template>

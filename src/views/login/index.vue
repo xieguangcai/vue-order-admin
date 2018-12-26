@@ -41,6 +41,7 @@
   import {Component, Vue, Watch} from 'vue-property-decorator';
   import {UserModule} from '@/store/modules/user';
   import {Form as ElForm} from 'element-ui';
+  import {handlerCommonError} from "../../utils/auth-interceptor";
 
   const validateUsername = (rule: any, value: string, callback: any) => {
     if (!isValidUsername(value)) {
@@ -79,15 +80,12 @@
     }
 
     handleLogin() {
-      (this.$refs.loginForm as ElForm).validate((valid: boolean) => {
+      (this.$refs.loginForm as ElForm).validate(async (valid: boolean) => {
         if (valid) {
           this.loading = true;
-          UserModule.Login(this.loginForm).then(() => {
-            this.loading = false;
-            this.$router.push({path: '/'});
-          }).catch(() => {
-            this.loading = false;
-          });
+          UserModule.Login(this.loginForm);
+          this.loading = false;
+          this.$router.push({path: '/'});
         } else {
           console.error('Login: error submit!!');
           return false;

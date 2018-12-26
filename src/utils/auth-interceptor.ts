@@ -29,6 +29,16 @@ export function authRejectFilter(error: any) {
     message = response.data.error_description || response.data.message || response.data || '服务器资源访问出错';
     if (response !== undefined) {
       const status = response.status;
+      if (status === 400) {
+        if (response.data.error === 'invalid_grant') {
+          Message({
+            message: '账号密码错误！',
+            type: 'error',
+            duration: 5 * 1000,
+          });
+          return Promise.reject('error');
+        }
+      }
       if (status === 401) {
         if (response.data.error === 'unauthorized') {
           Message({
