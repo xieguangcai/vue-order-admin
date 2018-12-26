@@ -132,13 +132,13 @@ export default new Router({
         {
           path: 'account-list',
           name: '系统账户管理',
-          component: () => import(/* webpackChunkName: "account-list" */ '@/views/account/index.vue'),
+          component: () => import(/* webpackChunkName: "account-list" */ '@/views/union-manager/account/index.vue'),
           meta: {title: '系统账户列表', icon: 'user'},
         },
         {
           path: 'app-list',
           name: '接入应用管理',
-          component: () => import(/* webpackChunkName: "app-list" */ '@/views/app/index.vue'),
+          component: () => import(/* webpackChunkName: "app-list" */ '@/views/union-manager/app/index.vue'),
           meta: {title: '接入应用列表', icon: 'tree'},
         },
         {
