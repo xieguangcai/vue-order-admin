@@ -1,7 +1,8 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name:{{ name }}</div>
-    <div class="dashboard-text">roles:<span v-for="role in roles" :key="role">{{ role }}</span></div>
+    <div class="dashboard-text">欢迎登录酷开智能客服系统</div>
+    <div class="dashboard-text">登录账号:{{ name }}</div>
+    <div class="dashboard-text">当前账号所属角色:<div v-for="role in roles" :key="role">{{ role }}</div></div>
   </div>
 </template>
 
