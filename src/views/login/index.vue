@@ -37,62 +37,62 @@
 </template>
 
 <script lang="ts">
-  import {isValidUsername} from '@/utils/validate';
-  import {Component, Vue, Watch} from 'vue-property-decorator';
-  import {UserModule} from '@/store/modules/user';
-  import {Form as ElForm} from 'element-ui';
-  import {handlerCommonError} from "../../utils/auth-interceptor";
+import {isValidUsername} from '@/utils/validate';
+import {Component, Vue, Watch} from 'vue-property-decorator';
+import {UserModule} from '@/store/modules/user';
+import {Form as ElForm} from 'element-ui';
+import {handlerCommonError} from '../../utils/auth-interceptor';
 
-  const validateUsername = (rule: any, value: string, callback: any) => {
-    if (!isValidUsername(value)) {
-      callback(new Error('请输入正确的用户名'));
-    } else {
-      callback();
-    }
+const validateUsername = (rule: any, value: string, callback: any) => {
+  if (!isValidUsername(value)) {
+    callback(new Error('请输入正确的用户名'));
+  } else {
+    callback();
+  }
+};
+const validatePass = (rule: any, value: string, callback: any) => {
+  if (value.length < 5) {
+    callback(new Error('密码不能小于5位'));
+  } else {
+    callback();
+  }
+};
+
+@Component
+export default class Login extends Vue {
+  loginForm = {
+    username: '',
+    password: '',
   };
-  const validatePass = (rule: any, value: string, callback: any) => {
-    if (value.length < 5) {
-      callback(new Error('密码不能小于5位'));
-    } else {
-      callback();
-    }
+  loginRules = {
+    username: [{required: true, trigger: 'blur', validator: validateUsername}],
+    password: [{required: true, trigger: 'blur', validator: validatePass}],
   };
+  loading = false;
+  pwdType = 'password';
 
-  @Component
-  export default class Login extends Vue {
-    loginForm = {
-      username: '',
-      password: '',
-    };
-    loginRules = {
-      username: [{required: true, trigger: 'blur', validator: validateUsername}],
-      password: [{required: true, trigger: 'blur', validator: validatePass}],
-    };
-    loading = false;
-    pwdType = 'password';
-
-    showPwd() {
-      if (this.pwdType === 'password') {
-        this.pwdType = '';
-      } else {
-        this.pwdType = 'password';
-      }
-    }
-
-    handleLogin() {
-      (this.$refs.loginForm as ElForm).validate(async (valid: boolean) => {
-        if (valid) {
-          this.loading = true;
-          UserModule.Login(this.loginForm);
-          this.loading = false;
-          this.$router.push({path: '/'});
-        } else {
-          console.error('Login: error submit!!');
-          return false;
-        }
-      });
+  showPwd() {
+    if (this.pwdType === 'password') {
+      this.pwdType = '';
+    } else {
+      this.pwdType = 'password';
     }
   }
+
+  handleLogin() {
+    (this.$refs.loginForm as ElForm).validate(async (valid: boolean) => {
+      if (valid) {
+        this.loading = true;
+        UserModule.Login(this.loginForm);
+        this.loading = false;
+        this.$router.push({path: '/'});
+      } else {
+        console.error('Login: error submit!!');
+        return false;
+      }
+    });
+  }
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
