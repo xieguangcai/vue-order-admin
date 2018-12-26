@@ -6,6 +6,15 @@ import {AppModule} from '@/store/modules/app';
 
 @Component
 export default class BaseEdit extends Vue {
+  loadingData: boolean = true;
+  loadingText: string = '正在加载数据...';
+
+  showLoading() {
+    this.loadingData = true;
+  }
+  hiddenLoading() {
+    this.loadingData = false;
+  }
 
   get formLabelWidth() {
     return AppModule.formLabelWidth;
@@ -28,6 +37,7 @@ export default class BaseEdit extends Vue {
   cancel() {
     const form = this.getEditForm();
     form.resetFields();
+    this.hiddenLoading();
     this.$emit('cancel');
   }
 
@@ -41,7 +51,13 @@ export default class BaseEdit extends Vue {
       if (!valid) {
         return false;
       } else {
-        await this.saveFormData();
+        const oldText = this.loadingText;
+        this.loadingText = '正在保存数据...';
+        this.showLoading();
+        await this.saveFormData().finally(() => {
+          this.hiddenLoading();
+          this.loadingText = oldText;
+        });
         this.$message.success('保存成功');
         form.resetFields();
         cb();

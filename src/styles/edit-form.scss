@@ -46,4 +46,9 @@
   .search-panel .search-con-container{
     display: inline;
   }
+  //为了在弹窗中显示全部的加载内容。
+  .cc-dialog-edit-form{
+    margin:-30px -20px;
+    padding: 30px 20px;
+  }
 }

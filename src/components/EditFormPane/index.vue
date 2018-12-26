@@ -27,7 +27,6 @@
     @Prop()
     useDefaultAction: boolean = true;
 
-
     saveThenNew() {
       this.$emit('save-then-new');
     }

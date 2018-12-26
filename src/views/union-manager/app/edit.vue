@@ -29,16 +29,14 @@
 
 <script lang="ts">
 import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
-import {ApplicationInfo} from '../../types/index';
-import {getAppInfo, newApp, newUser, saveApp} from '../../api/account';
-import EditFormPane from '../../components/EditFormPane/index.vue';
-import BaseEdit from '../../components/BaseEdit';
-import {AxiosPromise} from 'axios';
-import {handlerCommonError} from '../../utils/auth-interceptor';
+import {ApplicationInfo} from '../../../types/index';
+import {getAppInfo, newApp, saveApp} from '../../../api/account';
+import BaseEdit from '../../../components/BaseEdit';
+import {handlerCommonError} from '../../../utils/auth-interceptor';
 
 @Component({
   name: 'ApplicationEdit',
-  components: {EditFormPane},
+  components: {},
   mixins: [ BaseEdit ],
 })
 export default class ApplicationEdit extends Vue {
@@ -77,9 +75,14 @@ export default class ApplicationEdit extends Vue {
     if ( null == newVal || newVal === 0) {
       this.domainInfo = {status: 1};
     } else {
+      // @ts-ignore
+      this.showLoading();
       getAppInfo(this.domainId).then((resolve) => {
         this.domainInfo = resolve.data.data;
-      }).catch(handlerCommonError);
+      }).catch(handlerCommonError).finally(() => {
+        // @ts-ignore
+        this.hiddenLoading();
+      });
     }
   }
 

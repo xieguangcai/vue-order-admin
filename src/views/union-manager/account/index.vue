@@ -103,9 +103,9 @@
       </search-page-pane>
     </list-table-pane>
     <el-dialog title="编辑用户" :visible.sync="dialogEditFormVisible" :close-on-click-modal="false" width="600px">
-      <account-edit @cancel="dialogEditFormVisible=false" :account-id="editDomainInfo.editAccountId"
+      <account-edit @cancel="dialogEditFormVisible=false; editDomainInfo.editAccountId = 0;" :account-id="editDomainInfo.editAccountId"
                     @save-success-then-new="saveThenNew"
-                    @save-success="()=>{this.dialogEditFormVisible=false;fetchData();this.editDomainInfo.editAccountId = 0;}"/>
+                    @save-success="()=>{this.dialogEditFormVisible=false;fetchData();editDomainInfo.editAccountId = 0;}"/>
     </el-dialog>
 
     <el-dialog title="编辑用户所属角色" :visible.sync="dialogEditUserRoleFormVisible" :close-on-click-modal="false"
@@ -119,18 +119,18 @@
 
 <script lang="ts">
 import {getList, deleteUser} from '@/api/account';
-import {Component, Vue, Watch} from 'vue-property-decorator';
+import {Component, Vue} from 'vue-property-decorator';
 import SearchPane from '@/components/SearchPane/index.vue';
 import SearchPagePane from '@/components/SearchPagePane/index.vue';
-import {AccountInfo, AccountListQuery, IPageinfo, Pageable, ResponseResult} from '../../types/index';
+import {AccountInfo, AccountListQuery, Pageable, ResponseResult} from '../../../types/index';
 import ListTablePane from '@/components/ListTablePane/index.vue';
 import AccountEdit from './edit.vue';
 import EditUserRole from './editUserRole.vue';
 import {AxiosResponse} from 'axios';
-import {UserModule} from '../../store/modules/user';
-import BaseTableDelete from '../../components/BaseTableDelete';
-import BaseList from '../../components/BaseList';
-import {handlerCommonError} from '../../utils/auth-interceptor';
+import {UserModule} from '../../../store/modules/user';
+import BaseTableDelete from '../../../components/BaseTableDelete';
+import BaseList from '../../../components/BaseList';
+import {handlerCommonError} from '../../../utils/auth-interceptor';
 
 interface EditDomain {
   editRoleAccountId: number | undefined;

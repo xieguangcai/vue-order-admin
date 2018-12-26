@@ -586,7 +586,7 @@ export default class NativeViewEdit extends Vue {
         itemData.h = 742;
         itemData.y = 169;
         itemData.x = 600;
-        itemData.bgColor = "rgba(48, 48, 48, 1)";
+        itemData.bgColor = 'rgba(48, 48, 48, 1)';
         break;
       case 'TEXT_VERSION':
         itemData.w = 400;
@@ -1059,7 +1059,7 @@ export default class NativeViewEdit extends Vue {
           focusImgMd5: '',
           focusImgName: '',
           clickAction: '',
-          bgColor : "rgba(48, 48, 48, 1)",
+          bgColor : 'rgba(48, 48, 48, 1)',
           zIndex: 1,
         }],
         switchPage: [{keyCode: 38, toPageId: 1, name: '二维码页面'}],

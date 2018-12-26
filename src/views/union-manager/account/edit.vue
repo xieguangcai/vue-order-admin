@@ -30,18 +30,15 @@
 
 <script lang="ts">
 import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
-import {AccountInfo} from '../../types/index';
-import {getAccountInfo, saveUser} from '../../api/account';
-import {UserModule} from '../../store/modules/user';
-import {newUser} from '../../api/account';
-import EditFormPane from '../../components/EditFormPane/index.vue';
-import BaseEdit from '../../components/BaseEdit';
-import {AxiosPromise} from 'axios';
-import {handlerCommonError} from '../../utils/auth-interceptor';
+import {AccountInfo} from '../../../types/index';
+import {getAccountInfo, saveUser} from '../../../api/account';
+import {newUser} from '../../../api/account';
+import BaseEdit from '../../../components/BaseEdit';
+import {handlerCommonError} from '../../../utils/auth-interceptor';
 
 @Component({
   name: 'AccountEdit',
-  components: {EditFormPane},
+  components: {},
   mixins: [ BaseEdit ],
 })
 export default class AccountEdit extends Vue {
@@ -70,12 +67,18 @@ export default class AccountEdit extends Vue {
 
   @Watch('accountId', {immediate: true})
   handleAccountInfoChange(newVal: number | undefined, oldVal: number| undefined) {
+    console.log('xxxx' + newVal);
     if ( null == newVal || newVal === 0) {
       this.accountInfo = {accountStatus: 1};
     } else {
+      // @ts-ignore
+      this.showLoading();
       getAccountInfo(this.accountId).then((resolve) => {
         this.accountInfo = resolve.data.data;
-      }).catch(handlerCommonError);
+      }).catch(handlerCommonError).finally(() => {
+        // @ts-ignore
+        this.hiddenLoading();
+      });
     }
   }
 

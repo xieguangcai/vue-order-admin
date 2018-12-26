@@ -1,5 +1,9 @@
 <template>
-  <el-form :model="domainInfo" ref="editForm" :rules="rules" :size="formSize">
+  <el-form :model="domainInfo" ref="editForm" :rules="rules" :size="formSize" class="cc-dialog-edit-form"
+           v-loading="loadingData"
+           :element-loading-text="loadingText"
+           element-loading-spinner="el-icon-loading"
+  >
     <el-form-item label="所属系统" :label-width="formLabelWidth">
       <el-select v-model="domainInfo.application.appId">
         <el-option v-for="app in apps" :value="app.appId" :label="app.name" :key="app.appId"></el-option>
@@ -27,16 +31,15 @@
 
 <script lang="ts">
 import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
-import {ApplicationInfo, Pageable, ResponseResult, RoleInfo} from '../../types';
-import {getAppList, getRoleInfo, newRole, saveRole} from '../../api/account';
-import EditFormPane from '../../components/EditFormPane/index.vue';
-import BaseEdit from '../../components/BaseEdit';
-import {AxiosPromise, AxiosResponse} from 'axios';
-import {handlerCommonError} from '../../utils/auth-interceptor';
+import {ApplicationInfo, Pageable, ResponseResult, RoleInfo} from '../../../types';
+import {getAppList, getRoleInfo, newRole, saveRole} from '../../../api/account';
+import BaseEdit from '../../../components/BaseEdit';
+import {AxiosResponse} from 'axios';
+import {handlerCommonError} from '../../../utils/auth-interceptor';
 
 @Component({
   name: 'RoleEdit',
-  components: {EditFormPane},
+  components: {},
   mixins: [ BaseEdit ],
 })
 export default class RoleEdit extends Vue {
@@ -75,9 +78,14 @@ export default class RoleEdit extends Vue {
     if ( null == newVal || newVal === 0) {
       this.domainInfo = {roleId: 0, status: 1, application: {appId: 1}};
     } else {
+      // @ts-ignore
+      this.showLoading();
       getRoleInfo(this.domainId).then((resolve) => {
         this.domainInfo = resolve.data.data;
-      }).catch(handlerCommonError);
+      }).catch(handlerCommonError).finally(() => {
+        // @ts-ignore
+        this.hiddenLoading();
+      });
     }
   }
 

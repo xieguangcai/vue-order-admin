@@ -144,7 +144,7 @@ export default new Router({
         {
           path: 'role-list',
           name: '系统角色管理',
-          component: () => import(/* webpackChunkName: "role-list" */ '@/views/role/index.vue'),
+          component: () => import(/* webpackChunkName: "role-list" */ '@/views/union-manager/role/index.vue'),
           meta: {title: '角色列表', icon: 'role'},
         },
       ],
