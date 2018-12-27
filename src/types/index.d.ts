@@ -1009,3 +1009,44 @@ export interface SubsidyActivityInfo {
 export interface ActivityListQuery extends IPageinfo {
   searchValue?: string;
 }
+
+export interface SubsidyUserTotal {
+  subsidyActivityId: number;
+  userTotalId: number;
+  money?: number;
+  openId?: string ;
+  nickName?: string ;
+  createTime?: string ;
+  modifyTime?: string ;
+}
+
+export interface SubsidyUserDetail {
+  userDetailId: number;
+  subsidyTypeId: number;
+  subsidyActivityId: number;
+  type?: number;
+  money?: number;
+  openId?: string ;
+  nickName?: string ;
+  businessName?: string ;
+  mac?: string ;
+  cudid?: string;
+  orderNo?: string ;
+  status?: number ;
+  lockEndTime?: string ;
+  lockTime?: string ;
+  createTime?: string ;
+  modifyTime?: string ;
+}
+
+export interface SubsidyType {
+  subsidyTypeId: number;
+  subsidyTypeCode?: string;
+  typeName?: string;
+  subsidyActivityId?: number;
+  sendNum?: number ;
+  receiveNum?: number ;
+  money?: number;
+  createTime?: string ;
+  modifyTime?: string ;
+}
