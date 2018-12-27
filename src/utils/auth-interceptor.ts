@@ -3,7 +3,7 @@ import {UserModule} from '@/store/modules/user';
 import {AxiosRequestConfig, AxiosResponse} from 'axios';
 import {getFullToken} from '@/utils/auth';
 import {ResponseResult} from '@/types';
-import router from "@/router";
+import router from '@/router';
 
 export function authHeader(config: AxiosRequestConfig): AxiosRequestConfig {
   // if (UserModule.token) {
@@ -59,7 +59,7 @@ export function authRejectFilter(error: any) {
           },
         ).then(() => {
           UserModule.FedLogOut().then(() => {
-            router.push({path: '/login'}) // 为了重新实例化vue-router对象 避免bug
+            router.push({path: '/login'}); // 为了重新实例化vue-router对象 避免bug
           });
         });
         const errorInfo: ResponseResult<any> = {code: response.status, message, success: false, data: response};
