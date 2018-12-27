@@ -19,8 +19,4 @@ export default class BaseTableDelete extends Vue {
 
   }
 
-  getSelectedRows() {
-    return this.mutipleSelection;
-  }
-
 }
