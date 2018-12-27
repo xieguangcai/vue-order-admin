@@ -83,9 +83,10 @@ export default class Login extends Vue {
     (this.$refs.loginForm as ElForm).validate(async (valid: boolean) => {
       if (valid) {
         this.loading = true;
-        UserModule.Login(this.loginForm);
-        this.loading = false;
-        this.$router.push({path: '/'});
+        UserModule.Login(this.loginForm).then(()=>{
+          this.loading = false;
+          this.$router.push({path: '/'});
+        })
       } else {
         console.error('Login: error submit!!');
         return false;
