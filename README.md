@@ -22,3 +22,12 @@ npm run lint
 
 ### 发布测试版本
 yarn build-test
+
+### 运行
+yarn serve
+
+### 代码规范检测及修复
+yarn lint
+
+### 发布正式环境
+yarn build

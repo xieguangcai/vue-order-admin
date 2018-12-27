@@ -46,8 +46,20 @@ export default new Router({
           meta: {title: '酷开智能客服系统', icon: 'coocaa'},
         },
       ],
-    },
-    {
+    }, {
+      path: '/subsidy',
+      component: Layout,
+      name: '津贴管理',
+      meta: {title: '津贴管理', icon: 'form'},
+      children: [
+        {
+          path: 'subsidy-activity-list',
+          name: '津贴管理',
+          component: () => import(/* webpackChunkName: "subsidy-activity-list" */ '@/views/subsidy/activity/index.vue'),
+          meta: {title: '津贴管理', icon: 'tree', roles: ['ROLE_VIEW']},
+        },
+      ],
+    }, {
       path: '/orders',
       component: Layout,
       name: '会员信息管理',
