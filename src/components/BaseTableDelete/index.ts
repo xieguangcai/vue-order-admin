@@ -18,4 +18,5 @@ export default class BaseTableDelete extends Vue {
   handleDelRows(row: any) {
 
   }
+
 }
