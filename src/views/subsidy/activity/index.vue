@@ -48,7 +48,7 @@
         </el-table-column>
         <el-table-column label="津贴数" width="70px">
           <template slot-scope="scope">
-            <a @mouseover="handleViewActivityInfoDetail(scope.$index, scope.row)" @mouseout="closePane" style="color: cornflowerblue; text-decoration: underline;">{{ scope.row.subsidyNum }} 个</a>
+            <a style="color: cornflowerblue; text-decoration: underline;">{{ scope.row.subsidyNum }} 个</a>
           </template>
         </el-table-column>
         <el-table-column label="日志" width="340px">
@@ -63,12 +63,38 @@
         <el-table-column label="操作" align="center" fixed="right" width="90px">
           <template slot-scope="scope">
             <div>
-              <!--未审核（0）、-->
-              <!--<template v-if="scope.row.subsidyStatus == 0 || scope.row.subsidyStatus == 1 || scope.row.subsidyStatus == 3">-->
+              <!--未审核（0）、审核不通过（1）、上线（2）、下线（3）、审核中（4）-->
+              <!--可进行 修改 操作的状态为：未审核（0）、审核不通过（1）、下线（3）-->
+              <template v-if="scope.row.subsidyStatus === 0 || scope.row.subsidyStatus === 1 || scope.row.subsidyStatus === 3">
                 <el-tooltip content="编辑活动">
                   <el-button type="primary" circle size="mini" icon="el-icon-edit" @click="editActivity([scope.row])"></el-button>
                 </el-tooltip>
-              <!--</template>-->
+              </template>
+              <!--可进行 提交审核 操作的状态为：未审核（0）-->
+              <template v-if="scope.row.subsidyStatus === 0">
+                <el-tooltip content="提交审核">
+                  <el-button type="danger" circle size="mini" icon="el-icon-bell" @click="submitAuditActivity([scope.row])"></el-button>
+                </el-tooltip>
+              </template>
+              <!--可进行 下线 操作的状态为：上线（2）-->
+              <template v-if="scope.row.subsidyStatus === 2">
+                <el-tooltip content="下线">
+                  <el-button type="danger" circle size="mini" icon="el-icon-bell" @click="offlineActivity([scope.row])"></el-button>
+                </el-tooltip>
+              </template>
+              <!--可进行 审核 操作的状态为：审核中（4）-->
+              <template v-if="scope.row.subsidyStatus === 4">
+                <el-tooltip content="审核">
+                  <el-button type="danger" circle size="mini" icon="el-icon-bell" @click="auditActivity([scope.row])"></el-button>
+                </el-tooltip>
+              </template>
+              <br/>
+              <el-tooltip content="新增津贴" style="margin-top: 10px;">
+                <el-button type="success" circle size="mini" icon="el-icon-plus" @click="addSubsidy([scope.row])"></el-button>
+              </el-tooltip>
+              <el-tooltip content="津贴流水" slot="reference">
+                <el-button type="info" circle size="mini" icon="el-icon-info" @click="checkSubsidySerial([scope.row])"></el-button>
+              </el-tooltip>
             </div>
           </template>
         </el-table-column>
@@ -76,8 +102,8 @@
 
       <search-page-pane @size-change="handleSizeChange"  @current-change="handleCurrentChange" :size="size" :page="page" :total="total" slot="page"></search-page-pane>
 
-      <el-dialog :title="title" :visible.sync="dialogActivityInfoActionVisible" :append-to-body="true" :modal-append-to-body="false" width="80%" @close="editDomainInfo.editDomainId = 0">
-        <activity-info-add :domain-id="editDomainInfo.editDomainId"/>
+      <el-dialog :title="title" :visible.sync="dialogActivityInfoActionVisible" :append-to-body="true" :modal-append-to-body="false" width="80%" @close="editDomainInfo.editDomainId = 0; editDomainInfo.editDomainType = 0">
+        <activity-info-action :domain-id="editDomainInfo.editDomainId" :domain-type="editDomainInfo.editDomainType"/>
       </el-dialog>
 
     </list-table-pane>
@@ -94,7 +120,7 @@ import ListTablePane from '../../../components/ListTablePane/index.vue';
 import {AxiosResponse} from 'axios';
 import {getActivityList, getActivityDetail, deleteActivity} from '../../../api/subsidy';
 import {AppModule} from '../../../store/modules/app';
-import ActivityInfoAdd from './add.vue';
+import ActivityInfoAction from './action.vue';
 // @ts-ignore
 import qs from 'qs';
 import BaseList from '../../../components/BaseList';
@@ -103,10 +129,11 @@ import BaseTableDelete from '@/components/BaseTableDelete';
 
 interface EditDomain {
   editDomainId: number | undefined;
+  editDomainType: number;
 }
 
 @Component({
-  components: {ListTablePane, SearchPane, SearchPagePane},
+  components: {ListTablePane, SearchPane, SearchPagePane, ActivityInfoAction},
   filters: {
     NumFormat(value: number) {
       return (value / 100).toFixed(2);
@@ -127,68 +154,66 @@ interface EditDomain {
   },
   mixins: [BaseList, BaseTableDelete],
 })
+
 export default class ActivityInfoList extends Vue {
   dialogActivityInfoActionVisible: boolean = false;
-  dialogActivityInfoDetilVisible: boolean = false;
-  dialogSubsidyInfoAddVisible: boolean = false;
-  dialogSubsidyInfoSerialVisible: boolean = false;
-  dialogErrorVisible: boolean = false;
-  title = '';
-  editDomainInfo: EditDomain = {editDomainId: 0};
-
+  editDomainInfo: EditDomain = {editDomainId: 0, editDomainType: 0};
+  title: string = '';
   data: SubsidyActivityInfo[] = [];
   listQuery: ActivityListQuery = {page: 0, size: 50, total: 0};
 
-  realFetchData() {
-    return getActivityList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<SubsidyActivityInfo>>>) => {
-      const responseData = response.data.data;
-      this.data = responseData.content;
-      this.listQuery.page = responseData.number;
-      this.listQuery.size = responseData.size;
-      this.listQuery.total = responseData.totalElements;
-    }).catch(handlerCommonError);
-  }
-
   // 新增活动 - 弹窗
-  addActivity() {
+  addActivity(): void {
     this.title = '新增活动';
     this.dialogActivityInfoActionVisible = true;
-    this.dialogActivityInfoDetilVisible = false;
-    this.dialogSubsidyInfoAddVisible = false;
-    this.dialogSubsidyInfoSerialVisible = false;
-    this.dialogErrorVisible = false;
-    this.editDomainInfo.editDomainId = 0;
+    this.editDomainInfo = {editDomainId: 0, editDomainType: 0};
   }
 
   // 编辑活动 - 弹窗
-  editActivity(row: SubsidyActivityInfo[]) {
+  editActivity(row: SubsidyActivityInfo): void {
     this.title = '编辑活动';
     this.dialogActivityInfoActionVisible = true;
-    this.dialogActivityInfoDetilVisible = false;
-    this.dialogSubsidyInfoAddVisible = false;
-    this.dialogSubsidyInfoSerialVisible = false;
-    this.dialogErrorVisible = false;
-    this.editDomainInfo.editDomainId = 0;
+    this.$nextTick(() => this.editDomainInfo = {editDomainId: row.subsidyActivityId, editDomainType: 1});
   }
 
-
-
-
-  closePane() {
-    // 关闭新活动弹窗
-    this.dialogActivityInfoDetilVisible = false;
-    this.editDomainInfo.editDomainId = 0;
+  // 提交审核 - 弹窗
+  submitAuditActivity(row: SubsidyActivityInfo): void {
+    this.title = '提交审核';
+    this.dialogActivityInfoActionVisible = true;
+    this.$nextTick(() => this.editDomainInfo = {editDomainId: row.subsidyActivityId, editDomainType: 2});
   }
 
+  // 下线活动 - 弹窗
+  offlineActivity(row: SubsidyActivityInfo): void {
+    this.title = '下线活动';
+    this.dialogActivityInfoActionVisible = true;
+    this.$nextTick(() => this.editDomainInfo = {editDomainId: row.subsidyActivityId, editDomainType: 3});
+  }
 
+  // 审核活动 - 弹窗
+  auditActivity(row: SubsidyActivityInfo): void {
+    this.title = '审核活动';
+    this.dialogActivityInfoActionVisible = true;
+    this.$nextTick(() => this.editDomainInfo = {editDomainId: row.subsidyActivityId, editDomainType: 4});
+  }
 
-  handleEdit(index: number, row: SubsidyActivityInfo): void {
-    this.dialogActivityInfoDetilVisible = true;
-    this.$nextTick(() => this.editDomainInfo.editDomainId = row.subsidyActivityId);
+  // 新增津贴 - 弹窗
+  addSubsidy(row: SubsidyActivityInfo): void {
+    this.title = '新增津贴';
+    this.dialogActivityInfoActionVisible = true;
+    this.$nextTick(() => this.editDomainInfo = {editDomainId: row.subsidyActivityId, editDomainType: 5});
+  }
+
+  // 津贴流水 - 弹窗
+  checkSubsidySerial(row: SubsidyActivityInfo): void {
+    this.title = '津贴流水';
+    this.dialogActivityInfoActionVisible = true;
+    this.$nextTick(() => this.editDomainInfo = {editDomainId: row.subsidyActivityId, editDomainType: 5});
   }
 
   saveThenNew() {
-    this.editDomainInfo.editDomainId = 0;
+    this.title = '';
+    this.editDomainInfo = {editDomainId: 0, editDomainType: 0};
     // @ts-ignore
     this.fetchData();
   }
@@ -219,9 +244,19 @@ export default class ActivityInfoList extends Vue {
   }
 
   handleViewActivityInfoDetail(index: number, row: SubsidyActivityInfo) {
-    this.dialogActivityInfoDetilVisible = true;
+    this.dialogActivityInfoActionVisible = true;
     console.log('点击选择的活动id为' + row.subsidyActivityId);
     this.$nextTick(() => this.editDomainInfo.editDomainId = row.subsidyActivityId);
+  }
+
+  realFetchData() {
+    return getActivityList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<SubsidyActivityInfo>>>) => {
+      const responseData = response.data.data;
+      this.data = responseData.content;
+      this.listQuery.page = responseData.number;
+      this.listQuery.size = responseData.size;
+      this.listQuery.total = responseData.totalElements;
+    }).catch(handlerCommonError);
   }
 
 }

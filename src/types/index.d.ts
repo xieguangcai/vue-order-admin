@@ -986,24 +986,24 @@ export enum Roles {
 // -------- subsidy ---------
 export interface SubsidyActivityInfo {
   subsidyActivityId: number;
-  name: string;
-  subsidyCode: string;
-  subsidyStatus: number;
-  validStartTime: string;
-  validEndTime: string;
+  name?: string;
+  subsidyCode?: string;
+  subsidyStatus?: number;
+  validStartTime?: string;
+  validEndTime?: string;
   memo?: string;
-  createTime: string;
-  createBy: string;
+  createTime?: string;
+  createBy?: string;
   modifyTime?: string;
   modifyBy?: string;
   auditTime?: string;
   auditBy?: string;
-  useStartTime: string;
-  useEndTime: string;
-  sendMoney: number;
-  useMoney: number;
-  receiveMoney: number;
-  subsidyNum: number;
+  useStartTime?: string;
+  useEndTime?: string;
+  sendMoney?: number;
+  useMoney?: number;
+  receiveMoney?: number;
+  subsidyNum?: number;
 }
 
 export interface ActivityListQuery extends IPageinfo {
