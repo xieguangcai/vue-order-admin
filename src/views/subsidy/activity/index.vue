@@ -119,7 +119,7 @@ interface EditDomain {
       } else if (value === 2) {
         return '上线';
       } else if (value === 3) {
-        return '下线';K
+        return '下线';
       } else if (value === 4) {
         return '审核中';
       }
