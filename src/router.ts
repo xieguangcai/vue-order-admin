@@ -174,6 +174,19 @@ export default new Router({
         },
       ],
     },
+    {
+      path: '/subsidy',
+      component: Layout,
+      name: 'addActive',
+      meta: {title: '新增活动', hidden: true}, children: [
+        {
+          path: 'addActive',
+          name: 'addActive',
+          component: () => import(/* webpackChunkName: "addActive" */ '@/views/subsidy/activity/addActive.vue'),
+          meta: {title: '新增活动', icon: 'form', hidden: true},
+        },
+      ],
+    },
     {path: '*', redirect: '/404'},
 
   ],

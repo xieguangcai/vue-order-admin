@@ -162,11 +162,12 @@ export default class ActivityInfoList extends Vue {
   data: SubsidyActivityInfo[] = [];
   listQuery: ActivityListQuery = {page: 0, size: 50, total: 0};
 
-  // 新增活动 - 弹窗
+  // 新增活动 - 页面
   addActivity(): void {
-    this.title = '新增活动';
-    this.dialogActivityInfoActionVisible = true;
-    this.editDomainInfo = {editDomainId: 0, editDomainType: 0};
+    // this.title = '新增活动';
+    // this.dialogActivityInfoActionVisible = true;
+    // this.editDomainInfo = {editDomainId: 0, editDomainType: 0};
+    this.$router.push({ name: "addActive" });
   }
 
   // 编辑活动 - 弹窗
