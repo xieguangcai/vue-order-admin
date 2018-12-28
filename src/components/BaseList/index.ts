@@ -10,6 +10,7 @@ import {RawLocation} from 'vue-router';
 @Component
 export default class BaseList extends Vue {
   listLoading: boolean = true;
+  needLoadOnCreate: boolean = true;
 
   listQuery: IPageinfo = {page: 0, size: 50, total: 0};
 
@@ -40,7 +41,9 @@ export default class BaseList extends Vue {
     }
 
     this.listQuery = Object.assign(this.listQuery, this.$route.query, pageInfo);
-    this.fetchData();
+    if(this.needLoadOnCreate){
+      this.fetchData();
+    }
   }
 
   // 钩子函数的包装

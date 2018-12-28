@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { Message, MessageBox } from 'element-ui';
 import {authFilter, authHeader, authRejectFilter} from '@/utils/auth-interceptor';
 
 // 创建axios实例

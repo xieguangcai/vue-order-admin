@@ -115,6 +115,9 @@
 
 
 <script lang="ts">
+
+  // @ts-ignore
+  import qs from 'qs';
   import {Component, Vue, Watch} from 'vue-property-decorator';
   import SearchPane from '../../../components/SearchPane/index.vue';
   import SearchPagePane from '../../../components/SearchPagePane/index.vue';
@@ -124,10 +127,9 @@
   import {getOrderInfoList, orderStatusClass, orderStatusName} from '../../../api/pay';
   import {AppModule} from '../../../store/modules/app';
   import OrderInfoDetail from './detail.vue';
-  // @ts-ignore
-  import qs from 'qs';
   import BaseList from '../../../components/BaseList';
   import {handlerCommonError} from '../../../utils/auth-interceptor';
+  import {addDateFormatString} from "../../../utils/format-utils";
 
   interface EditDomain {
     editDomainId: number | undefined;
@@ -143,12 +145,19 @@
     editDomainInfo: EditDomain = {editDomainId: 0};
 
     data: OrderInfo[] = [];
-    listQuery: OrderInfoListQuery = {page: 0, size: 50, total: 0};
+    listQuery: OrderInfoListQuery = {page: 0, size: 50, total: 0,
+      orderTimes:[addDateFormatString(-1, 'm'), addDateFormatString()]
+
+    };
 
     tableRowClassName(orderStatus: string): string {
       return orderStatusClass(orderStatus);
     }
 
+    onCreated(){
+      // @ts-ignore
+      this.needLoadOnCreate = false;
+    }
 
     get orderStatus() {
       return AppModule.orderStatus;

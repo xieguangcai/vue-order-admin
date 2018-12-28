@@ -1,11 +1,10 @@
 import axios from 'axios';
-import { Message, MessageBox } from 'element-ui';
 import {authFilter, authHeader, authRejectFilter} from '@/utils/auth-interceptor';
 
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.VUE_APP_MOVIE_API + 'api',
-  timeout: 5000,
+  timeout: 10000,
 });
 
 // request 拦截器

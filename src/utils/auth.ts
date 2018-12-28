@@ -1,5 +1,4 @@
 import Cookies from 'js-cookie';
-import {Roles} from '@/types';
 import {UserModule} from '@/store/modules/user';
 
 const TokenKey = 'Admin-Token';

@@ -595,10 +595,10 @@ export default class NativeViewEdit extends Vue {
         itemData.x = 20;
         itemData.y = 1040;
         itemData.size = 12;
-        itemData.color = 'rgba(0, 0, 0, 1)';
+        itemData.color = 'rgba(255, 255, 255, 1)';
         break;
       case 'BUTTON':
-        itemData.color = 'rgba(0, 0, 0, 1)';
+        itemData.color = 'rgba(255, 255, 255, 1)';
         break;
     }
     return itemData;

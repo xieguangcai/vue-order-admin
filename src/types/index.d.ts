@@ -951,7 +951,7 @@ export interface BaseOrderSource {
 
 export type SearchHistoryModel = '0' | '1' | '2'; // 为了能与url地址带查询条件联合在一起，查询条件中需要定义字符类型的查询否则下拉列表中的转换会出错。
 export type SearchFlag = '' | OrderFlag;
-export type OrderFlag = 0 | 1;
+export type OrderFlag = '0' | '1';
 
 export interface BaseMoviesIqiyiOrderBaseListQuery extends IPageinfo {
   searchHistory: SearchHistoryModel; // 0 为查询历史订单
