@@ -4,7 +4,11 @@ import {
   Pageable,
   RedisValueInfo,
   ResponseResult,
-  SubsidyActivityInfo, ActivityListQuery,
+  SubsidyActivityInfo,
+  ActivityListQuery,
+  SubsidyUserTotal,
+  SubsidyUserDetail,
+  SubsidyType,
   SysLoginLayoutModel, BaseMoviesIqiyiOrderBaseListQuery, BaseMoviesIqiyiOrderBase, SearchHistoryModel,
 } from '@/types';
 // @ts-ignore
