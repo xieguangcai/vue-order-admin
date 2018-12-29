@@ -146,7 +146,7 @@
 
     data: OrderInfo[] = [];
     listQuery: OrderInfoListQuery = {page: 0, size: 50, total: 0,
-      orderTimes:[addDateFormatString(-1, 'm'), addDateFormatString()]
+      orderTimes:[addDateFormatString(-1, 'M'), addDateFormatString()]
 
     };
 

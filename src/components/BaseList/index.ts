@@ -9,7 +9,7 @@ import {RawLocation} from 'vue-router';
 
 @Component
 export default class BaseList extends Vue {
-  listLoading: boolean = true;
+  listLoading: boolean = false;
   needLoadOnCreate: boolean = true;
 
   listQuery: IPageinfo = {page: 0, size: 50, total: 0};
