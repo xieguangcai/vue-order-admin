@@ -164,10 +164,7 @@ export default class ActivityInfoList extends Vue {
 
   // 新增活动 - 页面
   addActivity(): void {
-    // this.title = '新增活动';
-    // this.dialogActivityInfoActionVisible = true;
-    // this.editDomainInfo = {editDomainId: 0, editDomainType: 0};
-    this.$router.push({ name: "addActive" });
+    this.$router.push({ path: 'addActive' });
   }
 
   // 编辑活动 - 弹窗
@@ -200,9 +197,7 @@ export default class ActivityInfoList extends Vue {
 
   // 新增津贴 - 弹窗
   addSubsidy(row: SubsidyActivityInfo): void {
-    this.title = '新增津贴';
-    this.dialogActivityInfoActionVisible = true;
-    this.$nextTick(() => this.editDomainInfo = {editDomainId: row.subsidyActivityId, editDomainType: 5});
+    this.$router.push({path: 'addSubsidy', query: {id: '' + row.subsidyActivityId}});
   }
 
   // 津贴流水 - 弹窗
@@ -245,9 +240,10 @@ export default class ActivityInfoList extends Vue {
   }
 
   handleViewActivityInfoDetail(index: number, row: SubsidyActivityInfo) {
-    this.dialogActivityInfoActionVisible = true;
-    console.log('点击选择的活动id为' + row.subsidyActivityId);
-    this.$nextTick(() => this.editDomainInfo.editDomainId = row.subsidyActivityId);
+    this.$router.push({path: 'activeInfo', query: {id: '' + row.subsidyActivityId}});
+    // this.dialogActivityInfoActionVisible = true;
+    // console.log('点击选择的活动id为' + row.subsidyActivityId);
+    // this.$nextTick(() => this.editDomainInfo.editDomainId = row.subsidyActivityId);
   }
 
   realFetchData() {

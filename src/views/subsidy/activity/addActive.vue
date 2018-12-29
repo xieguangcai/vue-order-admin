@@ -39,7 +39,6 @@
            v-for="(subsidy, index) in SubsidyActivityInfo.subsidys"
            :label="'津贴' + index"
            :key="subsidy.key"
-           :prop="'subsidy.' + index + '.name'"
            :rules="{
               // required: true, message: '不能为空', trigger: 'blur'
             }"
@@ -98,7 +97,7 @@
               { required: true, message: '请输入活动名称', trigger: 'blur' },
               { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
             ],
-                       date1: [
+            date1: [
               { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
             ],
             date2: [
