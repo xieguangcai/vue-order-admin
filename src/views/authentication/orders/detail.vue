@@ -9,7 +9,7 @@
               <tr>
                 <td>订单状态</td>
                 <td>
-                  <span :class="tableRowClassName(domainInfo.payFlag)">{{ domainInfo.payFlag == 1 ? '已支付' : '未支付' }}</span>
+                  <span :class="tableRowClassName(domainInfo.payFlag + '')">{{ domainInfo.payFlag === 1 ? '已支付' : '未支付' }}</span>
                 </td>
                 <td>订单信息</td>
                 <td colspan="5"><span class="order-amount">[{{domainInfo.totalPayFee / 100 }}元]</span>{{ domainInfo.title }}</td>

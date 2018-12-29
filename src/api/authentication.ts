@@ -59,9 +59,9 @@ export function orderTypeToName(code: number) {
   return name;
 }
 export function payFlagClassName(payFlag: OrderFlag): string {
-  if (payFlag === 0) {
+  if (payFlag === '0') {
     return 'warning-row';
-  } else if (payFlag === 1) {
+  } else if (payFlag === '1') {
     return 'success-row';
   }
   return '';
