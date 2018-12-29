@@ -76,6 +76,12 @@ export default new Router({
           component: () => import(/* webpackChunkName: "addActive" */ '@/views/subsidy/activity/activeInfo.vue'),
           meta: {title: '查看活动', icon: 'form', hidden: true},
         },
+        {
+          path: 'subsidyDetail',
+          name: 'subsidyDetail',
+          component: () => import(/* webpackChunkName: "addActive" */ '@/views/subsidy/activity/subsidyDetail.vue'),
+          meta: {title: '津贴流水', icon: 'form', hidden: true},
+        },
 
       ],
     }, {

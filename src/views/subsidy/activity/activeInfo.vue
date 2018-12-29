@@ -57,6 +57,7 @@
 <script>
     export default {
         name: "activeInfo",
+      labelPosition: "right",
         data(){
            return{
              SubsidyActivityInfo: [],

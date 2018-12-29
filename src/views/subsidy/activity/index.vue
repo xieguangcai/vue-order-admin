@@ -200,11 +200,9 @@ export default class ActivityInfoList extends Vue {
     this.$router.push({path: 'addSubsidy', query: {id: '' + row.subsidyActivityId}});
   }
 
-  // 津贴流水 - 弹窗
+  // 津贴流水
   checkSubsidySerial(row: SubsidyActivityInfo): void {
-    this.title = '津贴流水';
-    this.dialogActivityInfoActionVisible = true;
-    this.$nextTick(() => this.editDomainInfo = {editDomainId: row.subsidyActivityId, editDomainType: 5});
+    this.$router.push({path: 'subsidyDetail', query: {id: '' + row.subsidyActivityId}});
   }
 
   saveThenNew() {
