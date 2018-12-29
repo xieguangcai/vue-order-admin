@@ -36,7 +36,7 @@
        </el-form-item>
        <div class="title" >津贴管理</div>
          <el-form-item
-           v-for="(subsidy, index) in SubsidyActivityInfo.subsidys"
+           v-for="(subsidy, index) in SubsidyActivityInfo.subsidyInfos"
            :label="'津贴' + index"
            :key="subsidy.key"
            :rules="{
@@ -75,6 +75,8 @@
 </template>
 
 <script>
+    import {addActivity} from "../../../api/subsidy";
+
     export default {
       name: "addActive",
       data() {
@@ -86,7 +88,7 @@
             useStartTime: '',
             useEndTime: '',
             memo: '',
-            subsidys: [{
+            subsidyInfos: [{
               name:  '',
               money: '',
               count: ''
@@ -95,7 +97,7 @@
           rules: {
             name: [
               { required: true, message: '请输入活动名称', trigger: 'blur' },
-              { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+              { min: 1, max: 12, message: '长度在 1 到 12 个字符', trigger: 'blur' }
             ],
             date1: [
               { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
@@ -111,22 +113,22 @@
       },
       methods: {
         addSubsidy () {
-          this.SubsidyActivityInfo.subsidys.push({
+          this.SubsidyActivityInfo.subsidyInfos.push({
             name:  '',
             money: '',
             count: ''
           });
         },
         removeSubsidy(item) {
-          var index = this.SubsidyActivityInfo.subsidys.indexOf(item)
+          var index = this.SubsidyActivityInfo.subsidyInfos.indexOf(item)
           if (index !== -1){
-            this.SubsidyActivityInfo.subsidys.splice(index,1)
+            this.SubsidyActivityInfo.subsidyInfos.splice(index,1)
           }
         },
         submitForm(formName) {
           this.$refs[formName].validate((valid) => {
             if (valid) {
-              alert('submit!');
+              addActivity(this.SubsidyActivityInfo);
             } else {
               console.log('error submit!!');
               return false;

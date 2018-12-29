@@ -40,6 +40,17 @@ export function getActivityDetail(id: number): AxiosPromise<ResponseResult<Subsi
   });
 }
 
+export function addActivity(activityInfo: SubsidyActivityInfo) {
+  return request({
+    url : '/subsidy/add/activity',
+    method: 'get',
+    params: {activityInfo},
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
+
 export function deleteActivity(ids: Array<number | undefined>) {
   return request({
     url : '/subsidy/delete/activity',
