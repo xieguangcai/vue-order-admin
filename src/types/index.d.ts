@@ -1004,6 +1004,7 @@ export interface SubsidyActivityInfo {
   useMoney?: number;
   receiveMoney?: number;
   subsidyNum?: number;
+  subsidyInfoList?: SubsidyType[];
 }
 
 export interface ActivityListQuery extends IPageinfo {

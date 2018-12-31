@@ -1,32 +1,32 @@
 <template>
   <div class="activeInfo">
     <div class="title" >活动信息</div>
-    <el-form :label-position="labelPosition" label-width="120px" :model="SubsidyActivityInfo">
+    <el-form :label-position="labelPosition" label-width="120px" :model="info">
       <el-form-item label="活动ID：">
-        {{SubsidyActivityInfo.subsidyActivityId}}
+        {{info.subsidyActivityId}}
       </el-form-item>
       <el-form-item label="活动标题：">
-        {{SubsidyActivityInfo.name}}
+        {{info.name}}
       </el-form-item>
       <el-form-item label="活动时间：">
-        {{SubsidyActivityInfo.validStartTime}} ~ {{SubsidyActivityInfo.validEndTime}}
+        {{info.validStartTime}} ~ {{info.validEndTime}}
       </el-form-item>
       <el-form-item label="津贴可用时间：">
-        {{SubsidyActivityInfo.useStartTime}} ~ {{SubsidyActivityInfo.useEndTime}}
+        {{info.useStartTime}} ~ {{info.useEndTime}}
       </el-form-item>
       <el-form-item label="活动说明：">
-        {{SubsidyActivityInfo.memo}}
+        {{info.memo}}
       </el-form-item>
     </el-form>
     <div class="title" >津贴管理</div>
-    <el-table label-width="120px" :model="SubsidyType">
+    <el-table label-width="120px" :data="info.subsidyInfoList">
       <el-table-column
         label="津贴ID"
         prop="subsidyTypeId">
       </el-table-column>
       <el-table-column
         label="津贴名称"
-        prop="name">
+        prop="typeName">
       </el-table-column>
       <el-table-column>
         label="津贴金额"
@@ -54,24 +54,58 @@
   </div>
 </template>
 
-<script>
-    export default {
-        name: "activeInfo",
-      labelPosition: "right",
-        data(){
-           return{
-             SubsidyActivityInfo: [],
-             SubsidyType: []
+<script lang="ts">
+  import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
+  import {getActivityDetail} from '../../../api/subsidy';
+  import {SubsidyActivityInfo, ResponseResult} from '../../../types';
+  import {AxiosResponse} from 'axios';
+  @Component({
+    name: 'ActivityInfoDetail',
+    components: {},
+  })
+  export default class ActivityInfoDetail extends Vue {
+    labelPosition: string = 'right';
 
-           }
-        },
-        methods:{
-          delSubsidy(index,row) {
-            this.$message("点击删除")
-          }
+    // info: SubsidyActivityInfo = {subsidyActivityId: 1,
+    //   subsidyInfoList:[]
+    // };
+    info: SubsidyActivityInfo = {subsidyActivityId: 0,
+      subsidyInfoList:[]
+    };
 
-        },
+    delSubsidy(index, row) {
+      this.$message("点击删除");
+    };
+
+    created() {
+      try {
+        // @ts-ignore
+        debugger
+        const x = parseInt(this.$route.query.id);
+        if (x != null) {
+          this.info.subsidyActivityId = x;
+          getActivityDetail(x).then((response: AxiosResponse<ResponseResult<SubsidyActivityInfo>>) =>{
+            const responseData = response.data.data;
+            console.log(responseData);
+            this.info = responseData;
+          })
+        }
+      } catch (e) {
+      }
     }
+
+    realFetchData() {
+      const id = this.$route.query.id;
+      this.info.subsidyActivityId = id;
+      return getActivityDetail(id).then((response: AxiosResponse<ResponseResult<SubsidyActivityInfo>>) => {
+        const responseData = response.data.data;
+        console.log(responseData);
+        this.info = responseData;
+
+      })
+    }
+
+  }
 
 
 </script>
