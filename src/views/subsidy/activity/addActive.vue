@@ -77,7 +77,7 @@
 <script lang="ts">
     import {addActivity} from "../../../api/subsidy";
     import {Component, Vue, Watch} from 'vue-property-decorator';
-    import {ResponseResult, SubsidyActivityInfo} from '../../../types';
+    import {ResponseResult, SubsidyActivityInfo, SubsidyType} from '../../../types';
     import {AxiosResponse} from 'axios';
     // @ts-ignore
     import qs from 'qs';
@@ -91,7 +91,7 @@
     export default class AddActivityInfo extends Vue {
       name: string = "addActive";
       data: SubsidyActivityInfo = {subsidyActivityId: 0, subsidyInfoList: []}
-      rules: {
+     /* rules: {
         name: [
           { required: true, message: '请输入活动名称', trigger: 'blur' },
           { min: 1, max: 12, message: '长度在 1 到 12 个字符', trigger: 'blur' }
@@ -105,26 +105,33 @@
         desc: [
           { message: '请填写活动形式', trigger: 'blur' }
           ]
-      };
+      };*/
 
       addSubsidy () {
-        this.data.subsidyInfoList.push({subsidyTypeId:  -1});
-      }
-
-      removeSubsidy(item) {
-        const index = this.data.subsidyInfoList.indexOf(item);
-        if (index !== -1){
-          this.data.subsidyInfoList.splice(index,1)
+        if (this.data.subsidyInfoList) {
+          this.data.subsidyInfoList.push({subsidyTypeId:  -1});
         }
       }
 
-      submitForm(formName) {
+      removeSubsidy(item: SubsidyType) {
+        if (this.data.subsidyInfoList) {
+          const index = this.data.subsidyInfoList.indexOf(item);
+          if (index !== -1){
+            this.data.subsidyInfoList.splice(index,1)
+          }
+        }
+      }
+
+      submitForm(formName: SubsidyActivityInfo) {
       /* this.$refs[formName].validate((valid) => {
           if (valid) {*/
             const subsidyList = this.data.subsidyInfoList;
             if (subsidyList && subsidyList.length > 0) {
               for (let i = 0; i < subsidyList.length; i++) {
-                subsidyList[i].money = subsidyList[i].money * 100;
+                const subsidy = subsidyList[i];
+                if (subsidy && subsidy.money) {
+                  subsidy.money = subsidy.money * 100;
+                }
               }
             }
             this.data.subsidyInfoList = subsidyList;

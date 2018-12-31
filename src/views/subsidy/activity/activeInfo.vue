@@ -57,7 +57,7 @@
 <script lang="ts">
   import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
   import {getActivityDetail} from '../../../api/subsidy';
-  import {SubsidyActivityInfo, ResponseResult} from '../../../types';
+  import {SubsidyActivityInfo, ResponseResult, SubsidyType} from '../../../types';
   import {AxiosResponse} from 'axios';
   @Component({
     name: 'ActivityInfoDetail',
@@ -73,7 +73,7 @@
       subsidyInfoList:[]
     };
 
-    editSubsidy(index, row) {
+    editSubsidy(index: number, row: SubsidyType) {
       const subsidyId = row.subsidyTypeId;
       this.$message("点击修改");
     };
