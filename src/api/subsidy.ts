@@ -40,14 +40,11 @@ export function getActivityDetail(id: number): AxiosPromise<ResponseResult<Subsi
   });
 }
 
-export function addActivity(activityInfo: SubsidyActivityInfo) {
+export function addActivity(data: SubsidyActivityInfo): AxiosPromise<ResponseResult<boolean>> {
   return request({
     url : '/subsidy/add/activity',
-    method: 'get',
-    params: {activityInfo},
-    paramsSerializer(p: any) {
-      return qs.stringify(p, {arrayFormat: 'repeat'});
-    },
+    method: 'post',
+    data,
   });
 }
 
