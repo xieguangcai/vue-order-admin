@@ -43,7 +43,7 @@
       <el-table-column
         label="操作">
         <template slot-scope="scope">
-          <el-button @click="delSubsidy(scope.$index,scope.row)">删除</el-button>
+          <el-button @click="editSubsidy(scope.$index,scope.row)">修改</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -73,8 +73,9 @@
       subsidyInfoList:[]
     };
 
-    delSubsidy(index, row) {
-      this.$message("点击删除");
+    editSubsidy(index, row) {
+      const subsidyId = row.subsidyTypeId;
+      this.$message("点击修改");
     };
 
     created() {
@@ -94,16 +95,16 @@
       }
     }
 
-    realFetchData() {
-      const id = this.$route.query.id;
-      this.info.subsidyActivityId = id;
-      return getActivityDetail(id).then((response: AxiosResponse<ResponseResult<SubsidyActivityInfo>>) => {
-        const responseData = response.data.data;
-        console.log(responseData);
-        this.info = responseData;
-
-      })
-    }
+    // realFetchData() {
+    //   const id = this.$route.query.id;
+    //   this.info.subsidyActivityId = id;
+    //   return getActivityDetail(id).then((response: AxiosResponse<ResponseResult<SubsidyActivityInfo>>) => {
+    //     const responseData = response.data.data;
+    //     console.log(responseData);
+    //     this.info = responseData;
+    //
+    //   })
+    // }
 
   }
 
