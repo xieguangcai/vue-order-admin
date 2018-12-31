@@ -1,7 +1,7 @@
 <template>
-  <div class="activeInfo">
+  <div class="activeInfo" :model="info">
     <div class="title" >活动信息</div>
-    <el-form :label-position="labelPosition" label-width="120px" :model="info">
+    <el-form :label-position="labelPosition" label-width="120px">
       <el-form-item label="活动ID：">
         {{info.subsidyCode}}
       </el-form-item>
@@ -48,7 +48,7 @@
       </el-table-column>
     </el-table>
     <div class="footBtn">
-      <el-button  @click="$router.push({path: 'addSubsidy'})">新增津贴</el-button>
+      <el-button  @click="$router.push({path: 'addSubsidy', query: {id: '' + info.subsidyActivityId}})">新增津贴</el-button>
       <el-button type="primary" @click="$router.push({path: 'subsidy-activity-list'})">返回</el-button>
     </div>
   </div>
