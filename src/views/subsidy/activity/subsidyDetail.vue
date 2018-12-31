@@ -144,7 +144,11 @@
         if (x != null) {
           this.listQuery.activityId = x;
           getSubsidySerialList(this.listQuery).then((response: AxiosResponse<ResponseResult<SubsidySerialInfoModel>>) =>{
-            const responseData = response.data;
+            const responseData = response.data.data;
+            this.data = responseData;
+            this.listQuery.page = responseData.subsidySerials.number;
+            this.listQuery.size = responseData.subsidySerials.size;
+            this.listQuery.total = responseData.subsidySerials.totalElements;
             console.log(responseData);
            // this.data = responseData;
           })
