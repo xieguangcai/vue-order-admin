@@ -75,77 +75,77 @@
 </template>
 
 <script lang="ts">
-    import {addActivity} from "../../../api/subsidy";
-    import {Component, Vue, Watch} from 'vue-property-decorator';
-    import {ResponseResult, SubsidyActivityInfo, SubsidyType} from '../../../types';
-    import {AxiosResponse} from 'axios';
-    // @ts-ignore
-    import qs from 'qs';
-    import {handlerCommonError} from '../../../utils/auth-interceptor';
+import {addActivity} from '../../../api/subsidy';
+import {Component, Vue, Watch} from 'vue-property-decorator';
+import {ResponseResult, SubsidyActivityInfo, SubsidyType} from '../../../types';
+import {AxiosResponse} from 'axios';
+// @ts-ignore
+import qs from 'qs';
+import {handlerCommonError} from '../../../utils/auth-interceptor';
 
-    @Component({
-      components: {},
-      name: 'AddActivityInfo',
-      filters: {},
-    })
-    export default class AddActivityInfo extends Vue {
-      name: string = "addActive";
-      data: SubsidyActivityInfo = {subsidyActivityId: 0, subsidyInfoList: []}
-     /* rules: {
-        name: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 1, max: 12, message: '长度在 1 到 12 个字符', trigger: 'blur' }
-          ],
-        date1: [
-          { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-          ],
-        date2: [
-          { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
-          ],
-        desc: [
-          { message: '请填写活动形式', trigger: 'blur' }
-          ]
-      };*/
+@Component({
+  components: {},
+  name: 'AddActivityInfo',
+  filters: {},
+})
+export default class AddActivityInfo extends Vue {
+  name: string = 'addActive';
+  data: SubsidyActivityInfo = {subsidyActivityId: 0, subsidyInfoList: []};
+ /* rules: {
+    name: [
+      { required: true, message: '请输入活动名称', trigger: 'blur' },
+      { min: 1, max: 12, message: '长度在 1 到 12 个字符', trigger: 'blur' }
+      ],
+    date1: [
+      { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+      ],
+    date2: [
+      { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+      ],
+    desc: [
+      { message: '请填写活动形式', trigger: 'blur' }
+      ]
+  };*/
 
-      addSubsidy () {
-        if (this.data.subsidyInfoList) {
-          this.data.subsidyInfoList.push({subsidyTypeId:  -1});
-        }
-      }
-
-      removeSubsidy(item: SubsidyType) {
-        if (this.data.subsidyInfoList) {
-          const index = this.data.subsidyInfoList.indexOf(item);
-          if (index !== -1){
-            this.data.subsidyInfoList.splice(index,1)
-          }
-        }
-      }
-
-      submitForm(formName: SubsidyActivityInfo) {
-      /* this.$refs[formName].validate((valid) => {
-          if (valid) {*/
-            const subsidyList = this.data.subsidyInfoList;
-            if (subsidyList && subsidyList.length > 0) {
-              for (let i = 0; i < subsidyList.length; i++) {
-                const subsidy = subsidyList[i];
-                if (subsidy && subsidy.money) {
-                  subsidy.money = subsidy.money * 100;
-                }
-              }
-            }
-            this.data.subsidyInfoList = subsidyList;
-            addActivity(this.data).then((response: AxiosResponse<ResponseResult<boolean>>) => {
-
-            }).catch(handlerCommonError);
-          /*} else {
-            console.log('error submit!!');
-            return false;
-          }
-        });*/
-      }
-
+  addSubsidy() {
+    if (this.data.subsidyInfoList) {
+      this.data.subsidyInfoList.push({subsidyTypeId:  -1});
     }
+  }
+
+  removeSubsidy(item: SubsidyType) {
+    if (this.data.subsidyInfoList) {
+      const index = this.data.subsidyInfoList.indexOf(item);
+      if (index !== -1) {
+        this.data.subsidyInfoList.splice(index, 1);
+      }
+    }
+  }
+
+  submitForm(formName: SubsidyActivityInfo) {
+  /* this.$refs[formName].validate((valid) => {
+      if (valid) {*/
+        const subsidyList = this.data.subsidyInfoList;
+        if (subsidyList && subsidyList.length > 0) {
+          for (let i = 0; i < subsidyList.length; i++) {
+            const subsidy = subsidyList[i];
+            if (subsidy && subsidy.money) {
+              subsidy.money = subsidy.money * 100;
+            }
+          }
+        }
+        this.data.subsidyInfoList = subsidyList;
+        addActivity(this.data).then((response: AxiosResponse<ResponseResult<boolean>>) => {
+
+        }).catch(handlerCommonError);
+      /*} else {
+        console.log('error submit!!');
+        return false;
+      }
+    });*/
+  }
+
+}
 </script>
 
 <style scoped>

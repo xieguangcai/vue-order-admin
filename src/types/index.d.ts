@@ -1022,7 +1022,7 @@ export interface SubsidyUserTotal {
 }
 
 export interface SubsidyUserDetail {
-  userDetailId: number;
+  userDetailId?: number;
   subsidyTypeId?: number;
   subsidyName?: string ;
   subsidyActivityId: number;

@@ -67,21 +67,22 @@ export default new Router({
         {
           path: 'addSubsidy',
           name: 'addSubsidy',
-          component: () => import(/* webpackChunkName: "addActive" */ '@/views/subsidy/activity/addSubsidy.vue'),
+          component: () => import(/* webpackChunkName: "addSubsidy" */ '@/views/subsidy/activity/addSubsidy.vue'),
           meta: {title: '新增津贴', icon: 'form', hidden: true},
         },
         {
           path: 'activeInfo',
           name: 'activeInfo',
-          component: () => import(/* webpackChunkName: "addActive" */ '@/views/subsidy/activity/activeInfo.vue'),
+          component: () => import(/* webpackChunkName: "activeInfo" */ '@/views/subsidy/activity/activeInfo.vue'),
           meta: {title: '查看活动', icon: 'form', hidden: true},
         },
         {
-          path: 'subsidyDetail',
-          name: 'subsidyDetail',
-          component: () => import(/* webpackChunkName: "addActive" */ '@/views/subsidy/activity/subsidyDetail.vue'),
+          path: 'subsidyDetailList',
+          name: 'subsidyDetailList',
+          component: () => import(/* webpackChunkName: "subsidyDetail" */ '@/views/subsidy/activity/subsidyDetailList.vue'),
           meta: {title: '津贴流水', icon: 'form', hidden: true},
         },
+
 
       ],
     }, {

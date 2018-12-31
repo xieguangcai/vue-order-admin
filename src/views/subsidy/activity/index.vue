@@ -215,7 +215,8 @@
 
     // 津贴流水
     checkSubsidySerial(row: SubsidyActivityInfo): void {
-      this.$router.push({path: 'subsidyDetail', query: {id: '' + row.subsidyActivityId}});
+      debugger;
+      this.$router.push({path: 'subsidyDetailList', query: {id: '' + row.subsidyActivityId}});
     }
 
     saveThenNew() {

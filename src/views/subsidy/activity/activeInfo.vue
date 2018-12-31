@@ -55,60 +55,58 @@
 </template>
 
 <script lang="ts">
-  import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
-  import {getActivityDetail} from '../../../api/subsidy';
-  import {SubsidyActivityInfo, ResponseResult, SubsidyType} from '../../../types';
-  import {AxiosResponse} from 'axios';
-  @Component({
-    name: 'ActivityInfoDetail',
-    components: {},
-  })
-  export default class ActivityInfoDetail extends Vue {
-    labelPosition: string = 'right';
+import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
+import {getActivityDetail} from '../../../api/subsidy';
+import {SubsidyActivityInfo, ResponseResult, SubsidyType} from '../../../types';
+import {AxiosResponse} from 'axios';
+@Component({
+  name: 'ActivityInfoDetail',
+  components: {},
+})
+export default class ActivityInfoDetail extends Vue {
+  labelPosition: string = 'right';
 
-    // info: SubsidyActivityInfo = {subsidyActivityId: 1,
-    //   subsidyInfoList:[]
-    // };
-    info: SubsidyActivityInfo = {subsidyActivityId: 0,
-      subsidyInfoList:[]
-    };
+  // info: SubsidyActivityInfo = {subsidyActivityId: 1,
+  //   subsidyInfoList:[]
+  // };
+  info: SubsidyActivityInfo = {subsidyActivityId: 0,
+    subsidyInfoList: [],
+  };
 
-    editSubsidy(index: number, row: SubsidyType) {
-      const subsidyId = row.subsidyTypeId;
-      this.$message("点击修改");
-    };
-
-    created() {
-      try {
-        // @ts-ignore
-        debugger
-        const x = parseInt(this.$route.query.id);
-        if (x != null) {
-          this.info.subsidyActivityId = x;
-          getActivityDetail(x).then((response: AxiosResponse<ResponseResult<SubsidyActivityInfo>>) =>{
-            const responseData = response.data.data;
-            console.log(responseData);
-            this.info = responseData;
-          })
-        }
-      } catch (e) {
-      }
-    }
-
-    // realFetchData() {
-    //   const id = this.$route.query.id;
-    //   this.info.subsidyActivityId = id;
-    //   return getActivityDetail(id).then((response: AxiosResponse<ResponseResult<SubsidyActivityInfo>>) => {
-    //     const responseData = response.data.data;
-    //     console.log(responseData);
-    //     this.info = responseData;
-    //
-    //   })
-    // }
-
+  editSubsidy(index: number, row: SubsidyType) {
+    const subsidyId = row.subsidyTypeId;
+    this.$message('点击修改');
   }
 
+  created() {
+    try {
+      // @ts-ignore
+      debugger;
+      const x = parseInt(this.$route.query.id);
+      if (x != null) {
+        this.info.subsidyActivityId = x;
+        getActivityDetail(x).then((response: AxiosResponse<ResponseResult<SubsidyActivityInfo>>) => {
+          const responseData = response.data.data;
+          console.log(responseData);
+          this.info = responseData;
+        });
+      }
+    } catch (e) {
+    }
+  }
 
+  // realFetchData() {
+  //   const id = this.$route.query.id;
+  //   this.info.subsidyActivityId = id;
+  //   return getActivityDetail(id).then((response: AxiosResponse<ResponseResult<SubsidyActivityInfo>>) => {
+  //     const responseData = response.data.data;
+  //     console.log(responseData);
+  //     this.info = responseData;
+  //
+  //   })
+  // }
+
+}
 </script>
 
 <style scoped>
