@@ -74,38 +74,38 @@
                 v-if="scope.row.subsidyStatus === 0 || scope.row.subsidyStatus === 1 || scope.row.subsidyStatus === 3">
                 <el-tooltip content="编辑活动">
                   <el-button type="primary" circle size="mini" icon="el-icon-edit"
-                             @click="editActivity([scope.row])"></el-button>
+                             @click="editActivity(scope.row)"></el-button>
                 </el-tooltip>
               </template>
               <!--可进行 提交审核 操作的状态为：未审核（0）-->
               <template v-if="scope.row.subsidyStatus === 0">
                 <el-tooltip content="提交审核">
                   <el-button type="danger" circle size="mini" icon="el-icon-bell"
-                             @click="submitAuditActivity([scope.row])"></el-button>
+                             @click="submitAuditActivity(scope.row)"></el-button>
                 </el-tooltip>
               </template>
               <!--可进行 下线 操作的状态为：上线（2）-->
               <template v-if="scope.row.subsidyStatus === 2">
                 <el-tooltip content="下线">
                   <el-button type="danger" circle size="mini" icon="el-icon-bell"
-                             @click="offlineActivity([scope.row])"></el-button>
+                             @click="offlineActivity(scope.row)"></el-button>
                 </el-tooltip>
               </template>
               <!--可进行 审核 操作的状态为：审核中（4）-->
               <template v-if="scope.row.subsidyStatus === 4">
                 <el-tooltip content="审核">
                   <el-button type="danger" circle size="mini" icon="el-icon-bell"
-                             @click="auditActivity([scope.row])"></el-button>
+                             @click="auditActivity(scope.row)"></el-button>
                 </el-tooltip>
               </template>
               <br/>
               <el-tooltip content="新增津贴" style="margin-top: 10px;">
                 <el-button type="success" circle size="mini" icon="el-icon-plus"
-                           @click="addSubsidy([scope.row])"></el-button>
+                           @click="openAddSubsidy(scope.row)"></el-button>
               </el-tooltip>
               <el-tooltip content="津贴流水" slot="reference">
                 <el-button type="info" circle size="mini" icon="el-icon-info"
-                           @click="checkSubsidySerial([scope.row])"></el-button>
+                           @click="checkSubsidySerial(scope.row)"></el-button>
               </el-tooltip>
             </div>
           </template>
@@ -209,7 +209,7 @@
     }
 
     // 新增津贴 - 弹窗
-    addSubsidy(row: SubsidyActivityInfo): void {
+    openAddSubsidy(row: SubsidyActivityInfo): void {
       this.$router.push({path: 'addSubsidy', query: {id: '' + row.subsidyActivityId}});
     }
 

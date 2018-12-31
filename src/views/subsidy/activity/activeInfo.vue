@@ -22,7 +22,7 @@
     <el-table label-width="120px" :data="info.subsidyInfoList">
       <el-table-column
         label="津贴ID"
-        prop="subsidyTypeId">
+        prop="subsidyTypeCode">
       </el-table-column>
       <el-table-column
         label="津贴名称"
