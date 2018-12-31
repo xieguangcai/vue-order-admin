@@ -1023,7 +1023,8 @@ export interface SubsidyUserTotal {
 
 export interface SubsidyUserDetail {
   userDetailId: number;
-  subsidyTypeId: number;
+  subsidyTypeId?: number;
+  subsidyName?: string ;
   subsidyActivityId: number;
   type?: number;
   money?: number;
@@ -1050,4 +1051,19 @@ export interface SubsidyType {
   money?: number;
   createTime?: string ;
   modifyTime?: string ;
+}
+
+export interface SubsidyUserDetailSearchQuery extends IPageinfo {
+  searchValue?: string;
+  activityId: number;
+  serialType: number;
+  businessName?: string;
+  createTime?: Date[];
+}
+
+export interface SubsidySerialInfoModel {
+  totalSend: number;
+  totalReceive: number;
+  totalUse: number;
+  subsidySerials?: Pageable<SubsidyUserDetail>;
 }

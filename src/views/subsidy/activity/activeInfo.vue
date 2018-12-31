@@ -3,7 +3,7 @@
     <div class="title" >活动信息</div>
     <el-form :label-position="labelPosition" label-width="120px" :model="info">
       <el-form-item label="活动ID：">
-        {{info.subsidyActivityId}}
+        {{info.subsidyCode}}
       </el-form-item>
       <el-form-item label="活动标题：">
         {{info.name}}
@@ -28,7 +28,7 @@
         label="津贴名称"
         prop="typeName">
       </el-table-column>
-      <el-table-column>
+      <el-table-column
         label="津贴金额"
         prop="money">
       </el-table-column>
