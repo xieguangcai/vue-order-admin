@@ -41,7 +41,7 @@ export default class BaseList extends Vue {
     }
 
     this.listQuery = Object.assign(this.listQuery, this.$route.query, pageInfo);
-    if(this.needLoadOnCreate){
+    if (this.needLoadOnCreate) {
       this.fetchData();
     }
   }

@@ -215,7 +215,6 @@
 
     // 津贴流水
     checkSubsidySerial(row: SubsidyActivityInfo): void {
-      debugger;
       this.$router.push({path: 'subsidyDetailList', query: {id: '' + row.subsidyActivityId}});
     }
 
@@ -252,7 +251,6 @@
     }
 
     handleViewActivityInfoDetail(index: number, row: SubsidyActivityInfo) {
-      debugger
       this.$router.push({path: 'activeInfo', query: {id: '' + row.subsidyActivityId}});
       // this.dialogActivityInfoActionVisible = true;
       // console.log('点击选择的活动id为' + row.subsidyActivityId);

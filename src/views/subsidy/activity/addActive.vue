@@ -127,8 +127,7 @@ export default class AddActivityInfo extends Vue {
       if (valid) {*/
         const subsidyList = this.data.subsidyInfoList;
         if (subsidyList && subsidyList.length > 0) {
-          for (let i = 0; i < subsidyList.length; i++) {
-            const subsidy = subsidyList[i];
+          for (const subsidy of subsidyList) {
             if (subsidy && subsidy.money) {
               subsidy.money = subsidy.money * 100;
             }

@@ -38,12 +38,12 @@
       </el-table-column>
       <el-table-column
         label="已领取数量"
-        prop="sendNum">
+        prop="receiveNum">
       </el-table-column>
       <el-table-column
         label="操作">
         <template slot-scope="scope">
-          <el-button @click="editSubsidy(scope.$index,scope.row)">修改</el-button>
+          <el-button @click="handleEditSubsidy(info.subsidyActivityId, scope.row)">修改</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -51,62 +51,122 @@
       <el-button  @click="$router.push({path: 'addSubsidy', query: {id: '' + info.subsidyActivityId}})">新增津贴</el-button>
       <el-button type="primary" @click="$router.push({path: 'subsidy-activity-list'})">返回</el-button>
     </div>
+
+    <el-dialog title="修改津贴" :visible.sync="dialogEditSubsidyVisible" :append-to-body="true"
+               :modal-append-to-body="false" width="80%"
+               @close="editDomainInfo.editDomainId = 0">
+      <el-form :label-position="labelPosition" label-width="120px" :subsidy="info">
+        <el-form-item label="津贴ID：" prop="subsidyTypeCode">
+          <el-col :span="5">
+            {{ subsidy.subsidyTypeCode }}
+          </el-col>
+        </el-form-item>
+        <el-form-item label="津贴名称：" prop="name">
+          <el-col :span="11">
+            <el-input v-model="subsidy.typeName" :value="subsidy.typeName" placeholder="津贴名称(不超过8个字)"></el-input>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="津贴金额：" prop="money">
+          <el-col :span="5">
+            {{ subsidy.money }} 元
+          </el-col>
+        </el-form-item>
+        <el-form-item label="发放数量：" prop="sendNum">
+          <el-col :span="11">
+            <el-input v-model="subsidy.sendNum"></el-input> 个
+          </el-col>
+        </el-form-item>
+        <el-form-item label="已领取数量：" prop="receiveNum">
+          <el-col :span="5">
+            {{ subsidy.receiveNum }} 个
+          </el-col>
+        </el-form-item>
+        <el-form-item style="margin-top: 30px">
+          <el-button @click="submitForm(info, subsidy)">保存并新增</el-button>
+          <el-button type="primary" @click="submitForm(info, subsidy)">保存</el-button>
+          <el-button @click="$router.push({path: 'subsidy-activity-list'})">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+
+
   </div>
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
-import {getActivityDetail} from '../../../api/subsidy';
-import {SubsidyActivityInfo, ResponseResult, SubsidyType} from '../../../types';
-import {AxiosResponse} from 'axios';
-@Component({
-  name: 'ActivityInfoDetail',
-  components: {},
-})
-export default class ActivityInfoDetail extends Vue {
-  labelPosition: string = 'right';
+  import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
+  import {getActivityDetail, getSubsidDetail} from '../../../api/subsidy';
+  import {SubsidyActivityInfo, ResponseResult, SubsidyType} from '../../../types';
+  import {AxiosResponse} from 'axios';
+  import {handlerCommonError} from '@/utils/auth-interceptor';
 
-  // info: SubsidyActivityInfo = {subsidyActivityId: 1,
-  //   subsidyInfoList:[]
-  // };
-  info: SubsidyActivityInfo = {subsidyActivityId: 0,
-    subsidyInfoList: [],
-  };
-
-  editSubsidy(index: number, row: SubsidyType) {
-    const subsidyId = row.subsidyTypeId;
-    this.$message('点击修改');
+  interface EditDomain {
+    editDomainId: number | undefined;
+    editDomainType: number;
   }
 
-  created() {
-    try {
-      // @ts-ignore
-      debugger;
-      const x = parseInt(this.$route.query.id);
-      if (x != null) {
-        this.info.subsidyActivityId = x;
-        getActivityDetail(x).then((response: AxiosResponse<ResponseResult<SubsidyActivityInfo>>) => {
+  @Component({
+    name: 'ActivityInfoDetail',
+    components: {},
+  })
+
+  export default class ActivityInfoDetail extends Vue {
+    labelPosition: string = 'right';
+
+    dialogEditSubsidyVisible: boolean = false;
+
+    editDomainInfo: EditDomain = {editDomainId: 0, editDomainType: 0};
+
+    subsidy: SubsidyType = {subsidyTypeId: 0};
+
+    info: SubsidyActivityInfo = {subsidyActivityId: 0,
+      subsidyInfoList: [],
+    };
+
+    handleEditSubsidy(activityId: number, row: SubsidyType) {
+      this.dialogEditSubsidyVisible = true;
+      try {
+        // @ts-ignore
+        // debugger
+        getSubsidDetail(activityId, row.subsidyTypeId).then((response: AxiosResponse<ResponseResult<SubsidyType>>) => {
           const responseData = response.data.data;
           console.log(responseData);
-          this.info = responseData;
-        });
+          this.subsidy = responseData;
+          if (this.subsidy && this.subsidy.money) {
+            this.subsidy.money = parseFloat((this.subsidy.money / 100).toFixed(2));
+          }
+        }).catch(handlerCommonError);
+      } catch (e) {
       }
-    } catch (e) {
     }
+
+    created() {
+      try {
+        // @ts-ignore
+        // debugger
+        const x = parseInt(this.$route.query.id, 0);
+        if (x != null) {
+          this.info.subsidyActivityId = x;
+          getActivityDetail(x).then((response: AxiosResponse<ResponseResult<SubsidyActivityInfo>>) => {
+            const responseData = response.data.data;
+            console.log(responseData);
+            this.info = responseData;
+            if (this.info && this.info.subsidyInfoList) {
+              for (const subsidy of this.info.subsidyInfoList) {
+                if (subsidy && subsidy.money) {
+                  subsidy.money = parseFloat((subsidy.money / 100).toFixed(2));
+                }
+              }
+            }
+          }).catch(handlerCommonError);
+        }
+      } catch (e) {
+      }
+    }
+
   }
 
-  // realFetchData() {
-  //   const id = this.$route.query.id;
-  //   this.info.subsidyActivityId = id;
-  //   return getActivityDetail(id).then((response: AxiosResponse<ResponseResult<SubsidyActivityInfo>>) => {
-  //     const responseData = response.data.data;
-  //     console.log(responseData);
-  //     this.info = responseData;
-  //
-  //   })
-  // }
 
-}
 </script>
 
 <style scoped>

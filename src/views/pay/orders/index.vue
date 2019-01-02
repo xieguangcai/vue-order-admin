@@ -129,7 +129,7 @@
   import OrderInfoDetail from './detail.vue';
   import BaseList from '../../../components/BaseList';
   import {handlerCommonError} from '../../../utils/auth-interceptor';
-  import {addDateFormatString} from "../../../utils/format-utils";
+  import {addDateFormatString} from '../../../utils/format-utils';
 
   interface EditDomain {
     editDomainId: number | undefined;
@@ -146,7 +146,7 @@
 
     data: OrderInfo[] = [];
     listQuery: OrderInfoListQuery = {page: 0, size: 50, total: 0,
-      orderTimes:[addDateFormatString(-1, 'M'), addDateFormatString()]
+      orderTimes: [addDateFormatString(-1, 'M'), addDateFormatString()],
 
     };
 
@@ -154,7 +154,7 @@
       return orderStatusClass(orderStatus);
     }
 
-    onCreated(){
+    onCreated() {
       // @ts-ignore
       this.needLoadOnCreate = false;
     }

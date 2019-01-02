@@ -106,69 +106,70 @@
 
 
 <script lang="ts">
-  import 'babel-polyfill'
-import {Component, Vue, Watch} from 'vue-property-decorator';
-import SearchPane from '../../../components/SearchPane/index.vue';
-import SearchPagePane from '../../../components/SearchPagePane/index.vue';
+  import 'babel-polyfill';
+  import {Component, Vue, Watch} from 'vue-property-decorator';
+  import SearchPane from '../../../components/SearchPane/index.vue';
+  import SearchPagePane from '../../../components/SearchPagePane/index.vue';
   import {
     ActivityListQuery,
     Pageable,
     ResponseResult,
     SubsidyActivityInfo, SubsidySerialInfoModel, SubsidyUserDetail,
-    SubsidyUserDetailSearchQuery
+    SubsidyUserDetailSearchQuery,
   } from '../../../types';
-import ListTablePane from '../../../components/ListTablePane/index.vue';
-import {AxiosResponse} from 'axios';
-import {getActivityList, getActivityDetail, deleteActivity, getSubsidySerialList} from '../../../api/subsidy';
-// @ts-ignore
-import qs from 'qs';
-import BaseList from '../../../components/BaseList';
-import BaseTableDelete from '@/components/BaseTableDelete';
-import {handlerCommonError} from '../../../utils/auth-interceptor';
+  import ListTablePane from '../../../components/ListTablePane/index.vue';
+  import {AxiosResponse} from 'axios';
+  import {getActivityList, getActivityDetail, deleteActivity, getSubsidySerialList} from '../../../api/subsidy';
+  // @ts-ignore
+  import qs from 'qs';
+  import BaseList from '../../../components/BaseList';
+  import BaseTableDelete from '@/components/BaseTableDelete';
+  import {handlerCommonError} from '../../../utils/auth-interceptor';
 
-@Component({
-  components: {ListTablePane, SearchPane, SearchPagePane},
-  filters: {
-  },
-  mixins: [BaseList, BaseTableDelete],
-})
+  @Component({
+    components: {ListTablePane, SearchPane, SearchPagePane},
+    filters: {},
+    mixins: [BaseList, BaseTableDelete],
+  })
 
-export default class SubsidyDetailList extends Vue {
+  export default class SubsidyDetailList extends Vue {
 
-  showSendDetail: boolean = true;
-  listQuery: SubsidyUserDetailSearchQuery = {
-    activityId: 0,
-    serialType: 1, page: 0, size: 50, total: 0
-  };
-  subsidyDetail: SubsidySerialInfoModel = {
-    totalSend: 0, totalReceive: 0, totalUse: 0
-  };
-  subsidyContent: SubsidyUserDetail[] = [];
+    showSendDetail: boolean = true;
+    listQuery: SubsidyUserDetailSearchQuery = {
+      activityId: 0,
+      serialType: 1, page: 0, size: 50, total: 0,
+    };
+    subsidyDetail: SubsidySerialInfoModel = {
+      totalSend: 0, totalReceive: 0, totalUse: 0,
+    };
+    subsidyContent: SubsidyUserDetail[] = [];
 
-  created() {
-    try {
-      // @ts-ignore
-      debugger;
-      const x = parseInt(this.$route.query.id);
-      if (x != null) {
-        this.listQuery.activityId = x;
-        getSubsidySerialList(this.listQuery).then((response: AxiosResponse<ResponseResult<SubsidySerialInfoModel>>) => {
-          const responseData = response.data.data;
-          if (responseData == null){
-            alert("数据为空");
-          }else {
-          this.subsidyDetail = responseData;
-          this.subsidyContent = responseData.subsidySerials.content;
-          this.listQuery.page = responseData.subsidySerials.number;
-          this.listQuery.size = responseData.subsidySerials.size;
-          this.listQuery.total = responseData.subsidySerials.totalElements;
-          console.log(responseData);
-          }
-        }).catch(handlerCommonError);
+    created() {
+      try {
+        // @ts-ignore
+        // debugger;
+        const x = parseInt(this.$route.query.id, 0);
+        if (x != null) {
+          this.listQuery.activityId = x;
+          getSubsidySerialList(this.listQuery).then((response: AxiosResponse<ResponseResult<SubsidySerialInfoModel>>) => {
+            const responseData = response.data.data;
+            console.log(responseData);
+            if (!responseData) {
+              alert('数据为空');
+            } else {
+              this.subsidyDetail = responseData;
+              if (responseData.subsidySerials) {
+                this.subsidyContent = responseData.subsidySerials.content;
+                this.listQuery.page = responseData.subsidySerials.number;
+                this.listQuery.size = responseData.subsidySerials.size;
+                this.listQuery.total = responseData.subsidySerials.totalElements;
+              }
+            }
+          }).catch(handlerCommonError);
+        }
+      } catch (e) {
+         console.log(e);
       }
-    } catch (e){
-       console.log(e);
     }
   }
-}
 </script>

@@ -126,7 +126,7 @@ export function getSubsidDetail(activityId: number, id: number): AxiosPromise<Re
   });
 }
 
-export function addSubsidy(activityId: number, subsidyName: string, money: number, sendNum: number): AxiosPromise<ResponseResult<boolean>> {
+export function addSubsidy(activityId: number, subsidyName: string | undefined, money: number | undefined, sendNum: number | undefined): AxiosPromise<ResponseResult<boolean>> {
   return request({
     url : '/subsidy/add/allowance',
     method: 'post',

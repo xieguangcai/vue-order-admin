@@ -50,7 +50,7 @@
   import {addSubsidy, getActivityDetail} from '../../../api/subsidy';
   import {SubsidyActivityInfo, ResponseResult, SubsidyType} from '../../../types';
   import {AxiosResponse} from 'axios';
-  import {handlerCommonError} from "../../../utils/auth-interceptor";
+  import {handlerCommonError} from '../../../utils/auth-interceptor';
 
   @Component({
     name: 'SubsidyAdd',
@@ -58,17 +58,17 @@
   })
   export default class SubsidyAdd extends Vue {
     labelPosition: string = 'right';
-    name: string = "addSubsidy";
+    name: string = 'addSubsidy';
 
     // info: SubsidyActivityInfo = {subsidyActivityId: 1,
     //   subsidyInfoList:[]
     // };
     info: SubsidyActivityInfo = {
       subsidyActivityId: 0,
-      subsidyInfoList: []
+      subsidyInfoList: [],
     };
 
-    subsidy: SubsidyType = {subsidyTypeId:0};
+    subsidy: SubsidyType = {subsidyTypeId: 0};
 
     submitForm(params: SubsidyActivityInfo, row: SubsidyType) {
       if (row && row.money) {
@@ -77,20 +77,20 @@
       addSubsidy(params.subsidyActivityId, row.typeName, row.money, row.sendNum).then((response: AxiosResponse<ResponseResult<boolean>>) => {
 
       }).catch(handlerCommonError);
-    };
+    }
 
     created() {
       try {
         // @ts-ignore
-        debugger
-        const x = parseInt(this.$route.query.id);
+        // debugger
+        const x = parseInt(this.$route.query.id, 0);
         if (x != null) {
           this.info.subsidyActivityId = x;
           getActivityDetail(x).then((response: AxiosResponse<ResponseResult<SubsidyActivityInfo>>) => {
             const responseData = response.data.data;
             console.log(responseData);
             this.info = responseData;
-          })
+          }).catch(handlerCommonError);
         }
       } catch (e) {
       }
