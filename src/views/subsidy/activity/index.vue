@@ -39,7 +39,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="津贴总额">
+        <el-table-column label="津贴总额" width="190px">
           <template slot-scope="scope">
             <div>
               <span>发放：</span>{{ scope.row.sendMoney | NumFormat }} 元<br/>
