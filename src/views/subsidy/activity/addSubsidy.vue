@@ -27,18 +27,18 @@
         </el-col>
       </el-form-item>
       <el-form-item label="津贴金额：" prop="money">
-        <el-col :span="5">
-          <el-input v-model="subsidy.money"></el-input>
+        <el-col :span="11">
+          <el-input-number v-model="subsidy.money" :min="0" :step="0.01" style="width: 90%;"></el-input-number> 元
         </el-col>
       </el-form-item>
       <el-form-item label="发放数量：" prop="sendNum">
-        <el-col :span="5">
-          <el-input v-model="subsidy.sendNum"></el-input>
+        <el-col :span="11">
+          <el-input-number v-model="subsidy.sendNum" :min="0" :step="1" style="width: 90%;"></el-input-number> 个
         </el-col>
       </el-form-item>
       <el-form-item style="margin-top: 30px">
-        <el-button @click="submitForm(info, subsidy)">保存并新增</el-button>
-        <el-button type="primary" @click="submitForm(info, subsidy)">保存</el-button>
+        <el-button @click="submitForm(info, subsidy, 1)">保存并新增</el-button>
+        <el-button type="primary" @click="submitForm(info, subsidy, 2)">保存</el-button>
         <el-button @click="$router.push({path: 'subsidy-activity-list'})">取消</el-button>
       </el-form-item>
     </el-form>
@@ -70,12 +70,18 @@
 
     subsidy: SubsidyType = {subsidyTypeId: 0};
 
-    submitForm(params: SubsidyActivityInfo, row: SubsidyType) {
+    submitForm(params: SubsidyActivityInfo, row: SubsidyType, type: number) {
       if (row && row.money) {
         row.money = row.money * 100;
       }
       addSubsidy(params.subsidyActivityId, row.typeName, row.money, row.sendNum).then((response: AxiosResponse<ResponseResult<boolean>>) => {
-
+        if (response.data.success && response.data.data) {
+          if (type == 1) {
+            this.subsidy = {subsidyTypeId: 0};
+          } else if (type == 2) {
+            this.$router.push({path: 'activeInfo', query: {id: '' + params.subsidyActivityId}});
+          }
+        }
       }).catch(handlerCommonError);
     }
 
