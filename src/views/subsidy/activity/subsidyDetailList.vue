@@ -1,106 +1,114 @@
 <template>
-  <div >
+  <div class="subsidyDetailList">
     <div>津贴活动简报：</div>
-    <el-form :model="subsidyDetail"
+    <el-form
+      :model="subsidyDetail"
+      :inline="true"
     >
       <el-form-item
         label="津贴发放总额">
-        {{subsidyDetail.totalSend}}
+        {{subsidyDetail.sendMoney}}
       </el-form-item>
       <el-form-item
         label="津贴领取总额">
-        {{subsidyDetail.totalReceive}}
+        {{subsidyDetail.receiveMoney}}
       </el-form-item>
       <el-form-item
         label="津贴使用总额">
-        {{subsidyDetail.totalUse}}
+        {{subsidyDetail.useMoney}}
       </el-form-item>
     </el-form>
-    <div>
-      <el-button type="primary">津贴发放流水</el-button>
-      <el-button>津贴使用流水</el-button>
-    </div>
-    <div v-show="showSendDetail">
-      <search-pane slot="searchpane" @click="refetchData">
-        <el-input v-model="listQuery.searchValue" size="mini" placeholder="活动ID/活动名称"></el-input>
-      </search-pane>
-      <el-table :data="subsidyContent">
-        <el-table-column
-          label="ID"
-          prop="userDetailId"
-        >
-        </el-table-column>
-        <el-table-column
-          label="用户OpenId"
-          prop="openId">
-        </el-table-column>
-        <el-table-column
-          label="设备ID"
-          prop="cudid">
-        </el-table-column>
-        <el-table-column
-          label="用户昵称"
-          prop="nickName">
-        </el-table-column>
-        <el-table-column
-          label="津贴名称"
-          prop="subsidyName">
-        </el-table-column>
-        <el-table-column
-          label="津贴面额"
-          prop="money">
-        </el-table-column>
-        <el-table-column
-          label="获得时间"
-          prop="createTime">
-        </el-table-column>
-      </el-table>
-    </div>
-    <div v-show="!showSendDetail">
-      <el-button>导出</el-button>
-      <el-date-picker type="date" placeholder="选择日期" v-model="listQuery.createTime"></el-date-picker>
-      <el-input placeholder="请填写业务线"></el-input>
-      <search-pane slot="searchpane" @click="refetchData">
-        <el-input v-model="listQuery.searchValue" size="mini" placeholder="活动ID/活动名称"></el-input>
-      </search-pane>
-      <el-table :data="subsidyContent">
-        <el-table-column
-          label="ID"
-          prop="userDetailId"
-        >
-        </el-table-column>
-        <el-table-column
-          label="用户OpenId"
-          prop="openId">
-        </el-table-column>
-        <el-table-column
-          label="设备ID"
-          prop="cudid">
-        </el-table-column>
-        <el-table-column
-          label="用户昵称"
-          prop="nickName">
-        </el-table-column>
-        <el-table-column
-          label="业务线"
-          prop="businessName">
-        </el-table-column>
-        <el-table-column
-          label="订单号"
-          prop="orderNo">
-        </el-table-column>
-        <el-table-column
-          label="津贴使用额度"
-          prop="money">
-        </el-table-column>
-        <el-table-column
-          label="订单记账时间"
-          prop="createTime">
-        </el-table-column>
-      </el-table>
-      <search-page-pane @size-change="handleSizeChange" @current-change="handleCurrentChange" :size="size" :page="page"
-                        :total="total" slot="page"></search-page-pane>
-    </div>
+    <el-tabs v-model="tabActiveName" type="border-card" @tab-click="handleTabClick">
+      <el-tab-pane label="津贴发放流水" name="sendDetail">
+        <div class="table_class">
+          <search-pane slot="searchpane" @click="refetchData">
+            <el-input v-model="listQuery.searchValue" size="mini" placeholder="活动ID/活动名称"></el-input>
+          </search-pane>
+          <el-table :data="subsidyContent">
+            <el-table-column
+              label="ID"
+              prop="userDetailId"
+              width="50px"
+            >
+            </el-table-column>
+            <el-table-column
+              label="用户OpenId"
+              prop="openId">
+            </el-table-column>
+            <el-table-column
+              label="设备ID"
+              prop="cudid">
+            </el-table-column>
+            <el-table-column
+              label="用户昵称"
+              prop="nickName">
+            </el-table-column>
+            <el-table-column
+              label="津贴名称"
+              prop="subsidyName">
+            </el-table-column>
+            <el-table-column
+              label="津贴面额"
+              prop="money">
+            </el-table-column>
+            <el-table-column
+              label="获得时间"
+              prop="createTime">
+            </el-table-column>
+          </el-table>
+          <search-page-pane @size-change="handleSizeChange" @current-change="handleCurrentChange" :size="size" :page="page"
+                            :total="total" slot="page"></search-page-pane>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="津贴使用流水" name="useDetail">
+        <div class="table_class">
+          <!--<el-button>导出</el-button>-->
+          <el-date-picker type="date" placeholder="选择日期" v-model="listQuery.createTime"></el-date-picker>
+          <el-input placeholder="请填写业务线"></el-input>
+          <search-pane slot="searchpane" @click="refetchData">
+            <el-input v-model="listQuery.searchValue" size="mini" placeholder="活动ID/活动名称"></el-input>
+          </search-pane>
+          <el-table :data="subsidyContent">
+            <el-table-column
+              label="ID"
+              prop="userDetailId"
+              width="50px"
+            >
+            </el-table-column>
+            <el-table-column
+              label="用户OpenId"
+              prop="openId">
+            </el-table-column>
+            <el-table-column
+              label="设备ID"
+              prop="cudid">
+            </el-table-column>
+            <el-table-column
+              label="用户昵称"
+              prop="nickName">
+            </el-table-column>
+            <el-table-column
+              label="业务线"
+              prop="businessName">
+            </el-table-column>
+            <el-table-column
+              label="订单号"
+              prop="orderNo">
+            </el-table-column>
+            <el-table-column
+              label="津贴使用额度"
+              prop="money">
+            </el-table-column>
+            <el-table-column
+              label="订单记账时间"
+              prop="createTime">
+            </el-table-column>
+          </el-table>
+          <search-page-pane @size-change="handleSizeChange" @current-change="handleCurrentChange" :size="size" :page="page"
+                            :total="total" slot="page"></search-page-pane>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
@@ -110,10 +118,9 @@
   import SearchPane from '../../../components/SearchPane/index.vue';
   import SearchPagePane from '../../../components/SearchPagePane/index.vue';
   import {
-    ActivityListQuery,
     Pageable,
     ResponseResult,
-    SubsidyActivityInfo, SubsidySerialInfoModel, SubsidyUserDetail,
+    SubsidyActivityInfo, SubsidyUserDetail,
     SubsidyUserDetailSearchQuery,
   } from '../../../types';
   import ListTablePane from '../../../components/ListTablePane/index.vue';
@@ -133,15 +140,44 @@
 
   export default class SubsidyDetailList extends Vue {
 
-    showSendDetail: boolean = true;
+    tabActiveName: string = 'sendDetail';
     listQuery: SubsidyUserDetailSearchQuery = {
       activityId: 0,
       serialType: 1, page: 0, size: 50, total: 0,
     };
-    subsidyDetail: SubsidySerialInfoModel = {
-      totalSend: 0, totalReceive: 0, totalUse: 0,
+    subsidyDetail: SubsidyActivityInfo = {
+      subsidyActivityId: 0
     };
     subsidyContent: SubsidyUserDetail[] = [];
+
+    fetchData(){
+      debugger;
+      const x = parseInt(this.$route.query.id, 0);
+      if( x!= null){
+      this.listQuery.activityId = x;
+      getSubsidySerialList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<SubsidyUserDetail>>>) => {
+        const responseData = response.data.data;
+        this.subsidyContent = responseData.content;
+        if (responseData) {
+          this.listQuery.page = responseData.number;
+          this.listQuery.size = responseData.size;
+          this.listQuery.total = responseData.totalElements;
+        }
+      }).catch(handlerCommonError);
+      }
+    }
+
+    handleTabClick(tab,event) {
+      debugger;
+      console.log(tab, event);
+      console.log(tab.name);
+      if(tab.name == "sendDetail" ){
+        this.listQuery.serialType = 1;
+      }else if(tab.name == "useDetail"){
+        this.listQuery.serialType =2;
+      }
+      this.fetchData();
+    }
 
     created() {
       try {
@@ -150,20 +186,11 @@
         const x = parseInt(this.$route.query.id, 0);
         if (x != null) {
           this.listQuery.activityId = x;
-          getSubsidySerialList(this.listQuery).then((response: AxiosResponse<ResponseResult<SubsidySerialInfoModel>>) => {
+          getActivityDetail(x).then((response: AxiosResponse<ResponseResult<SubsidyActivityInfo>>) => {
             const responseData = response.data.data;
             console.log(responseData);
-            if (!responseData) {
-              alert('数据为空');
-            } else {
-              this.subsidyDetail = responseData;
-              if (responseData.subsidySerials) {
-                this.subsidyContent = responseData.subsidySerials.content;
-                this.listQuery.page = responseData.subsidySerials.number;
-                this.listQuery.size = responseData.subsidySerials.size;
-                this.listQuery.total = responseData.subsidySerials.totalElements;
-              }
-            }
+            this.subsidyDetail = responseData;
+            this.fetchData();
           }).catch(handlerCommonError);
         }
       } catch (e) {
@@ -172,3 +199,12 @@
     }
   }
 </script>
+
+<style scoped>
+  .subsidyDetailList{
+    margin: 30px 50px;
+  }
+  .table_class{
+    width: 80vw;
+  }
+</style>
