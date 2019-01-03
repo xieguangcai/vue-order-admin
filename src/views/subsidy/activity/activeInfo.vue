@@ -150,31 +150,36 @@
     submitForm(activityId: number, row: SubsidyType) {
       editSubsidy(activityId, this.editDomainInfo.editDomainId, row.typeName, row.sendNum).then((response: AxiosResponse<ResponseResult<boolean>>) => {
         if (response.data.success && response.data.data) {
-          location. reload();
+          this.dialogEditSubsidyVisible = false;
+          this.realFetchData();
         }
       }).catch(handlerCommonError);
+    }
+
+    realFetchData() {
+      const x = parseInt(this.$route.query.id, 0);
+      if (x != null) {
+        this.info.subsidyActivityId = x;
+        getActivityDetail(x).then((response: AxiosResponse<ResponseResult<SubsidyActivityInfo>>) => {
+          const responseData = response.data.data;
+          console.log(responseData);
+          this.info = responseData;
+          if (this.info && this.info.subsidyInfoList) {
+            for (const subsidy of this.info.subsidyInfoList) {
+              if (subsidy && subsidy.money) {
+                subsidy.money = parseFloat((subsidy.money / 100).toFixed(2));
+              }
+            }
+          }
+        }).catch(handlerCommonError);
+      }
     }
 
     created() {
       try {
         // @ts-ignore
         // debugger
-        const x = parseInt(this.$route.query.id, 0);
-        if (x != null) {
-          this.info.subsidyActivityId = x;
-          getActivityDetail(x).then((response: AxiosResponse<ResponseResult<SubsidyActivityInfo>>) => {
-            const responseData = response.data.data;
-            console.log(responseData);
-            this.info = responseData;
-            if (this.info && this.info.subsidyInfoList) {
-              for (const subsidy of this.info.subsidyInfoList) {
-                if (subsidy && subsidy.money) {
-                  subsidy.money = parseFloat((subsidy.money / 100).toFixed(2));
-                }
-              }
-            }
-          }).catch(handlerCommonError);
-        }
+        this.realFetchData();
       } catch (e) {
       }
     }
