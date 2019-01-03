@@ -52,9 +52,7 @@
       <el-button type="primary" @click="$router.push({path: 'subsidy-activity-list'})">返回</el-button>
     </div>
 
-    <el-dialog title="修改津贴" :visible.sync="dialogEditSubsidyVisible" :append-to-body="true"
-               :modal-append-to-body="false" width="80%"
-               @close="editDomainInfo.editDomainId = 0">
+    <el-dialog title="修改津贴" :visible.sync="dialogEditSubsidyVisible" :append-to-body="true" :modal-append-to-body="false" width="80%"  @close="editDomainInfo.editDomainId = 0">
       <el-form :label-position="labelPosition" label-width="120px" :subsidy="info">
         <el-form-item label="津贴ID：" prop="subsidyTypeCode">
           <el-col :span="5">
@@ -73,7 +71,12 @@
         </el-form-item>
         <el-form-item label="发放数量：" prop="sendNum">
           <el-col :span="11">
-            <el-input v-model="subsidy.sendNum"></el-input> 个
+            <el-input-number v-model="subsidy.sendNum" :min="subsidy.receiveNum" :step="1" style="width: 50%;"></el-input-number> 个
+          </el-col>
+        </el-form-item>
+        <el-form-item label="" prop="">
+          <el-col :span="11" style="color: red;">
+            注：发放数量不得小于已领取数量
           </el-col>
         </el-form-item>
         <el-form-item label="已领取数量：" prop="receiveNum">
@@ -82,9 +85,8 @@
           </el-col>
         </el-form-item>
         <el-form-item style="margin-top: 30px">
-          <el-button @click="submitForm(info, subsidy)">保存并新增</el-button>
-          <el-button type="primary" @click="submitForm(info, subsidy)">保存</el-button>
-          <el-button @click="$router.push({path: 'subsidy-activity-list'})">取消</el-button>
+          <el-button type="primary" @click="submitForm(info.subsidyActivityId, subsidy)">保存</el-button>
+          <el-button @click="closeDialog">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -95,14 +97,13 @@
 
 <script lang="ts">
   import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
-  import {getActivityDetail, getSubsidDetail} from '../../../api/subsidy';
+  import {editSubsidy, getActivityDetail, getSubsidDetail} from '../../../api/subsidy';
   import {SubsidyActivityInfo, ResponseResult, SubsidyType} from '../../../types';
   import {AxiosResponse} from 'axios';
   import {handlerCommonError} from '@/utils/auth-interceptor';
 
   interface EditDomain {
     editDomainId: number | undefined;
-    editDomainType: number;
   }
 
   @Component({
@@ -115,7 +116,7 @@
 
     dialogEditSubsidyVisible: boolean = false;
 
-    editDomainInfo: EditDomain = {editDomainId: 0, editDomainType: 0};
+    editDomainInfo: EditDomain = {editDomainId: 0};
 
     subsidy: SubsidyType = {subsidyTypeId: 0};
 
@@ -123,8 +124,14 @@
       subsidyInfoList: [],
     };
 
+    closeDialog() {
+      this.dialogEditSubsidyVisible = false;
+      this.editDomainInfo.editDomainId = 0;
+    }
+
     handleEditSubsidy(activityId: number, row: SubsidyType) {
       this.dialogEditSubsidyVisible = true;
+      this.editDomainInfo.editDomainId = row.subsidyTypeId;
       try {
         // @ts-ignore
         // debugger
@@ -138,6 +145,14 @@
         }).catch(handlerCommonError);
       } catch (e) {
       }
+    }
+
+    submitForm(activityId: number, row: SubsidyType) {
+      editSubsidy(activityId, this.editDomainInfo.editDomainId, row.typeName, row.sendNum).then((response: AxiosResponse<ResponseResult<boolean>>) => {
+        if (response.data.success && response.data.data) {
+          location. reload();
+        }
+      }).catch(handlerCommonError);
     }
 
     created() {

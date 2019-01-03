@@ -134,11 +134,11 @@ export function addSubsidy(activityId: number, subsidyName: string | undefined, 
   });
 }
 
-export function editSubsidy(activityId: number, subsidyName: string, sendNum: number): AxiosPromise<ResponseResult<boolean>> {
+export function editSubsidy(activityId: number, subsidyId: number, subsidyName: string | undefined, sendNum: number | undefined): AxiosPromise<ResponseResult<boolean>> {
   return request({
     url : '/subsidy/edit/allowance',
     method: 'post',
-    params: {activityId, subsidyName, sendNum},
+    params: {activityId, subsidyId, subsidyName, sendNum},
   });
 }
 
