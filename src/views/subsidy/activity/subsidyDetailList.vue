@@ -25,35 +25,43 @@
             <el-input v-model="listQuery.searchValue" size="mini" placeholder="openID/mac/激活ID"></el-input>
           </search-pane>
           <el-table :data="subsidyContent">
-            <el-table-column
-              label="ID"
-              prop="userDetailId"
-              width="50px"
-            >
+            <el-table-column label="ID" width="70px">
+              <template slot-scope="scope">
+                {{scope.row.userDetailId}}
+              </template>
             </el-table-column>
-            <el-table-column
-              label="用户OpenId"
-              prop="openId">
+            <el-table-column label="用户OpenId">
+              <template slot-scope="scope">
+                {{scope.row.openId}}
+              </template>
             </el-table-column>
-            <el-table-column
-              label="设备ID"
-              prop="cudid">
+            <el-table-column label="设备ID">
+              <template slot-scope="scope">
+                <div>
+                  Mac：{{scope.row.mac}}<br>
+                  激活ID：{{scope.row.cudid}}
+                </div>
+              </template>
             </el-table-column>
-            <el-table-column
-              label="用户昵称"
-              prop="nickName">
+            <el-table-column label="用户昵称">
+              <template slot-scope="scope">
+                {{scope.row.nickName}}
+              </template>
             </el-table-column>
-            <el-table-column
-              label="津贴名称"
-              prop="subsidyName">
+            <el-table-column label="津贴名称">
+              <template slot-scope="scope">
+                {{scope.row.subsidyName}}
+              </template>
             </el-table-column>
-            <el-table-column
-              label="津贴面额"
-              prop="money">
+            <el-table-column label="津贴面额">
+              <template slot-scope="scope">
+                {{scope.row.money | NumFormat}}
+              </template>
             </el-table-column>
-            <el-table-column
-              label="获得时间"
-              prop="createTime">
+            <el-table-column label="获得时间">
+              <template slot-scope="scope">
+                {{scope.row.createTime}}
+              </template>
             </el-table-column>
           </el-table>
           <search-page-pane @size-change="handleSizeChange" @current-change="handleCurrentChange" :size="size" :page="page"
@@ -69,39 +77,48 @@
             <el-input v-model="listQuery.searchValue" size="mini" placeholder="openID/mac/激活ID"></el-input>
           </search-pane>
           <el-table :data="subsidyContent">
-            <el-table-column
-              label="ID"
-              prop="userDetailId"
-              width="50px"
-            >
+            <el-table-column label="ID" width="70px">
+              <template slot-scope="scope">
+                {{scope.row.userDetailId}}
+              </template>
             </el-table-column>
-            <el-table-column
-              label="用户OpenId"
-              prop="openId">
+            <el-table-column label="用户OpenId">
+              <template slot-scope="scope">
+                {{scope.row.openId}}
+              </template>
             </el-table-column>
-            <el-table-column
-              label="设备ID"
-              prop="cudid">
+            <el-table-column label="设备ID">
+              <template slot-scope="scope">
+                <div>
+                  Mac：{{scope.row.mac}}<br>
+                  激活ID：{{scope.row.cudid}}
+                </div>
+              </template>
             </el-table-column>
-            <el-table-column
-              label="用户昵称"
-              prop="nickName">
+            <el-table-column label="用户昵称">
+              <template slot-scope="scope">
+                {{scope.row.nickName}}
+              </template>
             </el-table-column>
-            <el-table-column
-              label="业务线"
-              prop="businessName">
+            <el-table-column label="业务线">
+              <template slot-scope="scope">
+                {{scope.row.businessName}}
+              </template>
             </el-table-column>
-            <el-table-column
-              label="订单号"
-              prop="orderNo">
+            <el-table-column label="订单号">
+              <template slot-scope="orderNo">
+                {{scope.row.businessName}}
+              </template>
             </el-table-column>
-            <el-table-column
-              label="津贴使用额度"
-              prop="money">
+            <el-table-column label="津贴使用额度">
+              <template slot-scope="scope">
+                {{scope.row.money | NumFormat}}
+              </template>
             </el-table-column>
-            <el-table-column
-              label="订单记账时间"
-              prop="createTime">
+            <el-table-column label="订单记账时间">
+              <template slot-scope="createTime">
+                {{scope.row.businessName}}
+              </template>
             </el-table-column>
           </el-table>
           <search-page-pane @size-change="handleSizeChange" @current-change="handleCurrentChange" :size="size" :page="page"
@@ -134,7 +151,10 @@
 
   @Component({
     components: {ListTablePane, SearchPane, SearchPagePane},
-    filters: {},
+    filters: {
+      NumFormat(value: number) {
+        return (value / 100).toFixed(2);
+      },},
     mixins: [BaseList, BaseTableDelete],
   })
 
@@ -153,16 +173,16 @@
     fetchData(){
       const x = parseInt(this.$route.query.id, 0);
       if( x!= null){
-      this.listQuery.activityId = x;
-      getSubsidySerialList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<SubsidyUserDetail>>>) => {
-        const responseData = response.data.data;
-        this.subsidyContent = responseData.content;
-        if (responseData) {
-          this.listQuery.page = responseData.number;
-          this.listQuery.size = responseData.size;
-          this.listQuery.total = responseData.totalElements;
-        }
-      }).catch(handlerCommonError);
+        this.listQuery.activityId = x;
+        getSubsidySerialList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<SubsidyUserDetail>>>) => {
+          const responseData = response.data.data;
+          this.subsidyContent = responseData.content;
+          if (responseData) {
+            this.listQuery.page = responseData.number;
+            this.listQuery.size = responseData.size;
+            this.listQuery.total = responseData.totalElements;
+          }
+        }).catch(handlerCommonError);
       }
     }
 
@@ -192,7 +212,7 @@
           }).catch(handlerCommonError);
         }
       } catch (e) {
-         console.log(e);
+        console.log(e);
       }
     }
   }
