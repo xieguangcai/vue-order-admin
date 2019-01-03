@@ -58,6 +58,32 @@ export default new Router({
           component: () => import(/* webpackChunkName: "subsidy-activity-list" */ '@/views/subsidy/activity/index.vue'),
           meta: {title: '津贴管理', icon: 'tree', roles: ['ROLE_VIEW']},
         },
+        {
+          path: 'addActive',
+          name: 'addActive',
+          component: () => import(/* webpackChunkName: "addActive" */ '@/views/subsidy/activity/addActive.vue'),
+          meta: {title: '新增活动', icon: 'form', hidden: true},
+        },
+        {
+          path: 'addSubsidy',
+          name: 'addSubsidy',
+          component: () => import(/* webpackChunkName: "addSubsidy" */ '@/views/subsidy/activity/addSubsidy.vue'),
+          meta: {title: '新增津贴', icon: 'form', hidden: true},
+        },
+        {
+          path: 'activeInfo',
+          name: 'activeInfo',
+          component: () => import(/* webpackChunkName: "activeInfo" */ '@/views/subsidy/activity/activeInfo.vue'),
+          meta: {title: '查看活动', icon: 'form', hidden: true},
+        },
+        {
+          path: 'subsidyDetailList',
+          name: 'subsidyDetailList',
+          component: () => import(/* webpackChunkName: "subsidyDetail" */ '@/views/subsidy/activity/subsidyDetailList.vue'),
+          meta: {title: '津贴流水', icon: 'form', hidden: true},
+        },
+
+
       ],
     }, {
       path: '/orders',
@@ -171,19 +197,6 @@ export default new Router({
           name: '修改密码',
           component: () => import(/* webpackChunkName: "changepwd" */ '@/views/changepwd.vue'),
           meta: {title: '修改密码', icon: 'user', hidden: true},
-        },
-      ],
-    },
-    {
-      path: '/subsidy',
-      component: Layout,
-      name: 'addActive',
-      meta: {title: '新增活动', hidden: true}, children: [
-        {
-          path: 'addActive',
-          name: 'addActive',
-          component: () => import(/* webpackChunkName: "addActive" */ '@/views/subsidy/activity/addActive.vue'),
-          meta: {title: '新增活动', icon: 'form', hidden: true},
         },
       ],
     },
