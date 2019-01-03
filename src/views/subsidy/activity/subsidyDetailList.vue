@@ -62,10 +62,20 @@
       <el-tab-pane label="津贴使用流水" name="useDetail">
         <div class="table_class">
           <!--<el-button>导出</el-button>-->
-          <el-date-picker type="date" placeholder="选择日期" v-model="listQuery.createTime"></el-date-picker>
-          <el-input placeholder="请填写业务线" class="inputClass"></el-input>
           <search-pane slot="searchpane" @click="refetchData">
-            <el-input v-model="listQuery.searchValue" size="mini" placeholder="openID/mac/激活ID"></el-input>
+            <el-date-picker size="mini"
+                            v-model="listQuery.createTime"
+                            type="datetimerange"
+                            range-separator="-"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            :default-time="['00:00:00','23:59:59']"
+                            :picker-options="pickerOptions"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期">
+            </el-date-picker>
+            <!--<el-date-picker type="date" placeholder="选择日期" v-model="listQuery.createTime"></el-date-picker>-->
+            <el-input placeholder="业务线" size="mini" v-model="listQuery.businessName"></el-input>
+            <el-input v-model="listQuery.searchValue" size="mini" placeholder="openID/mac/激活ID/订单号"></el-input>
           </search-pane>
           <el-table :data="subsidyContent">
             <el-table-column
@@ -217,10 +227,5 @@
 
   .table_class {
 
-  }
-
-  .inputClass {
-    width: 250px;
-    margin: 0 15px;
   }
 </style>
