@@ -1060,10 +1060,3 @@ export interface SubsidyUserDetailSearchQuery extends IPageinfo {
   businessName?: string;
   createTime?: Date[];
 }
-
-export interface SubsidySerialInfoModel {
-  totalSend: number;
-  totalReceive: number;
-  totalUse: number;
-  subsidySerials?: Pageable<SubsidyUserDetail>;
-}
