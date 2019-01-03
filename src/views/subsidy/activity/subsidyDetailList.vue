@@ -22,7 +22,7 @@
       <el-tab-pane label="津贴发放流水" name="sendDetail">
         <div class="table_class">
           <search-pane slot="searchpane" @click="refetchData">
-            <el-input v-model="listQuery.searchValue" size="mini" placeholder="活动ID/活动名称"></el-input>
+            <el-input v-model="listQuery.searchValue" size="mini" placeholder="openID/mac/激活ID"></el-input>
           </search-pane>
           <el-table :data="subsidyContent">
             <el-table-column
@@ -64,9 +64,9 @@
         <div class="table_class">
           <!--<el-button>导出</el-button>-->
           <el-date-picker type="date" placeholder="选择日期" v-model="listQuery.createTime"></el-date-picker>
-          <el-input placeholder="请填写业务线"></el-input>
+          <el-input placeholder="请填写业务线" class="inputClass"></el-input>
           <search-pane slot="searchpane" @click="refetchData">
-            <el-input v-model="listQuery.searchValue" size="mini" placeholder="活动ID/活动名称"></el-input>
+            <el-input v-model="listQuery.searchValue" size="mini" placeholder="openID/mac/激活ID"></el-input>
           </search-pane>
           <el-table :data="subsidyContent">
             <el-table-column
@@ -151,7 +151,6 @@
     subsidyContent: SubsidyUserDetail[] = [];
 
     fetchData(){
-      debugger;
       const x = parseInt(this.$route.query.id, 0);
       if( x!= null){
       this.listQuery.activityId = x;
@@ -168,7 +167,6 @@
     }
 
     handleTabClick(tab,event) {
-      debugger;
       console.log(tab, event);
       console.log(tab.name);
       if(tab.name == "sendDetail" ){
@@ -205,6 +203,10 @@
     margin: 30px 50px;
   }
   .table_class{
-    width: 80vw;
+
+  }
+  .inputClass{
+    width: 250px;
+    margin: 0 15px;
   }
 </style>
