@@ -43,24 +43,24 @@
               // required: true, message: '不能为空', trigger: 'blur'
             }"
           >
-             <el-col :span="8">
+             <el-col :span="6">
                <el-form-item prop="typeName">
                  <el-input placeholder="津贴名称(限8个字)" v-model="subsidy.typeName" style="width: 100%;"></el-input>
                </el-form-item>
              </el-col>
            <el-col :span="1">&nbsp;</el-col>
-           <el-col :span="4">
+           <el-col :span="6">
              <el-form-item prop="money">
-               <el-input placeholder="" v-model="subsidy.money" style="width: 100%;"></el-input>
+               <el-input-number placeholder="" v-model="subsidy.money" :min="0" :step="0.01" style="width: 100%;"></el-input-number>
              </el-form-item>
            </el-col>
-           <el-col :span="2">元</el-col>
-             <el-col :span="5">
+           <el-col :span="1">元</el-col>
+             <el-col :span="6">
                <el-form-item prop="sendNum">
-                 <el-input placeholder="" v-model="subsidy.sendNum" style="width: 100%;"></el-input>
+                 <el-input-number placeholder="" v-model="subsidy.sendNum" :min="0" :step="1" style="width: 100%;"></el-input-number>
                </el-form-item>
              </el-col>
-             <el-col class="line" :span="2">个</el-col>
+             <el-col class="line" :span="1">个</el-col>
            <el-col :span="2">
              <el-button @click.prevent="removeSubsidy(subsidy)">删除</el-button>
            </el-col>
@@ -135,7 +135,9 @@ export default class AddActivityInfo extends Vue {
         }
         this.data.subsidyInfoList = subsidyList;
         addActivity(this.data).then((response: AxiosResponse<ResponseResult<boolean>>) => {
-
+          if (response.data.success && response.data.data) {
+            this.$router.push({path: 'subsidy-activity-list'});
+          }
         }).catch(handlerCommonError);
       /*} else {
         console.log('error submit!!');
