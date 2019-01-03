@@ -120,9 +120,7 @@
 
     subsidy: SubsidyType = {subsidyTypeId: 0};
 
-    info: SubsidyActivityInfo = {subsidyActivityId: 0,
-      subsidyInfoList: [],
-    };
+    info: SubsidyActivityInfo = {subsidyActivityId: 0, subsidyInfoList: []};
 
     closeDialog() {
       this.dialogEditSubsidyVisible = false;

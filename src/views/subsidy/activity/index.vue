@@ -171,7 +171,7 @@
     getActivityDetail,
     deleteActivity,
     editActivity,
-    toAuditActivity
+    toAuditActivity, offlineActivity
   } from '../../../api/subsidy';
   // @ts-ignore
   import qs from 'qs';
@@ -267,14 +267,27 @@
         });
         // @ts-ignore
         this.fetchData();
+      },async () => {
       }).catch(handlerCommonError);
     }
 
     // 下线活动 - 弹窗
     offlineActivity(row: SubsidyActivityInfo): void {
-      this.title = '下线活动';
-      this.dialogActivityInfoActionVisible = true;
-      this.$nextTick(() => this.editDomainInfo = {editDomainId: row.subsidyActivityId, editDomainType: 3});
+      this.$confirm('确认下线该活动吗?', '提示', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(async () => {
+        // 下线活动
+        const {data} = await offlineActivity(row.subsidyActivityId);
+        this.$message({
+          type: 'success',
+          message: '下线活动成功',
+        });
+        // @ts-ignore
+        this.fetchData();
+      },async () => {
+      }).catch(handlerCommonError);
     }
 
     // 审核活动 - 弹窗
@@ -320,6 +333,7 @@
         });
         // @ts-ignore
         this.fetchData();
+      },async () => {
       }).catch(handlerCommonError);
     }
 
