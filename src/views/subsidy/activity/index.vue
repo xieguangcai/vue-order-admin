@@ -166,7 +166,13 @@
   import {ActivityListQuery, Pageable, ResponseResult, SubsidyActivityInfo} from '../../../types';
   import ListTablePane from '../../../components/ListTablePane/index.vue';
   import {AxiosResponse} from 'axios';
-  import {getActivityList, getActivityDetail, deleteActivity, editActivity} from '../../../api/subsidy';
+  import {
+    getActivityList,
+    getActivityDetail,
+    deleteActivity,
+    editActivity,
+    toAuditActivity
+  } from '../../../api/subsidy';
   // @ts-ignore
   import qs from 'qs';
   import BaseList from '../../../components/BaseList';
@@ -248,9 +254,20 @@
 
     // 提交审核 - 弹窗
     submitAuditActivity(row: SubsidyActivityInfo): void {
-      this.title = '提交审核';
-      this.dialogActivityInfoActionVisible = true;
-      this.$nextTick(() => this.editDomainInfo = {editDomainId: row.subsidyActivityId, editDomainType: 2});
+      this.$confirm('确认提交审核吗?', '提示', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(async () => {
+        // 提交审核
+        const {data} = await toAuditActivity(row.subsidyActivityId);
+        this.$message({
+          type: 'success',
+          message: '提交审核成功',
+        });
+        // @ts-ignore
+        this.fetchData();
+      }).catch(handlerCommonError);
     }
 
     // 下线活动 - 弹窗
@@ -290,7 +307,6 @@
       }
       const rowsId: Array<number | undefined> = [];
       row.forEach((item) => rowsId.push(item.subsidyActivityId));
-
       this.$confirm('确认永久删除该活动信息吗?', '提示', {
         confirmButtonText: '确认',
         cancelButtonText: '取消',
@@ -304,9 +320,7 @@
         });
         // @ts-ignore
         this.fetchData();
-
-      }).catch(() => {
-      });
+      }).catch(handlerCommonError);
     }
 
     realFetchData() {
