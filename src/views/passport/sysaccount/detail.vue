@@ -271,41 +271,6 @@ import {handlerCommonError} from '../../../utils/auth-interceptor';
   components: {},
 })
 export default class SysAccountDetail extends Vue {
-  @Prop()
-    // @ts-ignore
-  active: string[];
-
-  @Prop({type: String, default: ''})
-    // @ts-ignore
-  openId: string;
-
-  @Prop()
-    // @ts-ignore
-  searchModel: SysAccountQuery;
-
-  activeNames: string[] = ['1'];
-
-  payUserActiveNames: string[] = ['1'];
-  loadOssUserInfo: boolean = false;
-  getSignStatus(status: number){
-    return nopassportSignStatusToName(status);
-  }
-  domainInfo: SysAccount = {
-    accountId: 0,
-    bindDevices: [],
-    bindExternals: [],
-    eduVips: [],
-    bindLogs: [],
-    user: [],
-    fromMergeInfos: [],
-    toMergeInfos: [],
-  };
-
-  payUserInfo: UserInfoFull = {
-    userId: 0,
-    protocols: [],
-    noPassportSigns: [],
-  };
 
   get defPayUserInfo(): UserInfoFull {
     return {
@@ -328,6 +293,41 @@ export default class SysAccountDetail extends Vue {
       return this.domainInfo.user[0];
     }
     return null;
+  }
+  @Prop()
+    // @ts-ignore
+  active: string[];
+
+  @Prop({type: String, default: ''})
+    // @ts-ignore
+  openId: string;
+
+  @Prop()
+    // @ts-ignore
+  searchModel: SysAccountQuery;
+
+  activeNames: string[] = ['1'];
+
+  payUserActiveNames: string[] = ['1'];
+  loadOssUserInfo: boolean = false;
+  domainInfo: SysAccount = {
+    accountId: 0,
+    bindDevices: [],
+    bindExternals: [],
+    eduVips: [],
+    bindLogs: [],
+    user: [],
+    fromMergeInfos: [],
+    toMergeInfos: [],
+  };
+
+  payUserInfo: UserInfoFull = {
+    userId: 0,
+    protocols: [],
+    noPassportSigns: [],
+  };
+  getSignStatus(status: number ) {
+    return nopassportSignStatusToName(status);
   }
 
   validInput(newVal: SysAccountQuery): boolean {

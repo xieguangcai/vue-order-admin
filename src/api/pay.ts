@@ -118,7 +118,7 @@ export function statusToName(code: number | string, valus: StatusInfo[]) {
   return name;
 }
 
-export function nopassportSignStatusToName(code: number){
+export function nopassportSignStatusToName(code: number) {
    return statusToName(code, AppModule.nopassPortSignStatus);
 }
 

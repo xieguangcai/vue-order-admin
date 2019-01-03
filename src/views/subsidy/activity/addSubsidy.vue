@@ -76,9 +76,9 @@
       }
       addSubsidy(params.subsidyActivityId, row.typeName, row.money, row.sendNum).then((response: AxiosResponse<ResponseResult<boolean>>) => {
         if (response.data.success && response.data.data) {
-          if (type == 1) {
+          if (type === 1) {
             this.subsidy = {subsidyTypeId: 0};
-          } else if (type == 2) {
+          } else if (type === 2) {
             this.$router.push({path: 'activeInfo', query: {id: '' + params.subsidyActivityId}});
           }
         }

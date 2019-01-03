@@ -184,204 +184,204 @@
 
 
 <script lang="ts">
-  import {Component, Vue, Watch} from 'vue-property-decorator';
-  import SearchPane from '../../../components/SearchPane/index.vue';
-  import SearchPagePane from '../../../components/SearchPagePane/index.vue';
-  import {ActivityListQuery, Pageable, ResponseResult, SubsidyActivityInfo} from '../../../types';
-  import ListTablePane from '../../../components/ListTablePane/index.vue';
-  import {AxiosResponse} from 'axios';
-  import {
-    getActivityList,
-    getActivityDetail,
-    deleteActivity,
-    editActivity,
-    toAuditActivity, offlineActivity, auditActivity
-  } from '../../../api/subsidy';
-  // @ts-ignore
-  import qs from 'qs';
-  import BaseList from '../../../components/BaseList';
-  import {handlerCommonError} from '../../../utils/auth-interceptor';
-  import BaseTableDelete from '@/components/BaseTableDelete';
+import {Component, Vue, Watch} from 'vue-property-decorator';
+import SearchPane from '../../../components/SearchPane/index.vue';
+import SearchPagePane from '../../../components/SearchPagePane/index.vue';
+import {ActivityListQuery, Pageable, ResponseResult, SubsidyActivityInfo} from '../../../types';
+import ListTablePane from '../../../components/ListTablePane/index.vue';
+import {AxiosResponse} from 'axios';
+import {
+  getActivityList,
+  getActivityDetail,
+  deleteActivity,
+  editActivity,
+  toAuditActivity, offlineActivity, auditActivity,
+} from '../../../api/subsidy';
+// @ts-ignore
+import qs from 'qs';
+import BaseList from '../../../components/BaseList';
+import {handlerCommonError} from '../../../utils/auth-interceptor';
+import BaseTableDelete from '@/components/BaseTableDelete';
 
-  interface EditDomain {
-    editDomainId: number | undefined;
-    editDomainType: number;
+interface EditDomain {
+  editDomainId: number | undefined;
+  editDomainType: number;
+}
+
+@Component({
+  components: {ListTablePane, SearchPane, SearchPagePane},
+  filters: {
+    NumFormat(value: number) {
+      return (value / 100).toFixed(2);
+    },
+    ActivityStatus(value: number) {
+      if (value === 0) {
+        return '未审核';
+      } else if (value === 1) {
+        return '审核不通过';
+      } else if (value === 2) {
+        return '上线';
+      } else if (value === 3) {
+        return '下线';
+      } else if (value === 4) {
+        return '审核中';
+      }
+    },
+  },
+  mixins: [BaseList, BaseTableDelete],
+})
+
+export default class ActivityInfoList extends Vue {
+  dialogActivityInfoActionVisible: boolean = false;
+  editDomainInfo: EditDomain = {editDomainId: 0, editDomainType: 0};
+  title: string = '';
+  data: SubsidyActivityInfo[] = [];
+  listQuery: ActivityListQuery = {page: 0, size: 50, total: 0};
+  info: SubsidyActivityInfo = {subsidyActivityId: 0};
+  isAgree: boolean = true;
+
+  detailActivity(index: number, row: SubsidyActivityInfo) {
+    this.$router.push({path: 'activeInfo', query: {id: '' + row.subsidyActivityId}});
   }
 
-  @Component({
-    components: {ListTablePane, SearchPane, SearchPagePane},
-    filters: {
-      NumFormat(value: number) {
-        return (value / 100).toFixed(2);
-      },
-      ActivityStatus(value: number) {
-        if (value === 0) {
-          return '未审核';
-        } else if (value === 1) {
-          return '审核不通过';
-        } else if (value === 2) {
-          return '上线';
-        } else if (value === 3) {
-          return '下线';
-        } else if (value === 4) {
-          return '审核中';
-        }
-      },
-    },
-    mixins: [BaseList, BaseTableDelete],
-  })
+  // 新增活动 - 页面
+  addActivity(): void {
+    this.$router.push({path: 'addActive'});
+  }
 
-  export default class ActivityInfoList extends Vue {
-    dialogActivityInfoActionVisible: boolean = false;
-    editDomainInfo: EditDomain = {editDomainId: 0, editDomainType: 0};
-    title: string = '';
-    data: SubsidyActivityInfo[] = [];
-    listQuery: ActivityListQuery = {page: 0, size: 50, total: 0};
-    info: SubsidyActivityInfo = {subsidyActivityId: 0};
-    isAgree: boolean = true;
-
-    detailActivity(index: number, row: SubsidyActivityInfo) {
-      this.$router.push({path: 'activeInfo', query: {id: '' + row.subsidyActivityId}});
+  // 编辑活动 - 弹窗
+  editActivity(row: SubsidyActivityInfo): void {
+    this.title = '编辑活动';
+    this.dialogActivityInfoActionVisible = true;
+    this.editDomainInfo = {editDomainId: row.subsidyActivityId, editDomainType: 1};
+    try {
+      getActivityDetail(row.subsidyActivityId).then((response: AxiosResponse<ResponseResult<SubsidyActivityInfo>>) => {
+        const responseData = response.data.data;
+        this.info = responseData;
+      }).catch(handlerCommonError);
+    } catch (e) {
     }
+  }
 
-    // 新增活动 - 页面
-    addActivity(): void {
-      this.$router.push({path: 'addActive'});
-    }
+  closeDialog() {
+    this.dialogActivityInfoActionVisible = false;
+    this.editDomainInfo = {editDomainId: 0, editDomainType: 0};
+  }
 
-    // 编辑活动 - 弹窗
-    editActivity(row: SubsidyActivityInfo): void {
-      this.title = '编辑活动';
-      this.dialogActivityInfoActionVisible = true;
-      this.editDomainInfo = {editDomainId: row.subsidyActivityId, editDomainType: 1};
-      try {
-        getActivityDetail(row.subsidyActivityId).then((response: AxiosResponse<ResponseResult<SubsidyActivityInfo>>) => {
-          const responseData = response.data.data;
-          this.info = responseData;
-        }).catch(handlerCommonError);
-      } catch (e) {
+  submitForm(info: SubsidyActivityInfo) {
+    editActivity(this.info).then((response: AxiosResponse<ResponseResult<boolean>>) => {
+      if (response.data.success && response.data.data) {
+        this.dialogActivityInfoActionVisible = false;
+        this.realFetchData();
       }
-    }
+    }).catch(handlerCommonError);
+  }
 
-    closeDialog() {
-      this.dialogActivityInfoActionVisible = false;
-      this.editDomainInfo = {editDomainId: 0, editDomainType: 0};
-    }
-
-    submitForm(info: SubsidyActivityInfo) {
-      editActivity(this.info).then((response: AxiosResponse<ResponseResult<boolean>>) => {
-        if (response.data.success && response.data.data) {
-          this.dialogActivityInfoActionVisible = false;
-          this.realFetchData();
-        }
-      }).catch(handlerCommonError);
-    }
-
-    // 提交审核 - 弹窗
-    submitAuditActivity(row: SubsidyActivityInfo): void {
-      this.$confirm('确认提交审核吗?', '提示', {
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }).then(async () => {
-        // 提交审核
-        const {data} = await toAuditActivity(row.subsidyActivityId);
-        this.$message({
-          type: 'success',
-          message: '提交审核成功',
-        });
-        // @ts-ignore
-        this.fetchData();
-      },async () => {
-      }).catch(handlerCommonError);
-    }
-
-    // 下线活动 - 弹窗
-    offlineActivity(row: SubsidyActivityInfo): void {
-      this.$confirm('确认下线该活动吗?', '提示', {
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }).then(async () => {
-        // 下线活动
-        const {data} = await offlineActivity(row.subsidyActivityId);
-        this.$message({
-          type: 'success',
-          message: '下线活动成功',
-        });
-        // @ts-ignore
-        this.fetchData();
-      },async () => {
-      }).catch(handlerCommonError);
-    }
-
-    // 审核活动 - 弹窗
-    auditActivity(row: SubsidyActivityInfo): void {
-      this.title = '审核活动';
-      this.dialogActivityInfoActionVisible = true;
-      this.editDomainInfo = {editDomainId: row.subsidyActivityId, editDomainType: 2};
-    }
-
-    doAuditActivityInfo(activityId: number, isAgree: boolean): void {
-      auditActivity(activityId, isAgree).then((response: AxiosResponse<ResponseResult<boolean>>) => {
-        if (response.data.success && response.data.data) {
-          this.dialogActivityInfoActionVisible = false;
-          this.realFetchData();
-        }
-      }).catch(handlerCommonError);
-    }
-
-    // 新增津贴 - 弹窗
-    openAddSubsidy(row: SubsidyActivityInfo): void {
-      this.$router.push({path: 'addSubsidy', query: {id: '' + row.subsidyActivityId}});
-    }
-
-    // 津贴流水
-    checkSubsidySerial(row: SubsidyActivityInfo): void {
-      this.$router.push({path: 'subsidyDetailList', query: {id: '' + row.subsidyActivityId}});
-    }
-
-    saveThenNew() {
-      this.title = '';
-      this.editDomainInfo = {editDomainId: 0, editDomainType: 0};
+  // 提交审核 - 弹窗
+  submitAuditActivity(row: SubsidyActivityInfo): void {
+    this.$confirm('确认提交审核吗?', '提示', {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(async () => {
+      // 提交审核
+      const {data} = await toAuditActivity(row.subsidyActivityId);
+      this.$message({
+        type: 'success',
+        message: '提交审核成功',
+      });
       // @ts-ignore
       this.fetchData();
-    }
-
-    handleDelRows(row: SubsidyActivityInfo[]) {
-      if (row.length === 0) {
-        return;
-      }
-      const rowsId: Array<number | undefined> = [];
-      row.forEach((item) => rowsId.push(item.subsidyActivityId));
-      this.$confirm('确认永久删除该活动信息吗?', '提示', {
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }).then(async () => {
-        // 删除
-        const {data} = await deleteActivity(rowsId);
-        this.$message({
-          type: 'success',
-          message: '删除成功',
-        });
-        // @ts-ignore
-        this.fetchData();
-      },async () => {
-      }).catch(handlerCommonError);
-    }
-
-    realFetchData() {
-      return getActivityList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<SubsidyActivityInfo>>>) => {
-        const responseData = response.data.data;
-        this.data = responseData.content;
-        this.listQuery.page = responseData.number;
-        this.listQuery.size = responseData.size;
-        this.listQuery.total = responseData.totalElements;
-      }).catch(handlerCommonError);
-    }
-
+    }, async () => {
+    }).catch(handlerCommonError);
   }
+
+  // 下线活动 - 弹窗
+  offlineActivity(row: SubsidyActivityInfo): void {
+    this.$confirm('确认下线该活动吗?', '提示', {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(async () => {
+      // 下线活动
+      const {data} = await offlineActivity(row.subsidyActivityId);
+      this.$message({
+        type: 'success',
+        message: '下线活动成功',
+      });
+      // @ts-ignore
+      this.fetchData();
+    }, async () => {
+    }).catch(handlerCommonError);
+  }
+
+  // 审核活动 - 弹窗
+  auditActivity(row: SubsidyActivityInfo): void {
+    this.title = '审核活动';
+    this.dialogActivityInfoActionVisible = true;
+    this.editDomainInfo = {editDomainId: row.subsidyActivityId, editDomainType: 2};
+  }
+
+  doAuditActivityInfo(activityId: number, isAgree: boolean): void {
+    auditActivity(activityId, isAgree).then((response: AxiosResponse<ResponseResult<boolean>>) => {
+      if (response.data.success && response.data.data) {
+        this.dialogActivityInfoActionVisible = false;
+        this.realFetchData();
+      }
+    }).catch(handlerCommonError);
+  }
+
+  // 新增津贴 - 弹窗
+  openAddSubsidy(row: SubsidyActivityInfo): void {
+    this.$router.push({path: 'addSubsidy', query: {id: '' + row.subsidyActivityId}});
+  }
+
+  // 津贴流水
+  checkSubsidySerial(row: SubsidyActivityInfo): void {
+    this.$router.push({path: 'subsidyDetailList', query: {id: '' + row.subsidyActivityId}});
+  }
+
+  saveThenNew() {
+    this.title = '';
+    this.editDomainInfo = {editDomainId: 0, editDomainType: 0};
+    // @ts-ignore
+    this.fetchData();
+  }
+
+  handleDelRows(row: SubsidyActivityInfo[]) {
+    if (row.length === 0) {
+      return;
+    }
+    const rowsId: Array<number | undefined> = [];
+    row.forEach((item) => rowsId.push(item.subsidyActivityId));
+    this.$confirm('确认永久删除该活动信息吗?', '提示', {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(async () => {
+      // 删除
+      const {data} = await deleteActivity(rowsId);
+      this.$message({
+        type: 'success',
+        message: '删除成功',
+      });
+      // @ts-ignore
+      this.fetchData();
+    }, async () => {
+    }).catch(handlerCommonError);
+  }
+
+  realFetchData() {
+    return getActivityList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<SubsidyActivityInfo>>>) => {
+      const responseData = response.data.data;
+      this.data = responseData.content;
+      this.listQuery.page = responseData.number;
+      this.listQuery.size = responseData.size;
+      this.listQuery.total = responseData.totalElements;
+    }).catch(handlerCommonError);
+  }
+
+}
 </script>
 
 <style scoped>

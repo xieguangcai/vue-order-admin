@@ -18,8 +18,8 @@
         {{subsidyDetail.useMoney}}
       </el-form-item>
     </el-form>
-    <el-tabs v-model="tabActiveName" type="border-card" @tab-click="handleTabClick">
-      <el-tab-pane label="津贴领取流水" name="sendDetail">
+    <el-tabs v-model="tabActiveName" type="border-card" @tab-click="handleTabClick()">
+      <el-tab-pane label="津贴领取流水" name="receiveDetail">
         <div class="table_class">
           <search-pane slot="searchpane" @click="refetchData">
             <el-input v-model="listQuery.searchValue" size="mini" placeholder="openID/mac/激活ID"></el-input>
@@ -122,102 +122,100 @@
 
 
 <script lang="ts">
-  import {Component, Vue, Watch} from 'vue-property-decorator';
-  import SearchPane from '../../../components/SearchPane/index.vue';
-  import SearchPagePane from '../../../components/SearchPagePane/index.vue';
-  import {
-    Pageable,
-    ResponseResult,
-    SubsidyActivityInfo, SubsidyUserDetail,
-    SubsidyUserDetailSearchQuery,
-  } from '../../../types';
-  import ListTablePane from '../../../components/ListTablePane/index.vue';
-  import {AxiosResponse} from 'axios';
-  import {getActivityList, getActivityDetail, deleteActivity, getSubsidySerialList} from '../../../api/subsidy';
-  // @ts-ignore
-  import qs from 'qs';
-  import BaseList from '../../../components/BaseList';
-  import BaseTableDelete from '@/components/BaseTableDelete';
-  import {handlerCommonError} from '../../../utils/auth-interceptor';
+import {Component, Vue, Watch} from 'vue-property-decorator';
+import SearchPane from '../../../components/SearchPane/index.vue';
+import SearchPagePane from '../../../components/SearchPagePane/index.vue';
+import {
+  Pageable,
+  ResponseResult,
+  SubsidyActivityInfo, SubsidyUserDetail,
+  SubsidyUserDetailSearchQuery,
+} from '../../../types';
+import ListTablePane from '../../../components/ListTablePane/index.vue';
+import {AxiosResponse} from 'axios';
+import {getActivityList, getActivityDetail, deleteActivity, getSubsidySerialList} from '../../../api/subsidy';
+// @ts-ignore
+import qs from 'qs';
+import BaseList from '../../../components/BaseList';
+import BaseTableDelete from '@/components/BaseTableDelete';
+import {handlerCommonError} from '../../../utils/auth-interceptor';
 
-  @Component({
-    components: {ListTablePane, SearchPane, SearchPagePane},
-    filters: {},
-    mixins: [BaseList, BaseTableDelete],
-  })
+@Component({
+  components: {ListTablePane, SearchPane, SearchPagePane},
+  filters: {},
+  mixins: [BaseList, BaseTableDelete],
+})
 
-  export default class SubsidyDetailList extends Vue {
+export default class SubsidyDetailList extends Vue {
 
-    tabActiveName: string = 'sendDetail';
-    listQuery: SubsidyUserDetailSearchQuery = {
-      activityId: 0,
-      serialType: 1, page: 0, size: 50, total: 0,
-    };
-    subsidyDetail: SubsidyActivityInfo = {
-      subsidyActivityId: 0
-    };
-    subsidyContent: SubsidyUserDetail[] = [];
+  tabActiveName: string = 'receiveDetail';
+  listQuery: SubsidyUserDetailSearchQuery = {
+    activityId: 0,
+    serialType: 1, page: 0, size: 50, total: 0,
+  };
+  subsidyDetail: SubsidyActivityInfo = {
+    subsidyActivityId: 0,
+  };
+  subsidyContent: SubsidyUserDetail[] = [];
 
-    fetchData() {
+  fetchData() {
+    const x = parseInt(this.$route.query.id, 0);
+    if (x != null) {
+      this.listQuery.activityId = x;
+      getSubsidySerialList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<SubsidyUserDetail>>>) => {
+        const responseData = response.data.data;
+        this.subsidyContent = responseData.content;
+        if (this.subsidyContent && this.subsidyContent.length > 0) {
+          for (const item of this.subsidyContent) {
+            if (item) {
+              if (item.money) {
+                if (item.type === 2) {
+                  item.money = - item.money;
+                }
+                item.money = parseFloat((item.money / 100).toFixed(2));
+                item.moneyStr = item.money + ' 元';
+              }
+              item.driver = 'Mac:' + item.mac + ',cudid:' + item.cudid;
+            }
+          }
+        }
+        if (responseData) {
+          this.listQuery.page = responseData.number;
+          this.listQuery.size = responseData.size;
+          this.listQuery.total = responseData.totalElements;
+        }
+      }).catch(handlerCommonError);
+    }
+  }
+
+  handleTabClick() {
+    if (this.tabActiveName === 'receiveDetail') {
+      this.listQuery.serialType = 1;
+    } else if (this.tabActiveName === 'useDetail') {
+      this.listQuery.serialType = 2;
+    }
+    this.fetchData();
+  }
+
+  created() {
+    try {
+      // @ts-ignore
+      // debugger;
       const x = parseInt(this.$route.query.id, 0);
       if (x != null) {
         this.listQuery.activityId = x;
-        getSubsidySerialList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<SubsidyUserDetail>>>) => {
+        getActivityDetail(x).then((response: AxiosResponse<ResponseResult<SubsidyActivityInfo>>) => {
           const responseData = response.data.data;
-          this.subsidyContent = responseData.content;
-          if (this.subsidyContent && this.subsidyContent.length > 0) {
-            for (const item of this.subsidyContent) {
-              if (item) {
-                if (item.money) {
-                  if (item.type === 2) {
-                    item.money = - item.money;
-                  }
-                  item.money = parseFloat((item.money / 100).toFixed(2));
-                  item.moneyStr = item.money + ' 元';
-                }
-                item.driver = 'Mac:' + item.mac + ',cudid:' + item.cudid;
-              }
-            }
-          }
-          if (responseData) {
-            this.listQuery.page = responseData.number;
-            this.listQuery.size = responseData.size;
-            this.listQuery.total = responseData.totalElements;
-          }
+          console.log(responseData);
+          this.subsidyDetail = responseData;
+          this.fetchData();
         }).catch(handlerCommonError);
       }
-    }
-
-    handleTabClick(tab, event) {
-      console.log(tab, event);
-      console.log(tab.name);
-      if (tab.name == "sendDetail") {
-        this.listQuery.serialType = 1;
-      } else if (tab.name == "useDetail") {
-        this.listQuery.serialType = 2;
-      }
-      this.fetchData();
-    }
-
-    created() {
-      try {
-        // @ts-ignore
-        // debugger;
-        const x = parseInt(this.$route.query.id, 0);
-        if (x != null) {
-          this.listQuery.activityId = x;
-          getActivityDetail(x).then((response: AxiosResponse<ResponseResult<SubsidyActivityInfo>>) => {
-            const responseData = response.data.data;
-            console.log(responseData);
-            this.subsidyDetail = responseData;
-            this.fetchData();
-          }).catch(handlerCommonError);
-        }
-      } catch (e) {
-        console.log(e);
-      }
+    } catch (e) {
+      console.log(e);
     }
   }
+}
 </script>
 
 <style scoped>
