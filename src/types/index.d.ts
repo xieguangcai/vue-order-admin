@@ -1039,6 +1039,8 @@ export interface SubsidyUserDetail {
   lockTime?: string ;
   createTime?: string ;
   modifyTime?: string ;
+  driver?: string ;
+  moneyStr?: string;
 }
 
 export interface SubsidyType {
