@@ -180,7 +180,7 @@
               <tr>
                 <td rowspan="2">{{ index + 1}}</td>
                 <td>{{ item.payMethod }}</td>
-                <td>{{ item.status }}</td>
+                <td>{{ getSignStatus(item.status) }}</td>
                 <td>{{ item.signScene }}</td>
                 <td>{{ item.signUserId }}</td>
               </tr>
@@ -263,7 +263,7 @@ import {
   UserInfoFull,
 } from '../../../types';
 import {getSysAccountInfoDetail} from '../../../api/passport';
-import {getUserInfoFullByOpenId} from '../../../api/pay';
+import {getUserInfoFullByOpenId, nopassportSignStatusToName} from '../../../api/pay';
 import {handlerCommonError} from '../../../utils/auth-interceptor';
 
 @Component({
@@ -287,7 +287,9 @@ export default class SysAccountDetail extends Vue {
 
   payUserActiveNames: string[] = ['1'];
   loadOssUserInfo: boolean = false;
-
+  getSignStatus(status: number){
+    return nopassportSignStatusToName(status);
+  }
   domainInfo: SysAccount = {
     accountId: 0,
     bindDevices: [],

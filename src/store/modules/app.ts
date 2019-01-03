@@ -108,6 +108,14 @@ class App extends VuexModule {
     {value: '3', label: '下线'},
   ];
 
+  nopassPortSignStatus: IAppState['layoutStatus'] = [
+    {value: '0', label: '新建'},
+    {value: '1', label: '签约'},
+    {value: '2', label: '停止'},
+    {value: '3', label: '解约'},
+    {value: '4', label: '解约中'},
+  ];
+
   uploadAction: IAppState['uploadAction']  = process.env.VUE_APP_PASSPORT_API + 'api/authentication/file/upload';
 
   @Mutation
