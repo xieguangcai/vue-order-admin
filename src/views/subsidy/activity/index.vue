@@ -22,8 +22,7 @@
         </el-table-column>
         <el-table-column label="活动名称">
           <template slot-scope="scope">
-            <a @click="detailActivity(scope.$index, scope.row)" style="color: cornflowerblue">{{
-              scope.row.name }}</a>
+            <a @click="detailActivity(scope.$index, scope.row)" style="color: cornflowerblue">{{ scope.row.name }}</a>
           </template>
         </el-table-column>
         <el-table-column label="活动状态" width="80px">
@@ -50,7 +49,7 @@
         </el-table-column>
         <el-table-column label="津贴数" width="70px">
           <template slot-scope="scope">
-            <a style="color: cornflowerblue; text-decoration: underline;">{{ scope.row.subsidyNum }} 个</a>
+            <a @click="detailActivity(scope.$index, scope.row)" style="color: cornflowerblue; text-decoration: underline;">{{ scope.row.subsidyNum }} 个</a>
           </template>
         </el-table-column>
         <el-table-column label="日志" width="340px">
