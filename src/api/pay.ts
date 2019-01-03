@@ -118,6 +118,10 @@ export function statusToName(code: number | string, valus: StatusInfo[]) {
   return name;
 }
 
+export function nopassportSignStatusToName(code: number){
+   return statusToName(code, AppModule.nopassPortSignStatus);
+}
+
 export function getCardInfoList(params: CardInfoListQuery): AxiosPromise<ResponseResult<Pageable<CardInfo>>> {
   return request({
     url: '/pay/card-info/list',
