@@ -5,7 +5,7 @@
        <el-form-item label="活动标题" prop="name" required>
          <el-input v-model="data.name"></el-input>
        </el-form-item>
-       <el-form-item label="活动时间" required>
+       <el-form-item label="活动时间" required style="margin-bottom: 0px;">
          <el-col :span="11">
            <el-form-item prop="validStartTime">
              <el-date-picker type="date" placeholder="选择活动起始日期" value-format="yyyy-MM-dd HH:mm:ss" v-model="data.validStartTime" style="width: 100%;"></el-date-picker>
@@ -18,7 +18,12 @@
            </el-form-item>
          </el-col>
        </el-form-item>
-       <el-form-item label="津贴可用时间" required>
+       <el-form-item label="" prop="" style="margin-bottom: 0px;">
+         <el-col style="color: #d3dce6;">
+           注：从起始日期0时到结束日期24时
+         </el-col>
+       </el-form-item>
+       <el-form-item label="津贴可用时间" required style="margin-bottom: 0px;">
          <el-col :span="11">
            <el-form-item prop="useStartTime">
              <el-date-picker type="date" placeholder="选择津贴起始使用日期" value-format="yyyy-MM-dd HH:mm:ss" v-model="data.useStartTime" style="width: 100%;"></el-date-picker>
@@ -29,6 +34,11 @@
            <el-form-item prop="useEndTime">
              <el-date-picker type="date" placeholder="选择津贴结束使用日期" value-format="yyyy-MM-dd HH:mm:ss" v-model="data.useEndTime" style="width: 100%;"></el-date-picker>
            </el-form-item>
+         </el-col>
+       </el-form-item>
+       <el-form-item label="" prop="" style="margin-bottom: 0px;">
+         <el-col style="color: #d3dce6;">
+           注：从起始日期0时到结束日期24时；且不早于活动开始日期、不晚于活动结束日期
          </el-col>
        </el-form-item>
        <el-form-item label="活动说明" prop="memo">
@@ -152,7 +162,7 @@ export default class AddActivityInfo extends Vue {
 <style scoped>
    .addActiveClass{
      margin: 30px 50px;
-     width: 40vw;
+     width: 55vw;
    }
    .title{
       margin-bottom: 20px;
@@ -161,7 +171,7 @@ export default class AddActivityInfo extends Vue {
     text-align: center;
   }
   .addBtn{
-    width: 40vw;
+    width: 55vw;
     border: 1px dashed #ccc;
     text-align: center;
   }

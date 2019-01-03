@@ -20,25 +20,30 @@
     </el-form>
     <div class="title" >津贴管理</div>
     <el-table label-width="120px" :data="info.subsidyInfoList">
-      <el-table-column
-        label="津贴ID"
-        prop="subsidyTypeCode">
+      <el-table-column label="津贴ID">
+        <template slot-scope="scope">
+          {{scope.row.subsidyTypeCode}}
+        </template>
       </el-table-column>
-      <el-table-column
-        label="津贴名称"
-        prop="typeName">
+      <el-table-column label="津贴名称">
+        <template slot-scope="scope">
+          {{scope.row.typeName}}
+        </template>
       </el-table-column>
-      <el-table-column
-        label="津贴金额"
-        prop="money">
+      <el-table-column label="津贴金额">
+        <template slot-scope="scope">
+          {{scope.row.money}} 元
+        </template>
       </el-table-column>
-      <el-table-column
-        label="发放数量"
-        prop="sendNum">
+      <el-table-column label="发放数量">
+        <template slot-scope="scope">
+          {{scope.row.sendNum}} 个
+        </template>
       </el-table-column>
-      <el-table-column
-        label="已领取数量"
-        prop="receiveNum">
+      <el-table-column label="已领取数量">
+        <template slot-scope="scope">
+          {{scope.row.receiveNum}} 个
+        </template>
       </el-table-column>
       <el-table-column
         label="操作">
@@ -69,18 +74,18 @@
             {{ subsidy.money }} 元
           </el-col>
         </el-form-item>
-        <el-form-item label="发放数量：" prop="sendNum">
+        <el-form-item label="发放数量：" prop="sendNum" style="margin-bottom: 0px;">
           <el-col :span="11">
             <el-input-number v-model="subsidy.sendNum" :min="subsidy.receiveNum" :step="1" style="width: 50%;"></el-input-number> 个
           </el-col>
         </el-form-item>
-        <el-form-item label="" prop="">
-          <el-col :span="11" style="color: red;">
+        <el-form-item label="" prop="" style="margin-bottom: 0px;">
+          <el-col :span="11" style="color: #d3dce6;">
             注：发放数量不得小于已领取数量
           </el-col>
         </el-form-item>
         <el-form-item label="已领取数量：" prop="receiveNum">
-          <el-col :span="5">
+          <el-col :span="5" style="color: red;">
             {{ subsidy.receiveNum }} 个
           </el-col>
         </el-form-item>
@@ -192,7 +197,7 @@
 <style scoped>
   .activeInfo{
     margin: 30px 50px;
-    width: 50vw;
+    width: 70vw;
   }
   .title{
     margin-bottom: 20px;

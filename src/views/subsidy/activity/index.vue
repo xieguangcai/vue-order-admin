@@ -107,7 +107,7 @@
 
       <search-page-pane @size-change="handleSizeChange" @current-change="handleCurrentChange" :size="size" :page="page" :total="total" slot="page"></search-page-pane>
 
-      <el-dialog :title="title" :visible.sync="dialogActivityInfoActionVisible" :append-to-body="true" :modal-append-to-body="false" width="50%"
+      <el-dialog :title="title" :visible.sync="dialogActivityInfoActionVisible" :append-to-body="true" :modal-append-to-body="false" width="55%"
                  @close="editDomainInfo.editDomainId = 0; editDomainInfo.editDomainType = 0">
         <template v-if="this.editDomainInfo.editDomainType === 1">
           <div class="addActiveClass">
@@ -116,7 +116,7 @@
               <el-form-item label="活动标题" prop="name" required>
                 <el-input v-model="info.name"></el-input>
               </el-form-item>
-              <el-form-item label="活动时间" required>
+              <el-form-item label="活动时间" required style="margin-bottom: 0px;">
                 <el-col :span="11">
                   <el-form-item prop="validStartTime">
                     <el-date-picker type="date" placeholder="选择活动起始日期" value-format="yyyy-MM-dd HH:mm:ss" v-model="info.validStartTime" style="width: 100%;"></el-date-picker>
@@ -129,7 +129,12 @@
                   </el-form-item>
                 </el-col>
               </el-form-item>
-              <el-form-item label="津贴可用时间" required>
+              <el-form-item label="" prop="" style="margin-bottom: 0px;">
+                <el-col style="color: #d3dce6;">
+                  注：从起始日期0时到结束日期24时
+                </el-col>
+              </el-form-item>
+              <el-form-item label="津贴可用时间" required style="margin-bottom: 0px;">
                 <el-col :span="11">
                   <el-form-item prop="useStartTime">
                     <el-date-picker type="date" placeholder="选择津贴起始使用日期" value-format="yyyy-MM-dd HH:mm:ss" v-model="info.useStartTime" style="width: 100%;"></el-date-picker>
@@ -140,6 +145,11 @@
                   <el-form-item prop="useEndTime">
                     <el-date-picker type="date" placeholder="选择津贴结束使用日期" value-format="yyyy-MM-dd HH:mm:ss" v-model="info.useEndTime" style="width: 100%;"></el-date-picker>
                   </el-form-item>
+                </el-col>
+              </el-form-item>
+              <el-form-item label="" prop="" style="margin-bottom: 0px;">
+                <el-col style="color: #d3dce6;">
+                  注：从起始日期0时到结束日期24时；且不早于活动开始日期、不晚于活动结束日期
                 </el-col>
               </el-form-item>
               <el-form-item label="活动说明" prop="memo">
