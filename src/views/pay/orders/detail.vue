@@ -85,15 +85,15 @@
           无支付扩展信息
         </div>
       </el-collapse-item>
-      <el-collapse-item :title="'订单支付流水记录' + (orderSerialInfo && orderSerialInfo.length > 0 ? '' : '（无记录）')" name="3">
-        <table class="cc-order-table cc-inline-title-table" cellpadding="0" cellspacing="0" v-if="orderSerialInfo">
-          <tr v-for="item in orderSerialInfo">
-            <td width="10%">支付方式</td>
-            <td width="10%">{{ item.payMod }}</td>
-            <td width="10%">支付流水号</td>
+      <el-collapse-item :title="'订单支付流水记录' + (paySerialInfo && paySerialInfo.length > 0 ? '' : '（无记录）')" name="3">
+        <table class="cc-order-table cc-inline-title-table" cellpadding="0" cellspacing="0" v-if="paySerialInfo">
+          <tr v-for="item in paySerialInfo">
+            <td width="20%">支付方式</td>
+            <td width="30%">{{ item.payMod }}</td>
+            <td width="20%">支付流水号</td>
             <td width="30%">{{item.serialNo}}</td>
-            <td width="10%">支付号</td>
-            <td width="30%">{{item.tradeNo}}</td>
+            <!--<td width="10%">支付号</td>-->
+            <!--<td width="30%">{{item.tradeNo}}</td>-->
           </tr>
         </table>
         <div v-else>
@@ -122,7 +122,15 @@
 
 <script lang="ts">
 import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
-import {OrderInfo, OrderInfoExtend, OrderOpenidInfo, OrderSerialInfo, PayExpInfo, ResponseResult} from '../../../types';
+import {
+  OrderInfo,
+  OrderInfoExtend,
+  OrderOpenidInfo,
+  OrderSerialInfo,
+  PayExpInfo,
+  PaySerialInfo,
+  ResponseResult,
+} from '../../../types';
 import {
   getOrderInfo,
   getOrderInfoByorigiOrderNo,
@@ -138,7 +146,7 @@ import SysAccountDetail from '../../passport/sysaccount/detail.vue';
 })
 export default class OrderInfoDetail extends Vue {
   dialogAccountDetilVisible: boolean = false;
-  activeNames: string[] = ['1'];
+  activeNames: string[] = ['1', '2', '3'];
   domainInfo: OrderInfo = {orderId: 0};
   accountDetailOpenId = '';
 
@@ -179,6 +187,10 @@ export default class OrderInfoDetail extends Vue {
 
   get orderOpenidInfo(): (OrderOpenidInfo[] | null | undefined)  {
     return this.domainInfo.orderOpenidInfo;
+  }
+
+  get paySerialInfo(): (PaySerialInfo[] |  null | undefined) {
+    return this.domainInfo.paySerialInfos;
   }
 
   get orderSerialInfo(): OrderSerialInfo[] | null | undefined {

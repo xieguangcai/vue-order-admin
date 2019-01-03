@@ -167,7 +167,7 @@ export default class ActivityInfoList extends Vue {
     // this.title = '新增活动';
     // this.dialogActivityInfoActionVisible = true;
     // this.editDomainInfo = {editDomainId: 0, editDomainType: 0};
-    this.$router.push({ name: "addActive" });
+    this.$router.push({ name: 'addActive' });
   }
 
   // 编辑活动 - 弹窗

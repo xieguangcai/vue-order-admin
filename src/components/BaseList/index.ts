@@ -41,7 +41,7 @@ export default class BaseList extends Vue {
     }
 
     this.listQuery = Object.assign(this.listQuery, this.$route.query, pageInfo);
-    if(this.needLoadOnCreate){
+    if (this.needLoadOnCreate) {
       this.fetchData();
     }
   }
@@ -75,6 +75,10 @@ export default class BaseList extends Vue {
   }
 
   fetchData() {
+    if (!this.validSearchCondition()) {
+      return;
+    }
+
     this.listLoading = true;
     this.realFetchData().then(() => {
       const path = this.$route.path;
@@ -97,5 +101,13 @@ export default class BaseList extends Vue {
 
   realFetchData(): AxiosPromise<any> {
     return getAppInfo(0);
+  }
+
+  /**
+   * 校验输入对查询条件
+   */
+  validSearchCondition(): boolean {      console.log('sssssss');
+
+                                         return true;
   }
 }

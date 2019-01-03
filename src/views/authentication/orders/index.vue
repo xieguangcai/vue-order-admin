@@ -168,7 +168,7 @@ import BaseMoviesIqiyiOrderBaseDetail from './detail.vue';
 import BaseList from '../../../components/BaseList';
 import OrderInfoDetail from '../../pay/orders/detail.vue';
 import {handlerCommonError} from '../../../utils/auth-interceptor';
-import {addDateFormatString} from "../../../utils/format-utils";
+import {addDateFormatString} from '../../../utils/format-utils';
 
 interface EditDomain {
   editDomainId: number | undefined;
@@ -189,7 +189,7 @@ export default class BaseMoviesIqiyiOrderList extends Vue {
 
   data: BaseMoviesIqiyiOrderBase[] = [];
   listQuery: BaseMoviesIqiyiOrderBaseListQuery = { page: 0, size: 50, total: 0, searchHistory: '1', payFlag: '1', synFlag: '',
-    createTimes:[addDateFormatString(-1, 'M'), addDateFormatString()]
+    createTimes: [addDateFormatString(-1, 'M'), addDateFormatString()],
   };
 
   handleViewBaseMoviesIqiyiOrderBaseDetail(index: number, row: BaseMoviesIqiyiOrderBase) {
