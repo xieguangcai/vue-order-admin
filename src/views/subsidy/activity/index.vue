@@ -321,3 +321,16 @@
 
   }
 </script>
+
+<style scoped>
+  .addActiveClass{
+    margin: 30px 50px;
+    width: 40vw;
+  }
+  .title{
+    margin-bottom: 20px;
+  }
+  .line{
+    text-align: center;
+  }
+</style>
