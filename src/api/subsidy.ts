@@ -13,7 +13,7 @@ import {
   BaseMoviesIqiyiOrderBaseListQuery,
   BaseMoviesIqiyiOrderBase,
   SearchHistoryModel,
-  SubsidyUserDetailSearchQuery, SubsidySerialInfoModel,
+  SubsidyUserDetailSearchQuery,
 } from '@/types';
 // @ts-ignore
 import qs from 'qs';
@@ -153,7 +153,7 @@ export function deleteSubsidy(activityId: number, ids: Array<number | undefined>
   });
 }
 
-export function getSubsidySerialList(params: SubsidyUserDetailSearchQuery): AxiosPromise<ResponseResult<SubsidySerialInfoModel>> {
+export function getSubsidySerialList(params: SubsidyUserDetailSearchQuery): AxiosPromise<ResponseResult<Pageable<SubsidyUserDetail>>> {
   return request({
     url: '/subsidy/list/subsidySerial',
     method: 'get',
