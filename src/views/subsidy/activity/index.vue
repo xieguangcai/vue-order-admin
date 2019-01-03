@@ -107,12 +107,12 @@
 
       <search-page-pane @size-change="handleSizeChange" @current-change="handleCurrentChange" :size="size" :page="page" :total="total" slot="page"></search-page-pane>
 
-      <el-dialog :title="title" :visible.sync="dialogActivityInfoActionVisible" :append-to-body="true" :modal-append-to-body="false" width="80%"
+      <el-dialog :title="title" :visible.sync="dialogActivityInfoActionVisible" :append-to-body="true" :modal-append-to-body="false" width="50%"
                  @close="editDomainInfo.editDomainId = 0; editDomainInfo.editDomainType = 0">
         <template v-if="this.editDomainInfo.editDomainType === 1">
           <div class="addActiveClass">
             <div class="title" >活动信息</div>
-            <el-form :model="data" ref="AddActivityInfo" label-width="120px" >
+            <el-form ref="EditActivityInfo" label-width="120px" >
               <el-form-item label="活动标题" prop="name" required>
                 <el-input v-model="info.name"></el-input>
               </el-form-item>
@@ -152,8 +152,22 @@
             </el-form>
           </div>
         </template>
-      </el-dialog>
 
+        <template v-if="this.editDomainInfo.editDomainType === 2">
+          <div class="">
+            <el-form ref="AuditActivityInfo" label-width="120px" >
+              <div style="margin-left: 50px;">
+                <label>同意 <input type="radio" v-model="isAgree" value="true"/></label>
+                <label style="margin-left: 30px;">驳回 <input type="radio" v-model="isAgree" value="false"/></label>
+              </div>
+              <el-form-item style="text-align: center; margin-top: 30px;">
+                <el-button type="primary" @click="doAuditActivityInfo(editDomainInfo.editDomainId, isAgree)">保存</el-button>
+                <el-button @click="closeDialog()">取消</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+        </template>
+      </el-dialog>
     </list-table-pane>
   </div>
 </template>
@@ -171,7 +185,7 @@
     getActivityDetail,
     deleteActivity,
     editActivity,
-    toAuditActivity, offlineActivity
+    toAuditActivity, offlineActivity, auditActivity
   } from '../../../api/subsidy';
   // @ts-ignore
   import qs from 'qs';
@@ -214,6 +228,7 @@
     data: SubsidyActivityInfo[] = [];
     listQuery: ActivityListQuery = {page: 0, size: 50, total: 0};
     info: SubsidyActivityInfo = {subsidyActivityId: 0};
+    isAgree: boolean = true;
 
     detailActivity(index: number, row: SubsidyActivityInfo) {
       this.$router.push({path: 'activeInfo', query: {id: '' + row.subsidyActivityId}});
@@ -294,7 +309,16 @@
     auditActivity(row: SubsidyActivityInfo): void {
       this.title = '审核活动';
       this.dialogActivityInfoActionVisible = true;
-      this.$nextTick(() => this.editDomainInfo = {editDomainId: row.subsidyActivityId, editDomainType: 4});
+      this.editDomainInfo = {editDomainId: row.subsidyActivityId, editDomainType: 2};
+    }
+
+    doAuditActivityInfo(activityId: number, isAgree: boolean): void {
+      auditActivity(activityId, isAgree).then((response: AxiosResponse<ResponseResult<boolean>>) => {
+        if (response.data.success && response.data.data) {
+          this.dialogActivityInfoActionVisible = false;
+          this.realFetchData();
+        }
+      }).catch(handlerCommonError);
     }
 
     // 新增津贴 - 弹窗
