@@ -106,7 +106,6 @@
 
 
 <script lang="ts">
-  import 'babel-polyfill';
   import {Component, Vue, Watch} from 'vue-property-decorator';
   import SearchPane from '../../../components/SearchPane/index.vue';
   import SearchPagePane from '../../../components/SearchPagePane/index.vue';

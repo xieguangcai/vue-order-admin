@@ -106,8 +106,7 @@ export default class BaseList extends Vue {
   /**
    * 校验输入对查询条件
    */
-  validSearchCondition(): boolean {      console.log('sssssss');
-
-                                         return true;
+  validSearchCondition(): boolean {
+    return true;
   }
 }

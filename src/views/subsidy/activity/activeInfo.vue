@@ -148,6 +148,8 @@
     }
 
     submitForm(activityId: number, row: SubsidyType) {
+
+      // @ts-ignore
       editSubsidy(activityId, this.editDomainInfo.editDomainId, row.typeName, row.sendNum).then((response: AxiosResponse<ResponseResult<boolean>>) => {
         if (response.data.success && response.data.data) {
           this.dialogEditSubsidyVisible = false;
