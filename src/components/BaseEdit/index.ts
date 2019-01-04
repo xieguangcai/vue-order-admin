@@ -6,7 +6,7 @@ import {AppModule} from '@/store/modules/app';
 
 @Component
 export default class BaseEdit extends Vue {
-  loadingData: boolean = true;
+  loadingData: boolean = false;
   loadingText: string = '正在加载数据...';
 
   showLoading() {

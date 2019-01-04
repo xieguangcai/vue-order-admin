@@ -50,13 +50,13 @@ export default new Router({
       path: '/subsidy',
       component: Layout,
       name: '津贴管理',
-      meta: {title: '津贴管理', icon: 'form'},
+      meta: {title: '津贴管理', icon: 'form', roles: ['SUBSIDY_ROLE_VIEW']},
       children: [
         {
           path: 'subsidy-activity-list',
           name: '津贴管理',
           component: () => import(/* webpackChunkName: "subsidy-activity-list" */ '@/views/subsidy/activity/index.vue'),
-          meta: {title: '津贴管理', icon: 'tree', roles: ['ROLE_VIEW']},
+          meta: {title: '津贴管理', icon: 'tree'},
         },
         {
           path: 'addActive',
@@ -89,7 +89,7 @@ export default new Router({
       path: '/orders',
       component: Layout,
       name: '会员信息管理',
-      meta: {title: '会员信息管理', icon: 'form'},
+      meta: {title: '会员信息管理', icon: 'form', roles: ['ROLE_VIEW']},
       children: [
         {
           path: 'oss-order-list',

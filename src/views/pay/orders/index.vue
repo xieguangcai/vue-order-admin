@@ -3,17 +3,17 @@
     <list-table-pane>
       <search-pane slot="searchpane" @click="refetchData">
         手机号
-        <el-input v-model="listQuery.phoneNo" size="mini"></el-input>
+        <el-input v-model="listQuery.phoneNo" size="mini" :clearable="true"></el-input>
         订单号
-        <el-input v-model="listQuery.orderNo" size="mini" style="width:180px;"></el-input>
+        <el-input v-model="listQuery.orderNo" size="mini" style="width:190px;" :clearable="true"></el-input>
         支付订单号
-        <el-input v-model="listQuery.ybDealNo" size="mini" style="width:220px"></el-input>
+        <el-input v-model="listQuery.ybDealNo" size="mini" style="width:240px" :clearable="true"></el-input>
         业务订单号
-        <el-input v-model="listQuery.origiOrderNo" size="mini" style="width:220px"></el-input>
+        <el-input v-model="listQuery.origiOrderNo" size="mini" style="width:220px" :clearable="true"></el-input>
         支付流水号
-        <el-input v-model="listQuery.serialNo" size="mini" style="width:220px"></el-input>
+        <el-input v-model="listQuery.serialNo" size="mini" style="width:200px" :clearable="true"></el-input>
         appCode
-        <el-input v-model="listQuery.appCode" size="mini" style="width:100px"></el-input>
+        <el-input v-model="listQuery.appCode" size="mini" style="width:100px" :clearable="true"></el-input>
         mac地址
         <el-input v-model="listQuery.mac" size="mini"></el-input>
         订单状态
@@ -56,7 +56,8 @@
             <div>
               <span>oss订单号：</span>{{ scope.row.orderNo}}<br/>
               <span>业务订单号：</span>{{ scope.row.origiOrderNo}}<br/>
-              <span>支付单号：</span>{{ scope.row.ybDealNo}}
+              <span>支付单号：</span>{{ scope.row.ybDealNo}}<br/>
+              <span>支付流水号：</span>{{ scope.row.serialNo}}
             </div>
           </template>
         </el-table-column>
@@ -115,7 +116,6 @@
 
 
 <script lang="ts">
-
   // @ts-ignore
   import qs from 'qs';
   import {Component, Vue, Watch} from 'vue-property-decorator';
@@ -145,7 +145,8 @@
     editDomainInfo: EditDomain = {editDomainId: 0};
 
     data: OrderInfo[] = [];
-    listQuery: OrderInfoListQuery = {page: 0, size: 50, total: 0,
+    listQuery: OrderInfoListQuery = {
+      page: 0, size: 50, total: 0,
       orderTimes: [addDateFormatString(-1, 'M'), addDateFormatString()],
 
     };
@@ -181,6 +182,22 @@
         this.listQuery.size = responseData.size;
         this.listQuery.total = responseData.totalElements;
       }).catch(handlerCommonError);
+    }
+
+    validSearchCondition(): boolean {
+      if (this.listQuery.orderTimes == null) {
+        this.$message.error('必须指定订单日期');
+        return false;
+      }
+      if (this.listQuery.orderTimes.length > 0) {
+        const end = (+ new Date(this.listQuery.orderTimes[1])) as number;
+        const start = (+ new Date(this.listQuery.orderTimes[0])) as number;
+        if (end - start > 31 * 3 * 24 * 3600 * 1000) {
+          this.$message.error('查询时间超过指定限制【可查询间隔3个月的订单】');
+          return false;
+        }
+      }
+      return true;
     }
   }
 </script>

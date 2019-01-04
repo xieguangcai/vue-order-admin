@@ -67,7 +67,6 @@ export default class AccountEdit extends Vue {
 
   @Watch('accountId', {immediate: true})
   handleAccountInfoChange(newVal: number | undefined, oldVal: number| undefined) {
-    console.log('xxxx' + newVal);
     if ( null == newVal || newVal === 0) {
       this.accountInfo = {accountStatus: 1};
     } else {
