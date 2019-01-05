@@ -115,6 +115,11 @@
               <el-form-item label="活动标题" prop="name" required>
                 <el-input v-model="info.name"></el-input>
               </el-form-item>
+              <el-form-item label="" prop="" style="margin-bottom: 0px;">
+                <el-col style="color: #d3dce6;">
+                  注：活动标题最多12个字符
+                </el-col>
+              </el-form-item>
               <el-form-item label="活动时间" required style="margin-bottom: 0px;">
                 <el-col :span="11">
                   <el-form-item prop="validStartTime">
@@ -153,6 +158,11 @@
               </el-form-item>
               <el-form-item label="活动说明" prop="memo">
                 <el-input type="textarea" v-model="info.memo"></el-input>
+              </el-form-item>
+              <el-form-item label="" prop="" style="margin-bottom: 0px;">
+                <el-col style="color: #d3dce6;">
+                  注：活动说明最多50个字符
+                </el-col>
               </el-form-item>
               <el-form-item style="margin-top: 30px">
                 <el-button type="primary" @click="submitForm(info)">保存</el-button>

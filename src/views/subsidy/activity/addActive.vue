@@ -3,7 +3,7 @@
     <div class="title" >活动信息</div>
      <el-form :model="data" ref="AddActivityInfo" label-width="120px" >
        <el-form-item label="活动标题" prop="name" required>
-         <el-input v-model="data.name"></el-input>
+         <el-input v-model="data.name" placeholder="活动标题最多12个字符"></el-input>
        </el-form-item>
        <el-form-item label="活动时间" required style="margin-bottom: 0px;">
          <el-col :span="11">
@@ -42,7 +42,7 @@
          </el-col>
        </el-form-item>
        <el-form-item label="活动说明" prop="memo">
-         <el-input type="textarea" v-model="data.memo"></el-input>
+         <el-input type="textarea" v-model="data.memo" placeholder="活动说明最多50个字符"></el-input>
        </el-form-item>
        <div class="title" >津贴管理</div>
          <el-form-item

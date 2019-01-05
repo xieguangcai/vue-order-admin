@@ -23,7 +23,7 @@
     <el-form :label-position="labelPosition" :rules="rules" label-width="120px">
       <el-form-item label="津贴名称：" prop="name">
         <el-col :span="11">
-          <el-input v-model="subsidy.typeName" placeholder="津贴名称(不超过8个字)"></el-input>
+          <el-input v-model="subsidy.typeName" placeholder="津贴名称(限8个字)"></el-input>
         </el-col>
       </el-form-item>
       <el-form-item label="津贴金额：" prop="money">
