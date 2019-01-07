@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loadingData">
     <el-collapse v-model="activeNames">
       <el-collapse-item :title="'OSS订单详情['+ domainInfo.orderNo +']'" name="1">
         <table class="cc-order-table cc-inline-title-table" cellpadding="0" cellspacing="0">
@@ -149,6 +149,7 @@ export default class OrderInfoDetail extends Vue {
   activeNames: string[] = ['1', '2', '3'];
   domainInfo: OrderInfo = {orderId: 0};
   accountDetailOpenId = '';
+  loadingData = false;
 
   @Prop({type: Number, default: 0})
     // @ts-ignore
@@ -209,14 +210,18 @@ export default class OrderInfoDetail extends Vue {
     if (null == newVal || newVal === 0) {
       this.domainInfo = {orderId: 0};
     } else {
+      this.loadingData = true;
       getOrderInfo(this.domainId).then((resolve) => {
         this.domainInfo = resolve.data.data;
         this.loadEntitySucess(this.domainInfo);
       }).catch((error: ResponseResult<any>) => {
         this.noSuchEntity();
+      }).finally(()=>{
+        this.loadingData = false;
       });
     }
   }
+
   @Emit('no-such-entity')
   noSuchEntity() {
 
@@ -232,11 +237,14 @@ export default class OrderInfoDetail extends Vue {
     if (null === newVal || undefined === newVal  || newVal === '') {
       this.domainInfo = {orderId: 0};
     } else {
+      this.loadingData = true;
       getOrderInfoByorigiOrderNo(this.origiOrderNo).then((resolve) => {
         this.domainInfo = resolve.data.data;
         this.loadEntitySucess(this.domainInfo);
       }).catch((error: ResponseResult<any>) => {
         this.noSuchEntity();
+      }).finally(()=>{
+        this.loadingData = false;
       });
     }
   }

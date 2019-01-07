@@ -19,7 +19,6 @@
     </search-pane>
     <div style="padding-top:20px;">
       <sys-account-detail v-bind:search-model="innerListQuery" :active="activeNames">
-
       </sys-account-detail>
     </div>
   </div>
