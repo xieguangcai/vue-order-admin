@@ -2,6 +2,8 @@
   <div>
     <list-table-pane>
       <search-pane slot="searchpane" @click="refetchData">
+        OSS订单ID
+        <el-input v-model="listQuery.orderId" size="mini" :clearable="true"></el-input>
         手机号
         <el-input v-model="listQuery.phoneNo" size="mini" :clearable="true"></el-input>
         订单号

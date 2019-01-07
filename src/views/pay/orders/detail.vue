@@ -6,17 +6,19 @@
           <tr>
             <td>订单状态</td>
             <td>
-              <span :class="tableRowClassName(domainInfo.orderStatus)">{{ orderStatusToName(domainInfo.orderStatus) }}</span>
+              <span
+                :class="tableRowClassName(domainInfo.orderStatus)">{{ orderStatusToName(domainInfo.orderStatus) }}</span>
             </td>
             <td>订单信息</td>
-            <td colspan="5"><span class="order-amount">[{{domainInfo.orderAmount}}元]</span>{{ domainInfo.prodName }}</td>
+            <td colspan="5"><span class="order-amount">[{{domainInfo.orderAmount}}元]</span>{{ domainInfo.prodName }}
+            </td>
           </tr>
           <tr>
             <td>mac地址</td>
             <td>{{ domainInfo.mac }}</td>
             <td>支付方式</td>
             <td>
-              <template v-if="domainInfo.payModValue" >{{ domainInfo.payModValue }}</template>
+              <template v-if="domainInfo.payModValue">{{ domainInfo.payModValue }}</template>
               <template v-else>{{ domainInfo.payMod }}</template>
             </td>
             <td>手机号</td>
@@ -65,13 +67,16 @@
         </table>
       </el-collapse-item>
       <el-collapse-item :title="'订单扩展信息' + (orderInfoExtend || orderOpenidInfo ?'' : '（无记录）')" name="2">
-        <table class="cc-order-table cc-inline-title-table" cellpadding="0" cellspacing="0" v-if="orderInfoExtend || orderOpenidInfo">
+        <table class="cc-order-table cc-inline-title-table" cellpadding="0" cellspacing="0"
+               v-if="orderInfoExtend || orderOpenidInfo">
           <tr v-if="orderInfoExtend">
             <td width="10%">激活id</td>
             <td width="40%">{{orderInfoExtend.activatedId}}</td>
             <td width="10%">用户openId</td>
             <td width="40%">{{orderInfoExtend.openId}}
-              <el-button v-if="orderInfoExtend.openId" size="mini" type="primary"  @click="viewAccountDetail(orderInfoExtend.openId)">查看用户详情</el-button>
+              <el-button v-if="orderInfoExtend.openId" size="mini" type="primary"
+                         @click="viewAccountDetail(orderInfoExtend.openId)">查看用户详情
+              </el-button>
             </td>
           </tr>
           <tr v-for="item in orderOpenidInfo">
@@ -100,13 +105,22 @@
           无支付流水记录
         </div>
       </el-collapse-item>
-      <el-collapse-item :title="'订单授信异常记录' + (payExpInfos ? '' : '（无记录）')"  name="4">
+      <el-collapse-item :title="'订单授信异常记录' + (payExpInfos ? '' : '（无记录）')" name="4">
         <div v-if="payExpInfos != null">
-          <el-form label-position="left" inline class="demo-table-expand">
-            <el-form-item label="订单名称">
-              <span>{{ domainInfo.name }}</span>
-            </el-form-item>
-          </el-form>
+          <table class="cc-order-table cc-inline-title-table" cellpadding="0" cellspacing="0" v-if="paySerialInfo">
+            <tr>
+              <td width="40%">异常时间:{{payExpInfos.expTime}}</td>
+              <td width="40%">处理情况:{{ getExpStatusToName(payExpInfos.status) }}</td>
+              <td width="20%" v-if="payExpInfos.status === '0' ">
+                <el-button type="danger" :loading="sendPayExp"
+                           size="mini" @click="handlerPayExp(payExpInfos)">授信
+                </el-button>
+              </td>
+              <td v-else>
+                处理时间：{{payExpInfos.modifiedTime}}
+              </td>
+            </tr>
+          </table>
         </div>
         <div v-else>
           无异常记录
@@ -121,152 +135,180 @@
 </template>
 
 <script lang="ts">
-import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
-import {
-  OrderInfo,
-  OrderInfoExtend,
-  OrderOpenidInfo,
-  OrderSerialInfo,
-  PayExpInfo,
-  PaySerialInfo,
-  ResponseResult,
-} from '../../../types';
-import {
-  getOrderInfo,
-  getOrderInfoByorigiOrderNo,
-  orderStatusClass,
-  orderStatusName,
-  ossOrderSourceName,
-} from '../../../api/pay';
-import SysAccountDetail from '../../passport/sysaccount/detail.vue';
+  import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
+  import {
+    OrderInfo,
+    OrderInfoExtend,
+    OrderOpenidInfo,
+    OrderSerialInfo,
+    PayExpInfo,
+    PaySerialInfo,
+    ResponseResult,
+  } from '../../../types';
+  import {
+    expStatusName,
+    getOrderInfo,
+    getOrderInfoByorigiOrderNo,
+    orderStatusClass,
+    orderStatusName,
+    ossOrderSourceName, payExpOrderInfo,
+  } from '../../../api/pay';
+  import SysAccountDetail from '../../passport/sysaccount/detail.vue';
+  import {handlerCommonError} from "../../../utils/auth-interceptor";
 
-@Component({
-  name: 'OrderInfoDetail',
-  components: {SysAccountDetail},
-})
-export default class OrderInfoDetail extends Vue {
-  dialogAccountDetilVisible: boolean = false;
-  activeNames: string[] = ['1', '2', '3'];
-  domainInfo: OrderInfo = {orderId: 0};
-  accountDetailOpenId = '';
-  loadingData = false;
+  @Component({
+    name: 'OrderInfoDetail',
+    components: {SysAccountDetail},
+  })
+  export default class OrderInfoDetail extends Vue {
+    dialogAccountDetilVisible: boolean = false;
+    activeNames: string[] = ['1', '2', '3'];
+    domainInfo: OrderInfo = {orderId: 0};
+    accountDetailOpenId = '';
+    loadingData = false;
+    sendPayExp = false;
 
-  @Prop({type: Number, default: 0})
-    // @ts-ignore
-  domainId: number;
+    @Prop({type: Number, default: 0})
+      // @ts-ignore
+    domainId: number;
 
-  @Prop({type: String, default: ''})
-    // @ts-ignore
-  origiOrderNo: string;
+    @Prop({type: String, default: ''})
+      // @ts-ignore
+    origiOrderNo: string;
 
-
-  tableRowClassName(orderStatus: string) {
-    return orderStatusClass(orderStatus);
-  }
-
-  orderStatusToName(code: string) {
-    return orderStatusName(code);
-  }
-  ossOrderSourceToName(code: number) {
-    return ossOrderSourceName(code);
-  }
-  get payExpInfos(): PayExpInfo | null {
-    if (this.domainInfo.payExpInfos != null && this.domainInfo.payExpInfos.length > 0) {
-      return this.domainInfo.payExpInfos[0];
-    } else {
-      return null;
+    getExpStatusToName(expStatus: string) {
+      return expStatusName(expStatus);
     }
-  }
 
-  get orderInfoExtend(): OrderInfoExtend | null {
-    if (this.domainInfo.orderInfoExtend != null && this.domainInfo.orderInfoExtend.length > 0) {
-      return this.domainInfo.orderInfoExtend[0];
-    } else {
-      return null;
+    tableRowClassName(orderStatus: string) {
+      return orderStatusClass(orderStatus);
     }
-  }
 
-  get orderOpenidInfo(): (OrderOpenidInfo[] | null | undefined)  {
-    return this.domainInfo.orderOpenidInfo;
-  }
+    orderStatusToName(code: string) {
+      return orderStatusName(code);
+    }
 
-  get paySerialInfo(): (PaySerialInfo[] |  null | undefined) {
-    return this.domainInfo.paySerialInfos;
-  }
+    ossOrderSourceToName(code: number) {
+      return ossOrderSourceName(code);
+    }
 
-  get orderSerialInfo(): OrderSerialInfo[] | null | undefined {
-    return this.domainInfo.orderSerialInfos;
-  }
-
-  viewAccountDetail(openId: string): void {
-    this.dialogAccountDetilVisible = true;
-    console.log('点击选择的用户的openid为' + openId);
-    this.$nextTick(() => this.accountDetailOpenId = openId);
-
-  }
-
-  @Watch('domainId', {immediate: true})
-  handleDomainIdhange(newVal: number | undefined, oldVal: number | undefined) {
-    if (null == newVal || newVal === 0) {
-      this.domainInfo = {orderId: 0};
-    } else {
-      this.loadingData = true;
-      getOrderInfo(this.domainId).then((resolve) => {
-        this.domainInfo = resolve.data.data;
-        this.loadEntitySucess(this.domainInfo);
-      }).catch((error: ResponseResult<any>) => {
-        this.noSuchEntity();
-      }).finally(()=>{
-        this.loadingData = false;
+    /**
+     * 处理异常信息
+     * @param item
+     */
+    handlerPayExp(item: PayExpInfo) {
+      this.sendPayExp = true;
+      payExpOrderInfo(item.payExpId).then((resolve) => {
+        if (this.domainInfo != null) {
+          this.$notify({
+            title: '授信成功',
+            message: '订单[' + this.domainInfo.orderNo + ']授信成功',
+            type: 'success'
+          });
+          this.handleDomainIdhange(this.domainInfo.orderId);
+        }
+      }).catch(handlerCommonError).finally(() => {
+        this.sendPayExp = false;
       });
     }
-  }
 
-  @Emit('no-such-entity')
-  noSuchEntity() {
+    get payExpInfos(): PayExpInfo | null {
+      if (this.domainInfo.payExpInfos != null && this.domainInfo.payExpInfos.length > 0) {
+        return this.domainInfo.payExpInfos[0];
+      } else {
+        return null;
+      }
+    }
 
-  }
+    get orderInfoExtend(): OrderInfoExtend | null {
+      if (this.domainInfo.orderInfoExtend != null && this.domainInfo.orderInfoExtend.length > 0) {
+        return this.domainInfo.orderInfoExtend[0];
+      } else {
+        return null;
+      }
+    }
 
-  @Emit('load-entity-success')
-  loadEntitySucess(orderInfo: OrderInfo) {
+    get orderOpenidInfo(): (OrderOpenidInfo[] | null | undefined) {
+      return this.domainInfo.orderOpenidInfo;
+    }
 
-  }
+    get paySerialInfo(): (PaySerialInfo[] | null | undefined) {
+      return this.domainInfo.paySerialInfos;
+    }
 
-  @Watch('origiOrderNo')
-  handleOrigiOrderNoChange(newVal: string | undefined, oldVal: string | undefined) {
-    if (null === newVal || undefined === newVal  || newVal === '') {
-      this.domainInfo = {orderId: 0};
-    } else {
-      this.loadingData = true;
-      getOrderInfoByorigiOrderNo(this.origiOrderNo).then((resolve) => {
-        this.domainInfo = resolve.data.data;
-        this.loadEntitySucess(this.domainInfo);
-      }).catch((error: ResponseResult<any>) => {
-        this.noSuchEntity();
-      }).finally(()=>{
-        this.loadingData = false;
-      });
+    get orderSerialInfo(): OrderSerialInfo[] | null | undefined {
+      return this.domainInfo.orderSerialInfos;
+    }
+
+    viewAccountDetail(openId: string): void {
+      this.dialogAccountDetilVisible = true;
+      console.log('点击选择的用户的openid为' + openId);
+      this.$nextTick(() => this.accountDetailOpenId = openId);
+
+    }
+
+    @Watch('domainId', {immediate: true})
+    handleDomainIdhange(newVal: number | undefined, oldVal?: number | undefined) {
+      if (null == newVal || newVal === 0) {
+        this.domainInfo = {orderId: 0};
+      } else {
+        this.loadingData = true;
+        getOrderInfo(this.domainId).then((resolve) => {
+          this.domainInfo = resolve.data.data;
+          this.loadEntitySucess(this.domainInfo);
+        }).catch((error: ResponseResult<any>) => {
+          this.noSuchEntity();
+        }).finally(() => {
+          this.loadingData = false;
+        });
+      }
+    }
+
+    @Emit('no-such-entity')
+    noSuchEntity() {
+
+    }
+
+    @Emit('load-entity-success')
+    loadEntitySucess(orderInfo: OrderInfo) {
+
+    }
+
+    @Watch('origiOrderNo')
+    handleOrigiOrderNoChange(newVal: string | undefined, oldVal: string | undefined) {
+      if (null === newVal || undefined === newVal || newVal === '') {
+        this.domainInfo = {orderId: 0};
+      } else {
+        this.loadingData = true;
+        getOrderInfoByorigiOrderNo(this.origiOrderNo).then((resolve) => {
+          this.domainInfo = resolve.data.data;
+          this.loadEntitySucess(this.domainInfo);
+        }).catch((error: ResponseResult<any>) => {
+          this.noSuchEntity();
+        }).finally(() => {
+          this.loadingData = false;
+        });
+      }
+    }
+
+    @Watch('domainInfo', {immediate: true})
+    handleInternalDomainInfoChange(newVal: OrderInfo, oldVal?: OrderInfo): void {
+      if (null == newVal && null == oldVal) {
+        return;
+      }
+      if (newVal != null && oldVal != null) {
+        this.domainIdChange(newVal.orderId, oldVal.orderId);
+      } else if (oldVal != null) {
+        this.domainIdChange(0, oldVal.orderId);
+      } else if (newVal != null) {
+        this.domainIdChange(newVal.orderId, 0);
+      }
+    }
+
+    @Emit('update:domainId')
+    domainIdChange(orderId: number | undefined, orderId2: number | undefined): void {
     }
   }
-
-  @Watch('domainInfo', {immediate: true})
-  handleInternalDomainInfoChange(newVal: OrderInfo, oldVal?: OrderInfo): void {
-    if (null == newVal && null == oldVal) {
-      return;
-    }
-    if (newVal != null && oldVal != null) {
-      this.domainIdChange(newVal.orderId, oldVal.orderId);
-    } else if (oldVal != null) {
-      this.domainIdChange(0, oldVal.orderId);
-    } else if (newVal != null) {
-      this.domainIdChange(newVal.orderId, 0);
-    }
-  }
-
-  @Emit('update:domainId')
-  domainIdChange(orderId: number | undefined, orderId2: number | undefined): void {
-  }
-}
 </script>
 
 
