@@ -5,7 +5,6 @@
 // }
 
 import {Dictionary} from 'vue-router/types/router';
-import {inflate} from 'zlib';
 
 export interface IPageinfo extends Dictionary<any> {
   page: number;

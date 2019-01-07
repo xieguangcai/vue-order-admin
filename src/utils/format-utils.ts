@@ -1,5 +1,3 @@
-import {strict} from 'assert';
-
 interface Dictionary<T> { [key: string]: T; }
 
 
