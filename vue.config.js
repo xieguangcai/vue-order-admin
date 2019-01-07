@@ -34,8 +34,15 @@ if (isProduction) {
     baseUrl: process.env.NODE_ENV === 'production' ? '/' : '/',
     pwa: {
       name: 'vue-order-admin'
+    },
+    configureWebpack: {
+      externals: {
+        'vue': 'Vue',
+        'vue-router': 'VueRouter',
+        'element-ui': 'ELEMENT'
+      }
     }
   }
-}
+};
 
 // https://blog.csdn.net/sunny_desmond/article/details/80916706 一篇说明文章
