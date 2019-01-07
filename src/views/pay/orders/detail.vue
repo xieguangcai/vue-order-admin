@@ -81,7 +81,7 @@
           </tr>
           <tr v-for="item in orderOpenidInfo">
             <td width="10%">支付类型</td>
-            <td width="40%">{{ item.flag === 1 ? "微信" : "支付宝" }}</td>
+            <td width="40%">{{ item.flag === '1' ? "微信" : "支付宝" }}</td>
             <td width="10%">支付账户</td>
             <td width="40%">{{item.openid}}</td>
           </tr>
