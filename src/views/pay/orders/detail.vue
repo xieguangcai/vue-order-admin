@@ -110,8 +110,8 @@
           <table class="cc-order-table cc-inline-title-table" cellpadding="0" cellspacing="0" v-if="paySerialInfo">
             <tr>
               <td width="40%">异常时间:{{payExpInfos.expTime}}</td>
-              <td width="40%">处理情况:{{ getExpStatusToName(payExpInfos.status) }}</td>
-              <td width="20%" v-if="payExpInfos.status === '0' ">
+              <td width="20%">处理情况:{{ getExpStatusToName(payExpInfos.status) }}</td>
+              <td width="40%" v-if="payExpInfos.status === '0' ">
                 <el-button type="danger" :loading="sendPayExp"
                            size="mini" @click="handlerPayExp(payExpInfos)">授信
                 </el-button>
