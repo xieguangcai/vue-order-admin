@@ -258,107 +258,133 @@
 </template>
 
 <script lang="ts">
-  import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
-  import {
-    ResponseResult,
-    SysAccount, SysAccountQuery, SysUser,
-    UserInfoFull,
-  } from '../../../types';
-  import {getSysAccountInfoDetail} from '../../../api/passport';
-  import {getUserInfoFullByOpenId, nopassportSignStatusToName} from '../../../api/pay';
-  import {handlerCommonError} from '../../../utils/auth-interceptor';
+import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
+import {
+  ResponseResult,
+  SysAccount, SysAccountQuery, SysUser,
+  UserInfoFull,
+} from '../../../types';
+import {getSysAccountInfoDetail} from '../../../api/passport';
+import {getUserInfoFullByOpenId, nopassportSignStatusToName} from '../../../api/pay';
+import {handlerCommonError} from '../../../utils/auth-interceptor';
 
-  @Component({
-    name: 'SysAccountDetail',
-    components: {},
-  })
-  export default class SysAccountDetail extends Vue {
-    loadingData = false;
+@Component({
+  name: 'SysAccountDetail',
+  components: {},
+})
+export default class SysAccountDetail extends Vue {
+  loadingData = false;
 
-    get defPayUserInfo(): UserInfoFull {
-      return {
-        userId: 0,
-        protocols: [],
-        noPassportSigns: [],
-      };
-    }
-
-    get getAvatar(): string {
-      const user = this.getUser;
-      if (null == user) {
-        return '';
-      }
-      return user.avatar || '';
-    }
-
-    get getUser(): SysUser | null {
-      if (null != this.domainInfo.user && this.domainInfo.user.length > 0) {
-        return this.domainInfo.user[0];
-      }
-      return null;
-    }
-
-    @Prop()
-      // @ts-ignore
-    active: string[];
-
-    @Prop({type: String, default: ''})
-      // @ts-ignore
-    openId: string;
-
-    @Prop()
-      // @ts-ignore
-    searchModel: SysAccountQuery;
-
-    activeNames: string[] = ['1'];
-
-    payUserActiveNames: string[] = ['1'];
-    loadOssUserInfo: boolean = false;
-    domainInfo: SysAccount = {
-      accountId: 0,
-      bindDevices: [],
-      bindExternals: [],
-      eduVips: [],
-      bindLogs: [],
-      user: [],
-      fromMergeInfos: [],
-      toMergeInfos: [],
-    };
-
-    payUserInfo: UserInfoFull = {
+  get defPayUserInfo(): UserInfoFull {
+    return {
       userId: 0,
       protocols: [],
       noPassportSigns: [],
     };
+  }
 
-    getSignStatus(status: number) {
-      return nopassportSignStatusToName(status);
+  get getAvatar(): string {
+    const user = this.getUser;
+    if (null == user) {
+      return '';
     }
+    return user.avatar || '';
+  }
 
-    validInput(newVal: SysAccountQuery): boolean {
-      if (null == newVal) {
-        return false;
-      }
-      if (newVal.mobile === '' && newVal.openId === '' && newVal.externalId === '') {
-        return false;
-      }
-      return true;
+  get getUser(): SysUser | null {
+    if (null != this.domainInfo.user && this.domainInfo.user.length > 0) {
+      return this.domainInfo.user[0];
     }
+    return null;
+  }
 
-    @Watch('active', {immediate: true})
-    handleActiveChange(newVal: string[], oldVal: string[]) {
-      if (newVal == null || newVal.length === 0) {
-        newVal = ['1'];
-      }
-      this.activeNames = newVal;
+  @Prop()
+    // @ts-ignore
+  active: string[];
+
+  @Prop({type: String, default: ''})
+    // @ts-ignore
+  openId: string;
+
+  @Prop()
+    // @ts-ignore
+  searchModel: SysAccountQuery;
+
+  activeNames: string[] = ['1'];
+
+  payUserActiveNames: string[] = ['1'];
+  loadOssUserInfo: boolean = false;
+  domainInfo: SysAccount = {
+    accountId: 0,
+    bindDevices: [],
+    bindExternals: [],
+    eduVips: [],
+    bindLogs: [],
+    user: [],
+    fromMergeInfos: [],
+    toMergeInfos: [],
+  };
+
+  payUserInfo: UserInfoFull = {
+    userId: 0,
+    protocols: [],
+    noPassportSigns: [],
+  };
+
+  getSignStatus(status: number) {
+    return nopassportSignStatusToName(status);
+  }
+
+  validInput(newVal: SysAccountQuery): boolean {
+    if (null == newVal) {
+      return false;
     }
+    if (newVal.mobile === '' && newVal.openId === '' && newVal.externalId === '') {
+      return false;
+    }
+    return true;
+  }
 
-    @Watch('searchModel', {immediate: true})
-    handleSearchModelChange(newVal: SysAccountQuery, oldVal: SysAccountQuery) {
-      const checkInput = this.validInput(newVal);
-      this.loadOssUserInfo = false;
-      console.log('变更了记录-' + newVal);
-      if (checkInput !== true) {
+  @Watch('active', {immediate: true})
+  handleActiveChange(newVal: string[], oldVal: string[]) {
+    if (newVal == null || newVal.length === 0) {
+      newVal = ['1'];
+    }
+    this.activeNames = newVal;
+  }
+
+  @Watch('searchModel', {immediate: true})
+  handleSearchModelChange(newVal: SysAccountQuery, oldVal: SysAccountQuery) {
+    const checkInput = this.validInput(newVal);
+    this.loadOssUserInfo = false;
+    console.log('变更了记录-' + newVal);
+    if (checkInput !== true) {
+      this.domainInfo = {
+        accountId: 0,
+        bindDevices: [],
+        bindExternals: [],
+        eduVips: [],
+        bindLogs: [],
+        user: [],
+        fromMergeInfos: [],
+        toMergeInfos: [],
+      };
+      this.payUserInfo = this.defPayUserInfo;
+    } else {
+      this.loadingData = true;
+
+      getSysAccountInfoDetail(newVal).then((resolve) => {
+        this.domainInfo = resolve.data.data;
+        if (this.domainInfo.openId !== undefined) {
+          getUserInfoFullByOpenId(this.domainInfo.openId).then((rev) => {
+            this.payUserInfo = rev.data.data;
+            this.loadOssUserInfo = true;
+          }).catch((error: ResponseResult<any>) => {
+            this.loadOssUserInfo = false;
+          });
+        }
+      }).catch((res) => {
+        handlerCommonError(res);
         this.domainInfo = {
           accountId: 0,
           bindDevices: [],
@@ -370,89 +396,63 @@
           toMergeInfos: [],
         };
         this.payUserInfo = this.defPayUserInfo;
-      } else {
-        this.loadingData = true;
+      }).finally(() => {
+        this.loadingData = false;
+      });
 
-        getSysAccountInfoDetail(newVal).then((resolve) => {
-          this.domainInfo = resolve.data.data;
-          if (this.domainInfo.openId !== undefined) {
-            getUserInfoFullByOpenId(this.domainInfo.openId).then((rev) => {
-              this.payUserInfo = rev.data.data;
-              this.loadOssUserInfo = true;
-            }).catch((error: ResponseResult<any>) => {
-              this.loadOssUserInfo = false;
-            });
-          }
-        }).catch((res) => {
-          handlerCommonError(res);
-          this.domainInfo = {
-            accountId: 0,
-            bindDevices: [],
-            bindExternals: [],
-            eduVips: [],
-            bindLogs: [],
-            user: [],
-            fromMergeInfos: [],
-            toMergeInfos: [],
-          };
-          this.payUserInfo = this.defPayUserInfo;
-        }).finally(()=>{
-          this.loadingData = false;
-        });
-
-      }
-    }
-
-    @Watch('openId', {immediate: true})
-    handleOpenIdhange(newVal: string | undefined, oldVal: string | undefined) {
-      this.loadOssUserInfo = false;
-      console.log('变更了记录-' + newVal);
-      if (null == newVal || newVal === '') {
-        this.domainInfo = {
-          accountId: 0,
-          bindDevices: [],
-          bindExternals: [],
-          eduVips: [],
-          bindLogs: [],
-          user: [],
-          fromMergeInfos: [],
-          toMergeInfos: [],
-        };
-        this.payUserInfo = this.defPayUserInfo;
-      } else {
-        this.loadingData = true;
-        getSysAccountInfoDetail({openId: this.openId}).then((resolve) => {
-          this.domainInfo = resolve.data.data;
-        }).catch(handlerCommonError).finally(()=>{
-          this.loadingData = false;
-        });
-        getUserInfoFullByOpenId(this.openId).then((rev) => {
-          this.payUserInfo = rev.data.data;
-          this.loadOssUserInfo = true;
-        }).catch((error: ResponseResult<any>) => {
-          this.loadOssUserInfo = false;
-        });
-      }
-    }
-
-    @Watch('domainInfo', {immediate: true})
-    handleInternalDomainInfoChange(newVal: SysAccount, oldVal?: SysAccount): void {
-      if (null == newVal && null == oldVal) {
-        return;
-      }
-      if (newVal != null && oldVal != null) {
-        this.openIdChange(newVal.openId, oldVal.openId);
-      } else if (oldVal != null) {
-        this.openIdChange('', oldVal.openId);
-      } else if (newVal != null) {
-        this.openIdChange(newVal.openId, '');
-      }
-    }
-
-    @Emit('update:openId')
-    openIdChange(openId: string | undefined, openId2: string | undefined): void {
     }
   }
+
+  @Watch('openId', {immediate: true})
+  handleOpenIdhange(newVal: string | undefined, oldVal: string | undefined) {
+    this.loadOssUserInfo = false;
+    console.log('变更了记录-' + newVal);
+    if (null == newVal || newVal === '') {
+      this.domainInfo = {
+        accountId: 0,
+        bindDevices: [],
+        bindExternals: [],
+        eduVips: [],
+        bindLogs: [],
+        user: [],
+        fromMergeInfos: [],
+        toMergeInfos: [],
+      };
+      this.payUserInfo = this.defPayUserInfo;
+    } else {
+      this.loadingData = true;
+      getSysAccountInfoDetail({openId: this.openId}).then((resolve) => {
+        this.domainInfo = resolve.data.data;
+      }).catch(handlerCommonError).finally(() => {
+        this.loadingData = false;
+      });
+      getUserInfoFullByOpenId(this.openId).then((rev) => {
+        this.payUserInfo = rev.data.data;
+        this.loadOssUserInfo = true;
+      }).catch((error: ResponseResult<any>) => {
+        this.loadOssUserInfo = false;
+      });
+    }
+  }
+
+  @Watch('domainInfo', {immediate: true})
+  handleInternalDomainInfoChange(newVal: SysAccount, oldVal?: SysAccount): void {
+    if (null == newVal && null == oldVal) {
+      return;
+    }
+    if (newVal != null && oldVal != null) {
+      this.openIdChange(newVal.openId, oldVal.openId);
+    } else if (oldVal != null) {
+      this.openIdChange('', oldVal.openId);
+    } else if (newVal != null) {
+      this.openIdChange(newVal.openId, '');
+    }
+  }
+
+  @Emit('update:openId')
+  openIdChange(openId: string | undefined, openId2: string | undefined): void {
+  }
+}
 </script>
 
 

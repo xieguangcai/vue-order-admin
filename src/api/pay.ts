@@ -105,7 +105,7 @@ export function cardBatchStatusName(code: number) {
 export function layoutStatusName(code: number) {
   return statusToName(code, AppModule.layoutStatus);
 }
-export function expStatusName(code: string){
+export function expStatusName(code: string) {
   return statusToName(code, AppModule.expStatus);
 }
 export function statusToName(code: number | string, valus: StatusInfo[]) {
@@ -146,7 +146,7 @@ export function getOrderRefundInfoList(params: OrderRefundInfoListQuery): AxiosP
   });
 }
 
-export function payExpOrderInfo(payExpId: number): AxiosPromise<ResponseResult<string>>{
+export function payExpOrderInfo(payExpId: number): AxiosPromise<ResponseResult<string>> {
   return request({
     url: '/pay/order/pay-exp',
     method: 'get',

@@ -116,7 +116,7 @@ class App extends VuexModule {
     {value: '3', label: '解约'},
     {value: '4', label: '解约中'},
   ];
-  expStatus:  IAppState['expStatus'] = [
+  expStatus: IAppState['expStatus'] = [
     {value: '0', label: '未处理'},
     {value: '1', label: '已处理'},
   ];

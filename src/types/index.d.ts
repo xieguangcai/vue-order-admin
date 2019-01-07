@@ -274,7 +274,7 @@ export interface OrderInfoListQuery extends IPageinfo {
   orderStatus?: string;
   orderTimes?: string[];
   payTimes?: string[];
-  orderId?: String;
+  orderId?: string;
 }
 
 export interface UserInfoFull {
