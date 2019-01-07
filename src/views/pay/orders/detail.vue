@@ -162,7 +162,7 @@
   })
   export default class OrderInfoDetail extends Vue {
     dialogAccountDetilVisible: boolean = false;
-    activeNames: string[] = ['1', '2', '3'];
+    activeNames: string[] = ['1', '2', '3', '4'];
     domainInfo: OrderInfo = {orderId: 0};
     accountDetailOpenId = '';
     loadingData = false;
