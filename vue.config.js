@@ -1,8 +1,8 @@
 const uglify = require('uglifyjs-webpack-plugin');
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const productionGzipExtensions = ['js', 'css'];
-const isProduction = process.env.NODE_ENV === 'production';
-if (isProduction) {
+const isDevelopment = process.env.NODE_ENV === 'development';
+if (!isDevelopment) {
   module.exports = {
     baseUrl: process.env.NODE_ENV === 'production' ? '/' : '/',
     pwa: {
