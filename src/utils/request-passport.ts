@@ -4,7 +4,7 @@ import {authFilter, authHeader, authRejectFilter} from '@/utils/auth-interceptor
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.VUE_APP_PASSPORT_API + 'api',
-  timeout: 5000,
+  timeout: 20000,
 });
 
 // request 拦截器

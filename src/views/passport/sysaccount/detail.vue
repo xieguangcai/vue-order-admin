@@ -6,7 +6,7 @@
           <el-collapse-item title="酷开用户详情" name="1">
             <table class="cc-order-table" cellpadding="0" cellspacing="0">
               <tr>
-                <td colspan="4" rowspan="5" width="200">
+                <td colspan="1" rowspan="5" width="200">
                   <img :src="getAvatar" style="width: 200px;height:200px;"/>
                 </td>
                 <td width="10%">昵称</td>
@@ -37,6 +37,11 @@
                 <td>{{ domainInfo.completedTime }}</td>
                 <td>登录次数</td>
                 <td>{{ domainInfo.visitNum }}</td>
+              </tr>
+              <tr v-if="checkRight()">
+                <td></td>
+                <td>操作</td>
+                <td colspan="3"><el-button :loading="requestOffline" size="mini" type="danger" @click="mandatoryOffline()">强制用户下线</el-button></td>
               </tr>
             </table>
           </el-collapse-item>
@@ -264,16 +269,18 @@ import {
   SysAccount, SysAccountQuery, SysUser,
   UserInfoFull,
 } from '../../../types';
-import {getSysAccountInfoDetail} from '../../../api/passport';
+import {getSysAccountInfoDetail, passportMandatoryOffline} from '../../../api/passport';
 import {getUserInfoFullByOpenId, nopassportSignStatusToName} from '../../../api/pay';
 import {handlerCommonError} from '../../../utils/auth-interceptor';
+import {checkRole} from '../../../utils/auth';
 
 @Component({
   name: 'SysAccountDetail',
   components: {},
 })
 export default class SysAccountDetail extends Vue {
-  loadingData = false;
+  loadingData: boolean = false;
+  requestOffline: boolean = false; // 请求强制下线
 
   get defPayUserInfo(): UserInfoFull {
     return {
@@ -345,6 +352,36 @@ export default class SysAccountDetail extends Vue {
     return true;
   }
 
+  checkRight(): boolean {
+    if (this.domainInfo == null || this.domainInfo.openId === undefined) {
+      return false;
+    }
+    const hasRight = checkRole('PASSPORT_ROLE_MANDATORY_OFFLINE');
+    return hasRight;
+  }
+  mandatoryOffline() {
+
+    this.$confirm('确认要强制下线此用户[' + this.domainInfo.nickName + ']吗?', '警告', {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'error',
+    }).then(() => {
+      if (this.domainInfo != null && this.domainInfo.openId !== undefined) {
+        this.requestOffline = true;
+
+        passportMandatoryOffline(this.domainInfo.openId).then(() => {
+          this.$notify({
+            title: '强制下线',
+            message: '用户[' + this.domainInfo.nickName + ']强制下线成功。',
+            type: 'success',
+          });
+        }).catch(handlerCommonError).finally(() => {
+          this.requestOffline = false;
+        });
+      }
+    }).catch(() => {
+    })
+  }
   @Watch('active', {immediate: true})
   handleActiveChange(newVal: string[], oldVal: string[]) {
     if (newVal == null || newVal.length === 0) {
@@ -357,7 +394,6 @@ export default class SysAccountDetail extends Vue {
   handleSearchModelChange(newVal: SysAccountQuery, oldVal: SysAccountQuery) {
     const checkInput = this.validInput(newVal);
     this.loadOssUserInfo = false;
-    console.log('变更了记录-' + newVal);
     if (checkInput !== true) {
       this.domainInfo = {
         accountId: 0,
@@ -406,7 +442,6 @@ export default class SysAccountDetail extends Vue {
   @Watch('openId', {immediate: true})
   handleOpenIdhange(newVal: string | undefined, oldVal: string | undefined) {
     this.loadOssUserInfo = false;
-    console.log('变更了记录-' + newVal);
     if (null == newVal || newVal === '') {
       this.domainInfo = {
         accountId: 0,

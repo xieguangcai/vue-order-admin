@@ -166,7 +166,6 @@ export default class BaseMoviesIqiyiOrderBaseDetail extends Vue {
   @Watch('domainId', {immediate: true})
   handleDomainIdhange(newVal: number | undefined, oldVal: number | undefined) {
     this.loadOssDomain = true;
-    console.log('变更了记录-' + newVal);
     if (null == newVal || newVal === 0) {
       this.domainInfo = {id: 0};
     } else {

@@ -139,3 +139,13 @@ export function adjustPriority(id: number, priority: number): AxiosPromise<Respo
     params: {id, priority},
   });
 }
+
+export function passportMandatoryOffline(openId: string): AxiosPromise<ResponseResult<string>> {
+  return request({
+    url: '/passport/sys-account/mandatory-offline',
+    method: 'get',
+    params: {openId},
+  });
+}
+
+

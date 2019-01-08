@@ -206,7 +206,7 @@ export default class LoginLayoutList extends Vue {
           this.fetchData();
         }
       }).catch(handlerCommonError);
-    });
+    }).catch(()=>{});
   }
 
   handleOfflineLayout(index: number, row: SysLoginLayoutModel) {
@@ -227,7 +227,7 @@ export default class LoginLayoutList extends Vue {
           this.fetchData();
         }
       }).catch(handlerCommonError);
-    });
+    }).catch(()=>{});
   }
 
   realFetchData() {
