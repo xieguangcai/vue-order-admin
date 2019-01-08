@@ -12,7 +12,7 @@
     <el-form-item label="角色名称" :label-width="formLabelWidth" prop="name">
       <el-input v-model="domainInfo.name"></el-input>
     </el-form-item>
-    <el-form-item label="appKey" :label-width="formLabelWidth" prop="roleKey">
+    <el-form-item label="roleKey" :label-width="formLabelWidth" prop="roleKey">
       <el-input v-model="domainInfo.roleKey" auto-complete="off"></el-input>
     </el-form-item>
     <el-form-item label="状态" :label-width="formLabelWidth">
@@ -56,8 +56,8 @@ export default class RoleEdit extends Vue {
     }],
     roleKey: [{required: true, message: '请输入roleKey', trigger: 'blur'}, {
       min: 3,
-      max: 20,
-      message: '长度在3-20个字符',
+      max: 50,
+      message: '长度在3-50个字符',
       trigger: 'blur',
     }],
     application: [{
