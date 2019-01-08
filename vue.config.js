@@ -24,8 +24,8 @@ if (!isDevelopment) {
       },
       externals: {
         'vue': 'Vue',
-        'vue-router': 'VueRouter',
-        'element-ui': 'ELEMENT'
+        'vue-router': 'VueRouter'
+        // 'element-ui': 'ELEMENT'
       }
     }
   }
@@ -38,8 +38,8 @@ if (!isDevelopment) {
     configureWebpack: {
       externals: {
         'vue': 'Vue',
-        'vue-router': 'VueRouter',
-        'element-ui': 'ELEMENT'
+        'vue-router': 'VueRouter'
+        // 'element-ui': 'ELEMENT'
       }
     }
   }

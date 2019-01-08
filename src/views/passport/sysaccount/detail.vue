@@ -317,7 +317,7 @@ export default class SysAccountDetail extends Vue {
     // @ts-ignore
   searchModel: SysAccountQuery;
 
-  activeNames: string[] = ['1'];
+  activeNames: string[] = ['1', '2', '3', '4'];
 
   payUserActiveNames: string[] = ['1'];
   loadOssUserInfo: boolean = false;
@@ -380,14 +380,13 @@ export default class SysAccountDetail extends Vue {
         });
       }
     }).catch(() => {
-    })
+    });
   }
   @Watch('active', {immediate: true})
   handleActiveChange(newVal: string[], oldVal: string[]) {
-    if (newVal == null || newVal.length === 0) {
-      newVal = ['1'];
+    if (newVal != null && newVal.length > 0) {
+      this.activeNames = newVal;
     }
-    this.activeNames = newVal;
   }
 
   @Watch('searchModel', {immediate: true})

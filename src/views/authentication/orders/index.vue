@@ -213,5 +213,22 @@ export default class BaseMoviesIqiyiOrderList extends Vue {
       this.listQuery.total = responseData.totalElements;
     }).catch(handlerCommonError);
   }
+
+
+  validSearchCondition(): boolean {
+    if (this.listQuery.createTimes == null) {
+      this.$message.error('必须指定订单日期');
+      return false;
+    }
+    if (this.listQuery.createTimes.length > 0) {
+      const end = (+ new Date(this.listQuery.createTimes[1])) as number;
+      const start = (+ new Date(this.listQuery.createTimes[0])) as number;
+      if (end - start > 31 * 3 * 24 * 3600 * 1000) {
+        this.$message.error('查询时间超过指定限制【可查询间隔3个月的订单】');
+        return false;
+      }
+    }
+    return true;
+  }
 }
 </script>

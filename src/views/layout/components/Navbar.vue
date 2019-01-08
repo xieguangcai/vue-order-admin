@@ -3,6 +3,7 @@
     <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
     <div class="cc-company">深圳市酷开网络科技有线公司</div>
     <breadcrumb />
+    <div class="cc-name">{{ userName }}</div>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <img src="@/assets/img/1540538985180.jpg" class="user-avatar">
@@ -44,7 +45,9 @@ export default class Navbar extends Vue {
   get sidebar() {
     return AppModule.sidebar;
   }
-
+  get userName() {
+    return UserModule.name;
+  }
   get avatar() {
     return UserModule.avatar;
   }
@@ -104,6 +107,10 @@ export default class Navbar extends Vue {
         font-size: 12px;
       }
     }
+  }
+  .cc-name{
+    line-height:50px;font-size:20px; color: #d4eeb9;
+    position:absolute; right:80px; display: inline-block;
   }
 }
 </style>

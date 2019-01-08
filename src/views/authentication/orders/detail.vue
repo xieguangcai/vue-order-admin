@@ -1,6 +1,5 @@
 <template>
-  <div>
-
+  <div v-loading="loadingData">
     <el-tabs type="border-card">
       <el-tab-pane label="会员业务订单详情">
         <el-collapse v-model="activeNames">
@@ -132,6 +131,8 @@ import {BaseMoviesIqiyiOrderBase, OrderFlag, SearchHistoryModel} from '../../../
   components: {SysAccountDetail, OrderInfoDetail},
 })
 export default class BaseMoviesIqiyiOrderBaseDetail extends Vue {
+  loadingData: boolean = false;
+
   dialogAccountDetilVisible: boolean = false;
   activeNames: string[] = ['1'];
   domainInfo: BaseMoviesIqiyiOrderBase = {id: 0};
@@ -169,8 +170,11 @@ export default class BaseMoviesIqiyiOrderBaseDetail extends Vue {
     if (null == newVal || newVal === 0) {
       this.domainInfo = {id: 0};
     } else {
+      this.loadingData = true;
       getBaseMoviesIqiyiOrderBaseDetail(this.domainId, this.searchHistoryModel).then((resolve) => {
         this.domainInfo = resolve.data.data;
+      }).finally(() => {
+        this.loadingData = false;
       });
     }
   }
