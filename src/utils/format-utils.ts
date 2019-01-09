@@ -22,7 +22,7 @@ export function formatDate(date: Date, fmt: string): string {
   return fmt;
 }
 
-export type  DateUnit = 'y' | 'M' | 'd' | 'h' | 'm' | 's'  ;
+export type  DateUnit = 'y' | 'M' | 'd' | 'h' | 'm' | 's' | 'w' ;
 
 export function addDate(num: number, type: DateUnit, start?: Date): Date {
   if (start == null) {
@@ -37,6 +37,9 @@ export function addDate(num: number, type: DateUnit, start?: Date): Date {
       break;
     case 'd':
       start.setDate(start.getDate() + num);
+      break;
+    case 'w':
+      start.setDate(start.getDate() + num * 7);
       break;
     case 'h':
       start.setHours(start.getHours() + num);

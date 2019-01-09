@@ -189,7 +189,7 @@ export default class BaseMoviesIqiyiOrderList extends Vue {
 
   data: BaseMoviesIqiyiOrderBase[] = [];
   listQuery: BaseMoviesIqiyiOrderBaseListQuery = { page: 0, size: 50, total: 0, searchHistory: '1', payFlag: '1', synFlag: '',
-    createTimes: [addDateFormatString(-1, 'M'), addDateFormatString()],
+    createTimes: [addDateFormatString(-1, 'w'), addDateFormatString()],
   };
 
   handleViewBaseMoviesIqiyiOrderBaseDetail(index: number, row: BaseMoviesIqiyiOrderBase) {
