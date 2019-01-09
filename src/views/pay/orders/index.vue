@@ -118,88 +118,93 @@
 
 
 <script lang="ts">
-  // @ts-ignore
-  import qs from 'qs';
-  import {Component, Vue, Watch} from 'vue-property-decorator';
-  import SearchPane from '../../../components/SearchPane/index.vue';
-  import SearchPagePane from '../../../components/SearchPagePane/index.vue';
-  import {OrderInfo, OrderInfoListQuery, Pageable, ResponseResult} from '../../../types';
-  import ListTablePane from '../../../components/ListTablePane/index.vue';
-  import {AxiosResponse} from 'axios';
-  import {getOrderInfoList, orderStatusClass, orderStatusName} from '../../../api/pay';
-  import {AppModule} from '../../../store/modules/app';
-  import OrderInfoDetail from './detail.vue';
-  import BaseList from '../../../components/BaseList';
-  import {handlerCommonError} from '../../../utils/auth-interceptor';
-  import {addDateFormatString} from '../../../utils/format-utils';
+// @ts-ignore
+import qs from 'qs';
+import {Component, Vue, Watch} from 'vue-property-decorator';
+import SearchPane from '../../../components/SearchPane/index.vue';
+import SearchPagePane from '../../../components/SearchPagePane/index.vue';
+import {OrderInfo, OrderInfoListQuery, Pageable, ResponseResult} from '../../../types';
+import ListTablePane from '../../../components/ListTablePane/index.vue';
+import {AxiosResponse} from 'axios';
+import {getOrderInfoList, orderStatusClass, orderStatusName} from '../../../api/pay';
+import {AppModule} from '../../../store/modules/app';
+import OrderInfoDetail from './detail.vue';
+import BaseList from '../../../components/BaseList';
+import {handlerCommonError} from '../../../utils/auth-interceptor';
+import {addDateFormatString} from '../../../utils/format-utils';
+import {anyNotEmpty, isNotEmpty} from '../../../utils/validate';
 
-  interface EditDomain {
-    editDomainId: number | undefined;
+interface EditDomain {
+  editDomainId: number | undefined;
+}
+
+@Component({
+  components: {OrderInfoDetail, ListTablePane, SearchPane, SearchPagePane},
+  filters: {},
+  mixins: [BaseList],
+})
+export default class OrderInfoList extends Vue {
+  dialogOrderInfoDetilVisible: boolean = false;
+  editDomainInfo: EditDomain = {editDomainId: 0};
+
+  data: OrderInfo[] = [];
+  listQuery: OrderInfoListQuery = {
+    page: 0, size: 50, total: 0,
+    orderTimes: [addDateFormatString(-1, 'w'), addDateFormatString()],
+
+  };
+
+  tableRowClassName(orderStatus: string): string {
+    return orderStatusClass(orderStatus);
   }
 
-  @Component({
-    components: {OrderInfoDetail, ListTablePane, SearchPane, SearchPagePane},
-    filters: {},
-    mixins: [BaseList],
-  })
-  export default class OrderInfoList extends Vue {
-    dialogOrderInfoDetilVisible: boolean = false;
-    editDomainInfo: EditDomain = {editDomainId: 0};
+  onCreated() {
+    // @ts-ignore
+    this.needLoadOnCreate = false;
+  }
 
-    data: OrderInfo[] = [];
-    listQuery: OrderInfoListQuery = {
-      page: 0, size: 50, total: 0,
-      orderTimes: [addDateFormatString(-1, 'w'), addDateFormatString()],
+  get orderStatus() {
+    return AppModule.orderStatus;
+  }
 
-    };
+  orderStatusToName(code: string) {
+    return orderStatusName(code);
+  }
 
-    tableRowClassName(orderStatus: string): string {
-      return orderStatusClass(orderStatus);
-    }
+  handleViewOrderInfoDetail(index: number, row: OrderInfo) {
+    this.dialogOrderInfoDetilVisible = true;
+    console.log('点击选择的订单id为' + row.orderId);
+    this.$nextTick(() => this.editDomainInfo.editDomainId = row.orderId);
+  }
 
-    onCreated() {
-      // @ts-ignore
-      this.needLoadOnCreate = false;
-    }
+  realFetchData() {
+    return getOrderInfoList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<OrderInfo>>>) => {
+      const responseData = response.data.data;
+      this.data = responseData.content;
+      this.listQuery.page = responseData.number;
+      this.listQuery.size = responseData.size;
+      this.listQuery.total = responseData.totalElements;
+    }).catch(handlerCommonError);
+  }
 
-    get orderStatus() {
-      return AppModule.orderStatus;
-    }
-
-    orderStatusToName(code: string) {
-      return orderStatusName(code);
-    }
-
-    handleViewOrderInfoDetail(index: number, row: OrderInfo) {
-      this.dialogOrderInfoDetilVisible = true;
-      console.log('点击选择的订单id为' + row.orderId);
-      this.$nextTick(() => this.editDomainInfo.editDomainId = row.orderId);
-    }
-
-    realFetchData() {
-      return getOrderInfoList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<OrderInfo>>>) => {
-        const responseData = response.data.data;
-        this.data = responseData.content;
-        this.listQuery.page = responseData.number;
-        this.listQuery.size = responseData.size;
-        this.listQuery.total = responseData.totalElements;
-      }).catch(handlerCommonError);
-    }
-
-    validSearchCondition(): boolean {
-      if (this.listQuery.orderTimes == null) {
-        this.$message.error('必须指定订单日期');
-        return false;
-      }
-      if (this.listQuery.orderTimes.length > 0) {
-        const end = (+ new Date(this.listQuery.orderTimes[1])) as number;
-        const start = (+ new Date(this.listQuery.orderTimes[0])) as number;
-        if (end - start > 31 * 3 * 24 * 3600 * 1000) {
-          this.$message.error('查询时间超过指定限制【可查询间隔3个月的订单】');
-          return false;
-        }
-      }
+  validSearchCondition(): boolean {
+    if (anyNotEmpty(this.listQuery.phoneNo, this.listQuery.orderNo, this.listQuery.mac, this.listQuery.origiOrderNo , this.listQuery.ybDealNo, this.listQuery.orderId, this.listQuery.serialNo)) {
       return true;
     }
+
+    if (this.listQuery.orderTimes == null) {
+      this.$message.error('必须指定订单日期');
+      return false;
+    }
+    if (this.listQuery.orderTimes.length > 0) {
+      const end = (+ new Date(this.listQuery.orderTimes[1])) as number;
+      const start = (+ new Date(this.listQuery.orderTimes[0])) as number;
+      if (end - start > 31 * 3 * 24 * 3600 * 1000) {
+        this.$message.error('查询时间超过指定限制【可查询间隔3个月的订单】');
+        return false;
+      }
+    }
+    return true;
   }
+}
 </script>

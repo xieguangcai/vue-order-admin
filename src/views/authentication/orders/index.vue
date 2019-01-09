@@ -169,6 +169,7 @@ import BaseList from '../../../components/BaseList';
 import OrderInfoDetail from '../../pay/orders/detail.vue';
 import {handlerCommonError} from '../../../utils/auth-interceptor';
 import {addDateFormatString} from '../../../utils/format-utils';
+import {anyNotEmpty} from '../../../utils/validate';
 
 interface EditDomain {
   editDomainId: number | undefined;
@@ -216,6 +217,10 @@ export default class BaseMoviesIqiyiOrderList extends Vue {
 
 
   validSearchCondition(): boolean {
+    if (anyNotEmpty(this.listQuery.orderNo, this.listQuery.coocaaOpenId, this.listQuery.tvId, this.listQuery.mac)) {
+      return true;
+    }
+
     if (this.listQuery.createTimes == null) {
       this.$message.error('必须指定订单日期');
       return false;

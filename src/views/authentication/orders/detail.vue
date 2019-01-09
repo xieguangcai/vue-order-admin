@@ -153,7 +153,7 @@ import {
   BaseOrderProducts,
   BaseOrderSource,
   OrderFlag,
-  SearchHistoryModel
+  SearchHistoryModel,
 } from '../../../types';
 
 @Component({
@@ -180,10 +180,10 @@ export default class BaseMoviesIqiyiOrderBaseDetail extends Vue {
     return clientTypeToName(code);
   }
 
-  get orderSource(): BaseOrderSource{
+  get orderSource(): BaseOrderSource {
     return this.domainInfo.baseOrderSource;
   }
-  get orderProduct(): BaseOrderProducts{
+  get orderProduct(): BaseOrderProducts {
     return this.domainInfo.orderProduct;
 
   }

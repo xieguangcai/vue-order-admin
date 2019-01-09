@@ -6,26 +6,55 @@ export function isValidUsername(str: string) {
   return str.length > 3;
 }
 
-export function validateURL(textval: string) {
+export function isNotEmpty(str: string): boolean {
+  if (str === undefined) {
+    return false;
+  }
+  if (!str) {
+    return false;
+  }
+  if (str.replace(/(^\s*)|(\s*$)/g, '').length === 0) {
+    return false;
+  }
+  return true;
+}
+
+/**
+ * 都不为空
+ * @param str
+ */
+export function thereAreNotEmpty(...str: string[]): boolean {
+  return str.every((val) => isNotEmpty(val));
+}
+
+/**
+ * 任何一个不为空
+ * @param str
+ */
+export function anyNotEmpty(...str: string[]): boolean {
+  return str.some((val) => isNotEmpty(val));
+}
+
+export function validateURL(textval: string): boolean {
   const urlregex = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
   return urlregex.test(textval);
 }
 
-export function validateLowerCase(str: string) {
+export function validateLowerCase(str: string): boolean {
   const reg = /^[a-z]+$/;
   return reg.test(str);
 }
 
-export function validateUpperCase(str: string) {
+export function validateUpperCase(str: string): boolean {
   const reg = /^[A-Z]+$/;
   return reg.test(str);
 }
 
-export function validatAlphabets(str: string) {
+export function validatAlphabets(str: string): boolean {
   const reg = /^[A-Za-z]+$/;
   return reg.test(str);
 }
-export function validPhoneNo(str: string) {
+export function validPhoneNo(str: string): boolean {
   const reg = /^1\d{10}$/;
   return reg.test(str);
 }
