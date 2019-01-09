@@ -121,7 +121,7 @@ export default new Router({
           path: 'phone-valid-code',
           name: '验证码',
           component: () => import(/* webpackChunkName: "phone-valid-code" */ '@/views/passport/user/index.vue'),
-          meta: {title: '验证码', icon: 'card', roles: ['ROLE_VIEW']},
+          meta: {title: '验证码', icon: 'card', roles: ['PASSPORT_ROLE_VIEW_SMS_CODE']},
         },
         {
           path: 'account-info-detail',
