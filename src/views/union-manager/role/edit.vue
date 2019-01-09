@@ -49,7 +49,7 @@ export default class RoleEdit extends Vue {
   apps: ApplicationInfo[] = [];
 
   rules = {
-    name: [{required: true, message: '请输入应用名称', trigger: 'blur'}, {
+    name: [{required: true, message: '请输入角色名称', trigger: 'blur'}, {
       max: 50,
       message: '长度必须在50个字符内',
       trigger: 'blur',
