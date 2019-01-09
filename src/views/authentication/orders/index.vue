@@ -9,11 +9,11 @@
           <el-option value="2" label="历史未支付订单"/>
         </el-select>
         酷开openId
-        <el-input v-model="listQuery.coocaaOpenId" size="mini"></el-input>
+        <el-input v-model="listQuery.coocaaOpenId" size="mini" :clearable="true"></el-input>
         影视订单号
-        <el-input v-model="listQuery.orderNo" size="mini" style="width:180px;"></el-input>
+        <el-input v-model="listQuery.orderNo" size="mini" style="width:180px;" :clearable="true"></el-input>
         第三openId
-        <el-input v-model="listQuery.thirdOpenId" size="mini" style="width:220px"></el-input>
+        <el-input v-model="listQuery.thirdOpenId" size="mini" style="width:220px" :clearable="true"></el-input>
         支付状态
         <el-select size="mini" v-model="listQuery.payFlag">
           <el-option value="" label="全部"/>
@@ -27,9 +27,9 @@
           <el-option value="1" label="已开通"/>
         </el-select>
         mac地址
-        <el-input v-model="listQuery.mac" size="mini"></el-input>
+        <el-input v-model="listQuery.mac" size="mini" :clearable="true"></el-input>
         激活ID
-        <el-input v-model="listQuery.tvId" size="mini"></el-input>
+        <el-input v-model="listQuery.tvId" size="mini" :clearable="true"></el-input>
         订单创建时间
         <el-date-picker size="mini"
                         v-model="listQuery.createTimes"

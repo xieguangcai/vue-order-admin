@@ -51,11 +51,13 @@
               </tr>
               <tr>
                 <td>订单权益</td>
-                <td>{{ domainInfo.orderSource }}</td>
+                <td colspan="3">{{ domainInfo.orderSource }}</td>
                 <td>产品类型</td>
-                <td>{{ domainInfo.productType }}</td>
+                <td colspan="3">{{ domainInfo.productType }}</td>
+              </tr>
+              <tr>
                 <td>同步开通参数</td>
-                <td colspan="3">{{ domainInfo.synParams }}</td>
+                <td colspan="7">{{ domainInfo.synParams }}</td>
               </tr>
               <tr>
                 <td>mac地址</td>
@@ -91,12 +93,34 @@
           </el-collapse-item>
           <el-collapse-item title="订购产品信息" name="2">
             <table class="cc-order-table cc-inline-title-table" cellpadding="0" cellspacing="0" >
-
-            </table>
-          </el-collapse-item>
-          <el-collapse-item title="权益信息" name="3">
-            <table class="cc-order-table cc-inline-title-table" cellpadding="0" cellspacing="0">
-
+                <tr>
+                  <td>ErpCode</td>
+                  <td>{{orderProduct.erpCode}}</td>
+                  <td>openMaParams</td>
+                  <td>{{orderProduct.openMaParams}}</td>
+                  <td>产品名称</td>
+                  <td>{{orderProduct.productName}}</td>
+                  <td>产品类型</td>
+                  <td>{{orderProduct.productType}}</td>
+                </tr>
+              <tr>
+                <td>unicode</td>
+                <td colspan="3">{{orderProduct.uniqueCode}}</td>
+                <td>价格</td>
+                <td>{{orderProduct.unitFee}} 分</td>
+                <td>折扣价格</td>
+                <td>{{orderProduct.discountFee}}分</td>
+              </tr>
+              <tr>
+                <td>产品ID</td>
+                <td>{{orderProduct.productId}}</td>
+                <td>productLevel</td>
+                <td>{{orderProduct.productLevel}}</td>
+                <td>description</td>
+                <td>{{orderProduct.description}}</td>
+                <td>baseDescription</td>
+                <td>{{orderProduct.baseDescription}}</td>
+              </tr>
             </table>
           </el-collapse-item>
         </el-collapse>
@@ -124,7 +148,13 @@ import {
   orderTypeToName,
   payFlagClassName,
 } from '../../../api/authentication';
-import {BaseMoviesIqiyiOrderBase, OrderFlag, SearchHistoryModel} from '../../../types';
+import {
+  BaseMoviesIqiyiOrderBase,
+  BaseOrderProducts,
+  BaseOrderSource,
+  OrderFlag,
+  SearchHistoryModel
+} from '../../../types';
 
 @Component({
   name: 'BaseMoviesIqiyiOrderBaseDetail',
@@ -150,9 +180,18 @@ export default class BaseMoviesIqiyiOrderBaseDetail extends Vue {
     return clientTypeToName(code);
   }
 
+  get orderSource(): BaseOrderSource{
+    return this.domainInfo.baseOrderSource;
+  }
+  get orderProduct(): BaseOrderProducts{
+    return this.domainInfo.orderProduct;
+
+  }
+
   orderTypeToName(code: number) {
     return orderTypeToName(code);
   }
+
   viewAccountDetail(openId: string): void {
     this.dialogAccountDetilVisible = true;
     console.log('点击选择的用户的openid为' + openId);
