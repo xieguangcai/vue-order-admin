@@ -1,7 +1,6 @@
 
 import {Component, Vue} from 'vue-property-decorator';
 import {ElForm} from 'element-ui/types/form';
-import {AxiosPromise} from 'axios';
 import {AppModule} from '@/store/modules/app';
 
 @Component
