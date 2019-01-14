@@ -6,7 +6,7 @@ export function isValidUsername(str: string) {
   return str.length > 3;
 }
 
-export function isNotEmpty(str: string): boolean {
+export function isNotEmpty(str: string | undefined): boolean {
   if (str === undefined) {
     return false;
   }
@@ -31,7 +31,7 @@ export function thereAreNotEmpty(...str: string[]): boolean {
  * 任何一个不为空
  * @param str
  */
-export function anyNotEmpty(...str: string[]): boolean {
+export function anyNotEmpty(...str: (string | undefined) []): boolean {
   return str.some((val) => isNotEmpty(val));
 }
 
