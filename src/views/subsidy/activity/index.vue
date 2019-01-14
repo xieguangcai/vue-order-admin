@@ -15,17 +15,17 @@
                 @selection-change="handleSelectionChange" border fit highlight-current-row>
         <el-table-column type="selection">
         </el-table-column>
-        <el-table-column label="ID">
+        <el-table-column label="ID" width="180px" fixed="left">
           <template slot-scope="scope">
             {{ scope.row.subsidyCode }}
           </template>
         </el-table-column>
-        <el-table-column label="活动名称">
+        <el-table-column label="活动名称" width="260px" fixed="left">
           <template slot-scope="scope">
             <a @click="detailActivity(scope.$index, scope.row)" style="color: cornflowerblue">{{ scope.row.name }}</a>
           </template>
         </el-table-column>
-        <el-table-column label="活动状态" width="80px">
+        <el-table-column label="活动状态" width="80px" fixed="left">
           <template slot-scope="scope">
             {{ scope.row.subsidyStatus | ActivityStatus }}
           </template>
@@ -53,7 +53,7 @@
                style="color: cornflowerblue; text-decoration: underline;">{{ scope.row.subsidyNum }} 个</a>
           </template>
         </el-table-column>
-        <el-table-column label="日志" width="340px">
+        <el-table-column label="日志" width="440px">
           <template slot-scope="scope">
             <div>
               <span>创建时间：</span>{{ scope.row.createTime }}<span style="margin-left: 15px;">创建人：</span>{{
