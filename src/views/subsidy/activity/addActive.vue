@@ -77,7 +77,7 @@
           </el-form-item>
        <el-button class="addBtn" @click="addSubsidy">+ 添加</el-button>
        <el-form-item style="margin-top: 30px">
-         <el-button type="primary" @click="submitForm('SubsidyActivityInfo')">保存</el-button>
+         <el-button type="primary" @click="submitForm('SubsidyActivityInfo')" v-if="checkUserRole('SUBSIDY_ROLE_EDIT')">保存</el-button>
          <el-button @click="$router.push({path: 'subsidy-activity-list'})">取消</el-button>
        </el-form-item>
      </el-form>
@@ -92,11 +92,13 @@ import {AxiosResponse} from 'axios';
 // @ts-ignore
 import qs from 'qs';
 import {handlerCommonError} from '../../../utils/auth-interceptor';
+import RightComponent from "@/components/RightComponent";
 
 @Component({
   components: {},
   name: 'AddActivityInfo',
   filters: {},
+  mixins: [RightComponent],
 })
 export default class AddActivityInfo extends Vue {
   name: string = 'addActive';

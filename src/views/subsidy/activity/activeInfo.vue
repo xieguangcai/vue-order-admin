@@ -48,24 +48,28 @@
       <el-table-column
         label="操作">
         <template slot-scope="scope">
-          <el-button @click="handleEditSubsidy(info.subsidyActivityId, scope.row)">修改</el-button>
+          <el-button @click="handleEditSubsidy(info.subsidyActivityId, scope.row)"
+                     v-if="checkUserRole('SUBSIDY_ROLE_EDIT')">修改
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
     <div class="footBtn">
       <!--可进行 提交审核 操作的状态为：未审核（0）-->
-      <template v-if="info.subsidyStatus === 0">
-        <el-button type="danger" @click="submitAuditActivity(info)">提交审核</el-button>
-      </template>
+      <el-button type="danger" @click="submitAuditActivity(info)"
+                 v-if="info.subsidyStatus === 0 && checkUserRole('SUBSIDY_ROLE_EDIT')">提交审核
+      </el-button>
       <!--可进行 下线 操作的状态为：上线（2）-->
-      <template v-if="info.subsidyStatus === 2">
-        <el-button type="danger" @click="offlineActivity(info)">下线</el-button>
-      </template>
+      <el-button type="danger" @click="offlineActivity(info)"
+                 v-if="info.subsidyStatus === 2 && checkUserRole('SUBSIDY_ROLE_AUDIT')">下线
+      </el-button>
       <!--可进行 审核 操作的状态为：审核中（4）-->
-      <template v-if="info.subsidyStatus === 4">
-        <el-button type="danger" @click="auditActivity(info)">审核</el-button>
-      </template>
-      <el-button @click="$router.push({path: 'addSubsidy', query: {id: '' + info.subsidyActivityId}})">新增津贴</el-button>
+      <el-button type="danger" @click="auditActivity(info)"
+                 v-if="info.subsidyStatus === 4 && checkUserRole('SUBSIDY_ROLE_AUDIT')">审核
+      </el-button>
+      <el-button @click="$router.push({path: 'addSubsidy', query: {id: '' + info.subsidyActivityId}})"
+                 v-if="checkUserRole('SUBSIDY_ROLE_EDIT')">新增津贴
+      </el-button>
       <el-button type="primary" @click="$router.push({path: 'subsidy-activity-list'})">返回</el-button>
     </div>
 
@@ -106,7 +110,7 @@
             </el-col>
           </el-form-item>
           <el-form-item style="margin-top: 30px">
-            <el-button type="primary" @click="submitForm(info.subsidyActivityId, subsidy)">保存</el-button>
+            <el-button type="primary" @click="submitForm(info.subsidyActivityId, subsidy)" v-if="checkUserRole('SUBSIDY_ROLE_EDIT')">保存</el-button>
             <el-button @click="closeDialog">取消</el-button>
           </el-form-item>
         </el-form>
@@ -118,7 +122,8 @@
             <label style="margin-left: 30px;">驳回 <input type="radio" v-model="isAgree" value="false"/></label>
           </div>
           <el-form-item style="text-align: center; margin-top: 30px;">
-            <el-button type="primary" @click="doAuditActivityInfo(editDomainInfo.editDomainId, isAgree)">保存
+            <el-button type="primary" @click="doAuditActivityInfo(editDomainInfo.editDomainId, isAgree)"
+                       v-if="checkUserRole('SUBSIDY_ROLE_AUDIT')">保存
             </el-button>
             <el-button @click="closeDialog()">取消</el-button>
           </el-form-item>
@@ -143,6 +148,7 @@
   import {SubsidyActivityInfo, ResponseResult, SubsidyType} from '../../../types';
   import {AxiosResponse} from 'axios';
   import {handlerCommonError} from '@/utils/auth-interceptor';
+  import RightComponent from "@/components/RightComponent";
 
   interface EditDomain {
     editDomainId: number | undefined;
@@ -152,6 +158,7 @@
   @Component({
     name: 'ActivityInfoDetail',
     components: {},
+    mixins: [RightComponent],
   })
 
   export default class ActivityInfoDetail extends Vue {

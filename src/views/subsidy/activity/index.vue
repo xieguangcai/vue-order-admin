@@ -3,8 +3,12 @@
     <list-table-pane>
 
       <el-button-group slot="action" class="cc-action-button-group">
-        <el-button type="success" icon="el-icon-circle-plus" size="mini" @click="addActivity">新建</el-button>
-        <el-button type="danger" icon="el-icon-circle-close" size="mini" @click="handleDel">删除</el-button>
+        <el-button type="success" icon="el-icon-circle-plus" size="mini" @click="addActivity"
+                   v-if="checkUserRole('SUBSIDY_ROLE_EDIT')">新建
+        </el-button>
+        <el-button type="danger" icon="el-icon-circle-close" size="mini" @click="handleDel"
+                   v-if="checkUserRole('ROLE_ADMIN')">删除
+        </el-button>
       </el-button-group>
 
       <search-pane slot="searchpane" @click="refetchData">
@@ -75,36 +79,28 @@
             <div>
               <!--未审核（0）、审核不通过（1）、上线（2）、下线（3）、审核中（4）-->
               <!--可进行 修改 操作的状态为：未审核（0）、审核不通过（1）、下线（3）-->
-              <template
-                v-if="scope.row.subsidyStatus === 0 || scope.row.subsidyStatus === 1 || scope.row.subsidyStatus === 3">
-                <el-tooltip content="编辑活动">
-                  <el-button type="primary" circle size="mini" icon="el-icon-edit"
-                             @click="editActivity(scope.row)"></el-button>
-                </el-tooltip>
-              </template>
+              <el-tooltip content="编辑活动"
+                          v-if="(scope.row.subsidyStatus === 0 || scope.row.subsidyStatus === 1 || scope.row.subsidyStatus === 3) && checkUserRole('SUBSIDY_ROLE_EDIT')">
+                <el-button type="primary" circle size="mini" icon="el-icon-edit"
+                           @click="editActivity(scope.row)"></el-button>
+              </el-tooltip>
               <!--可进行 提交审核 操作的状态为：未审核（0）-->
-              <template v-if="scope.row.subsidyStatus === 0">
-                <el-tooltip content="提交审核">
-                  <el-button type="danger" circle size="mini" icon="el-icon-bell"
-                             @click="submitAuditActivity(scope.row)"></el-button>
-                </el-tooltip>
-              </template>
+              <el-tooltip content="提交审核" v-if="scope.row.subsidyStatus === 0 && checkUserRole('SUBSIDY_ROLE_EDIT')">
+                <el-button type="danger" circle size="mini" icon="el-icon-bell"
+                           @click="submitAuditActivity(scope.row)"></el-button>
+              </el-tooltip>
               <!--可进行 下线 操作的状态为：上线（2）-->
-              <template v-if="scope.row.subsidyStatus === 2">
-                <el-tooltip content="下线">
-                  <el-button type="danger" circle size="mini" icon="el-icon-bell"
-                             @click="offlineActivity(scope.row)"></el-button>
-                </el-tooltip>
-              </template>
+              <el-tooltip content="下线" v-if="scope.row.subsidyStatus === 2 && checkUserRole('SUBSIDY_ROLE_AUDIT')">
+                <el-button type="danger" circle size="mini" icon="el-icon-bell"
+                           @click="offlineActivity(scope.row)"></el-button>
+              </el-tooltip>
               <!--可进行 审核 操作的状态为：审核中（4）-->
-              <template v-if="scope.row.subsidyStatus === 4">
-                <el-tooltip content="审核">
-                  <el-button type="danger" circle size="mini" icon="el-icon-bell"
-                             @click="auditActivity(scope.row)"></el-button>
-                </el-tooltip>
-              </template>
+              <el-tooltip content="审核" v-if="scope.row.subsidyStatus === 4 && checkUserRole('SUBSIDY_ROLE_AUDIT')">
+                <el-button type="danger" circle size="mini" icon="el-icon-bell"
+                           @click="auditActivity(scope.row)"></el-button>
+              </el-tooltip>
               <br/>
-              <el-tooltip content="新增津贴" style="margin-top: 10px;">
+              <el-tooltip content="新增津贴" style="margin-top: 10px;" v-if="checkUserRole('SUBSIDY_ROLE_EDIT')">
                 <el-button type="success" circle size="mini" icon="el-icon-plus"
                            @click="openAddSubsidy(scope.row)"></el-button>
               </el-tooltip>
@@ -184,7 +180,8 @@
                 </el-col>
               </el-form-item>
               <el-form-item style="margin-top: 30px">
-                <el-button type="primary" @click="submitForm(info)">保存</el-button>
+                <el-button type="primary" @click="submitForm(info)" v-if="checkUserRole('SUBSIDY_ROLE_EDIT')">保存
+                </el-button>
                 <el-button @click="closeDialog()">取消</el-button>
               </el-form-item>
             </el-form>
@@ -198,7 +195,8 @@
               <label style="margin-left: 30px;">驳回 <input type="radio" v-model="isAgree" value="false"/></label>
             </div>
             <el-form-item style="text-align: center; margin-top: 30px;">
-              <el-button type="primary" @click="doAuditActivityInfo(editDomainInfo.editDomainId, isAgree)">保存
+              <el-button type="primary" @click="doAuditActivityInfo(editDomainInfo.editDomainId, isAgree)"
+                         v-if="checkUserRole('SUBSIDY_ROLE_AUDIT')">保存
               </el-button>
               <el-button @click="closeDialog()">取消</el-button>
             </el-form-item>
@@ -229,6 +227,7 @@
   import BaseList from '../../../components/BaseList';
   import {handlerCommonError} from '../../../utils/auth-interceptor';
   import BaseTableDelete from '@/components/BaseTableDelete';
+  import RightComponent from "@/components/RightComponent";
 
   interface EditDomain {
     editDomainId: number | undefined;
@@ -255,7 +254,7 @@
         }
       },
     },
-    mixins: [BaseList, BaseTableDelete],
+    mixins: [BaseList, BaseTableDelete, RightComponent],
   })
 
   export default class ActivityInfoList extends Vue {

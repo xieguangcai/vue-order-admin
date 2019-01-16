@@ -37,8 +37,8 @@
         </el-col>
       </el-form-item>
       <el-form-item style="margin-top: 30px">
-        <el-button @click="submitForm(info, subsidy, 1)">保存并新增</el-button>
-        <el-button type="primary" @click="submitForm(info, subsidy, 2)">保存</el-button>
+        <el-button @click="submitForm(info, subsidy, 1)" v-if="checkUserRole('SUBSIDY_ROLE_EDIT')">保存并新增</el-button>
+        <el-button type="primary" @click="submitForm(info, subsidy, 2)" v-if="checkUserRole('SUBSIDY_ROLE_EDIT')">保存</el-button>
         <el-button @click="$router.push({path: 'subsidy-activity-list'})">取消</el-button>
       </el-form-item>
     </el-form>
@@ -51,10 +51,12 @@
   import {SubsidyActivityInfo, ResponseResult, SubsidyType} from '../../../types';
   import {AxiosResponse} from 'axios';
   import {handlerCommonError} from '../../../utils/auth-interceptor';
+  import RightComponent from "@/components/RightComponent";
 
   @Component({
     name: 'SubsidyAdd',
     components: {},
+    mixins: [RightComponent],
   })
   export default class SubsidyAdd extends Vue {
     labelPosition: string = 'right';
