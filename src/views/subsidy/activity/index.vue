@@ -15,6 +15,11 @@
                 @selection-change="handleSelectionChange" border fit highlight-current-row>
         <el-table-column type="selection">
         </el-table-column>
+        <el-table-column label="序列" fixed="left">
+          <template slot-scope="scope">
+            {{ scope.row.subsidyActivityId }}
+          </template>
+        </el-table-column>
         <el-table-column label="ID" width="180px" fixed="left">
           <template slot-scope="scope">
             {{ scope.row.subsidyCode }}
@@ -187,19 +192,17 @@
         </template>
 
         <template v-if="this.editDomainInfo.editDomainType === 2">
-          <div class="">
-            <el-form ref="AuditActivityInfo" label-width="120px">
-              <div style="margin-left: 50px;">
-                <label>同意 <input type="radio" v-model="isAgree" value="true"/></label>
-                <label style="margin-left: 30px;">驳回 <input type="radio" v-model="isAgree" value="false"/></label>
-              </div>
-              <el-form-item style="text-align: center; margin-top: 30px;">
-                <el-button type="primary" @click="doAuditActivityInfo(editDomainInfo.editDomainId, isAgree)">保存
-                </el-button>
-                <el-button @click="closeDialog()">取消</el-button>
-              </el-form-item>
-            </el-form>
-          </div>
+          <el-form ref="AuditActivityInfo" label-width="120px">
+            <div style="margin-left: 50px;">
+              <label>同意 <input type="radio" v-model="isAgree" value="true"/></label>
+              <label style="margin-left: 30px;">驳回 <input type="radio" v-model="isAgree" value="false"/></label>
+            </div>
+            <el-form-item style="text-align: center; margin-top: 30px;">
+              <el-button type="primary" @click="doAuditActivityInfo(editDomainInfo.editDomainId, isAgree)">保存
+              </el-button>
+              <el-button @click="closeDialog()">取消</el-button>
+            </el-form-item>
+          </el-form>
         </template>
       </el-dialog>
     </list-table-pane>
