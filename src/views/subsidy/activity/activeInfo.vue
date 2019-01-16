@@ -136,159 +136,157 @@
 </template>
 
 <script lang="ts">
-  import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
-  import {
-    auditActivity,
-    editSubsidy,
-    getActivityDetail,
-    getSubsidDetail,
-    offlineActivity,
-    toAuditActivity
-  } from '../../../api/subsidy';
-  import {SubsidyActivityInfo, ResponseResult, SubsidyType} from '../../../types';
-  import {AxiosResponse} from 'axios';
-  import {handlerCommonError} from '@/utils/auth-interceptor';
-  import RightComponent from "@/components/RightComponent";
+import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
+import {
+  auditActivity,
+  editSubsidy,
+  getActivityDetail,
+  getSubsidDetail,
+  offlineActivity,
+  toAuditActivity,
+} from '../../../api/subsidy';
+import {SubsidyActivityInfo, ResponseResult, SubsidyType} from '../../../types';
+import {AxiosResponse} from 'axios';
+import {handlerCommonError} from '@/utils/auth-interceptor';
+import RightComponent from '@/components/RightComponent';
 
-  interface EditDomain {
-    editDomainId: number | undefined;
-    editDomainType: number;
+interface EditDomain {
+  editDomainId: number | undefined;
+  editDomainType: number;
+}
+
+@Component({
+  name: 'ActivityInfoDetail',
+  components: {},
+  mixins: [RightComponent],
+})
+
+export default class ActivityInfoDetail extends Vue {
+  labelPosition: string = 'right';
+  dialogEditSubsidyVisible: boolean = false;
+  isAgree: boolean = true;
+  editDomainInfo: EditDomain = {editDomainId: 0, editDomainType: 0};
+  subsidy: SubsidyType = {subsidyTypeId: 0};
+  info: SubsidyActivityInfo = {subsidyActivityId: 0, subsidyInfoList: []};
+  title: string = '';
+
+  closeDialog() {
+    this.dialogEditSubsidyVisible = false;
+    this.editDomainInfo = {editDomainId: 0, editDomainType: 0};
   }
 
-  @Component({
-    name: 'ActivityInfoDetail',
-    components: {},
-    mixins: [RightComponent],
-  })
-
-  export default class ActivityInfoDetail extends Vue {
-    labelPosition: string = 'right';
-    dialogEditSubsidyVisible: boolean = false;
-    isAgree: boolean = true;
-    editDomainInfo: EditDomain = {editDomainId: 0, editDomainType: 0};
-    subsidy: SubsidyType = {subsidyTypeId: 0};
-    info: SubsidyActivityInfo = {subsidyActivityId: 0, subsidyInfoList: []};
-    title: string = '';
-
-    closeDialog() {
-      this.dialogEditSubsidyVisible = false;
-      this.editDomainInfo = {editDomainId: 0, editDomainType: 0};
-    }
-
-    handleEditSubsidy(activityId: number, row: SubsidyType) {
-      this.title = '修改津贴';
-      this.dialogEditSubsidyVisible = true;
-      this.editDomainInfo = {editDomainId: row.subsidyTypeId, editDomainType: 1};
-      try {
-        // @ts-ignore
-        // debugger
-        getSubsidDetail(activityId, row.subsidyTypeId).then((response: AxiosResponse<ResponseResult<SubsidyType>>) => {
-          const responseData = response.data.data;
-          console.log(responseData);
-          this.subsidy = responseData;
-          if (this.subsidy && this.subsidy.money) {
-            this.subsidy.money = parseFloat((this.subsidy.money / 100).toFixed(2));
-          }
-        }).catch(handlerCommonError);
-      } catch (e) {
-      }
-    }
-
-    submitForm(activityId: number, row: SubsidyType) {
+  handleEditSubsidy(activityId: number, row: SubsidyType) {
+    this.title = '修改津贴';
+    this.dialogEditSubsidyVisible = true;
+    this.editDomainInfo = {editDomainId: row.subsidyTypeId, editDomainType: 1};
+    try {
       // @ts-ignore
-      editSubsidy(activityId, this.editDomainInfo.editDomainId, row.typeName, row.sendNum).then((response: AxiosResponse<ResponseResult<boolean>>) => {
-        if (response.data.success && response.data.data) {
-          this.dialogEditSubsidyVisible = false;
-          this.realFetchData();
+      // debugger
+      getSubsidDetail(activityId, row.subsidyTypeId).then((response: AxiosResponse<ResponseResult<SubsidyType>>) => {
+        const responseData = response.data.data;
+        console.log(responseData);
+        this.subsidy = responseData;
+        if (this.subsidy && this.subsidy.money) {
+          this.subsidy.money = parseFloat((this.subsidy.money / 100).toFixed(2));
         }
       }).catch(handlerCommonError);
+    } catch (e) {
     }
+  }
 
-    // 提交审核 - 弹窗
-    submitAuditActivity(row: SubsidyActivityInfo): void {
-      this.$confirm('确认提交审核吗?', '提示', {
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }).then(async () => {
-        // 提交审核
-        const {data} = await toAuditActivity(row.subsidyActivityId);
-        this.$message({
-          type: 'success',
-          message: '提交审核成功',
-        });
-        // @ts-ignore
+  submitForm(activityId: number, row: SubsidyType) {
+    // @ts-ignore
+    editSubsidy(activityId, this.editDomainInfo.editDomainId, row.typeName, row.sendNum).then((response: AxiosResponse<ResponseResult<boolean>>) => {
+      if (response.data.success && response.data.data) {
+        this.dialogEditSubsidyVisible = false;
+        this.realFetchData();
+      }
+    }).catch(handlerCommonError);
+  }
+
+  // 提交审核 - 弹窗
+  submitAuditActivity(row: SubsidyActivityInfo): void {
+    this.$confirm('确认提交审核吗?', '提示', {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(async () => {
+      // 提交审核
+      const {data} = await toAuditActivity(row.subsidyActivityId);
+      this.$message({
+        type: 'success',
+        message: '提交审核成功',
+      });
+      // @ts-ignore
+      this.$router.push({path: 'subsidy-activity-list'});
+    }, async () => {
+    }).catch(handlerCommonError);
+  }
+
+  // 下线活动 - 弹窗
+  offlineActivity(row: SubsidyActivityInfo): void {
+    this.$confirm('确认下线该活动吗?', '提示', {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(async () => {
+      // 下线活动
+      const {data} = await offlineActivity(row.subsidyActivityId);
+      this.$message({
+        type: 'success',
+        message: '下线活动成功',
+      });
+      // @ts-ignore
+      this.$router.push({path: 'subsidy-activity-list'});
+    }, async () => {
+    }).catch(handlerCommonError);
+  }
+
+  // 审核活动 - 弹窗
+  auditActivity(row: SubsidyActivityInfo): void {
+    this.title = '审核活动';
+    this.dialogEditSubsidyVisible = true;
+    this.editDomainInfo = {editDomainId: row.subsidyActivityId, editDomainType: 2};
+  }
+
+  doAuditActivityInfo(activityId: number, isAgree: boolean): void {
+    auditActivity(activityId, isAgree).then((response: AxiosResponse<ResponseResult<boolean>>) => {
+      if (response.data.success && response.data.data) {
+        this.dialogEditSubsidyVisible = false;
         this.$router.push({path: 'subsidy-activity-list'});
-      }, async () => {
-      }).catch(handlerCommonError);
-    }
+      }
+    }).catch(handlerCommonError);
+  }
 
-    // 下线活动 - 弹窗
-    offlineActivity(row: SubsidyActivityInfo): void {
-      this.$confirm('确认下线该活动吗?', '提示', {
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }).then(async () => {
-        // 下线活动
-        const {data} = await offlineActivity(row.subsidyActivityId);
-        this.$message({
-          type: 'success',
-          message: '下线活动成功',
-        });
-        // @ts-ignore
-        this.$router.push({path: 'subsidy-activity-list'});
-      }, async () => {
-      }).catch(handlerCommonError);
-    }
-
-    // 审核活动 - 弹窗
-    auditActivity(row: SubsidyActivityInfo): void {
-      this.title = '审核活动';
-      this.dialogEditSubsidyVisible = true;
-      this.editDomainInfo = {editDomainId: row.subsidyActivityId, editDomainType: 2};
-    }
-
-    doAuditActivityInfo(activityId: number, isAgree: boolean): void {
-      auditActivity(activityId, isAgree).then((response: AxiosResponse<ResponseResult<boolean>>) => {
-        if (response.data.success && response.data.data) {
-          this.dialogEditSubsidyVisible = false;
-          this.$router.push({path: 'subsidy-activity-list'});
-        }
-      }).catch(handlerCommonError);
-    }
-
-    realFetchData() {
-      const x = parseInt(this.$route.query.id, 0);
-      if (x != null) {
-        this.info.subsidyActivityId = x;
-        getActivityDetail(x).then((response: AxiosResponse<ResponseResult<SubsidyActivityInfo>>) => {
-          const responseData = response.data.data;
-          console.log(responseData);
-          this.info = responseData;
-          if (this.info && this.info.subsidyInfoList) {
-            for (const subsidy of this.info.subsidyInfoList) {
-              if (subsidy && subsidy.money) {
-                subsidy.money = parseFloat((subsidy.money / 100).toFixed(2));
-              }
+  realFetchData() {
+    const x = parseInt(this.$route.query.id, 0);
+    if (x != null) {
+      this.info.subsidyActivityId = x;
+      getActivityDetail(x).then((response: AxiosResponse<ResponseResult<SubsidyActivityInfo>>) => {
+        const responseData = response.data.data;
+        console.log(responseData);
+        this.info = responseData;
+        if (this.info && this.info.subsidyInfoList) {
+          for (const subsidy of this.info.subsidyInfoList) {
+            if (subsidy && subsidy.money) {
+              subsidy.money = parseFloat((subsidy.money / 100).toFixed(2));
             }
           }
-        }).catch(handlerCommonError);
-      }
+        }
+      }).catch(handlerCommonError);
     }
-
-    created() {
-      try {
-        // @ts-ignore
-        // debugger
-        this.realFetchData();
-      } catch (e) {
-      }
-    }
-
   }
 
+  created() {
+    try {
+      // @ts-ignore
+      // debugger
+      this.realFetchData();
+    } catch (e) {
+    }
+  }
 
+}
 </script>
 
 <style scoped>

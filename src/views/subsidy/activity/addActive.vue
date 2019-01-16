@@ -92,7 +92,7 @@ import {AxiosResponse} from 'axios';
 // @ts-ignore
 import qs from 'qs';
 import {handlerCommonError} from '../../../utils/auth-interceptor';
-import RightComponent from "@/components/RightComponent";
+import RightComponent from '@/components/RightComponent';
 
 @Component({
   components: {},
