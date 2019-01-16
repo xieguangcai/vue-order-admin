@@ -180,10 +180,10 @@ export default class BaseMoviesIqiyiOrderBaseDetail extends Vue {
     return clientTypeToName(code);
   }
 
-  get orderSource(): BaseOrderSource {
+  get orderSource(): BaseOrderSource | undefined {
     return this.domainInfo.baseOrderSource;
   }
-  get orderProduct(): BaseOrderProducts {
+  get orderProduct(): BaseOrderProducts | undefined {
     return this.domainInfo.orderProduct;
 
   }
