@@ -73,7 +73,7 @@
       <el-button type="primary" @click="$router.push({path: 'subsidy-activity-list'})">返回</el-button>
     </div>
 
-    <el-dialog :title="title" :visible.sync="dialogEditSubsidyVisible" :append-to-body="true"
+    <el-dialog :title="title" :visible.sync="dialogEditSubsidyVisible" :append-to-body="true" :close-on-click-modal="false"
                :modal-append-to-body="false" width="55%" @close="editDomainInfo.editDomainId = 0">
       <template v-if="this.editDomainInfo.editDomainType === 1">
         <el-form :label-position="labelPosition" label-width="120px" :subsidy="info">

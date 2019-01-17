@@ -117,13 +117,13 @@
                         :total="total" slot="page"></search-page-pane>
 
       <el-dialog :title="title" :visible.sync="dialogActivityInfoActionVisible" :append-to-body="true"
-                 :modal-append-to-body="false" width="55%"
+                 :modal-append-to-body="false" :close-on-click-modal="false" width="55%"
                  @close="editDomainInfo.editDomainId = 0; editDomainInfo.editDomainType = 0">
         <template v-if="this.editDomainInfo.editDomainType === 1">
           <div class="addActiveClass">
             <div class="title">活动信息</div>
             <el-form ref="EditActivityInfo" label-width="120px">
-              <el-form-item label="活动标题" prop="name" required>
+              <el-form-item label="活动标题" prop="name" required style="margin-bottom: 0px;">
                 <el-input v-model="info.name"></el-input>
               </el-form-item>
               <el-form-item label="" prop="" style="margin-bottom: 0px;">
@@ -167,11 +167,11 @@
                 </el-col>
               </el-form-item>
               <el-form-item label="" prop="" style="margin-bottom: 0px;">
-                <el-col style="color: #d3dce6;">
+                <el-col style="color: #d3dce6; font-size: 12px;">
                   注：从起始日期0时到结束日期24时；且不早于活动开始日期、不晚于活动结束日期
                 </el-col>
               </el-form-item>
-              <el-form-item label="活动说明" prop="memo">
+              <el-form-item label="活动说明" prop="memo" style="margin-bottom: 0px;">
                 <el-input type="textarea" v-model="info.memo"></el-input>
               </el-form-item>
               <el-form-item label="" prop="" style="margin-bottom: 0px;">
@@ -179,7 +179,7 @@
                   注：活动说明最多50个字符
                 </el-col>
               </el-form-item>
-              <el-form-item style="margin-top: 30px">
+              <el-form-item style="margin-top: 20px">
                 <el-button type="primary" @click="submitForm(info)" v-if="checkUserRole('SUBSIDY_ROLE_EDIT')">保存
                 </el-button>
                 <el-button @click="closeDialog()">取消</el-button>
@@ -413,7 +413,7 @@ export default class ActivityInfoList extends Vue {
 
 <style scoped>
   .addActiveClass {
-    margin: 30px 50px;
+    margin: 0px 50px;
     width: 40vw;
   }
 
