@@ -551,7 +551,7 @@ export default class NativeViewEdit extends Vue {
   newComFromType(type: UiItemType): UiItemData {
     // 根据不同
     // 'COMMON'|'TEXT'| 'IMAGE'| 'BUTTON'| 'TEXT_VERSION'|'IMAGE_QR_CODE'|'COMMON_LOGIN_BY_MOBILE'
-    const itemData : UiItemData = {
+    const itemData: UiItemData = {
       type,
       w: 200,
       h: 60,
@@ -586,7 +586,7 @@ export default class NativeViewEdit extends Vue {
         itemData.bgColor = '';
         break;
       case 'TEXT_VERSION':
-        itemData.text ='新添加的组件';
+        itemData.text = '新添加的组件';
         itemData.size = 16;
         itemData.w = 400;
         itemData.h = 40;
