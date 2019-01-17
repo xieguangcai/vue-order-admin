@@ -551,15 +551,12 @@ export default class NativeViewEdit extends Vue {
   newComFromType(type: UiItemType): UiItemData {
     // 根据不同
     // 'COMMON'|'TEXT'| 'IMAGE'| 'BUTTON'| 'TEXT_VERSION'|'IMAGE_QR_CODE'|'COMMON_LOGIN_BY_MOBILE'
-    const itemData = {
+    const itemData : UiItemData = {
       type,
       w: 200,
       h: 60,
       x: 100,
       y: 100,
-      text: '新添加的组件',
-      size: 16,
-      color: '',
       bold: false,
       isBG: false,
       imgUrl: '',
@@ -569,7 +566,6 @@ export default class NativeViewEdit extends Vue {
       focusImgMd5: '',
       focusImgName: '',
       clickAction: '',
-      bgColor: '',
     };
     switch (type) {
       case 'IMAGE':
@@ -587,14 +583,15 @@ export default class NativeViewEdit extends Vue {
         itemData.h = 742;
         itemData.y = 169;
         itemData.x = 600;
-        itemData.bgColor = 'rgba(48, 48, 48, 1)';
+        itemData.bgColor = '';
         break;
       case 'TEXT_VERSION':
+        itemData.text ='新添加的组件';
+        itemData.size = 16;
         itemData.w = 400;
         itemData.h = 40;
         itemData.x = 20;
         itemData.y = 1040;
-        itemData.size = 12;
         itemData.color = 'rgba(255, 255, 255, 1)';
         break;
       case 'BUTTON':
