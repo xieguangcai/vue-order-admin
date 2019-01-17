@@ -31,7 +31,7 @@ export function thereAreNotEmpty(...str: string[]): boolean {
  * 任何一个不为空
  * @param str
  */
-export function anyNotEmpty(...str: (string | undefined) []): boolean {
+export function anyNotEmpty(...str: Array<string | undefined>): boolean {
   return str.some((val) => isNotEmpty(val));
 }
 
