@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <keep-alive :include="['NewNativeLayout','EditNativeLayout']">
+    <keep-alive :include="['NewNativeLayout','EditNativeLayout', 'AddActivityInfo', 'ActivityInfoDetail', 'SubsidyAdd', 'ActivityInfoList']">
       <router-view></router-view>
     </keep-alive>
   </div>

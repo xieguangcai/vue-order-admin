@@ -235,6 +235,7 @@ interface EditDomain {
 }
 
 @Component({
+  name: 'ActivityInfoList',
   components: {ListTablePane, SearchPane, SearchPagePane},
   filters: {
     NumFormat(value: number) {
