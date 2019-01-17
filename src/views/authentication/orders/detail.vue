@@ -185,7 +185,6 @@ export default class BaseMoviesIqiyiOrderBaseDetail extends Vue {
   }
   get orderProduct(): BaseOrderProducts | undefined {
     return this.domainInfo.orderProduct;
-
   }
 
   orderTypeToName(code: number) {
