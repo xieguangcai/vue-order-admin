@@ -482,6 +482,20 @@ export interface CardInfoListQuery extends IPageinfo {
   mac?: string;
   usedDate?: string[];
 }
+
+export interface AutomaticDeductionIframe {
+  id: number;
+  appCode?: string;
+  status?: number;
+  scene?: string;
+  closeButton?: string;
+  closeButtonFocus?: string;
+  cancelButton?: string;
+  cancelButtonFocus?: string;
+  background?: string;
+  modifyTime?: string;
+}
+
 // ------------pay------------
 
 

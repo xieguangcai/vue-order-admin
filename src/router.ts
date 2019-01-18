@@ -129,6 +129,12 @@ export default new Router({
           component: () => import(/* webpackChunkName: "account-info-detail" */ '@/views/passport/user/detail.vue'),
           meta: {title: '账号信息', icon: 'user', roles: ['ROLE_VIEW', 'VIEW_USER_INFO']},
         },
+        {
+          path: 'autimatic-deduction-iframe',
+          name: '挽留弹窗',
+          component: () => import(/* webpackChunkName: "oss-retaining-window" */ '@/views/pay/Autimatic-deduction-iframe/index.vue'),
+          meta: {title: '挽留弹窗', icon: 'layout1'},
+        },
       ],
     }, {
       path: '/passport',
