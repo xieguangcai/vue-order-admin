@@ -103,21 +103,13 @@ import RightComponent from '@/components/RightComponent';
 export default class AddActivityInfo extends Vue {
   name: string = 'addActive';
   data: SubsidyActivityInfo = {subsidyActivityId: 0, subsidyInfoList: []};
- /* rules: {
-    name: [
-      { required: true, message: '请输入活动名称', trigger: 'blur' },
-      { min: 1, max: 12, message: '长度在 1 到 12 个字符', trigger: 'blur' }
-      ],
-    date1: [
-      { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-      ],
-    date2: [
-      { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
-      ],
-    desc: [
-      { message: '请填写活动形式', trigger: 'blur' }
-      ]
-  };*/
+
+  domainId: number = 0;
+  activated() {
+    if (this.domainId !== 0) {
+      this.domainId = 0;
+    }
+  }
 
   addSubsidy() {
     if (this.data.subsidyInfoList) {

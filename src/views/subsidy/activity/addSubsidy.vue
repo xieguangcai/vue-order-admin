@@ -103,6 +103,13 @@ export default class SubsidyAdd extends Vue {
     } catch (e) {
     }
   }
+
+  domainId: number = 0;
+  activated() {
+    if (this.domainId !== 0) {
+      this.domainId = 0;
+    }
+  }
 }
 </script>
 
