@@ -496,6 +496,10 @@ export interface AutomaticDeductionIframe {
   modifyTime?: string;
 }
 
+export interface IframeListQuery extends IPageinfo {
+  searchValue?: string;
+}
+
 // ------------pay------------
 
 

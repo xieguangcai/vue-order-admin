@@ -135,6 +135,18 @@ export default new Router({
           component: () => import(/* webpackChunkName: "oss-retaining-window" */ '@/views/pay/Autimatic-deduction-iframe/index.vue'),
           meta: {title: '挽留弹窗', icon: 'layout1'},
         },
+        {
+          path: 'autimatic-deduction-iframe-detail',
+          name: '挽留弹窗详情',
+          component: () => import(/* webpackChunkName: "oss-retaining-window-detail" */ '@/views/pay/Autimatic-deduction-iframe/windowsDetail.vue'),
+          meta: {title: '挽留弹窗详情', icon: 'layout1', hidden: true},
+        },
+        {
+          path: 'add-autimatic-deduction-iframe',
+          name: '新增挽留弹窗',
+          component: () => import(/* webpackChunkName: "add-oss-retaining-window" */ '@/views/pay/Autimatic-deduction-iframe/new-iframe.vue'),
+          meta: {title: '新增挽留弹窗', icon: 'form', hidden: true},
+        },
       ],
     }, {
       path: '/passport',
