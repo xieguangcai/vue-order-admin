@@ -202,7 +202,7 @@ export function editAutomaticDeductionIframe(data: AutomaticDeductionIframe): Ax
 
 export function deleteAutomaticDeductionIframe(ids: Array<number | undefined>) {
   return request({
-    url : '/pay/automatic-deduction-iframe/view/delete',
+    url : '/pay/automatic-deduction-iframe/delete',
     method: 'get',
     params: {ids},
     paramsSerializer(p: any) {

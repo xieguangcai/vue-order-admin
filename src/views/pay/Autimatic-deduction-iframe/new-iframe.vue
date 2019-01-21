@@ -28,7 +28,8 @@
   import {AxiosResponse} from 'axios';
   import {handlerCommonError} from '../../../utils/auth-interceptor';
   import {
-    getAutomaticDeductionIframeDetail}
+    getAutomaticDeductionIframeDetail,
+    addAutomaticDeductionIframe}
     from '../../../api/pay';
   import RightComponent from "../../../components/RightComponent";
   import {AppModule} from "../../../store/modules/app";

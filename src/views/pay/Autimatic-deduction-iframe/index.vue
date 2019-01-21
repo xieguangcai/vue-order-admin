@@ -105,10 +105,13 @@
   import BaseList from '../../../components/BaseList';
   import {
     getAutomaticDeductionIframeList,
-    getAutomaticDeductionIframeDetail}
+    getAutomaticDeductionIframeDetail,
+    deleteAutomaticDeductionIframe,
+    editAutomaticDeductionIframe}
     from '../../../api/pay';
   import BaseTableDelete from "../../../components/BaseTableDelete";
   import RightComponent from "../../../components/RightComponent";
+  import BaseTableDelete from '@/components/BaseTableDelete';
   @Component({
     name: 'autimaticDeductionIframeList',
     components: {ListTablePane, SearchPane, SearchPagePane},
@@ -136,6 +139,30 @@
 
     addIframe() {
       this.$router.push({path:'add-autimatic-deduction-iframe'});
+    }
+
+    handleDelRows(row: AutomaticDeductionIframe[]) {
+        debugger;
+      if (row.length === 0) {
+        return;
+      }
+      const rowsId: Array<number | undefined> = [];
+      row.forEach((item) => rowsId.push(item.id));
+      this.$confirm('确认永久删除该活动信息吗?', '提示', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(async () => {
+        // 删除
+        const {data} = await deleteAutomaticDeductionIframe(rowsId);
+        this.$message({
+          type: 'success',
+          message: '删除成功',
+        });
+        // @ts-ignore
+        this.realFetchData();
+      }, async () => {
+      }).catch(handlerCommonError);
     }
 
     handleViewWindowsDetail(index: number, row: AutomaticDeductionIframe) {
