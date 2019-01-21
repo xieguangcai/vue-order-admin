@@ -484,7 +484,7 @@ export interface CardInfoListQuery extends IPageinfo {
 }
 
 export interface AutomaticDeductionIframe {
-  id: number;
+  id?: number;
   appCode?: string;
   status?: number;
   scene?: string;
@@ -493,6 +493,7 @@ export interface AutomaticDeductionIframe {
   cancelButton?: string;
   cancelButtonFocus?: string;
   background?: string;
+  modifyBy?: string;
   modifyTime?: string;
 }
 

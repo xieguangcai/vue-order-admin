@@ -186,7 +186,7 @@ export function getAutomaticDeductionIframeDetail(id: number): AxiosPromise<Resp
 
 export function addAutomaticDeductionIframe(data: AutomaticDeductionIframe): AxiosPromise<ResponseResult<boolean>> {
   return request({
-    url : '/pay/automatic-deduction-iframe/view/add',
+    url : '/pay/automatic-deduction-iframe/add',
     method: 'post',
     data,
   });
@@ -194,7 +194,7 @@ export function addAutomaticDeductionIframe(data: AutomaticDeductionIframe): Axi
 
 export function editAutomaticDeductionIframe(data: AutomaticDeductionIframe): AxiosPromise<ResponseResult<boolean>> {
   return request({
-    url : '/pay/automatic-deduction-iframe/view/edit',
+    url : '/pay/automatic-deduction-iframe/edit',
     method: 'post',
     data,
   });

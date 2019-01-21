@@ -117,10 +117,10 @@
     components: {ListTablePane, SearchPane, SearchPagePane},
     filters: {
       windowsStatus(value: number) {
-        if (value === 1) {
-          return '下线';
-        } else if (value === 2) {
-          return '上线';
+        if (value === 0) {
+          return '未使用';
+        } else if (value === 1) {
+          return '使用中';
         }
       },
     },
