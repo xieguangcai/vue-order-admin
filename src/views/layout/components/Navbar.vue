@@ -1,7 +1,7 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
     <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
-    <div class="cc-company">深圳市酷开网络科技有线公司</div>
+    <div class="cc-company">深圳市酷开网络科技有限公司</div>
     <breadcrumb />
     <div class="cc-name">{{ userName }}</div>
     <el-dropdown class="avatar-container" trigger="click">
