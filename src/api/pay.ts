@@ -7,6 +7,7 @@ import {
   Pageable,
   ResponseResult, StatusInfo,
   UserInfoFull,
+  AutomaticDeductionIframe, SubsidyActivityInfo,
 } from '@/types';
 // @ts-ignore
 import qs from 'qs';
@@ -156,3 +157,68 @@ export function payExpOrderInfo(payExpId: number): AxiosPromise<ResponseResult<s
     },
   });
 }
+
+
+/**
+ * --------------------pay挽留弹窗相关接口-------------------------
+ */
+export function getAutomaticDeductionIframeList(): AxiosPromise<ResponseResult<Pageable<AutomaticDeductionIframe>>> {
+  return request({
+    url: '/pay/automatic-deduction-iframe/view/list',
+    method: 'get',
+
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
+
+export function getAutomaticDeductionIframeDetail(id: number): AxiosPromise<ResponseResult<AutomaticDeductionIframe>> {
+  return request({
+    url: '/pay/automatic-deduction-iframe/view/detail',
+    method: 'get',
+    params: {id},
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
+
+export function addAutomaticDeductionIframe(data: AutomaticDeductionIframe): AxiosPromise<ResponseResult<boolean>> {
+  return request({
+    url : '/pay/automatic-deduction-iframe/add',
+    method: 'post',
+    data,
+  });
+}
+
+export function editAutomaticDeductionIframe(data: AutomaticDeductionIframe): AxiosPromise<ResponseResult<boolean>> {
+  return request({
+    url : '/pay/automatic-deduction-iframe/edit',
+    method: 'post',
+    data,
+  });
+}
+
+export function deleteAutomaticDeductionIframe(ids: Array<number | undefined>) {
+  return request({
+    url : '/pay/automatic-deduction-iframe/delete',
+    method: 'get',
+    params: {ids},
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
+
+// export function toAuditIframe(id: number) {
+//   return request({
+//     url : '/pay/automatic-deduction-iframe/view/delete',
+//     method: 'get',
+//     params: {id},
+//     paramsSerializer(p: any) {
+//       return qs.stringify(p, {arrayFormat: 'repeat'});
+//     },
+//   });
+// }
+
