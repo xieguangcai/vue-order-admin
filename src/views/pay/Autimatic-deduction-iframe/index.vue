@@ -42,27 +42,42 @@
         </el-table-column>
         <el-table-column label="背景图">
           <template slot-scope="scope">
+            <img :src="scope.row.background">
             {{ scope.row.background }}
           </template>
         </el-table-column>
         <el-table-column label="关闭按钮">
           <template slot-scope="scope">
+            <img :src="scope.row.closeButton">
             {{ scope.row.closeButton }}
           </template>
         </el-table-column>
         <el-table-column label="关闭按钮获焦">
           <template slot-scope="scope">
+            <img :src="scope.row.closeButtonFocus">
             {{ scope.row.closeButtonFocus }}
           </template>
         </el-table-column>
         <el-table-column label="取消按钮">
           <template slot-scope="scope">
+            <img :src="scope.row.cancelButton">
             {{ scope.row.cancelButton }}
           </template>
         </el-table-column>
         <el-table-column label="取消按钮获焦">
           <template slot-scope="scope">
+            <img :src="scope.row.cancelButtonFocus">
             {{ scope.row.cancelButtonFocus }}
+          </template>
+        </el-table-column>
+        <el-table-column label="修改人员">
+          <template slot-scope="scope">
+            {{ scope.row.modifyBy }}
+          </template>
+        </el-table-column>
+        <el-table-column label="最后修改时间">
+          <template slot-scope="scope">
+            {{ scope.row.modifyTime }}
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="120px">
@@ -71,17 +86,17 @@
               <el-button type="primary" size="mini" circle icon="el-icon-view"
                          @click="handleViewWindowsDetail(scope.$index, scope.row)"></el-button>
             </el-tooltip>
-            <el-tooltip content="编辑" v-if="(scope.row.status === 1)">
+            <el-tooltip content="编辑" v-if="(scope.row.status === 0)">
               <el-button type="warning" size="mini" circle icon="el-icon-edit"
                          @click="handleEditLayoutDetail(scope.$index, scope.row)"></el-button>
             </el-tooltip>
-            <el-tooltip content="上线" v-if="(scope.row.status === 1)">
+            <el-tooltip content="上线" v-if="(scope.row.status === 0)">
               <el-button type="warning" size="mini" circle icon="el-icon-upload2"
-                         @click="handleCopy(scope.$index, scope.row)"></el-button>
+                         @click="handleAudit(scope.$index, scope.row)"></el-button>
             </el-tooltip>
-            <el-tooltip content="下线" v-if="(scope.row.status === 2)">
+            <el-tooltip content="下线" v-if="(scope.row.status === 1)">
               <el-button type="warning" size="mini" circle icon="el-icon-download"
-                         @click="handleCopy(scope.$index, scope.row)"></el-button>
+                         @click="handleRepeal(scope.$index, scope.row)"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -107,7 +122,10 @@
     getAutomaticDeductionIframeList,
     getAutomaticDeductionIframeDetail,
     deleteAutomaticDeductionIframe,
-    editAutomaticDeductionIframe}
+    editAutomaticDeductionIframe,
+    toAuditIframe,
+    toRepealIframe
+  }
     from '../../../api/pay';
   import BaseTableDelete from "../../../components/BaseTableDelete";
   import RightComponent from "../../../components/RightComponent";
@@ -138,7 +156,7 @@
     // }
 
     addIframe() {
-      this.$router.push({path:'add-autimatic-deduction-iframe'});
+      this.$router.push({path:'add-autimatic-deduction-iframe', query: {viewModel: 'add'}});
     }
 
     handleDelRows(row: AutomaticDeductionIframe[]) {
@@ -167,6 +185,19 @@
 
     handleViewWindowsDetail(index: number, row: AutomaticDeductionIframe) {
       this.$router.push({path: 'autimatic-deduction-iframe-detail', query: {id: '' + row.id}});
+    }
+
+    handleEditLayoutDetail(index: number, row: AutomaticDeductionIframe) {
+      this.$router.push({path: 'add-autimatic-deduction-iframe', query: {viewModel: 'edit',id: '' + row.id}});
+    }
+
+    handleAudit(index: number, row: AutomaticDeductionIframe) {
+        debugger;
+      toAuditIframe(row.id).then((response: AxiosResponse<ResponseResult<boolean>>) => {
+        if (response.data.success && response.data.data) {
+          console.log(response.data.data);
+        }
+      }).catch(handlerCommonError)
     }
 
     realFetchData() {
