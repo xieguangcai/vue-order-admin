@@ -72,6 +72,8 @@ export default class SubsidyAdd extends Vue {
 
   subsidy: SubsidyType = {subsidyTypeId: 0};
 
+  domainId: number = 0;
+
   submitForm(params: SubsidyActivityInfo, row: SubsidyType, type: number) {
     if (row && row.money) {
       row.money = row.money * 100;
@@ -103,8 +105,6 @@ export default class SubsidyAdd extends Vue {
     } catch (e) {
     }
   }
-
-  domainId: number = 0;
   activated() {
     if (this.domainId !== 0) {
       this.domainId = 0;

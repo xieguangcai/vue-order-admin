@@ -92,7 +92,7 @@
             </table>
           </el-collapse-item>
           <el-collapse-item title="订购产品信息" name="2">
-            <table class="cc-order-table cc-inline-title-table" cellpadding="0" cellspacing="0" >
+            <table class="cc-order-table cc-inline-title-table" cellpadding="0" cellspacing="0" v-if="orderProduct != null">
                 <tr>
                   <td>ErpCode</td>
                   <td>{{orderProduct.erpCode}}</td>
@@ -164,8 +164,8 @@ export default class BaseMoviesIqiyiOrderBaseDetail extends Vue {
   loadingData: boolean = false;
 
   dialogAccountDetilVisible: boolean = false;
-  activeNames: string[] = ['1'];
-  domainInfo: BaseMoviesIqiyiOrderBase = {id: 0};
+  activeNames: string[] = ['1', '2'];
+  domainInfo: BaseMoviesIqiyiOrderBase = {id: 0, orderNo: ''};
   accountDetailOpenId = '';
   loadOssDomain: boolean = true;
 
@@ -206,7 +206,7 @@ export default class BaseMoviesIqiyiOrderBaseDetail extends Vue {
   handleDomainIdhange(newVal: number | undefined, oldVal: number | undefined) {
     this.loadOssDomain = true;
     if (null == newVal || newVal === 0) {
-      this.domainInfo = {id: 0};
+      this.domainInfo = {id: 0, orderNo: ''};
     } else {
       this.loadingData = true;
       getBaseMoviesIqiyiOrderBaseDetail(this.domainId, this.searchHistoryModel).then((resolve) => {
