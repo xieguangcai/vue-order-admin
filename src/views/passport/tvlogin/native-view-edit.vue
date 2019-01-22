@@ -993,7 +993,7 @@ export default class NativeViewEdit extends Vue {
         y: 0,
         w: 1920,
         h: 1080,
-        imgUrl: 'http://pic1.win4000.com/wallpaper/4/59881599deed4.jpg',
+        imgUrl: '',
       },
       pageList: [{
         id: 1,
