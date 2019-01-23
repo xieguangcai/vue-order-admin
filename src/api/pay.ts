@@ -211,14 +211,47 @@ export function deleteAutomaticDeductionIframe(ids: Array<number | undefined>) {
   });
 }
 
-// export function toAuditIframe(id: number) {
-//   return request({
-//     url : '/pay/automatic-deduction-iframe/view/delete',
-//     method: 'get',
-//     params: {id},
-//     paramsSerializer(p: any) {
-//       return qs.stringify(p, {arrayFormat: 'repeat'});
-//     },
-//   });
-// }
+export function getAppCodeList(): AxiosPromise<ResponseResult<AutomaticDeductionIframe>> {
+  return request({
+    url: '/pay/automatic-deduction-iframe/list/app-code',
+    method: 'get',
+
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
+
+export function getScene(appCode: string): AxiosPromise<ResponseResult<AutomaticDeductionIframe>> {
+  return request({
+    url: '/pay/automatic-deduction-iframe/list/scene',
+    method: 'get',
+    params: {appCode},
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
+
+export function toAuditIframe(id: number) {
+  return request({
+    url : '/pay/automatic-deduction-iframe/audit',
+    method: 'get',
+    params: {id},
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
+
+export function toRepealIframe(id: number) {
+  return request({
+    url : '/pay/automatic-deduction-iframe/repeal',
+    method: 'get',
+    params: {id},
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
 
