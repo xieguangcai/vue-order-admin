@@ -12,7 +12,7 @@
         </el-button-group>
 
         <search-pane slot="searchpane" @click="refetchData">
-          <el-input v-model="listQuery.searchValue" size="mini" placeholder="弹窗ID"></el-input>
+          <el-input v-model="listQuery.searchValue" size="mini" placeholder="appcode/scene"></el-input>
         </search-pane>
 
       <el-table v-loading="listLoading" :data="data"
@@ -114,7 +114,7 @@
   import SearchPane from '../../../components/SearchPane/index.vue';
   import SearchPagePane from '../../../components/SearchPagePane/index.vue';
   import ListTablePane from '../../../components/ListTablePane/index.vue';
-  import {AutomaticDeductionIframe, Pageable, ResponseResult, IframeListQuery} from '../../../types';
+  import {AutomaticDeductionIframe, Pageable, ResponseResult, SearchIframeModel} from '../../../types';
   import {AxiosResponse} from 'axios';
   import {handlerCommonError} from '../../../utils/auth-interceptor';
   import BaseList from '../../../components/BaseList';
@@ -146,7 +146,7 @@
   })
   export default class automaticDeductionIframeList extends Vue {
     data: AutomaticDeductionIframe[] = [];
-    listQuery: IframeListQuery = {page: 0, size: 50, total: 0};
+    listQuery: SearchIframeModel = {page: 0, size: 50, total: 0};
     // getViewContentName(scope: AutomaticDeductionIframe) {
     //   if ((scope.status === 1 || scope.status === 3)) {
     //     return '发布全网';
@@ -192,16 +192,47 @@
     }
 
     handleAudit(index: number, row: AutomaticDeductionIframe) {
-        debugger;
-      toAuditIframe(row.id).then((response: AxiosResponse<ResponseResult<boolean>>) => {
-        if (response.data.success && response.data.data) {
-          console.log(response.data.data);
-        }
-      }).catch(handlerCommonError)
+      this.$confirm('确认上线该弹窗吗?', '提示', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(async () => {
+        toAuditIframe(row.id).then((response: AxiosResponse<ResponseResult<boolean>>) => {
+          if (response.data.success && response.data.data) {
+            this.$message({
+              type: 'success',
+              message: '上线成功',
+            });
+            // @ts-ignore
+            this.realFetchData();
+          }
+        }).catch(handlerCommonError);
+      }, async () => {
+      }).catch(handlerCommonError);
+    }
+
+    handleRepeal(index: number, row: AutomaticDeductionIframe) {
+      this.$confirm('确认下线该弹窗吗?', '提示', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(async () => {
+        toRepealIframe(row.id).then((response: AxiosResponse<ResponseResult<boolean>>) => {
+          if (response.data.success && response.data.data) {
+            this.$message({
+              type: 'success',
+              message: '下线成功',
+            });
+            // @ts-ignore
+            this.realFetchData();
+          }
+        }).catch(handlerCommonError);
+      }, async () => {
+      }).catch(handlerCommonError);
     }
 
     realFetchData() {
-      return getAutomaticDeductionIframeList().then((response: AxiosResponse<ResponseResult<Pageable<AutomaticDeductionIframe>>>) => {
+      return getAutomaticDeductionIframeList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<AutomaticDeductionIframe>>>) => {
         debugger;
         const responseData = response.data.data;
         this.data = responseData.content;

@@ -7,7 +7,8 @@ import {
   Pageable,
   ResponseResult, StatusInfo,
   UserInfoFull,
-  AutomaticDeductionIframe, SubsidyActivityInfo,
+  AutomaticDeductionIframe,
+  SearchIframeModel
 } from '@/types';
 // @ts-ignore
 import qs from 'qs';
@@ -162,11 +163,11 @@ export function payExpOrderInfo(payExpId: number): AxiosPromise<ResponseResult<s
 /**
  * --------------------pay挽留弹窗相关接口-------------------------
  */
-export function getAutomaticDeductionIframeList(): AxiosPromise<ResponseResult<Pageable<AutomaticDeductionIframe>>> {
+export function getAutomaticDeductionIframeList(params: SearchIframeModel): AxiosPromise<ResponseResult<Pageable<AutomaticDeductionIframe>>> {
   return request({
     url: '/pay/automatic-deduction-iframe/view/list',
     method: 'get',
-
+    params,
     paramsSerializer(p: any) {
       return qs.stringify(p, {arrayFormat: 'repeat'});
     },

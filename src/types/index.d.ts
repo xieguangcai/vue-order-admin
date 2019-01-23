@@ -497,7 +497,7 @@ export interface AutomaticDeductionIframe {
   modifyTime?: string;
 }
 
-export interface IframeListQuery extends IPageinfo {
+export interface SearchIframeModel extends IPageinfo {
   searchValue?: string;
 }
 

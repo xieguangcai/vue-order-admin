@@ -273,4 +273,7 @@
     width: 40vw;
   }
 
+  .addWindows >>> .el-upload-dragger {
+    height: 160px;
+  }
 </style>
