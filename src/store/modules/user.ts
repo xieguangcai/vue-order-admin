@@ -55,8 +55,8 @@ class User extends VuexModule {
       });
       return {
         roles,
-        name: data.name,
-        avatar: data.avatar,
+        name: data.principal.name,
+        avatar: data.principal.avatar,
       };
     } else {
       throw Error('GetInfo: roles must be a non-null array!');
