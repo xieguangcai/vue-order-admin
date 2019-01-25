@@ -32,7 +32,7 @@
                         :on-success="(res,file)=>{return handleBgSuccess(res, file, editItem)}"
                         :on-error="uploadError"
                         list-type="picture-card">
-               <img v-if="editItem.background" :src="editItem.background" class="img">
+               <img v-if="editItem.background" :src="editItem.background" class="bgImg">
                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
              </el-upload>
@@ -274,6 +274,10 @@
   }
 
   .addWindows >>> .el-upload-dragger {
+    height: 160px;
+  }
+
+  .addWindows >>> .el-upload-dragger .bgImg{
     height: 160px;
   }
 </style>

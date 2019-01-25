@@ -498,7 +498,8 @@ export interface AutomaticDeductionIframe {
 }
 
 export interface SearchIframeModel extends IPageinfo {
-  searchValue?: string;
+  appCode?: string;
+  scene?: string;
 }
 
 // ------------pay------------

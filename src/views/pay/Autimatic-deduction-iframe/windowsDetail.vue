@@ -1,7 +1,7 @@
 <template>
-  <div :model="data">
-    <div>挽留弹窗详情</div>
-    <el-form>
+  <div :model="data" class="windows_detail">
+    <div class="title">挽留弹窗详情</div>
+    <el-form :label-position="labelPosition"  label-width="120px">
       <el-form-item label="id：">
         {{data.id}}
       </el-form-item>
@@ -9,19 +9,19 @@
         {{data.status}}
       </el-form-item>
       <el-form-item label="背景图：">
-        <img :src="data.background" class="img">
+        <img :src="data.background" class="bgImg">
       </el-form-item>
       <el-form-item label="关闭按钮：">
-        {{data.closeButton}}
+        <img :src="data.closeButton" class="img">
       </el-form-item>
       <el-form-item label="关闭按钮获焦：">
-        {{data.closeButtonFocus}}
+        <img :src="data.closeButtonFocus" class="img">
       </el-form-item>
       <el-form-item label="取消按钮：">
-        {{data.cancelButton}}
+        <img :src="data.cancelButton" class="img">
       </el-form-item>
       <el-form-item label="取消按钮获焦：">
-        {{data.cancelButtonFocus}}
+        <img :src="data.cancelButtonFocus" class="img">
       </el-form-item>
     </el-form>
   </div>
@@ -46,6 +46,7 @@
 
   export default class windowsDetail extends Vue{
     data: AutomaticDeductionIframe = {id: 0};
+    labelPosition: string = 'right';
 
 
     realFetchData() {
@@ -74,5 +75,23 @@
 </script>
 
 <style scoped>
+  .windows_detail{
+    margin: 50px;
+  }
+
+  .windows_detail .img{
+    width: 288px;
+    height: 77px;
+  }
+
+  .windows_detail .bgImg {
+    width: 1000px;
+    height: 630px;
+  }
+
+  .title {
+    margin: 30px;
+    font-weight: bold;
+  }
 
 </style>

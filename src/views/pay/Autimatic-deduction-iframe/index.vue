@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="windowsList">
       <list-table-pane>
 
         <el-button-group slot="action" class="cc-action-button-group">
@@ -12,7 +12,8 @@
         </el-button-group>
 
         <search-pane slot="searchpane" @click="refetchData">
-          <el-input v-model="listQuery.searchValue" size="mini" placeholder="appcode/scene"></el-input>
+          <el-input v-model="listQuery.appCode" size="mini" placeholder="请输入appCode"></el-input>
+          <el-input v-model="listQuery.scene" size="mini" placeholder="请输入scene"></el-input>
         </search-pane>
 
       <el-table v-loading="listLoading" :data="data"
@@ -42,32 +43,27 @@
         </el-table-column>
         <el-table-column label="背景图">
           <template slot-scope="scope">
-            <img :src="scope.row.background">
-            {{ scope.row.background }}
+            <img :src="scope.row.background" class="img">
           </template>
         </el-table-column>
         <el-table-column label="关闭按钮">
           <template slot-scope="scope">
-            <img :src="scope.row.closeButton">
-            {{ scope.row.closeButton }}
+            <img :src="scope.row.closeButton" class="img">
           </template>
         </el-table-column>
         <el-table-column label="关闭按钮获焦">
           <template slot-scope="scope">
-            <img :src="scope.row.closeButtonFocus">
-            {{ scope.row.closeButtonFocus }}
+            <img :src="scope.row.closeButtonFocus" class="img">
           </template>
         </el-table-column>
         <el-table-column label="取消按钮">
           <template slot-scope="scope">
-            <img :src="scope.row.cancelButton">
-            {{ scope.row.cancelButton }}
+            <img :src="scope.row.cancelButton" class="img">
           </template>
         </el-table-column>
         <el-table-column label="取消按钮获焦">
           <template slot-scope="scope">
-            <img :src="scope.row.cancelButtonFocus">
-            {{ scope.row.cancelButtonFocus }}
+            <img :src="scope.row.cancelButtonFocus" class="img">
           </template>
         </el-table-column>
         <el-table-column label="修改人员">
@@ -166,7 +162,7 @@
       }
       const rowsId: Array<number | undefined> = [];
       row.forEach((item) => rowsId.push(item.id));
-      this.$confirm('确认永久删除该活动信息吗?', '提示', {
+      this.$confirm('确认永久删除该弹窗信息吗?', '提示', {
         confirmButtonText: '确认',
         cancelButtonText: '取消',
         type: 'warning',
@@ -248,5 +244,8 @@
 </script>
 
 <style scoped>
+  .windowsList .img {
+    width: 80px;
+  }
 
 </style>

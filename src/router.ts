@@ -145,7 +145,7 @@ export default new Router({
           path: 'add-autimatic-deduction-iframe',
           name: '新增挽留弹窗',
           component: () => import(/* webpackChunkName: "add-oss-retaining-window" */ '@/views/pay/Autimatic-deduction-iframe/new-iframe.vue'),
-          meta: {title: '新增挽留弹窗', icon: 'form', hidden: true},
+          meta: {title: '新增/修改挽留弹窗', icon: 'form', hidden: true},
         },
       ],
     }, {
