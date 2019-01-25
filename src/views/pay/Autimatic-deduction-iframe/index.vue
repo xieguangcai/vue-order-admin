@@ -106,141 +106,127 @@
 </template>
 
 <script lang="ts">
-  import {Component, Vue, Watch} from 'vue-property-decorator';
-  import SearchPane from '../../../components/SearchPane/index.vue';
-  import SearchPagePane from '../../../components/SearchPagePane/index.vue';
-  import ListTablePane from '../../../components/ListTablePane/index.vue';
-  import {AutomaticDeductionIframe, Pageable, ResponseResult, SearchIframeModel} from '../../../types';
-  import {AxiosResponse} from 'axios';
-  import {handlerCommonError} from '../../../utils/auth-interceptor';
-  import BaseList from '../../../components/BaseList';
-  import {
-    getAutomaticDeductionIframeList,
-    getAutomaticDeductionIframeDetail,
-    deleteAutomaticDeductionIframe,
-    editAutomaticDeductionIframe,
-    toAuditIframe,
-    toRepealIframe
-  }
-    from '../../../api/pay';
-  import BaseTableDelete from "../../../components/BaseTableDelete";
-  import RightComponent from "../../../components/RightComponent";
-  import BaseTableDelete from '@/components/BaseTableDelete';
-  @Component({
-    name: 'autimaticDeductionIframeList',
-    components: {ListTablePane, SearchPane, SearchPagePane},
-    filters: {
-      windowsStatus(value: number) {
-        if (value === 0) {
-          return '未使用';
-        } else if (value === 1) {
-          return '使用中';
-        }
-      },
-    },
-    mixins: [BaseList, BaseTableDelete, RightComponent],
-  })
-  export default class automaticDeductionIframeList extends Vue {
-    data: AutomaticDeductionIframe[] = [];
-    listQuery: SearchIframeModel = {page: 0, size: 50, total: 0};
-    // getViewContentName(scope: AutomaticDeductionIframe) {
-    //   if ((scope.status === 1 || scope.status === 3)) {
-    //     return '发布全网';
-    //   } else {
-    //     return '查看';
-    //   }
-    // }
+import {Component, Vue} from 'vue-property-decorator';
+import SearchPane from '../../../components/SearchPane/index.vue';
+import SearchPagePane from '../../../components/SearchPagePane/index.vue';
+import ListTablePane from '../../../components/ListTablePane/index.vue';
+import {AutomaticDeductionIframe, Pageable, ResponseResult, SearchIframeModel} from '../../../types';
+import {AxiosResponse} from 'axios';
+import {handlerCommonError} from '../../../utils/auth-interceptor';
+import BaseList from '../../../components/BaseList';
+import {
+  getAutomaticDeductionIframeList,
+  deleteAutomaticDeductionIframe,
+  toAuditIframe,
+  toRepealIframe,
+} from '../../../api/pay';
 
-    addIframe() {
-      this.$router.push({path:'add-autimatic-deduction-iframe', query: {viewModel: 'add'}});
-    }
-
-    handleDelRows(row: AutomaticDeductionIframe[]) {
-        debugger;
-      if (row.length === 0) {
-        return;
+import RightComponent from '../../../components/RightComponent';
+import BaseTableDelete from '@/components/BaseTableDelete';
+@Component({
+  name: 'autimaticDeductionIframeList',
+  components: {ListTablePane, SearchPane, SearchPagePane},
+  filters: {
+    windowsStatus(value: number) {
+      if (value === 0) {
+        return '未使用';
+      } else if (value === 1) {
+        return '使用中';
       }
-      const rowsId: Array<number | undefined> = [];
+    },
+  },
+  mixins: [BaseList, BaseTableDelete, RightComponent],
+})
+export default class AutomaticDeductionIframeList extends Vue {
+  data: AutomaticDeductionIframe[] = [];
+  listQuery: SearchIframeModel = {page: 0, size: 50, total: 0};
+
+  addIframe() {
+    this.$router.push({path: 'add-autimatic-deduction-iframe', query: {viewModel: 'add'}});
+  }
+
+  handleDelRows(row: AutomaticDeductionIframe[]) {
+      if (row.length === 0) {
+      return;
+    }
+      const rowsId: Array<any> = [];
       row.forEach((item) => rowsId.push(item.id));
       this.$confirm('确认永久删除该弹窗信息吗?', '提示', {
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }).then(async () => {
-        // 删除
-        const {data} = await deleteAutomaticDeductionIframe(rowsId);
-        this.$message({
-          type: 'success',
-          message: '删除成功',
-        });
-        // @ts-ignore
-        this.realFetchData();
-      }, async () => {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(async () => {
+      // 删除
+      const {data} = await deleteAutomaticDeductionIframe(rowsId);
+      this.$message({
+        type: 'success',
+        message: '删除成功',
+      });
+      // @ts-ignore
+      this.realFetchData();
+    }, async () => {
+    }).catch(handlerCommonError);
+  }
+
+  handleViewWindowsDetail(index: number, row: AutomaticDeductionIframe) {
+    this.$router.push({path: 'autimatic-deduction-iframe-detail', query: {id: '' + row.id}});
+  }
+
+  handleEditLayoutDetail(index: number, row: AutomaticDeductionIframe) {
+    this.$router.push({path: 'add-autimatic-deduction-iframe', query: {viewModel: 'edit', id: '' + row.id}});
+  }
+
+  handleAudit(index: number, row: any) {
+    this.$confirm('确认上线该弹窗吗?', '提示', {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(async () => {
+      toAuditIframe(row.id).then((response: AxiosResponse<ResponseResult<boolean>>) => {
+        if (response.data.success && response.data.data) {
+          this.$message({
+            type: 'success',
+            message: '上线成功',
+          });
+          // @ts-ignore
+          this.realFetchData();
+        }
       }).catch(handlerCommonError);
-    }
+    }, async () => {
+    }).catch(handlerCommonError);
+  }
 
-    handleViewWindowsDetail(index: number, row: AutomaticDeductionIframe) {
-      this.$router.push({path: 'autimatic-deduction-iframe-detail', query: {id: '' + row.id}});
-    }
-
-    handleEditLayoutDetail(index: number, row: AutomaticDeductionIframe) {
-      this.$router.push({path: 'add-autimatic-deduction-iframe', query: {viewModel: 'edit',id: '' + row.id}});
-    }
-
-    handleAudit(index: number, row: AutomaticDeductionIframe) {
-      this.$confirm('确认上线该弹窗吗?', '提示', {
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }).then(async () => {
-        toAuditIframe(row.id).then((response: AxiosResponse<ResponseResult<boolean>>) => {
-          if (response.data.success && response.data.data) {
-            this.$message({
-              type: 'success',
-              message: '上线成功',
-            });
-            // @ts-ignore
-            this.realFetchData();
-          }
-        }).catch(handlerCommonError);
-      }, async () => {
+  handleRepeal(index: number, row: any) {
+    this.$confirm('确认下线该弹窗吗?', '提示', {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(async () => {
+      toRepealIframe(row.id).then((response: AxiosResponse<ResponseResult<boolean>>) => {
+        if (response.data.success && response.data.data) {
+          this.$message({
+            type: 'success',
+            message: '下线成功',
+          });
+          // @ts-ignore
+          this.realFetchData();
+        }
       }).catch(handlerCommonError);
-    }
+    }, async () => {
+    }).catch(handlerCommonError);
+  }
 
-    handleRepeal(index: number, row: AutomaticDeductionIframe) {
-      this.$confirm('确认下线该弹窗吗?', '提示', {
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }).then(async () => {
-        toRepealIframe(row.id).then((response: AxiosResponse<ResponseResult<boolean>>) => {
-          if (response.data.success && response.data.data) {
-            this.$message({
-              type: 'success',
-              message: '下线成功',
-            });
-            // @ts-ignore
-            this.realFetchData();
-          }
-        }).catch(handlerCommonError);
-      }, async () => {
-      }).catch(handlerCommonError);
-    }
-
-    realFetchData() {
-      return getAutomaticDeductionIframeList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<AutomaticDeductionIframe>>>) => {
-        debugger;
-        const responseData = response.data.data;
-        this.data = responseData.content;
-        console.log(this.data);
-        this.listQuery.page = responseData.number;
-        this.listQuery.size = responseData.size;
-        this.listQuery.total = responseData.totalElements;
-      }).catch(handlerCommonError);
-    }
-    }
-
-
+  realFetchData() {
+    return getAutomaticDeductionIframeList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<AutomaticDeductionIframe>>>) => {
+      const responseData = response.data.data;
+      this.data = responseData.content;
+      console.log(this.data);
+      this.listQuery.page = responseData.number;
+      this.listQuery.size = responseData.size;
+      this.listQuery.total = responseData.totalElements;
+    }).catch(handlerCommonError);
+  }
+  }
 </script>
 
 <style scoped>

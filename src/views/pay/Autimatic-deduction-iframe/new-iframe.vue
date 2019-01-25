@@ -18,6 +18,7 @@
                  v-for="(item,index) in senceItems"
                  :label="item[index]"
                  :value="item[index]"
+                 :key="item[index]"
                >
                </el-option>
              </el-select>
@@ -108,59 +109,56 @@
 </template>
 
 <script lang="ts">
-  import {Component, Vue, Watch} from 'vue-property-decorator';
-  import {AutomaticDeductionIframe, ResponseResult, UploadFileInfo} from '../../../types';
-  import {AxiosResponse} from 'axios';
-  import {handlerCommonError} from '../../../utils/auth-interceptor';
-  import {
+import {Component, Vue} from 'vue-property-decorator';
+import {AutomaticDeductionIframe, ResponseResult, UploadFileInfo} from '../../../types';
+import {AxiosResponse} from 'axios';
+import {handlerCommonError} from '../../../utils/auth-interceptor';
+import {
     getAutomaticDeductionIframeDetail,
     addAutomaticDeductionIframe,
     getAppCodeList,
     getScene,
-    editAutomaticDeductionIframe}
-    from '../../../api/pay';
-  import RightComponent from "../../../components/RightComponent";
-  import {AppModule} from "../../../store/modules/app";
-  import {Dictionary} from "vuex";
-  import {getFullToken} from "../../../utils/auth";
+    editAutomaticDeductionIframe,
+  } from '../../../api/pay';
+import RightComponent from '../../../components/RightComponent';
+import {AppModule} from '../../../store/modules/app';
+import {Dictionary} from 'vuex';
+import {getFullToken} from '../../../utils/auth';
 
-  @Component({
+@Component({
     name: 'windowsAdd',
     components: {},
     mixins: [RightComponent],
   })
-    export default class windowsAdd extends Vue {
-    editItem: AutomaticDeductionIframe ={id: 0};
+    export default class WindowsAdd extends Vue {
+    editItem: AutomaticDeductionIframe  = {id: 0};
     labelPosition: string = 'right';
-    items: string = [];
-    senceItems: string = [];
+    items: AutomaticDeductionIframe  = {id: 0};
+    senceItems: AutomaticDeductionIframe  = {id: 0};
     addModel: boolean = true ;
 
 
     handleCodeChange(newVal: string) {
-      debugger;
       this.getSceneInfo(newVal);
     }
 
-    getSceneInfo(val) {
+    getSceneInfo(val: any) {
       getScene(val).then((response: AxiosResponse<ResponseResult<AutomaticDeductionIframe>>) =>  {
         console.log(response.data.data);
         this.senceItems = response.data.data;
 //        this.editItem.scene = response.data.data[0];
-      }).catch(handlerCommonError)
+      }).catch(handlerCommonError);
     }
 
     getAppCode() {
       getAppCodeList().then((response: AxiosResponse<ResponseResult<AutomaticDeductionIframe>>) => {
         if (response.data.success && response.data.data) {
-            debugger;
           this.items = response.data.data;
         }
-      }).catch(handlerCommonError)
-    };
+      }).catch(handlerCommonError);
+   }
 
     submitForm(formName: AutomaticDeductionIframe ) {
-        debugger;
       addAutomaticDeductionIframe(this.editItem).then((response: AxiosResponse<ResponseResult<boolean>>) => {
         if (response.data.success && response.data.data) {
           this.$router.push({path: 'autimatic-deduction-iframe'});
@@ -169,7 +167,6 @@
     }
 
     submitEditForm(formName: AutomaticDeductionIframe ) {
-      debugger;
       editAutomaticDeductionIframe(this.editItem).then((response: AxiosResponse<ResponseResult<boolean>>) => {
         if (response.data.success && response.data.data) {
           this.$router.push({path: 'autimatic-deduction-iframe'});
@@ -179,15 +176,15 @@
 
     created() {
       const x = parseInt(this.$route.query.id, 0);
-        try  {
+      try  {
         const model = this.$route.query.viewModel;
         if (model === 'add') {
             console.log('新增模式');
             this.addModel = true;
-        }else{
+          } else {
             console.log('编辑模式');
-          this.addModel = false;
-          getAutomaticDeductionIframeDetail(x).then((response: AxiosResponse<ResponseResult<AutomaticDeductionIframe>>) => {
+            this.addModel = false;
+            getAutomaticDeductionIframeDetail(x).then((response: AxiosResponse<ResponseResult<AutomaticDeductionIframe>>) => {
             const responseData = response.data.data;
             console.log(responseData);
             this.editItem = responseData;
@@ -195,7 +192,7 @@
           }).catch(handlerCommonError);
         }
         this.getAppCode();
-        } catch(e) {
+        } catch (e) {
 
         }
     }
@@ -211,7 +208,6 @@
 
     handleBgSuccess(res: ResponseResult<UploadFileInfo>, file: any, editItem: AutomaticDeductionIframe) {
       console.log(res);
-      debugger;
       if (res.success) {
         editItem.background = res.data.url;
       } else {
@@ -221,7 +217,6 @@
 
     handleCloseSuccess(res: ResponseResult<UploadFileInfo>, file: any, editItem: AutomaticDeductionIframe) {
       console.log(res);
-      debugger;
       if (res.success) {
         editItem.closeButton = res.data.url;
       } else {
@@ -231,7 +226,6 @@
 
     handleCloseFocusSuccess(res: ResponseResult<UploadFileInfo>, file: any, editItem: AutomaticDeductionIframe) {
       console.log(res);
-      debugger;
       if (res.success) {
         editItem.closeButtonFocus = res.data.url;
       } else {
@@ -240,8 +234,6 @@
     }
 
     handleCancelSuccess(res: ResponseResult<UploadFileInfo>, file: any, editItem: AutomaticDeductionIframe) {
-      console.log(res);
-      debugger;
       if (res.success) {
         editItem.cancelButton = res.data.url;
       } else {
@@ -251,7 +243,6 @@
 
     handleCancelFocusSuccess(res: ResponseResult<UploadFileInfo>, file: any, editItem: AutomaticDeductionIframe) {
       console.log(res);
-      debugger;
       if (res.success) {
         editItem.cancelButtonFocus = res.data.url;
       } else {

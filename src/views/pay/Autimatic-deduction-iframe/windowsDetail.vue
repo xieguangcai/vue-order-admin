@@ -28,50 +28,49 @@
 </template>
 
 <script lang="ts">
-  import {Component, Vue, Watch} from 'vue-property-decorator';
-  import {AutomaticDeductionIframe,  ResponseResult} from '../../../types';
-  import {AxiosResponse} from 'axios';
-  import {handlerCommonError} from '../../../utils/auth-interceptor';
-  import {
-    getAutomaticDeductionIframeDetail}
-    from '../../../api/pay';
-  import RightComponent from "../../../components/RightComponent";
+import {Component, Vue, Watch} from 'vue-property-decorator';
+import {AutomaticDeductionIframe,  ResponseResult} from '../../../types';
+import {AxiosResponse} from 'axios';
+import {handlerCommonError} from '../../../utils/auth-interceptor';
+import {
+  getAutomaticDeductionIframeDetail,
+} from '../../../api/pay';
+import RightComponent from '../../../components/RightComponent';
 
-  @Component({
-    name: 'windowsDetail',
-    components: {},
-    mixins: [RightComponent],
-  })
-
-
-  export default class windowsDetail extends Vue{
-    data: AutomaticDeductionIframe = {id: 0};
-    labelPosition: string = 'right';
+@Component({
+  name: 'windowsDetail',
+  components: {},
+  mixins: [RightComponent],
+})
 
 
-    realFetchData() {
-      const x = parseInt(this.$route.query.id, 0);
-      if (x != null) {
-        this.data.id = x;
-        getAutomaticDeductionIframeDetail(x).then((response: AxiosResponse<ResponseResult<AutomaticDeductionIframe>>) => {
-          const responseData = response.data.data;
-          console.log(responseData);
-          this.data = responseData;
-        }).catch(handlerCommonError);
-      }
+export default class WindowsDetail extends Vue {
+  data: AutomaticDeductionIframe = {id: 0};
+  labelPosition: string = 'right';
+
+
+  realFetchData() {
+    const x = parseInt(this.$route.query.id, 0);
+    if (x != null) {
+      this.data.id = x;
+      getAutomaticDeductionIframeDetail(x).then((response: AxiosResponse<ResponseResult<AutomaticDeductionIframe>>) => {
+        const responseData = response.data.data;
+        console.log(responseData);
+        this.data = responseData;
+      }).catch(handlerCommonError);
     }
-
-    created() {
-      try {
-        // @ts-ignore
-        // debugger
-        this.realFetchData();
-      } catch (e) {
-      }
-    }
-
-
   }
+
+  created() {
+    try {
+      // @ts-ignore
+      this.realFetchData();
+    } catch (e) {
+    }
+  }
+
+
+}
 </script>
 
 <style scoped>

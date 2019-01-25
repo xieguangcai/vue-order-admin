@@ -8,7 +8,7 @@ import {
   ResponseResult, StatusInfo,
   UserInfoFull,
   AutomaticDeductionIframe,
-  SearchIframeModel
+  SearchIframeModel,
 } from '@/types';
 // @ts-ignore
 import qs from 'qs';
