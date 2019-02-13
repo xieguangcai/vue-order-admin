@@ -130,25 +130,40 @@ export default new Router({
           meta: {title: '账号信息', icon: 'user', roles: ['ROLE_VIEW', 'VIEW_USER_INFO']},
         },
         {
+          path: 'permissions',
+          name: '会员权益',
+          component: () => import(/* webpackChunkName: "add-oss-retaining-window" */ '@/views/authentication/order-permissions/index.vue'),
+          meta: {title: '查询会员权益', icon: 'form', hidden: false},
+        },
+      ],
+    },
+    {
+      path: '/oss',
+      component: Layout,
+      name: '解约挽留弹窗',
+      meta: {title: '解约挽留弹窗', icon: 'layout', roles: ['DEDUCTION_ROLE_VIEW']},
+      children: [
+        {
           path: 'autimatic-deduction-iframe',
           name: '挽留弹窗',
           component: () => import(/* webpackChunkName: "oss-retaining-window" */ '@/views/pay/Autimatic-deduction-iframe/index.vue'),
-          meta: {title: '挽留弹窗', icon: 'layout1'},
+          meta: {title: '挽留弹窗', icon: 'layout1',roles: ['DEDUCTION_ROLE_VIEW']},
         },
         {
           path: 'autimatic-deduction-iframe-detail',
           name: '挽留弹窗详情',
           component: () => import(/* webpackChunkName: "oss-retaining-window-detail" */ '@/views/pay/Autimatic-deduction-iframe/windowsDetail.vue'),
-          meta: {title: '挽留弹窗详情', icon: 'layout1', hidden: true},
+          meta: {title: '挽留弹窗详情', icon: 'layout1', hidden: true,roles: ['DEDUCTION_ROLE_VIEW']},
         },
         {
           path: 'add-autimatic-deduction-iframe',
           name: '新增挽留弹窗',
           component: () => import(/* webpackChunkName: "add-oss-retaining-window" */ '@/views/pay/Autimatic-deduction-iframe/new-iframe.vue'),
-          meta: {title: '新增/修改挽留弹窗', icon: 'form', hidden: true},
+          meta: {title: '新增/修改挽留弹窗', icon: 'form', hidden: true, roles: ['DEDUCTION_ROLE_EDIT']},
         },
-      ],
-    }, {
+      ]
+    },
+    {
       path: '/passport',
       component: Layout,
       name: '登录布局',

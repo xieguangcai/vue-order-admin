@@ -988,6 +988,28 @@ export interface BaseMoviesIqiyiOrderBaseListQuery extends IPageinfo {
   payTimes?: string[];
 }
 
+export interface OrderPermissionListQuery extends IPageinfo{
+  sourceType: string;
+  accountType?: string;
+  productType?: string;
+  permissionsType?: string;
+  movieId?: string;
+  sourceSign?: string;
+  openId?: string;
+}
+export interface OrderPermissionsInfo {
+  coocaaOpenId? :string;
+  thirdOpenId? :string;
+  sourceSign? :string;
+  sourceName? :string;
+  beginDate? :string;
+  endDate? :string;
+  movieId? :string;
+  movieName? :string;
+  createdDate? :string;
+  lastUpdateDate? :string;
+}
+
 // --------authentication---------
 
 

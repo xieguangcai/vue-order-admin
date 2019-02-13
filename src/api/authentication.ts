@@ -1,10 +1,9 @@
 import request from '@/utils/request-authenticaton';
 import {
   BaseMoviesIqiyiOrderBase,
-  BaseMoviesIqiyiOrderBaseListQuery, OrderFlag,
+  BaseMoviesIqiyiOrderBaseListQuery, OrderFlag, OrderPermissionListQuery, OrderPermissionsInfo,
   Pageable,
   ResponseResult, SearchHistoryModel,
-  UserInfoFull,
 } from '@/types';
 // @ts-ignore
 import qs from 'qs';
@@ -65,6 +64,17 @@ export function payFlagClassName(payFlag: OrderFlag): string {
     return 'success-row';
   }
   return '';
+}
+
+export function getOrderPermissionsInfo(params: OrderPermissionListQuery): AxiosPromise<ResponseResult<OrderPermissionsInfo[]>>{
+  return request({
+    url: '/authentication/order/permissions',
+    method: 'get',
+    params,
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
 }
 
 /**
