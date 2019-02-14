@@ -125,6 +125,14 @@
           </el-collapse-item>
         </el-collapse>
       </el-tab-pane>
+      <el-tab-pane label="会员权益信息" v-if="domainInfo.coocaaOpenId != '' ||  domainInfo.thirdOpenId!= '' ">
+        <order-permissions-detail :query-domain="{coocaaOpenId:domainInfo.coocaaOpenId, permissionsType:'1', thirdOpenId: domainInfo.thirdOpenId}">
+        </order-permissions-detail>
+      </el-tab-pane>
+      <el-tab-pane label="会员单点影片权益信息"  v-if="domainInfo.coocaaOpenId != '' ||  domainInfo.thirdOpenId!= '' ">
+        <order-permissions-detail :query-domain="{coocaaOpenId:domainInfo.coocaaOpenId, permissionsType:'2', thirdOpenId: domainInfo.thirdOpenId}">
+        </order-permissions-detail>
+      </el-tab-pane>
       <el-tab-pane label="OSS支付订单信息" v-if="loadOssDomain">
         <order-info-detail :origi-order-no="domainInfo.orderNo"
                            @no-such-entity="loadOssDomain = false"
@@ -141,6 +149,7 @@
 import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
 import SysAccountDetail from '../../passport/sysaccount/detail.vue';
 import OrderInfoDetail from '../../pay/orders/detail.vue';
+import OrderPermissionsDetail from '../../authentication/order-permissions/detail.vue';
 
 import {
   clientTypeToName,
@@ -158,7 +167,7 @@ import {
 
 @Component({
   name: 'BaseMoviesIqiyiOrderBaseDetail',
-  components: {SysAccountDetail, OrderInfoDetail},
+  components: {SysAccountDetail, OrderInfoDetail, OrderPermissionsDetail},
 })
 export default class BaseMoviesIqiyiOrderBaseDetail extends Vue {
   loadingData: boolean = false;

@@ -147,13 +147,13 @@ export default new Router({
           path: 'autimatic-deduction-iframe',
           name: '挽留弹窗',
           component: () => import(/* webpackChunkName: "oss-retaining-window" */ '@/views/pay/Autimatic-deduction-iframe/index.vue'),
-          meta: {title: '挽留弹窗', icon: 'layout1',roles: ['DEDUCTION_ROLE_VIEW']},
+          meta: {title: '挽留弹窗', icon: 'layout1', roles: ['DEDUCTION_ROLE_VIEW']},
         },
         {
           path: 'autimatic-deduction-iframe-detail',
           name: '挽留弹窗详情',
           component: () => import(/* webpackChunkName: "oss-retaining-window-detail" */ '@/views/pay/Autimatic-deduction-iframe/windowsDetail.vue'),
-          meta: {title: '挽留弹窗详情', icon: 'layout1', hidden: true,roles: ['DEDUCTION_ROLE_VIEW']},
+          meta: {title: '挽留弹窗详情', icon: 'layout1', hidden: true, roles: ['DEDUCTION_ROLE_VIEW']},
         },
         {
           path: 'add-autimatic-deduction-iframe',
@@ -161,7 +161,7 @@ export default new Router({
           component: () => import(/* webpackChunkName: "add-oss-retaining-window" */ '@/views/pay/Autimatic-deduction-iframe/new-iframe.vue'),
           meta: {title: '新增/修改挽留弹窗', icon: 'form', hidden: true, roles: ['DEDUCTION_ROLE_EDIT']},
         },
-      ]
+      ],
     },
     {
       path: '/passport',

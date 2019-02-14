@@ -42,8 +42,7 @@ export default class SideBar extends Vue {
     routes.forEach((r) => {
       if (r.meta && r.meta.title && !r.meta.hidden) {
         r.meta.hidden = !this.hasRight(r);
-        console.log('检查用户菜单权限：' + r.meta.title + ', ' + !r.meta.hidden);
-
+        // console.log('检查用户菜单权限：' + r.meta.title + ', ' + !r.meta.hidden);
         if (r.children && r.children.length > 0) {
           this.rightFilter(r.children);
         }

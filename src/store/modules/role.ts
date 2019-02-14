@@ -14,7 +14,6 @@ class Role extends VuexModule {
 
     @MutationAction({ mutate: [ 'roles'] })
     async GetAllValidRoles(refresh: boolean) {
-      console.log('xxx');
       if (refresh || this.roles == null || this.roles.length === 0) {
             const {data} = await getAllValidRoleList();
             if (data.data) {

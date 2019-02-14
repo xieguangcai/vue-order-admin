@@ -149,7 +149,7 @@ export default class AutomaticDeductionIframeList extends Vue {
       if (row.length === 0) {
       return;
     }
-      const rowsId: Array<any> = [];
+      const rowsId: any[] = [];
       row.forEach((item) => rowsId.push(item.id));
       this.$confirm('确认永久删除该弹窗信息吗?', '提示', {
       confirmButtonText: '确认',

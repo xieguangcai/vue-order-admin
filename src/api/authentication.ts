@@ -1,7 +1,7 @@
 import request from '@/utils/request-authenticaton';
 import {
   BaseMoviesIqiyiOrderBase,
-  BaseMoviesIqiyiOrderBaseListQuery, OrderFlag, OrderPermissionListQuery, OrderPermissionsInfo,
+  BaseMoviesIqiyiOrderBaseListQuery, CascaderDataType, OrderFlag, OrderPermissionListQuery, OrderPermissionsInfo,
   Pageable,
   ResponseResult, SearchHistoryModel,
 } from '@/types';
@@ -66,7 +66,7 @@ export function payFlagClassName(payFlag: OrderFlag): string {
   return '';
 }
 
-export function getOrderPermissionsInfo(params: OrderPermissionListQuery): AxiosPromise<ResponseResult<OrderPermissionsInfo[]>>{
+export function getOrderPermissionsInfo(params: OrderPermissionListQuery): AxiosPromise<ResponseResult<OrderPermissionsInfo[]>> {
   return request({
     url: '/authentication/order/permissions',
     method: 'get',
@@ -74,6 +74,14 @@ export function getOrderPermissionsInfo(params: OrderPermissionListQuery): Axios
     paramsSerializer(p: any) {
       return qs.stringify(p, {arrayFormat: 'repeat'});
     },
+  });
+}
+
+
+export function getCompanyOrderSource(): AxiosPromise<ResponseResult<CascaderDataType[]>> {
+  return request({
+    url: '/authentication/order/company-order-source',
+    method: 'get',
   });
 }
 

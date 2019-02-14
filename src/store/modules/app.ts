@@ -2,10 +2,8 @@ import Cookies from 'js-cookie';
 import {VuexModule, Module, Mutation, Action, getModule, MutationAction} from 'vuex-module-decorators';
 import store from '@/store';
 import {ElementUIComponentSize} from 'element-ui/types/component';
-import {getToken, removeToken} from '@/utils/auth';
-import {logout} from '@/api/login';
-import {StatusInfo} from '@/types';
-import {ElDatePicker} from 'element-ui/types/date-picker';
+import {CascaderDataType, StatusInfo} from '@/types';
+import {getCompanyOrderSource} from '@/api/authentication';
 
 export enum DeviceType {
   Mobile,
@@ -31,6 +29,7 @@ export interface IAppState {
   layoutStatus: StatusInfo[];
   expStatus: StatusInfo[];
   uploadAction: string;
+  companyOrderSource: CascaderDataType[];
 }
 
 @Module({dynamic: true, store, name: 'app'})
@@ -122,6 +121,9 @@ class App extends VuexModule {
   ];
   uploadAction: IAppState['uploadAction']  = process.env.VUE_APP_PASSPORT_API + 'api/authentication/file/upload';
 
+  // 公司于对应的产品源信息
+  companyOrderSource: IAppState['companyOrderSource'] = [];
+
   @Mutation
   TOGGLE_SIDEBAR(withoutAnimation: boolean) {
     if (this.sidebar.opened) {
@@ -166,6 +168,24 @@ class App extends VuexModule {
     return {
       formSize: size,
     };
+  }
+
+  @MutationAction({ mutate: [ 'companyOrderSource'] })
+  async GetCompanyOrderSource(refresh: boolean) {
+    if (refresh || this.companyOrderSource == null || this.companyOrderSource.length === 0) {
+      const {data} = await getCompanyOrderSource();
+      if (data.data) {
+        return {
+          companyOrderSource: data.data,
+        };
+      } else {
+        throw Error('GetAllValidRoles: data must be a non-null array!');
+      }
+    } else {
+      return {
+        companyOrderSource: this.companyOrderSource,
+      };
+    }
   }
 }
 
