@@ -131,7 +131,7 @@ import {getFullToken} from '../../../utils/auth';
     mixins: [RightComponent],
   })
     export default class WindowsAdd extends Vue {
-    editItem: AutomaticDeductionIframe  = {id: 0};
+    editItem: AutomaticDeductionIframe  = {id: 0, background: undefined, closeButton: undefined, closeButtonFocus: undefined,cancelButton: undefined, cancelButtonFocus: undefined};
     labelPosition: string = 'right';
     items: AutomaticDeductionIframe  = {id: 0};
     senceItems: AutomaticDeductionIframe  = {id: 0};
