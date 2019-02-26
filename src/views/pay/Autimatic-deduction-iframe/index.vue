@@ -4,10 +4,10 @@
 
         <el-button-group slot="action" class="cc-action-button-group">
           <el-button type="success" icon="el-icon-circle-plus" size="mini" @click="addIframe"
-                     >新建
+                     v-if="checkUserRole('DEDUCTION_ROLE_EDIT')" >新建
           </el-button>
           <el-button type="danger" icon="el-icon-circle-close" size="mini" @click="handleDel"
-                     >删除
+                     v-if="checkUserRole('DEDUCTION_ROLE_AUDIT')" >删除
           </el-button>
         </el-button-group>
 
@@ -78,19 +78,19 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="120px">
           <template slot-scope="scope">
-            <el-tooltip content="查看">
+            <el-tooltip content="查看" v-if="checkUserRole('DEDUCTION_ROLE_VIEW')">
               <el-button type="primary" size="mini" circle icon="el-icon-view"
                          @click="handleViewWindowsDetail(scope.$index, scope.row)"></el-button>
             </el-tooltip>
-            <el-tooltip content="编辑" v-if="(scope.row.status === 0)">
+            <el-tooltip content="编辑" v-if="(scope.row.status === 0) && checkUserRole('DEDUCTION_ROLE_EDIT')">
               <el-button type="warning" size="mini" circle icon="el-icon-edit"
                          @click="handleEditLayoutDetail(scope.$index, scope.row)"></el-button>
             </el-tooltip>
-            <el-tooltip content="上线" v-if="(scope.row.status === 0)">
+            <el-tooltip content="上线" v-if="(scope.row.status === 0) && checkUserRole('DEDUCTION_ROLE_AUDIT')">
               <el-button type="warning" size="mini" circle icon="el-icon-upload2"
                          @click="handleAudit(scope.$index, scope.row)"></el-button>
             </el-tooltip>
-            <el-tooltip content="下线" v-if="(scope.row.status === 1)">
+            <el-tooltip content="下线" v-if="(scope.row.status === 1) && checkUserRole('DEDUCTION_ROLE_AUDIT')">
               <el-button type="warning" size="mini" circle icon="el-icon-download"
                          @click="handleRepeal(scope.$index, scope.row)"></el-button>
             </el-tooltip>
