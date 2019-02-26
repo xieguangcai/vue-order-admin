@@ -164,6 +164,166 @@ export default new Router({
       ],
     },
     {
+      path: '/rights',
+      component: Layout,
+      name: '会员权益',
+      meta: {title: '会员权益', icon: 'layout', roles: ['AUTHEN_ROLE_VIEW']},
+      children: [
+        {
+          path: 'company-list',
+          name: '供应商管理',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {title: '供应商', icon: 'layout1', keepAlive: true, roles: ['AUTHEN_ROLE_VIEW']},
+        },
+        {
+          path: 'company-edit',
+          name: '编辑-供应商',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {hidden:true, title: '编辑-供应商', icon: 'layout1', keepAlive: true},
+        },
+        {
+          path: 'right-info-list',
+          name: '会员权益管理',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {title: '会员权益', icon: 'layout1',  roles: ['AUTHEN_ROLE_VIEW']},
+        },
+        {
+          path: 'right-info-edit',
+          name: '编辑-会员权益',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {hidden:true, title: '编辑-会员权益', icon: 'layout1', keepAlive: true},
+        }
+      ]
+    },
+    {
+      path: '/product',
+      component: Layout,
+      name: '产品包管理',
+      meta: {title: '产品包管理', icon: 'layout', roles: ['PRODUCT_ROLE_VIEW']},
+      children: [
+        {
+          path: 'source-list',
+          name: '产品包分类',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {title: '产品包分类', icon: 'layout1',  roles: ['PRODUCT_ROLE_VIEW']},
+        },
+        {
+          path: 'source-audit',
+          name: '审核-产品包分类',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {hidden:true,title: '审核-产品包分类', icon: 'layout1', keepAlive: true},
+        },
+        {
+          path: 'source-edit',
+          name: '编辑-产品包分类',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {hidden:true, title: '编辑-产品包分类', icon: 'layout1', keepAlive: true},
+        },
+        {
+          path: 'source-view',
+          name: '查看-产品包分类',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {hidden:true, title: '查看-产品包分类', icon: 'layout1', keepAlive: true},
+        },
+        {
+          path: 'product-list',
+          name: '基础产品包',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {title: '基础产品包', icon: 'layout1', keepAlive: true, roles: ['PRODUCT_ROLE_VIEW']},
+        },
+        {
+          path: 'product-audit',
+          name: '审核-基础产品包',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {hidden:true, title: '审核-基础产品包', icon: 'layout1', keepAlive: true},
+        },
+        {
+          path: 'product-edit',
+          name: '编辑-基础产品包',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {hidden:true, title: '编辑-基础产品包', icon: 'layout1', keepAlive: true},
+        },
+        {
+          path: 'product-view',
+          name: '查看-基础产品包',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {hidden:true, title: '查看-基础产品包', icon: 'layout1', keepAlive: true},
+        },
+        {
+          path: 'scheme-list',
+          name: 'VIP方案管理',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {title: 'VIP方案', icon: 'layout1', keepAlive: true, roles: ['PRODUCT_ROLE_VIEW']},
+        },
+        {
+          path: 'scheme-audit',
+          name: '审核-VIP方案',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {hidden:true, title: '审核-VIP方案', icon: 'layout1', keepAlive: true},
+        },
+        {
+          path: 'scheme-edit',
+          name: '编辑-VIP方案',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {hidden:true, title: '编辑-VIP方案', icon: 'layout1', keepAlive: true},
+        },
+        {
+          path: 'scheme-test-view',
+          name: '查看-VIP方案',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {hidden:true, title: '查看-VIP方案', icon: 'layout1', keepAlive: true},
+        },
+        {
+          path: 'scheme-test-list',
+          name: '测试方案管理',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {title: '测试方案', icon: 'layout1', keepAlive: true, roles: ['PRODUCT_ROLE_VIEW']},
+        },
+        {
+          path: 'scheme-test-audit',
+          name: '审核-测试方案',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {hidden:true, title: '审核-测试方案', icon: 'layout1', keepAlive: true},
+        },
+        {
+          path: 'scheme-test-edit',
+          name: '编辑-测试方案',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {hidden:true, title: '编辑-测试方案', icon: 'layout1', keepAlive: true},
+        },
+        {
+          path: 'scheme-test-view',
+          name: '查看-测试方案',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {hidden:true, title: '查看-测试方案', icon: 'layout1', keepAlive: true},
+        },
+        {
+          path: 'policy-list',
+          name: 'VIP投放策略',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {title: 'VIP投放策略', icon: 'layout1', keepAlive: true, roles: ['PRODUCT_ROLE_VIEW']},
+        },
+        {
+          path: 'policy-audit',
+          name: '审核-VIP投放策略',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {hidden:true, title: '审核-VIP投放策略', icon: 'layout1', keepAlive: true},
+        },
+        {
+          path: 'policy-edit',
+          name: '编辑-VIP投放策略',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {hidden:true, title: '编辑-VIP投放策略', icon: 'layout1', keepAlive: true},
+        },
+        {
+          path: 'policy-view',
+          name: '查看-VIP投放策略',
+          component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
+          meta: {hidden:true, title: '查看-VIP投放策略', icon: 'layout1', keepAlive: true},
+        },
+      ]
+    },
+    {
       path: '/passport',
       component: Layout,
       name: '登录布局',
@@ -173,13 +333,13 @@ export default new Router({
           path: 'new-login-layout',
           name: '新增登录页',
           component: () => import(/* webpackChunkName: "new-native-layout" */ '@/views/passport/tvlogin/new-native-layout.vue'),
-          meta: {title: '新增登录页', icon: 'layout1', keepAlive: true, keepComponentName: 'NewNativeLayout', roles: ['LAYOUT_ROLE_EDIT']},
+          meta: {title: '新增登录页', icon: 'layout1', keepAlive: true, roles: ['LAYOUT_ROLE_EDIT']},
         },
         {
           path: 'edit-login-layout',
           name: '编辑',
           component: () => import(/* webpackChunkName: "edit-native-layout" */ '@/views/passport/tvlogin/edit-native-layout.vue'),
-          meta: {title: '编辑登录页面', icon: 'layout1', hidden: true, keepAlive: true, keepComponentName: 'EditNativeLayout', roles: ['LAYOUT_ROLE_EDIT']},
+          meta: {title: '编辑登录页面', icon: 'layout1', hidden: true, keepAlive: true, roles: ['LAYOUT_ROLE_EDIT']},
         },
         {
           path: 'view-login-layout',
