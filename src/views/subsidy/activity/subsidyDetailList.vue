@@ -79,11 +79,11 @@
           </search-pane>
           <el-table :data="subsidyContent">
             <el-table-column
-              label="ID"
+              label="ID" fixed="left"
               prop="userDetailId">
             </el-table-column>
             <el-table-column
-              label="用户OpenId"
+              label="用户OpenId" fixed="left"
               prop="openId" width="280px">
             </el-table-column>
             <el-table-column
@@ -91,10 +91,10 @@
               prop="driver" width="250px">
             </el-table-column>
             <el-table-column
-              label="用户昵称"
+              label="用户昵称" min-width="150px"
               prop="nickName">
             </el-table-column>
-            <el-table-column
+            <el-table-column width="110px"
               label="业务线"
               prop="businessName">
             </el-table-column>
@@ -109,6 +109,10 @@
             <el-table-column
               label="订单记账时间"
               prop="createTime" width="160px">
+            </el-table-column>
+            <el-table-column
+              label="状态"
+              prop="statusStr" width="80px">
             </el-table-column>
           </el-table>
           <search-page-pane @size-change="handleSizeChange" @current-change="handleCurrentChange" :size="size"
@@ -176,6 +180,9 @@ export default class SubsidyDetailList extends Vue {
                 item.moneyStr = item.money + ' 元';
               }
               item.driver = 'Mac:' + item.mac + ',cudid:' + item.cudid;
+              if (item.status) {
+                item.statusStr = item.status === 1 ? "已使用" : item.status === 2 ? "锁定中" : item.status === 3 ? "已作废" : "";
+              }
             }
           }
         }

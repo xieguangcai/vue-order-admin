@@ -1,18 +1,11 @@
 import request from '@/utils/request-subsidy';
 import {
-  SysAccountQuery,
   Pageable,
-  RedisValueInfo,
   ResponseResult,
   SubsidyActivityInfo,
   ActivityListQuery,
-  SubsidyUserTotal,
   SubsidyUserDetail,
   SubsidyType,
-  SysLoginLayoutModel,
-  BaseMoviesIqiyiOrderBaseListQuery,
-  BaseMoviesIqiyiOrderBase,
-  SearchHistoryModel,
   SubsidyUserDetailSearchQuery,
 } from '@/types';
 // @ts-ignore

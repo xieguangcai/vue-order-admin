@@ -1089,7 +1089,8 @@ export interface SubsidyUserDetail {
   createTime?: string ;
   modifyTime?: string ;
   driver?: string ;
-  moneyStr?: string;
+  moneyStr?: string ;
+  statusStr?: string ;
 }
 
 export interface SubsidyType {
