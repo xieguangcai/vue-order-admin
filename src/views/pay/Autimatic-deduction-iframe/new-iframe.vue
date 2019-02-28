@@ -35,7 +35,7 @@
                         list-type="picture-card">
                <img v-if="editItem.background" :src="editItem.background" class="bgImg">
                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-               <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+               <div slot="tip" class="el-upload__tip">1000px*630px只能上传jpg/png文件，且不超过500kb</div>
              </el-upload>
            </el-form-item>
            <el-form-item label="关闭按钮图">
@@ -50,7 +50,7 @@
                         list-type="picture-card">
                <img v-if="editItem.closeButton" :src="editItem.closeButton" class="img">
                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-               <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+               <div slot="tip" class="el-upload__tip">288px*77px只能上传jpg/png文件，且不超过500kb</div>
              </el-upload>
            </el-form-item>
            <el-form-item label="关闭按钮获焦图">
@@ -65,7 +65,7 @@
                         list-type="picture-card">
                <img v-if="editItem.closeButtonFocus" :src="editItem.closeButtonFocus" class="img">
                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-               <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+               <div slot="tip" class="el-upload__tip">288px*77px只能上传jpg/png文件，且不超过500kb</div>
              </el-upload>
            </el-form-item>
            <el-form-item label="取消按钮图">
@@ -80,7 +80,7 @@
                         list-type="picture-card">
                <img v-if="editItem.cancelButton" :src="editItem.cancelButton" class="img">
                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-               <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+               <div slot="tip" class="el-upload__tip">288px*77px只能上传jpg/png文件，且不超过500kb</div>
              </el-upload>
            </el-form-item>
            <el-form-item label="取消按钮获焦图">
@@ -95,7 +95,7 @@
                         list-type="picture-card">
                <img v-if="editItem.cancelButtonFocus" :src="editItem.cancelButtonFocus" class="img">
                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-               <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+               <div slot="tip" class="el-upload__tip">288px*77px只能上传jpg/png文件，且不超过500kb</div>
              </el-upload>
            </el-form-item>
            <el-form-item style="margin-top: 30px">
