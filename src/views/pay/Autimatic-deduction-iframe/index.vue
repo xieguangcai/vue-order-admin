@@ -90,7 +90,7 @@
               <el-button type="warning" size="mini" circle icon="el-icon-upload2"
                          @click="handleAudit(scope.$index, scope.row)"></el-button>
             </el-tooltip>
-            <el-tooltip content="下线" v-if="(scope.row.status === 1) && checkUserRole('DEDUCTION_ROLE_AUDIT')">
+            <el-tooltip content="下线" v-if="(scope.row.status === 1) && checkUserRole('DEDUCTION_ROLE_AUDIT') && (scope.row.appCode !== 'default')">
               <el-button type="warning" size="mini" circle icon="el-icon-download"
                          @click="handleRepeal(scope.$index, scope.row)"></el-button>
             </el-tooltip>
