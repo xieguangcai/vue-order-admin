@@ -6,7 +6,7 @@ import {
   ActivityListQuery,
   SubsidyUserDetail,
   SubsidyType,
-  SubsidyUserDetailSearchQuery,
+  SubsidyUserDetailSearchQuery, SubsidySerialReport,
 } from '@/types';
 // @ts-ignore
 import qs from 'qs';
@@ -151,6 +151,28 @@ export function getSubsidySerialList(params: SubsidyUserDetailSearchQuery): Axio
     url: '/subsidy/list/subsidySerial',
     method: 'get',
     params,
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
+
+export function getBusinessList(activityId: number, serialType: number): AxiosPromise<ResponseResult<string[]>> {
+  return request({
+    url : '/subsidy/list/businessName',
+    method: 'get',
+    params: {activityId, serialType},
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
+
+export function getSubsidySerialReport(activityId: number, businessName: string | undefined): AxiosPromise<ResponseResult<SubsidySerialReport[]>> {
+  return request({
+    url : '/subsidy/serial/report',
+    method: 'get',
+    params: {activityId, businessName},
     paramsSerializer(p: any) {
       return qs.stringify(p, {arrayFormat: 'repeat'});
     },
