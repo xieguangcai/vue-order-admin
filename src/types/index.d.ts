@@ -1112,3 +1112,15 @@ export interface SubsidyUserDetailSearchQuery extends IPageinfo {
   businessName?: string;
   createTime?: Date[];
 }
+
+export interface SubsidySerialReport {
+  businessName?: string ;
+  orderNum?: number ;
+  money?: number;
+  items?: SubsidySerialReportItem[];
+}
+
+export interface SubsidySerialReportItem {
+  orderNum?: number ;
+  money?: number;
+}
