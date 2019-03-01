@@ -140,7 +140,7 @@ import {getFullToken} from '../../../utils/auth';
 
     handleCodeChange(newVal: string) {
       this.getSceneInfo(newVal);
-      if(this.editItem.scene != null ){
+      if(this.editItem.scene != null){
         this.editItem.scene='';
       }
     }
