@@ -18,6 +18,7 @@
                 element-loading-text="Loading"
                 border
                 fit
+                size="mini"
                 highlight-current-row>
 
         <el-table-column align="left" label="oss订单号" width="200" fixed>

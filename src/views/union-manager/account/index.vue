@@ -32,6 +32,7 @@
                 @selection-change="handleSelectionChange"
                 border
                 fit
+                size="mini"
                 highlight-current-row>
         <el-table-column type="selection" with="55">
         </el-table-column>

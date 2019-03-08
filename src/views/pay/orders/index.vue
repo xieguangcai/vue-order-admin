@@ -7,13 +7,13 @@
         手机号
         <el-input v-model="listQuery.phoneNo" size="mini" :clearable="true"></el-input>
         订单号
-        <el-input v-model="listQuery.orderNo" size="mini" style="width:190px;" :clearable="true"></el-input>
+        <el-input v-model="listQuery.orderNo"  placeholder="查询多个可以用逗号分割" size="mini" style="width:190px;" ></el-input>
         支付订单号
-        <el-input v-model="listQuery.ybDealNo" size="mini" style="width:240px" :clearable="true"></el-input>
+        <el-input v-model="listQuery.ybDealNo"  placeholder="查询多个可以用逗号分割" size="mini" style="width:240px" ></el-input>
         业务订单号
-        <el-input v-model="listQuery.origiOrderNo" size="mini" style="width:220px" :clearable="true"></el-input>
+        <el-input v-model="listQuery.origiOrderNo" placeholder="查询多个可以用逗号分割" size="mini" style="width:220px" ></el-input>
         支付流水号
-        <el-input v-model="listQuery.serialNo" size="mini" style="width:200px" :clearable="true"></el-input>
+        <el-input v-model="listQuery.serialNo" placeholder="查询多个可以用逗号分割" size="mini" style="width:200px" ></el-input>
         appCode
         <el-input v-model="listQuery.appCode" size="mini" style="width:100px" :clearable="true"></el-input>
         mac地址
@@ -51,6 +51,7 @@
                 element-loading-text="Loading"
                 border
                 fit
+                size="mini"
                 highlight-current-row>
 
         <el-table-column align="left" label="单号信息" width="360" fixed>

@@ -17,6 +17,8 @@ Vue.use(Router);
   }
 */
 
+var showInCoocaa : boolean = process.env.VUE_APP_CHANNEL === 'coocaa';
+
 export default new Router({
   mode: 'history',
   scrollBehavior: () => ({x: 0, y: 0}),
@@ -128,6 +130,12 @@ export default new Router({
           name: '账号信息',
           component: () => import(/* webpackChunkName: "account-info-detail" */ '@/views/passport/user/detail.vue'),
           meta: {title: '账号信息', icon: 'user', roles: ['ROLE_VIEW', 'VIEW_USER_INFO']},
+        },
+        {
+          path: 'jscn-user-detail',
+          name: '广电账号信息',
+          component: () => import(/* webpackChunkName: "account-info-detail" */ '@/views/passport/user/jscn-detail.vue'),
+          meta: {title: '广电账号信息', icon: 'user', roles: ['ROLE_VIEW', 'VIEW_USER_INFO']},
         },
         {
           path: 'permissions',

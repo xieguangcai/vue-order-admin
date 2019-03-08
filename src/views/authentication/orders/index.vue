@@ -9,11 +9,11 @@
           <el-option value="2" label="历史未支付订单"/>
         </el-select>
         酷开openId
-        <el-input v-model="listQuery.coocaaOpenId" size="mini" :clearable="true"></el-input>
+        <el-input v-model="listQuery.coocaaOpenId" placeholder="查询多个可以用逗号分割" style="width:280px" size="mini" ></el-input>
         影视订单号
-        <el-input v-model="listQuery.orderNo" size="mini" style="width:180px;" :clearable="true"></el-input>
+        <el-input v-model="listQuery.orderNo" placeholder="查询多个可以用逗号分割" size="mini" style="width:200px;" ></el-input>
         第三openId
-        <el-input v-model="listQuery.thirdOpenId" size="mini" style="width:220px" :clearable="true"></el-input>
+        <el-input v-model="listQuery.thirdOpenId" size="mini" style="width:280px" :clearable="true"></el-input>
         支付状态
         <el-select size="mini" v-model="listQuery.payFlag">
           <el-option value="" label="全部"/>
@@ -58,6 +58,7 @@
                 element-loading-text="Loading"
                 border
                 fit
+                size="mini"
                 highlight-current-row>
         <el-table-column align="left" label="单号信息" width="300" fixed>
           <template slot-scope="scope">

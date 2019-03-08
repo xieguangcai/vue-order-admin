@@ -43,6 +43,7 @@
                 :row-class-name="tableRowClassName"
                 border
                 fit
+                size="mini"
                 highlight-current-row>
         <el-table-column align="left" label="酷开OpenId" width="300" fixed>
           <template slot-scope="scope">

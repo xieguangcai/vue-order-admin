@@ -1,11 +1,9 @@
 import {Component, Vue} from 'vue-property-decorator';
 import {IPageinfo} from '@/types';
-// @ts-ignore
-import qs from 'qs';
 import {AxiosPromise} from 'axios';
 import {getAppInfo} from '@/api/account';
 import {pickerOptions} from '@/utils/validate';
-import {RawLocation} from 'vue-router';
+import {setLocationToHisotry} from "@/utils/tools";
 
 @Component
 export default class BaseList extends Vue {
@@ -81,19 +79,18 @@ export default class BaseList extends Vue {
 
     this.listLoading = true;
     this.realFetchData().then(() => {
-      const path = this.$route.path;
+      // const path = this.$route.path;
+      // // history.pushState(null, '条件查询', path + '?' + qs.stringify(this.listQuery, {arrayFormat: 'repeat'}));
+      // const newLocation: RawLocation = {} ;
+      // const oldRoute = this.$route;
+      // newLocation.path = oldRoute.path;
+      // newLocation.query = this.listQuery;
+      // newLocation.name = oldRoute.name;
+      // newLocation.params = oldRoute.params;
+      // newLocation.hash = oldRoute.hash;
       // history.pushState(null, '条件查询', path + '?' + qs.stringify(this.listQuery, {arrayFormat: 'repeat'}));
-      const newLocation: RawLocation = {} ;
-      const oldRoute = this.$route;
-      newLocation.path = oldRoute.path;
-      newLocation.query = this.listQuery;
-      newLocation.name = oldRoute.name;
-      newLocation.params = oldRoute.params;
-      newLocation.hash = oldRoute.hash;
-      history.pushState(null, '条件查询', path + '?' + qs.stringify(this.listQuery, {arrayFormat: 'repeat'}));
-      // this.$router.push(newLocation, () => {
-      this.$store.dispatch('addVisitedViews', newLocation);
-      // });
+      // this.$store.dispatch('addVisitedViews', newLocation);
+      setLocationToHisotry(this, this.listQuery, '条件查询');
     }).finally(() => {
       this.listLoading = false;
     });

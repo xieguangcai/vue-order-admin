@@ -111,10 +111,10 @@ a:hover {
   color: #ff741b; font-size:16px; font-weight: bold;
 }
 .cc-order-table tr td, .cc-order-table tr th{
-  padding:5px; border-right:1px solid #ccc; border-bottom:1px solid #ccc;
+  padding:2px 8px; border-right:1px solid #ccc; border-bottom:1px solid #ccc;
 }
 .cc-inline-title-table tr td:nth-child(2n+1){
-  font-size:15px;
+  font-size:12px; font-weight:bold;
 }
 .cc-form{
   width:80%;

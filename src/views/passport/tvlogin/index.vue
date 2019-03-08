@@ -26,6 +26,7 @@
                 element-loading-text="Loading"
                 border
                 fit
+                size="mini"
                 highlight-current-row>
         <el-table-column type = "expand" fixed>
           <template slot-scope="scope">

@@ -18,6 +18,7 @@
 
       <el-table v-loading="listLoading" :data="data"
                 @selection-change="handleSelectionChange"
+                size="mini"
                 border fit highlight-current-row>
         <el-table-column type="selection">
         </el-table-column>

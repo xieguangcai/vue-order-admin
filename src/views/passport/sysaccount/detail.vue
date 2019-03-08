@@ -1,6 +1,7 @@
 <template>
   <div v-loading="loadingData">
     <el-tabs type="border-card">
+      <slot name="tabPrefix"></slot>
       <el-tab-pane label="酷开账户中心详情">
         <el-collapse v-model="activeNames">
           <el-collapse-item title="酷开用户详情" name="1">
@@ -9,10 +10,10 @@
                 <td colspan="1" rowspan="5" width="200">
                   <img :src="getAvatar" style="width: 200px;height:200px;"/>
                 </td>
-                <td width="10%">昵称</td>
-                <td width="30%">{{domainInfo.nickName}}</td>
-                <td width="10%">用户id</td>
-                <td width="30%">{{ domainInfo.accountId }}</td>
+                <td width="15%">昵称</td>
+                <td width="25%">{{domainInfo.nickName}}</td>
+                <td width="15%">用户id</td>
+                <td width="25%">{{ domainInfo.accountId }}</td>
               </tr>
               <tr>
                 <td>openId</td>
@@ -258,6 +259,7 @@
           </el-collapse-item>
         </el-collapse>
       </el-tab-pane>
+      <slot name="tabSuffix"></slot>
     </el-tabs>
   </div>
 </template>
@@ -273,6 +275,7 @@ import {getSysAccountInfoDetail, passportMandatoryOffline} from '../../../api/pa
 import {getUserInfoFullByOpenId, nopassportSignStatusToName} from '../../../api/pay';
 import {handlerCommonError} from '../../../utils/auth-interceptor';
 import {checkRole} from '../../../utils/auth';
+import {anyNotEmpty} from "../../../utils/validate";
 
 @Component({
   name: 'SysAccountDetail',
@@ -346,10 +349,10 @@ export default class SysAccountDetail extends Vue {
     if (null == newVal) {
       return false;
     }
-    if (newVal.mobile === '' && newVal.openId === '' && newVal.externalId === '') {
-      return false;
+    if(anyNotEmpty(newVal.mobile, newVal.externalId, newVal.openId)) {
+      return true;
     }
-    return true;
+    return false;
   }
 
   checkRight(): boolean {
@@ -406,6 +409,10 @@ export default class SysAccountDetail extends Vue {
       };
       this.payUserInfo = this.defPayUserInfo;
     } else {
+      if(oldVal != null && newVal.externalId == oldVal.externalId && newVal.externalFlag == oldVal.externalId && newVal.openId == oldVal.externalId && newVal.mobile == oldVal.mobile){
+        return;
+      }
+
       this.loadingData = true;
 
       getSysAccountInfoDetail(newVal).then((resolve) => {
@@ -471,6 +478,8 @@ export default class SysAccountDetail extends Vue {
 
   @Watch('domainInfo', {immediate: true})
   handleInternalDomainInfoChange(newVal: SysAccount, oldVal?: SysAccount): void {
+    console.log('handleInternalDomainInfoChange');
+
     if (null == newVal && null == oldVal) {
       return;
     }

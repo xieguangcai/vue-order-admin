@@ -6,6 +6,7 @@
               :row-class-name="tableRowClassName"
               border
               fit
+              size="mini"
               highlight-current-row>
       <el-table-column align="left" label="影片ID" width="180" v-if="listQuery.permissionsType == '2'">
         <template slot-scope="scope">

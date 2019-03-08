@@ -32,6 +32,7 @@
                 element-loading-text="Loading"
                 border
                 fit
+                size="mini"
                 highlight-current-row>
 
         <el-table-column align="left" label="卡密信息" width="300" fixed>

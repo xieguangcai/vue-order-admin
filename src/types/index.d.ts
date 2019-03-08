@@ -716,6 +716,7 @@ interface SysAccountQuery {
   externalFlag?: string;
   externalId?: string;
 }
+
 interface SysAccountQueryConstructor {
   (value?: any): SysAccountQuery;
   readonly prototype: SysAccountQuery;
@@ -723,6 +724,12 @@ interface SysAccountQueryConstructor {
 }
 
 declare const SysAccountQuery: SysAccountQueryConstructor;
+
+interface JscnUserInfoQuery extends Dictionary<any>{
+  userId?: string;
+  smartCardId?: string;
+  customerCode?: string;
+}
 
 /**
  *  客户端native登录ui元素类型-start

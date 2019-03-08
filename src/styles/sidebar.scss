@@ -130,5 +130,18 @@
   }
   .sidebar-container .el-menu-item{
     border-bottom: 1px solid $ul-border-right-color;
+    height: 40px;
+    line-height: 40px;
+    font-size: 12px;
+    color: #303133;
+    padding: 0 10px;
+  }
+  .sidebar-container .el-submenu__title{
+    height: 40px;
+    line-height: 40px;
+    font-size: 13px;
+  }
+  .sidebar-container .el-submenu .is-active{
+    background-color: $menuHover !important;
   }
 }
