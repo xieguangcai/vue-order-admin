@@ -135,7 +135,7 @@ export default new Router({
           path: 'jscn-user-detail',
           name: '广电账号信息',
           component: () => import(/* webpackChunkName: "account-info-detail" */ '@/views/passport/user/jscn-detail.vue'),
-          meta: {title: '广电账号信息', icon: 'user', roles: ['ROLE_VIEW', 'VIEW_USER_INFO']},
+          meta: {title: '广电账号信息', hidden: showInCoocaa, icon: 'user', roles: ['ROLE_VIEW', 'VIEW_USER_INFO']},
         },
         {
           path: 'permissions',
