@@ -1,6 +1,6 @@
-import {RawLocation} from "vue-router";
-import {Vue} from "vue/types/vue";
-import {Dictionary} from "vue-router/types/router";
+import {RawLocation} from 'vue-router';
+import {Vue} from 'vue/types/vue';
+import {Dictionary} from 'vue-router/types/router';
 // @ts-ignore
 import qs from 'qs';
 

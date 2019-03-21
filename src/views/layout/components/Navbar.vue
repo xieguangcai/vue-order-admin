@@ -51,7 +51,7 @@ export default class Navbar extends Vue {
   get avatar() {
     return UserModule.avatar;
   }
-  get appName(){
+  get appName() {
     return process.env.VUE_APP_APP_NAME;
   }
 

@@ -17,7 +17,7 @@ Vue.use(Router);
   }
 */
 
-var showInCoocaa : boolean = process.env.VUE_APP_CHANNEL === 'coocaa';
+const showInCoocaa: boolean = process.env.VUE_APP_CHANNEL === 'coocaa';
 
 export default new Router({
   mode: 'history',

@@ -7,13 +7,13 @@
         手机号
         <el-input v-model="listQuery.phoneNo" size="mini" :clearable="true"></el-input>
         订单号
-        <el-input v-model="listQuery.orderNo"  placeholder="查询多个可以用逗号分割" size="mini" style="width:190px;" ></el-input>
+        <el-input v-model="listQuery.orderNo" placeholder="查询多个可以用逗号分割" size="mini" style="width:190px;"></el-input>
         支付订单号
-        <el-input v-model="listQuery.ybDealNo"  placeholder="查询多个可以用逗号分割" size="mini" style="width:240px" ></el-input>
+        <el-input v-model="listQuery.ybDealNo" placeholder="查询多个可以用逗号分割" size="mini" style="width:240px"></el-input>
         业务订单号
-        <el-input v-model="listQuery.origiOrderNo" placeholder="查询多个可以用逗号分割" size="mini" style="width:220px" ></el-input>
+        <el-input v-model="listQuery.origiOrderNo" placeholder="查询多个可以用逗号分割" size="mini" style="width:220px"></el-input>
         支付流水号
-        <el-input v-model="listQuery.serialNo" placeholder="查询多个可以用逗号分割" size="mini" style="width:200px" ></el-input>
+        <el-input v-model="listQuery.serialNo" placeholder="查询多个可以用逗号分割" size="mini" style="width:200px"></el-input>
         appCode
         <el-input v-model="listQuery.appCode" size="mini" style="width:100px" :clearable="true"></el-input>
         mac地址
@@ -57,7 +57,14 @@
         <el-table-column align="left" label="单号信息" width="360" fixed>
           <template slot-scope="scope">
             <div>
-              <span>oss订单号：</span>{{ scope.row.orderNo}}<br/>
+              <span>oss订单号：</span>{{ scope.row.orderNo}}
+              <span class="order-refund-tip" v-if="haveRefundInfo(scope.row)">
+                <el-button type="warning" size="mini"
+                           @click="handleViewRefundInfo(scope.row.orderRefundInfos[0].dealNo)">
+                  订单重复支付
+                </el-button>
+              </span>
+              <br/>
               <span>业务订单号：</span>{{ scope.row.origiOrderNo}}<br/>
               <span>支付单号：</span>{{ scope.row.ybDealNo}}<br/>
               <span>支付流水号：</span>{{ scope.row.serialNo}}
@@ -168,6 +175,14 @@ export default class OrderInfoList extends Vue {
     return AppModule.orderStatus;
   }
 
+  handleViewRefundInfo(dealNo: string) {
+      this.$router.push({path: 'order-refund-list', query: {dealNo}});
+  }
+
+  haveRefundInfo(row: OrderInfo) {
+    return row.orderRefundInfos != null && row.orderRefundInfos.length > 0;
+  }
+
   orderStatusToName(code: string) {
     return orderStatusName(code);
   }
@@ -189,7 +204,7 @@ export default class OrderInfoList extends Vue {
   }
 
   validSearchCondition(): boolean {
-    if (anyNotEmpty(this.listQuery.phoneNo, this.listQuery.orderNo, this.listQuery.mac, this.listQuery.origiOrderNo , this.listQuery.ybDealNo, this.listQuery.orderId, this.listQuery.serialNo)) {
+    if (anyNotEmpty(this.listQuery.phoneNo, this.listQuery.orderNo, this.listQuery.mac, this.listQuery.origiOrderNo, this.listQuery.ybDealNo, this.listQuery.orderId, this.listQuery.serialNo)) {
       return true;
     }
 
@@ -198,8 +213,8 @@ export default class OrderInfoList extends Vue {
       return false;
     }
     if (this.listQuery.orderTimes.length > 0) {
-      const end = (+ new Date(this.listQuery.orderTimes[1])) as number;
-      const start = (+ new Date(this.listQuery.orderTimes[0])) as number;
+      const end = (+new Date(this.listQuery.orderTimes[1])) as number;
+      const start = (+new Date(this.listQuery.orderTimes[0])) as number;
       if (end - start > 31 * 3 * 24 * 3600 * 1000) {
         this.$message.error('查询时间超过指定限制【可查询间隔3个月的订单】');
         return false;
@@ -209,3 +224,10 @@ export default class OrderInfoList extends Vue {
   }
 }
 </script>
+
+<style scoped>
+  .order-refund-tip {
+    color: red;
+  }
+</style>
+

@@ -171,6 +171,13 @@
               </el-collapse>
             </el-tab-pane>
           </template>
+          <template slot = "tabSuffix">
+            <el-tab-pane label="线下订购记录">
+                <jscn-order-sync-detail :user-id="userId">
+
+                </jscn-order-sync-detail>
+            </el-tab-pane>
+          </template>
         </sys-account-detail>
       </div>
     </div>
@@ -178,102 +185,96 @@
 </template>
 
 <script lang="ts">
-  import {Component, Vue} from 'vue-property-decorator';
-  import {
-    JscnUserInfo, JscnUserInfoQuery, ResponseResult, SysAccountQuery,
-  } from '../../../types';
+import {Component, Vue} from 'vue-property-decorator';
+import {
+  JscnUserInfo, JscnUserInfoQuery, ResponseResult, SysAccountQuery,
+} from '../../../types';
 
-  import SearchPane from '../../../components/SearchPane/index.vue';
-  import SysAccountDetail from '../sysaccount/detail.vue';
-  import {AxiosResponse} from "axios";
-  import {handlerCommonError} from "../../../utils/auth-interceptor";
-  import {jscnUserInfoList} from "../../../api/passport";
-  import {setLocationToHisotry} from "../../../utils/tools";
+import SearchPane from '../../../components/SearchPane/index.vue';
+import SysAccountDetail from '../sysaccount/detail.vue';
+import {AxiosResponse} from 'axios';
+import {handlerCommonError} from '../../../utils/auth-interceptor';
+import {jscnUserInfoList} from '../../../api/passport';
+import {setLocationToHisotry} from '../../../utils/tools';
+import JscnOrderSyncDetail from './jscn-order-sync-detail.vue';
 
-  @Component({
-    name: 'JscnUserInfoDetail',
-    components: {SysAccountDetail, SearchPane},
-  })
-  export default class JscnUserInfoDetail extends Vue {
-    activeNames = ['1', '2', '3', '4'];
-    listQuery: JscnUserInfoQuery = {smartCardId: '', userId: '', customerCode: ''};
-    innerListQuery: SysAccountQuery = {};
-    selectJscnUserInfo: JscnUserInfo = {};
-    listLoading: boolean = false;
-    data: JscnUserInfo[] = [];
-    openId:string = '';
+@Component({
+  name: 'JscnUserInfoDetail',
+  components: {JscnOrderSyncDetail, SysAccountDetail, SearchPane},
+})
+export default class JscnUserInfoDetail extends Vue {
+  activeNames = ['1', '2', '3', '4'];
+  listQuery: JscnUserInfoQuery = {smartCardId: '', userId: '', customerCode: ''};
+  innerListQuery: SysAccountQuery = {};
+  selectJscnUserInfo: JscnUserInfo = {};
+  listLoading: boolean = false;
+  data: JscnUserInfo[] = [];
+  openId: string = '';
+  userId: string = ''; // 广电用户的id
 
-    created() {
-      this.listQuery = Object.assign(this.listQuery, this.$route.query);
-      if(this.validInput()){
-        this.fetchData();
-      }
-    }
-    get inputValueIsValid(): boolean {
-      return this.validInput();
-    }
-
-    validInput(): boolean {
-      if (this.listQuery.smartCardId === '' && this.listQuery.userId === '' && this.listQuery.customerCode === '') {
-        return false;
-      }
-      return true;
-    }
-
-    search(): void {
-      if (!this.validInput()) {
-        this.$message.error('必须输入至少一种查询条件进行查询');
-        return;
-      }
+  created() {
+    this.listQuery = Object.assign(this.listQuery, this.$route.query);
+    if (this.validInput()) {
       this.fetchData();
     }
+  }
+  get inputValueIsValid(): boolean {
+    return this.validInput();
+  }
 
-    fetchData() {
-      this.listLoading = true;
-      this.realFetchData().finally(() => {
-        this.listLoading = false;
-      });
+  validInput(): boolean {
+    if (this.listQuery.smartCardId === '' && this.listQuery.userId === '' && this.listQuery.customerCode === '') {
+      return false;
     }
+    return true;
+  }
 
-    realFetchData() {
-      return jscnUserInfoList(this.listQuery).then((response: AxiosResponse<ResponseResult<JscnUserInfo[]>>) => {
-        const responseData = response.data.data;
-        this.data = responseData;
-        if (this.data != null && this.data.length > 0) {
-          let row = this.data[0];
-          this.selectJscnUserInfo = row;
-          this.loadCoocaaUserInfo(row);
-        }
-        //设置路由
-        setLocationToHisotry(this, this.listQuery, '广电用户信息查询');
-        // const path = this.$route.path;
-        // const newLocation: RawLocation = {} ;
-        // const oldRoute = this.$route;
-        // newLocation.path = oldRoute.path;
-        // newLocation.query = this.listQuery;
-        // newLocation.name = oldRoute.name;
-        // newLocation.params = oldRoute.params;
-        // newLocation.hash = oldRoute.hash;
-        // history.pushState(null, '广电用户信息查询', path + '?' + qs.stringify(this.listQuery, {arrayFormat: 'repeat'}));
-        // this.$store.dispatch('addVisitedViews', newLocation);
-
-      }).catch(handlerCommonError);
+  search(): void {
+    if (!this.validInput()) {
+      this.$message.error('必须输入至少一种查询条件进行查询');
+      return;
     }
+    this.fetchData();
+  }
 
-    loadCoocaaUserInfo(row: JscnUserInfo) {
-      console.log(process.env.VUE_APP_JSCN_EXT_ID);
-      if (row.customerCode != null && row.customerCode !== '') {
-        this.innerListQuery = {externalId: row.customerCode, externalFlag: process.env.VUE_APP_JSCN_EXT_ID};
-        console.log(this.innerListQuery);
+  fetchData() {
+    this.listLoading = true;
+    this.realFetchData().finally(() => {
+      this.listLoading = false;
+    });
+  }
+
+  realFetchData() {
+    return jscnUserInfoList(this.listQuery).then((response: AxiosResponse<ResponseResult<JscnUserInfo[]>>) => {
+      const responseData = response.data.data;
+      this.data = responseData;
+      if (this.data != null && this.data.length > 0) {
+        const row = this.data[0];
+        this.selectJscnUserInfo = row;
+        this.loadCoocaaUserInfo(row);
       }
-    }
+      // 设置路由
+      setLocationToHisotry(this, this.listQuery, '广电用户信息查询');
+    }).catch(handlerCommonError);
+  }
 
-    viewUserOrder(){
-      if(this.selectJscnUserInfo.smartCardId != null && this.openId !== ''){
-        this.$router.push({path: '/orders/movies-order-list', query: {coocaaOpenId: this.openId + ',' + this.selectJscnUserInfo.smartCardId}});
-      }
+  loadCoocaaUserInfo(row: JscnUserInfo) {
+    console.log(process.env.VUE_APP_JSCN_EXT_ID);
+    if (row.customerCode != null && row.customerCode !== '') {
+      this.innerListQuery = {externalId: row.customerCode, externalFlag: process.env.VUE_APP_JSCN_EXT_ID};
+      console.log(this.innerListQuery);
+    }
+    if (row != null && row.userId !== undefined) {
+      this.userId = row.userId;
     }
   }
+
+  viewUserOrder() {
+    if (this.selectJscnUserInfo.smartCardId != null && this.openId !== '') {
+      this.$router.push({path: '/orders/movies-order-list', query: {coocaaOpenId: this.openId + ',' + this.selectJscnUserInfo.smartCardId}});
+    }
+  }
+}
 </script>
 
 

@@ -3,7 +3,7 @@ import {IPageinfo} from '@/types';
 import {AxiosPromise} from 'axios';
 import {getAppInfo} from '@/api/account';
 import {pickerOptions} from '@/utils/validate';
-import {setLocationToHisotry} from "@/utils/tools";
+import {setLocationToHisotry} from '@/utils/tools';
 
 @Component
 export default class BaseList extends Vue {

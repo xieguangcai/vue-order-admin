@@ -34,10 +34,8 @@
                 <td>{{ domainInfo.lastTime }}</td>
               </tr>
               <tr>
-                <td>完成时间</td>
-                <td>{{ domainInfo.completedTime }}</td>
                 <td>登录次数</td>
-                <td>{{ domainInfo.visitNum }}</td>
+                <td colspan="3">{{ domainInfo.visitNum }}</td>
               </tr>
               <tr v-if="checkRight()">
                 <td></td>
@@ -275,7 +273,8 @@ import {getSysAccountInfoDetail, passportMandatoryOffline} from '../../../api/pa
 import {getUserInfoFullByOpenId, nopassportSignStatusToName} from '../../../api/pay';
 import {handlerCommonError} from '../../../utils/auth-interceptor';
 import {checkRole} from '../../../utils/auth';
-import {anyNotEmpty} from "../../../utils/validate";
+import {anyNotEmpty} from '../../../utils/validate';
+import {setLocationToHisotry} from '../../../utils/tools';
 
 @Component({
   name: 'SysAccountDetail',
@@ -349,7 +348,7 @@ export default class SysAccountDetail extends Vue {
     if (null == newVal) {
       return false;
     }
-    if(anyNotEmpty(newVal.mobile, newVal.externalId, newVal.openId)) {
+    if (anyNotEmpty(newVal.mobile, newVal.externalId, newVal.openId)) {
       return true;
     }
     return false;
@@ -409,7 +408,7 @@ export default class SysAccountDetail extends Vue {
       };
       this.payUserInfo = this.defPayUserInfo;
     } else {
-      if(oldVal != null && newVal.externalId == oldVal.externalId && newVal.externalFlag == oldVal.externalId && newVal.openId == oldVal.externalId && newVal.mobile == oldVal.mobile){
+      if (oldVal != null && newVal.externalId === oldVal.externalId && newVal.externalFlag === oldVal.externalId && newVal.openId === oldVal.externalId && newVal.mobile === oldVal.mobile) {
         return;
       }
 

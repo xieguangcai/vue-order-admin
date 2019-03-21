@@ -5,12 +5,11 @@ import {
   RedisValueInfo,
   ResponseResult,
   SysAccount, SysLoginLayoutListQuery,
-  SysLoginLayoutModel, JscnUserInfo, JscnUserInfoQuery,
+  SysLoginLayoutModel, JscnUserInfo, JscnUserInfoQuery, ExternalAccessRecords,
 } from '@/types';
 // @ts-ignore
 import qs from 'qs';
 import {AxiosPromise, AxiosResponse} from 'axios';
-import {cellCallbackParams} from "element-ui/types/table";
 
 /**
  * --------------------pay相关接口-------------------------
@@ -149,7 +148,7 @@ export function passportMandatoryOffline(openId: string): AxiosPromise<ResponseR
   });
 }
 
-export function jscnUserInfoList(params : JscnUserInfoQuery): AxiosPromise<ResponseResult<JscnUserInfo[]>>{
+export function jscnUserInfoList(params: JscnUserInfoQuery): AxiosPromise<ResponseResult<JscnUserInfo[]>> {
   return request({
     url: '/passport/jscn-user-info/list',
     method: 'get',
@@ -157,6 +156,15 @@ export function jscnUserInfoList(params : JscnUserInfoQuery): AxiosPromise<Respo
     paramsSerializer(p: any) {
       return qs.stringify(p, {arrayFormat: 'repeat'});
     },
+  });
+
+}
+
+export function externalAccessRecordsList(userId: string): AxiosPromise<ResponseResult<ExternalAccessRecords[]>> {
+  return request({
+    url: '/passport/jscn-user-info/access-records',
+    method: 'get',
+    params: { userId},
   });
 
 }

@@ -32,6 +32,7 @@ import {
 
 import SearchPane from '../../../components/SearchPane/index.vue';
 import SysAccountDetail from '../sysaccount/detail.vue';
+import {setLocationToHisotry} from '../../../utils/tools';
 
 @Component({
   name: 'UserDetail',
@@ -42,6 +43,13 @@ export default class UserDetail extends Vue {
   listQuery: SysAccountQuery = {mobile: '', openId: '', externalFlag: 'qq', externalId: '' };
   openId = '';
   innerListQuery: SysAccountQuery = {mobile: '', openId: '', externalFlag: 'qq', externalId: '' };
+
+  created() {
+    this.listQuery = Object.assign(this.listQuery, this.$route.query);
+    if (this.validInput()) {
+      this.search();
+    }
+  }
 
   get inputValueIsValid(): boolean {
     return this.validInput();
@@ -64,6 +72,7 @@ export default class UserDetail extends Vue {
       externalFlag: this.listQuery.externalFlag,
       externalId: this.listQuery.externalId,
     };
+    setLocationToHisotry(this, this.listQuery, '广电用户信息查询');
   }
 }
 </script>

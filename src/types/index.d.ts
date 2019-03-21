@@ -158,6 +158,7 @@ export interface OrderInfo {
   paySerialInfos?: PaySerialInfo[];
   payExpInfos?: PayExpInfo[];
   trnInfos?: TrnInfo[];
+  orderRefundInfos?: OrderRefundInfo[];
 }
 
 export interface OrderInfoExtend {
@@ -710,7 +711,7 @@ export interface RedisValueInfo {
   ttlTime?: number;
 }
 
-interface SysAccountQuery {
+interface SysAccountQuery extends Dictionary<any> {
   mobile?: string;
   openId?: string;
   externalFlag?: string;
@@ -725,12 +726,29 @@ interface SysAccountQueryConstructor {
 
 declare const SysAccountQuery: SysAccountQueryConstructor;
 
-interface JscnUserInfoQuery extends Dictionary<any>{
+interface JscnUserInfoQuery extends Dictionary<any> {
   userId?: string;
   smartCardId?: string;
   customerCode?: string;
 }
 
+interface ExternalAccessRecords {
+   id?: number;
+   sourceType?: string;
+   sourceIp?: string;
+   sourceAction?: string;
+   userId?: string;
+   smartCardId?: string;
+   customerCode?: string;
+   synTradeNo?: string;
+   sn?: string;
+   productCodes?: string;
+   params?: string;
+   createTime?: string;
+}
+interface JscnOrderSyncQuery extends Dictionary<any> {
+  userId?: string;
+}
 /**
  *  客户端native登录ui元素类型-start
  */
