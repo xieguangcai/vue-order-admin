@@ -61,7 +61,7 @@
               <span class="order-refund-tip" v-if="haveRefundInfo(scope.row)">
                 <el-button type="warning" size="mini"
                            @click="handleViewRefundInfo(scope.row.orderRefundInfos[0].dealNo)">
-                  订单重复支付
+                  订单重复支付了
                 </el-button>
               </span>
               <br/>

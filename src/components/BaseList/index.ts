@@ -4,6 +4,7 @@ import {AxiosPromise} from 'axios';
 import {getAppInfo} from '@/api/account';
 import {pickerOptions} from '@/utils/validate';
 import {setLocationToHisotry} from '@/utils/tools';
+import NProgress from 'nprogress';
 
 @Component
 export default class BaseList extends Vue {
@@ -76,7 +77,6 @@ export default class BaseList extends Vue {
     if (!this.validSearchCondition()) {
       return;
     }
-
     this.listLoading = true;
     this.realFetchData().then(() => {
       // const path = this.$route.path;

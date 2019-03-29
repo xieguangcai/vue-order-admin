@@ -4,9 +4,10 @@ import {AxiosRequestConfig, AxiosResponse} from 'axios';
 import {getFullToken} from '@/utils/auth';
 import {ResponseResult} from '@/types';
 import router from '@/router';
+import NProgress from "nprogress";
 
 export function authHeader(config: AxiosRequestConfig): AxiosRequestConfig {
-  // if (UserModule.token) {
+  NProgress.start();
   const fullToken = getFullToken();
   if (fullToken !== undefined) {
     config.headers.Authorization = getFullToken(); // 让每个请求携带自定义token 请根据实际情况自行修改
@@ -15,7 +16,7 @@ export function authHeader(config: AxiosRequestConfig): AxiosRequestConfig {
 }
 
 export function authRejectFilter(error: any) {
-
+  NProgress.done();
   const response = error.response;
   let message = '';
   if (typeof response === 'undefined') {
@@ -87,6 +88,7 @@ export function handlerCommonError(error: ResponseResult<any>): void {
 }
 
 export function authFilter(response: AxiosResponse<any>): AxiosResponse<any> | Promise<AxiosResponse<any>> {
+  NProgress.done();
   const res = response.data;
   if (typeof res.success !== 'undefined' && !res.success) {
     return Promise.reject(res);

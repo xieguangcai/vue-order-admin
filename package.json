@@ -7,6 +7,7 @@
     "serve-jscn": "vue-cli-service serve --mode development-jscn",
     "build": "vue-cli-service build --mode production",
     "build-test": "vue-cli-service build --mode test",
+    "build-jscn": "vue-cli-service build --mode production-jscn",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
