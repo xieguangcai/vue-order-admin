@@ -87,7 +87,96 @@ export default new Router({
 
 
       ],
-    }, {
+    },
+    {
+      path: '/rights-manage',
+      component: Layout,
+      name: '权益管理',
+      meta: {title: '权益管理', icon: 'form', roles: ['PRODUCT_ROLE_VIEW']},
+      children: [
+        {
+          path: 'company-list',
+          name: '供应商列表',
+          component: () => import(/* webpackChunkName: "company-list" */ '@/views/authentication/company/index.vue'),
+          meta: {title: '供应商列表', icon: 'tree', roles: ['PRODUCT_ROLE_VIEW']},
+        },
+        {
+          path: 'rights-list',
+          name: '权益列表',
+          component: () => import(/* webpackChunkName: "rights-list" */ '@/views/authentication/rights-info/index.vue'),
+          meta: {title: '权益管理', icon: 'tree', roles: ['PRODUCT_ROLE_VIEW']},
+        },
+      ],
+    },
+    {
+      path: '/product-manage',
+      component: Layout,
+      name: '产品包管理',
+      meta: {title: '产品包管理', icon: 'form', roles: ['PRODUCT_ROLE_VIEW', 'OFFLINE_ROLE_EDIT_PRICE']},
+      children: [
+        {
+          path: 'source',
+          name: '产品包分类列表',
+          component: () => import(/* webpackChunkName: "source" */ '@/views/authentication/source/index.vue'),
+          meta: {title: '产品包分类列表', icon: 'tree', roles: ['PRODUCT_ROLE_VIEW']},
+        },
+        {
+          path: 'product',
+          name: '基础产品包列表',
+          component: () => import(/* webpackChunkName: "product" */ '@/views/authentication/product/index.vue'),
+          meta: {title: '基础产品包列表', icon: 'tree', roles: ['PRODUCT_ROLE_VIEW']},
+        },
+        {
+          path: 'activity',
+          name: '产品包活动',
+          // component: () => import(/* webpackChunkName: "activity" */ '@/views/authentication/product/index.vue'),
+          meta: {title: '产品包活动', icon: 'tree', roles: ['PRODUCT_ROLE_VIEW']},
+        },
+        {
+          path: 'scheme',
+          name: 'VIP方案管理',
+          component: () => import(/* webpackChunkName: "scheme" */ '@/views/authentication/scheme/index.vue'),
+          meta: {title: 'VIP方案管理', icon: 'tree', roles: ['PRODUCT_ROLE_VIEW']},
+        },
+        {
+          path: 'scheme-test',
+          name: '方案测试管理',
+          // component: () => import(/* webpackChunkName: "scheme-test" */ '@/views/authentication/scheme-test/index.vue'),
+          meta: {title: '方案测试管理', icon: 'tree', roles: ['PRODUCT_ROLE_VIEW']},
+        },
+        {
+          path: 'policy',
+          name: 'VIP投放策略',
+          // component: () => import(/* webpackChunkName: "policy" */ '@/views/authentication/policy/index.vue'),
+          meta: {title: 'VIP投放策略', icon: 'tree', roles: ['PRODUCT_ROLE_VIEW']},
+        },
+        {
+          path: 'give-info',
+          name: '赠品管理',
+          component: () => import(/* webpackChunkName: "policy" */ '@/views/authentication/give-info/index.vue'),
+          meta: {title: '赠品管理', icon: 'tree', roles: ['PRODUCT_ROLE_VIEW']},
+        },
+        {
+          path: 'subsidy',
+          name: '产品包津贴管理',
+          component: () => import(/* webpackChunkName: "subsidy" */ '@/views/authentication/subsidy/index.vue'),
+          meta: {title: '产品包津贴管理', icon: 'tree', roles: ['PRODUCT_ROLE_VIEW']},
+        },
+        {
+          path: 'open-product',
+          name: '开通产品包管理',
+          // component: () => import(/* webpackChunkName: "open-product" */ '@/views/authentication/open-product/index.vue'),
+          meta: {title: '开通产品包管理', icon: 'tree', roles: ['PRODUCT_ROLE_VIEW']},
+        },
+        {
+          path: 'changprice',
+          name: '线下包价格管理',
+          component: () => import(/* webpackChunkName: "changprice" */ '@/views/authentication/product/guideBuy.vue'),
+          meta: {title: '线下包价格管理', icon: 'tree', roles: ['OFFLINE_ROLE_EDIT_PRICE']},
+        },
+      ],
+    },
+    {
       path: '/orders',
       component: Layout,
       name: '会员信息管理',

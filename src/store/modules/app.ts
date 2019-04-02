@@ -20,6 +20,11 @@ export interface IAppState {
   formLabelWidth: string;
   recordeStatus: StatusInfo[];
   orderStatus: StatusInfo[];
+  productStatus: StatusInfo[];
+  businessType: StatusInfo[];
+  schemeStatus: StatusInfo[];
+  schemeScene: StatusInfo[];
+  productType: StatusInfo[];
   appTypeCodeStatus: StatusInfo[];
   ossOrderSource: StatusInfo[];
   clientType: StatusInfo[];
@@ -30,6 +35,18 @@ export interface IAppState {
   expStatus: StatusInfo[];
   uploadAction: string;
   companyOrderSource: CascaderDataType[];
+}
+
+export function propertyToName(code: number | string, valus: StatusInfo[]) {
+  let name = code + '';
+  const strCode = code + '';
+  valus.forEach((item) => {
+    if (item.value === strCode) {
+      name = item.label;
+      return false;
+    }
+  });
+  return name;
 }
 
 @Module({dynamic: true, store, name: 'app'})
@@ -123,6 +140,55 @@ class App extends VuexModule {
 
   // 公司于对应的产品源信息
   companyOrderSource: IAppState['companyOrderSource'] = [];
+
+  productStatus: IAppState['productStatus'] = [
+    {value: '0', label: '草稿'},
+    {value: '1', label: '待审核'},
+    {value: '2', label: '审核中'},
+    {value: '3', label: '审核不通过	'},
+    {value: '4', label: '审核通过'}];
+
+  businessType: IAppState['businessType'] = [
+    {value: '0', label: '影视'},
+    {value: '1', label: '教育'},
+    {value: '3', label: '体育'},
+    {value: '4', label: '宽带提速	'},
+    {value: '6', label: '游戏'}];
+
+  schemeStatus: IAppState['schemeStatus'] = [
+    {value: '0', label: '草稿'},
+    {value: '1', label: '待测试'},
+    {value: '2', label: '测试中'},
+    {value: '3', label: '测试不通过	'},
+    {value: '4', label: '测试通过'}];
+
+  schemeScene: IAppState['schemeScene'] = [
+    {value: 'v1', label: 'v1'},
+    {value: 'v3', label: 'v3'},
+    {value: 'web', label: 'web'}];
+
+  productType: IAppState['productType'] = [
+    {value: '1', label: '1个月'},
+    {value: '2', label: '3个月'},
+    {value: '3', label: '6个月'},
+    {value: '4', label: '12个月'},
+    {value: '6', label: '1星期'},
+    {value: 'P-Month', label: '1个月'},
+    {value: 'P-Season', label: '3个月'},
+    {value: 'P-HalfYear', label: '6个月'},
+    {value: 'P-Year', label: '12个月'},
+    {value: 'P-Week', label: '1星期'},
+    {value: 'P-5Days', label: '5天'},
+    {value: 'P-36Days', label: '36天'},
+    {value: 'P-4Months', label: '4个月'},
+    {value: 'P-15Months', label: '15个月'},
+    {value: 'P-3Days', label: '3天'},
+    {value: 'P-21Days', label: '21天'},
+    {value: 'P-7Months', label: '7个月'},
+    {value: 'P-15Days', label: '15天'},
+    {value: 'P-5Months', label: '5个月'},
+    {value: 'P-18Months', label: '18个月'},
+    {value: 'P-2Months', label: '2个月'}];
 
   @Mutation
   TOGGLE_SIDEBAR(withoutAnimation: boolean) {

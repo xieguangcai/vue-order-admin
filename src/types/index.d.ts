@@ -991,6 +991,7 @@ export interface BaseOrderSource {
   lastUpdateDate?: string;
   authenticationSubject?: number;
   backUrl?: string;
+  rightsName?: string;
 }
 
 
@@ -1042,7 +1043,131 @@ export interface CascaderDataType {
   disabled?: boolean;
   children: CascaderDataType[];
 }
+
+export interface RightsInfoListQuery extends IPageinfo {
+  rightsId?: number;
+  businessType?: number;
+  rightsName?: number;
+  sourceSign?: string;
+  company?: string;
+  createdDate?: string;
+}
+
+export interface RightsInfo {
+  rightsId?: number;
+  businessType?: number;
+  rightsName?: number;
+  sourceSign?: string;
+  company?: string;
+  createdDate?: string;
+}
+
+export interface CompanyListQuery extends  IPageinfo {
+  id?: number;
+  company?: string;
+  compaynCnName?: string;
+  appcode?: string;
+  webVipcenterBg?: string;
+  remark?: string;
+  flag?: number;
+  createdDate?: string;
+  lastUpdateDate?: string;
+}
+
+export interface Company {
+  id?: number;
+  company?: string;
+  compaynCnName?: string;
+  appcode?: string;
+  webVipcenterBg?: string;
+  remark?: string;
+  flag?: number;
+  createdDate?: string;
+  lastUpdateDate?: string;
+}
+
+export interface SourceListQuery extends IPageinfo {
+  sourceId?: number;
+  sourceName?: string;
+  company?: string;
+  businessType?: string;
+  clientSort?: number;
+  sourceStauts?: string;
+  sourceImage?: string;
+  flag?: number;
+  createdDate?: string;
+}
+
+export interface ProductListQuery extends IPageinfo {
+  productId?: number;
+  productName?: string;
+  productTitle?: string;
+  sourceId?: number;
+  productStatus?: number;
+  flag?: number;
+}
+
+export interface SchemeInfoListQuery extends IPageinfo {
+  productId?: number;
+  productName?: string;
+  productTitle?: string;
+  sourceId?: string;
+  productStatus?: number;
+  flag?: number;
+}
+
+export interface SchemeInfo {
+  schemeId?: number;
+  schemeName?: string;
+  schemeSuffix?: string;
+  company?: string;
+  sourceId?: number;
+  schemeFlag?: number;
+  remark?: string;
+  usageScenario?: string;
+  templateId?: number;
+  templateContent?: string;
+  schemeStatus?: number;
+  createdDate?: string;
+  schemeCurrentVersion?: string;
+  schemeDuplicateVersion?: string;
+}
+
+export interface GiveInfo extends IPageinfo {
+  giveId?: number;
+  giveName?: string;
+  giveType?: number;
+  giveContent?: string;
+  giveFlag?: number;
+  createdDate?: string;
+  lastUpdateDate?: string;
+}
+
+export interface AllowanceActivityInfo extends IPageinfo {
+  allowanceActId?: number;
+  businessType?: number;
+  allowanceActName?: string;
+  subsidyCode?: string;
+  activityStartTime?: string;
+  activityEndTime?: string;
+  startUseTime?: string;
+  endUseTime?: string;
+  actFlag?: number;
+  creater?: number;
+  createdDate?: string;
+  modifier?: number;
+  lastUpdateDate?: string;
+}
+
+export interface ProductChangprice extends IPageinfo {
+  productId?: number;
+  sourceId?: number;
+  productTitle?: string;
+  product: BaseOrderProducts;
+}
+
 // --------authentication---------
+
 
 
 export enum Roles {

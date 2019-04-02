@@ -4,7 +4,7 @@ import {AxiosRequestConfig, AxiosResponse} from 'axios';
 import {getFullToken} from '@/utils/auth';
 import {ResponseResult} from '@/types';
 import router from '@/router';
-import NProgress from "nprogress";
+import NProgress from 'nprogress';
 
 export function authHeader(config: AxiosRequestConfig): AxiosRequestConfig {
   NProgress.start();
