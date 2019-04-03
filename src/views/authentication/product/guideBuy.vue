@@ -47,7 +47,7 @@
         </el-table-column>
         <el-table-column label="销售价" width="120">
           <template slot-scope="scope">
-            <el-input size="mini" style="width: 80px"  @keyup.native="clearNoNum($event.target.value, scope.row.product)" @focus="focusPrice($event.target.value)" @blur="blurPrice($event.target.value, scope.row.product)" :value="scope.row.product.discountFee | NumFormat"></el-input>元
+            <el-input size="mini" style="width: 80px" @keyup.enter.native="$event.target.blur"  @keyup.native="clearNoNum($event.target.value, scope.row.product)" @focus="focusPrice($event.target.value)" @blur="blurPrice($event.target.value, scope.row.product)" :value="scope.row.product.discountFee | NumFormat"></el-input>元
           </template>
         </el-table-column>
         <el-table-column label="唯一标识编码" width="240">
@@ -58,6 +58,11 @@
         <el-table-column label="ERPCode" width="240">
           <template slot-scope="scope">
             {{ scope.row.product.erpCode }}
+          </template>
+        </el-table-column>
+        <el-table-column label="产品包描述" width="240">
+          <template slot-scope="scope">
+            {{ scope.row.product.description }}
           </template>
         </el-table-column>
         <el-table-column label="审核状态" width="240">
@@ -73,6 +78,11 @@
         <el-table-column label="创建时间" width="320">
           <template slot-scope="scope">
             {{ scope.row.product.createdDate }}
+          </template>
+        </el-table-column>
+        <el-table-column label="最近更新时间" width="320">
+          <template slot-scope="scope">
+            {{ scope.row.product.lastUpdateDate }}
           </template>
         </el-table-column>
       </el-table>
@@ -159,6 +169,12 @@ export default class OrderProductChangpriceList extends Vue {
   }
 
   blurPrice(value: number, row: BaseOrderProducts) {
+    // @ts-ignore
+    if (value == "") {
+      row.discountFee = this.price;
+      this.$nextTick(() =>  row.discountFee = this.price * 100);
+      return;
+    }
     if (value === this.price) {
         return;
     }
@@ -196,14 +212,16 @@ export default class OrderProductChangpriceList extends Vue {
     // 保证.只出现一次，而不能出现两次以上，
     val = val.replace('.', '$#$').replace(/\./g, '').replace('$#$', '.');
     // 只能输入小数点后2位
-    if (val.substring(val.indexOf('.')).length > 3) {
+    if (val.indexOf('.') > -1) {
+      if (val.substring(val.indexOf('.')).length > 3) {
         val = val.substring(0, val.indexOf('.') + 3);
+      }
     }
     if (value === val) {
         return;
     }
-    row.discountFee = 0;
-    this.$nextTick(() =>  row.discountFee = parseFloat(val).valueOf() * 100);
+    row.discountFee = this.price;
+    this.$nextTick(() =>  row.discountFee = parseFloat(val) * 100);
   }
 }
 </script>
