@@ -106,7 +106,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="权益信息" width="320">
+        <el-table-column label="订单权益信息" width="320">
           <template slot-scope="scope">
             <div>
               <span>开始时间：</span>{{ scope.row.beginTime }}<br/>
