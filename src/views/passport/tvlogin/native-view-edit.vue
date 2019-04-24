@@ -272,7 +272,7 @@
             </el-form-item>
             <el-form-item label="最低版本">
               <el-select v-model="domainInfo.minVersion" placeholder="选择最低版本" :disabled="innerViewModel">
-                <el-option label="V4.10.12" value="4101200" ></el-option>
+                <el-option label="V4.10.12" value="4100012" ></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="生效时间">
@@ -1075,7 +1075,7 @@ export default class NativeViewEdit extends Vue {
       mac: '',
       sourceSign: 'yinhe,tencent,voole',
       priority: 1,
-      minVersion: '4101200',
+      minVersion: '4100012',
       uiContentData: ui,
     };
     return newModel;
