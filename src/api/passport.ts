@@ -109,11 +109,11 @@ export function publisLoginLayoutTest(data: SysLoginLayoutModel): AxiosPromise<R
   });
 }
 
-export function publisLoginLayout(id: number): AxiosPromise<ResponseResult<boolean>> {
+export function publisLoginLayout(data: SysLoginLayoutModel): AxiosPromise<ResponseResult<boolean>> {
   return request({
     url: '/passport/sys-login-layout/audit/publish',
-    method: 'get',
-    params: {id},
+    method: 'post',
+    data,
   });
 }
 

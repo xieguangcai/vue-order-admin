@@ -272,7 +272,7 @@
             </el-form-item>
             <el-form-item label="最低版本">
               <el-select v-model="domainInfo.minVersion" placeholder="选择最低版本" :disabled="innerViewModel">
-                <el-option label="V4.10" value="4100000" ></el-option>
+                <el-option label="V4.10.12" value="4101200" ></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="生效时间">
@@ -848,6 +848,7 @@ export default class NativeViewEdit extends Vue {
     console.log('推送全网');
     this.operator = true;
 
+    this.beforSave();
     this.$confirm('推送全网之前先要在测试机器验证，您确认在测试机器验证后没有问题吗？', '警告', {
       confirmButtonText: '确认推送',
       cancelButtonText: '取消',
@@ -856,7 +857,7 @@ export default class NativeViewEdit extends Vue {
       if (this.domainInfo == null) {
         return;
       }
-      publisLoginLayout(this.domainInfo.id).then(() => {
+      publisLoginLayout(this.domainInfo).then(() => {
         this.$message.success('推送成功');
         // 重新加载
         if (this.domainInfo != null) {
@@ -1074,7 +1075,7 @@ export default class NativeViewEdit extends Vue {
       mac: '',
       sourceSign: 'yinhe,tencent,voole',
       priority: 1,
-      minVersion: '4100000',
+      minVersion: '4101200',
       uiContentData: ui,
     };
     return newModel;
