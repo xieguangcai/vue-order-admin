@@ -102,7 +102,7 @@
             <div>
               <span>订单名称：</span>{{ scope.row.title }}<br/>
               <span>订单金额：</span>{{ scope.row.totalPayFee / 100 }} 元<br/>
-              <span>产品源：</span>{{scope.row.orderSource}}
+              <span>订单来源：</span>{{scope.row.orderSource}}
             </div>
           </template>
         </el-table-column>

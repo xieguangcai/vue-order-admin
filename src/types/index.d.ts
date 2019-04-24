@@ -1274,3 +1274,27 @@ export interface SubsidySerialReportItem {
   orderNum?: number ;
   money?: number;
 }
+
+export interface IqiyiGoldVipReciveInfo {
+  haveGift?: boolean;
+  giftReceiveTime: string;
+  giftReceiveDeadline: string;
+
+}
+export interface IqiyiGoldVipHistoryInfo {
+  history: IqiyiGoldVipPresentHistory[];
+}
+export interface IqiyiGoldVipPresentHistory {
+  amount: number;
+  originalOrder: string;
+  partnerUid: string;
+  status: number;
+  takeDeadline: string;
+  takeMobile: string;
+  takeTime: string;
+  takeUid: number;
+}
+export interface IqiyiGoldVipQueryList {
+  reciveInfo?: IqiyiGoldVipReciveInfo;
+  historyInfo?: IqiyiGoldVipHistoryInfo;
+}

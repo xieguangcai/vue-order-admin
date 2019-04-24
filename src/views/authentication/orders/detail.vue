@@ -138,6 +138,10 @@
                            @no-such-entity="loadOssDomain = false"
                            @load-entity-success="loadOssDomain = true"/>
       </el-tab-pane>
+      <el-tab-pane label="黄金VIP领取资格" v-if="domainInfo.coocaaOpenId != ''">
+        <iqiyi-gold-vip-list :open-id ="domainInfo.coocaaOpenId">
+        </iqiyi-gold-vip-list>
+      </el-tab-pane>
     </el-tabs>
     <el-dialog title="用户详情信息" :visible.sync="dialogAccountDetilVisible" :append-to-body="true" :modal-append-to-body="false" width="70%" @close="accountDetailOpenId = ''">
       <sys-account-detail :open-id="accountDetailOpenId"/>
@@ -164,10 +168,11 @@ import {
   OrderFlag,
   SearchHistoryModel,
 } from '../../../types';
+import IqiyiGoldVipList from '../iqiyi-gold-vip/list';
 
 @Component({
   name: 'BaseMoviesIqiyiOrderBaseDetail',
-  components: {SysAccountDetail, OrderInfoDetail, OrderPermissionsDetail},
+  components: {IqiyiGoldVipList, SysAccountDetail, OrderInfoDetail, OrderPermissionsDetail},
 })
 export default class BaseMoviesIqiyiOrderBaseDetail extends Vue {
   loadingData: boolean = false;

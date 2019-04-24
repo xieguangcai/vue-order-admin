@@ -170,7 +170,7 @@ export default class OrderProductChangpriceList extends Vue {
 
   blurPrice(value: number, row: BaseOrderProducts) {
     // @ts-ignore
-    if (value == "") {
+    if (value == '') {
       row.discountFee = this.price;
       this.$nextTick(() =>  row.discountFee = this.price * 100);
       return;

@@ -1,9 +1,15 @@
 import request from '@/utils/request-authenticaton';
 import {
   BaseMoviesIqiyiOrderBase,
-  BaseMoviesIqiyiOrderBaseListQuery, CascaderDataType, OrderFlag, OrderPermissionListQuery, OrderPermissionsInfo,
+  BaseMoviesIqiyiOrderBaseListQuery,
+  CascaderDataType,
+  IqiyiGoldVipQueryList,
+  OrderFlag,
+  OrderPermissionListQuery,
+  OrderPermissionsInfo,
   Pageable,
-  ResponseResult, SearchHistoryModel,
+  ResponseResult,
+  SearchHistoryModel,
 } from '@/types';
 // @ts-ignore
 import qs from 'qs';
@@ -84,6 +90,18 @@ export function getCompanyOrderSource(): AxiosPromise<ResponseResult<CascaderDat
     method: 'get',
   });
 }
+
+export function getIqiyiGoldVipQueryList(openId: string): AxiosPromise<ResponseResult<IqiyiGoldVipQueryList>> {
+  return request({
+    url: '/authentication/iqiyi/query-gold-vip-list',
+    method: 'get',
+    params: { openId },
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
+
 
 /**
  * --------------------authentication相关接口-------------------------

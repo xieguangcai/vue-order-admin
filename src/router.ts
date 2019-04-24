@@ -18,7 +18,7 @@ Vue.use(Router);
 */
 
 const hiddenInCoocaa: boolean = process.env.VUE_APP_CHANNEL === 'coocaa';
-const title = hiddenInCoocaa ? '酷开智能客服系统': '智能客服系统';
+const title = hiddenInCoocaa ? '酷开智能客服系统' : '智能客服系统';
 
 export default new Router({
   mode: 'history',
@@ -46,14 +46,14 @@ export default new Router({
       children: [
         {
           path: '/',
-          meta: {title: title, icon: 'coocaa'},
+          meta: {title, icon: 'coocaa'},
         },
       ],
     }, {
       path: '/subsidy',
       component: Layout,
       name: '津贴管理',
-      meta: {title: '津贴管理',hidden: !hiddenInCoocaa, icon: 'form', roles: ['SUBSIDY_ROLE_VIEW']},
+      meta: {title: '津贴管理', hidden: !hiddenInCoocaa, icon: 'form', roles: ['SUBSIDY_ROLE_VIEW']},
       children: [
         {
           path: 'subsidy-activity-list',
@@ -425,7 +425,7 @@ export default new Router({
       path: '/passport',
       component: Layout,
       name: '登录布局',
-      meta: {title: '登录布局',hidden: !hiddenInCoocaa, icon: 'layout', roles: ['LAYOUT_ROLE_VIEW']},
+      meta: {title: '登录布局', hidden: !hiddenInCoocaa, icon: 'layout', roles: ['LAYOUT_ROLE_VIEW']},
       children: [
         {
           path: 'new-login-layout',
