@@ -17,7 +17,8 @@ Vue.use(Router);
   }
 */
 
-const showInCoocaa: boolean = process.env.VUE_APP_CHANNEL === 'coocaa';
+const hiddenInCoocaa: boolean = process.env.VUE_APP_CHANNEL === 'coocaa';
+const title = hiddenInCoocaa ? '酷开智能客服系统': '智能客服系统';
 
 export default new Router({
   mode: 'history',
@@ -30,11 +31,11 @@ export default new Router({
       path: '/',
       component: Layout,
       redirect: '/dashboard',
-      name: '智能客服系统',
+      name: title,
       meta: {hidden: true},
       children: [{
         path: 'dashboard',
-        name: '智能客服系统',
+        name: title,
         meta: {title: '仪表板'},
         component: () => import(/* webpackChunkName: "dashboard" */ '@/views/dashboard/index.vue'),
       }],
@@ -45,14 +46,14 @@ export default new Router({
       children: [
         {
           path: '/',
-          meta: {title: '酷开智能客服系统', icon: 'coocaa'},
+          meta: {title: title, icon: 'coocaa'},
         },
       ],
     }, {
       path: '/subsidy',
       component: Layout,
       name: '津贴管理',
-      meta: {title: '津贴管理', icon: 'form', roles: ['SUBSIDY_ROLE_VIEW']},
+      meta: {title: '津贴管理',hidden: !hiddenInCoocaa, icon: 'form', roles: ['SUBSIDY_ROLE_VIEW']},
       children: [
         {
           path: 'subsidy-activity-list',
@@ -224,7 +225,7 @@ export default new Router({
           path: 'jscn-user-detail',
           name: '广电账号信息',
           component: () => import(/* webpackChunkName: "account-info-detail" */ '@/views/passport/user/jscn-detail.vue'),
-          meta: {title: '广电账号信息', hidden: showInCoocaa, icon: 'user', roles: ['ROLE_VIEW', 'VIEW_USER_INFO']},
+          meta: {title: '广电账号信息', hidden: hiddenInCoocaa, icon: 'user', roles: ['ROLE_VIEW', 'VIEW_USER_INFO']},
         },
         {
           path: 'permissions',
@@ -238,7 +239,7 @@ export default new Router({
       path: '/oss',
       component: Layout,
       name: '解约挽留弹窗',
-      meta: {title: '解约挽留弹窗', icon: 'layout', roles: ['DEDUCTION_ROLE_VIEW']},
+      meta: {title: '解约挽留弹窗', hidden: !hiddenInCoocaa, icon: 'layout', roles: ['DEDUCTION_ROLE_VIEW']},
       children: [
         {
           path: 'autimatic-deduction-iframe',
@@ -424,7 +425,7 @@ export default new Router({
       path: '/passport',
       component: Layout,
       name: '登录布局',
-      meta: {title: '登录布局', icon: 'layout', roles: ['LAYOUT_ROLE_VIEW']},
+      meta: {title: '登录布局',hidden: !hiddenInCoocaa, icon: 'layout', roles: ['LAYOUT_ROLE_VIEW']},
       children: [
         {
           path: 'new-login-layout',
