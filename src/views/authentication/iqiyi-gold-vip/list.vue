@@ -114,7 +114,7 @@
       // @ts-ignore
     openId: string;
     loadingData: boolean = false;
-    data: IqiyiGoldVipQueryList = {reciveInfo: null, historyInfo: null};
+    data: IqiyiGoldVipQueryList = {};
 
     getData(): IqiyiGoldVipPresentHistory[] {
       if (this.data.historyInfo != null) {

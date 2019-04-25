@@ -168,7 +168,7 @@ import {
   OrderFlag,
   SearchHistoryModel,
 } from '../../../types';
-import IqiyiGoldVipList from '../iqiyi-gold-vip/list';
+import IqiyiGoldVipList from '../iqiyi-gold-vip/list.vue';
 
 @Component({
   name: 'BaseMoviesIqiyiOrderBaseDetail',
