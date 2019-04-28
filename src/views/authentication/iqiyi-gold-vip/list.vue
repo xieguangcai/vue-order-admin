@@ -83,100 +83,100 @@
 
 
 <script lang="ts">
-  import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
-  import SearchPane from '../../../components/SearchPane/index.vue';
-  import SearchPagePane from '../../../components/SearchPagePane/index.vue';
-  import {
-    IqiyiGoldVipPresentHistory,
-    IqiyiGoldVipQueryList, OrderPermissionsInfo,
-    ResponseResult,
-  } from '../../../types';
-  import ListTablePane from '../../../components/ListTablePane/index.vue';
-  import {AxiosResponse} from 'axios';
-  import {handlerCommonError} from '../../../utils/auth-interceptor';
-  import {getIqiyiGoldVipQueryList} from '../../../api/authentication';
+import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
+import SearchPane from '../../../components/SearchPane/index.vue';
+import SearchPagePane from '../../../components/SearchPagePane/index.vue';
+import {
+  IqiyiGoldVipPresentHistory,
+  IqiyiGoldVipQueryList, OrderPermissionsInfo,
+  ResponseResult,
+} from '../../../types';
+import ListTablePane from '../../../components/ListTablePane/index.vue';
+import {AxiosResponse} from 'axios';
+import {handlerCommonError} from '../../../utils/auth-interceptor';
+import {getIqiyiGoldVipQueryList} from '../../../api/authentication';
 
-  export interface PermissionQueryDomain {
-    coocaaOpenId: string;
-    thirdOpenId: string;
-    permissionsType: string;
+export interface PermissionQueryDomain {
+  coocaaOpenId: string;
+  thirdOpenId: string;
+  permissionsType: string;
 
+}
+
+@Component({
+  name: 'IqiyiGoldVipList',
+  components: {ListTablePane, SearchPane, SearchPagePane},
+  filters: {},
+  mixins: [],
+})
+export default class IqiyiGoldVipList extends Vue {
+  @Prop({})
+    // @ts-ignore
+  openId: string;
+  loadingData: boolean = false;
+  data: IqiyiGoldVipQueryList = {};
+
+  getData(): IqiyiGoldVipPresentHistory[] {
+    if (this.data.historyInfo != null) {
+      return this.data.historyInfo.history;
+    }
+    return [];
   }
 
-  @Component({
-    name: 'IqiyiGoldVipList',
-    components: {ListTablePane, SearchPane, SearchPagePane},
-    filters: {},
-    mixins: [],
-  })
-  export default class IqiyiGoldVipList extends Vue {
-    @Prop({})
-      // @ts-ignore
-    openId: string;
-    loadingData: boolean = false;
-    data: IqiyiGoldVipQueryList = {};
-
-    getData(): IqiyiGoldVipPresentHistory[] {
-      if (this.data.historyInfo != null) {
-        return this.data.historyInfo.history
-      }
-      return [];
+  getStatus(status: number): string {
+    let statusName = '';
+    switch (status) {
+      case 0:
+        statusName = '成功领取';
+        break;
+      case 1:
+        statusName = '待领取';
+        break;
+      case 2:
+        statusName = '领取失败';
+        break;
+      case 3:
+        statusName = '已领取的退单';
+        break;
+      case 4:
+        statusName = '未领取的退单';
+        break;
     }
 
-    getStatus(status: number): string {
-      let statusName = '';
-      switch (status) {
-        case 0:
-          statusName = '成功领取';
-          break;
-        case 1:
-          statusName = '待领取';
-          break;
-        case 2:
-          statusName = '领取失败';
-          break;
-        case 3:
-          statusName = '已领取的退单';
-          break;
-        case 4:
-          statusName = '未领取的退单';
-          break;
-      }
+    return statusName;
+  }
 
-      return statusName;
-    }
-
-    tableRowClassName({row, rowIndex}: { row: OrderPermissionsInfo, rowIndex: number }) {
-      if (row.endDate !== undefined) {
-        if (new Date(row.endDate) < new Date()) {
-          return 'warning-row';
-        }
+  tableRowClassName({row, rowIndex}: { row: OrderPermissionsInfo, rowIndex: number }) {
+    if (row.endDate !== undefined) {
+      if (new Date(row.endDate) < new Date()) {
+        return 'warning-row';
       }
-    }
-
-    @Watch('openId')
-    openIdChange(newVal: string, oldVal: string) {
-      console.log('正在加载爱奇艺黄金VIP信息')
-      if (this.loadingData) {
-        return;
-      }
-      if (newVal === oldVal) {
-        return;
-      }
-      this.loadingData = true;
-      this.realFetchData().finally(() => {
-        this.loadingData = false;
-      });
-    }
-
-    realFetchData() {
-      if (this.openId === undefined) {
-        return Promise.reject();
-      }
-
-      return getIqiyiGoldVipQueryList(this.openId).then((response: AxiosResponse<ResponseResult<IqiyiGoldVipQueryList>>) => {
-        this.data = response.data.data;
-      }).catch(handlerCommonError);
     }
   }
+
+  @Watch('openId')
+  openIdChange(newVal: string, oldVal: string) {
+    console.log('正在加载爱奇艺黄金VIP信息');
+    if (this.loadingData) {
+      return;
+    }
+    if (newVal === oldVal) {
+      return;
+    }
+    this.loadingData = true;
+    this.realFetchData().finally(() => {
+      this.loadingData = false;
+    });
+  }
+
+  realFetchData() {
+    if (this.openId === undefined) {
+      return Promise.reject();
+    }
+
+    return getIqiyiGoldVipQueryList(this.openId).then((response: AxiosResponse<ResponseResult<IqiyiGoldVipQueryList>>) => {
+      this.data = response.data.data;
+    }).catch(handlerCommonError);
+  }
+}
 </script>

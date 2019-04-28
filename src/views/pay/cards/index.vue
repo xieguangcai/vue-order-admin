@@ -3,7 +3,7 @@
     <list-table-pane>
       <search-pane slot="searchpane" @click="refetchData">
         卡号
-        <el-input v-model="listQuery.cardNo" size="mini"></el-input>
+        <el-input v-model="listQuery.cardNo" size="mini" style="width:180px;"></el-input>
         卡密
         <el-input v-model="listQuery.cardPwd" size="mini" style="width:180px;"></el-input>
         影视订单号
@@ -38,8 +38,9 @@
         <el-table-column align="left" label="卡密信息" width="300" fixed>
           <template slot-scope="scope">
             <div>
-              <span>卡号：</span>[{{cardInfoStatusToName(scope.row.cardStatus, scope.row.cardBatch.cardBatchStatus)}}]
-              {{ scope.row.cardNo}}<br/>
+              <span>卡号：</span>
+              {{ scope.row.cardNo}}  <b>[{{cardInfoStatusToName(scope.row.cardStatus, scope.row.cardBatch)}}]</b>
+              <br/>
               <span>影视单号：</span>{{ scope.row.orderNo}}<br/>
             </div>
           </template>
@@ -48,7 +49,7 @@
           <template slot-scope="scope">
             <div>
               <span>创建时间：</span>{{ scope.row.creatDate }}<br/>
-              <span>使用时间：</span>{{ scope.row.usedDate }}<br/>
+              <span>激活时间：</span>{{ scope.row.usedDate }}<br/>
             </div>
           </template>
         </el-table-column>
@@ -65,6 +66,8 @@
             <div>
               <span>批次名称：</span>{{ scope.row.cardBatch.cardBatchName }}<br/>
               <span>批次id：</span>{{ scope.row.cardPid }}
+              <span>卡密前缀：</span>{{ scope.row.cardBatch.cardPno }}
+              <span>过期：</span>{{ scope.row.cardBatch.endDate }}
             </div>
           </template>
         </el-table-column>
@@ -120,7 +123,7 @@
 import {Component, Vue, Watch} from 'vue-property-decorator';
 import SearchPane from '../../../components/SearchPane/index.vue';
 import SearchPagePane from '../../../components/SearchPagePane/index.vue';
-import {CardInfoListQuery, Pageable, ResponseResult, CardInfo} from '../../../types';
+import {CardInfoListQuery, Pageable, ResponseResult, CardInfo, CardBatch} from '../../../types';
 import ListTablePane from '../../../components/ListTablePane/index.vue';
 import {AxiosResponse} from 'axios';
 import {AppModule} from '../../../store/modules/app';
@@ -152,12 +155,15 @@ export default class CardInfoList extends Vue {
     return AppModule.cardInfoStatus;
   }
 
-  cardInfoStatusToName(code: number, cardBatchStatus: number) {
+  cardInfoStatusToName(code: number, cardBatch: CardBatch) {
     if (code === 3) {
       return cardInfoStatusName(code);
-    } else if (cardBatchStatus === 2) {
-      return '批次' + cardBatchStatusName(cardBatchStatus);
+    } else if (cardBatch.cardBatchStatus === 2) {
+      return '批次' + cardBatchStatusName(cardBatch.cardBatchStatus);
     } else {
+      if (cardBatch.endDate !== undefined && cardBatch.endDate !== '' && (+new Date(cardBatch.endDate) < +new Date())) {
+        return '过期';
+      }
       return cardInfoStatusName(code);
     }
   }
