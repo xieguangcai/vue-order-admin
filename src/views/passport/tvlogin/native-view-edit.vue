@@ -932,6 +932,9 @@ export default class NativeViewEdit extends Vue {
     if (this.validTime != null && this.validTime.length === 2) {
       this.domainInfo.startTime = this.validTime[0];
       this.domainInfo.endTime = this.validTime[1];
+    } else {
+      this.domainInfo.startTime = '';
+      this.domainInfo.endTime = '';
     }
   }
   /**
