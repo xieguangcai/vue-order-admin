@@ -114,12 +114,12 @@
       // @ts-ignore
     openId: string;
     loadingData: boolean = false;
-    data: IqiyiGoldVipQueryList = {reciveInfo: null, historyInfo: null};
+    data: IqiyiGoldVipQueryList = {};
 
     getData(): IqiyiGoldVipPresentHistory[] {
-      if (this.data.historyInfo != null) {
-        return this.data.historyInfo.history
-      }
+      // if (this.data.historyInfo != null) {
+      //   return this.data.historyInfo.history
+      // }
       return [];
     }
 
@@ -156,7 +156,6 @@
 
     @Watch('openId')
     openIdChange(newVal: string, oldVal: string) {
-      console.log('正在加载爱奇艺黄金VIP信息')
       if (this.loadingData) {
         return;
       }
