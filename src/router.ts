@@ -106,7 +106,6 @@ export default new Router({
           component: () => import(/* webpackChunkName: "app-list" */ '@/views/device-activate/device/index.vue'),
           meta: {title: '激活设备列表', icon: 'tree',roles: ['ACTIVE_ROLE_VIEW']},
         },
-
       ],
     },
     {
