@@ -1102,6 +1102,7 @@ export interface DeviceActivityInfoListQuery extends  IPageinfo {
   deviceModel?: string;
   activeTime?: string;
   updateTime?: string;
+  userCode?: string;
 }
 
 export interface DeviceActivityInfo {
@@ -1114,6 +1115,7 @@ export interface DeviceActivityInfo {
   deviceModel?: string;
   activeTime?: string;
   updateTime?: string;
+  userCode?: string;
 }
 
 export interface UserPhone {

@@ -2,6 +2,8 @@
   <div>
     <list-table-pane>
       <search-pane slot="searchpane" @click="refetchData">
+        手机号/合同号
+        <el-input v-model="listQuery.userCode" size="mini" :clearable="true"></el-input>
         机型
         <el-input v-model="listQuery.deviceModel" size="mini" :clearable="true"></el-input>
         barcode
