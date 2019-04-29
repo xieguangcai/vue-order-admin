@@ -1,6 +1,6 @@
 <template>
   <el-form :model="domainInfo" ref="editForm" :rules="rules" :size="formSize">
-    <el-form-item label="测试手机号码" :label-width="formLabelWidth" prop="name">
+    <el-form-item label="测试手机号码" :label-width="formLabelWidth" prop="mobile">
       <el-input v-model="domainInfo.mobile"></el-input>
     </el-form-item>
 
@@ -30,13 +30,14 @@ export default class UserPhoneEdit extends Vue {
   @Prop({type: Number, default: 0})
   domainId: number = 0;
 
-  // rules = {
-  //   name: [{required: true, message: '请输入手机号', trigger: 'blur'}, {
-  //     max: 11,
-  //     message: '长度必须在11个字符内',
-  //     trigger: 'blur',
-  //   }],
-  // };
+  rules = {
+    mobile: [{required: true, message: '请输入手机号', trigger: 'blur'}, {
+      min: 11,
+      max: 11,
+      message: '长度必须是11个字符',
+      trigger: 'blur',
+    }],
+  };
 
 
   @Watch('domainId', {immediate: true})
@@ -78,7 +79,6 @@ export default class UserPhoneEdit extends Vue {
       return updateUserPhone(this.domainInfo).catch(handlerCommonError);
     } else {
       return saveUserPhone(this.domainInfo).catch(handlerCommonError);
-
     }
   }
 }
