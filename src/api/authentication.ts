@@ -9,7 +9,7 @@ import {
   OrderPermissionsInfo,
   Pageable,
   ResponseResult,
-  SearchHistoryModel,
+  SearchHistoryModel, V1MoviePolicyModel,
 } from '@/types';
 // @ts-ignore
 import qs from 'qs';
@@ -35,7 +35,7 @@ export function getBaseMoviesIqiyiOrderBaseDetail(orderId: number, searchHistory
   return request({
     url: '/authentication/order/detail',
     method: 'get',
-    params: {orderId, searchHistoryModel },
+    params: {orderId, searchHistoryModel},
     paramsSerializer(p: any) {
       return qs.stringify(p, {arrayFormat: 'repeat'});
     },
@@ -63,6 +63,7 @@ export function orderTypeToName(code: number) {
   });
   return name;
 }
+
 export function payFlagClassName(payFlag: OrderFlag): string {
   if (payFlag === '0') {
     return 'warning-row';
@@ -95,7 +96,7 @@ export function getIqiyiGoldVipQueryList(openId: string): AxiosPromise<ResponseR
   return request({
     url: '/authentication/iqiyi/query-gold-vip-list',
     method: 'get',
-    params: { openId },
+    params: {openId},
     paramsSerializer(p: any) {
       return qs.stringify(p, {arrayFormat: 'repeat'});
     },
@@ -106,10 +107,18 @@ export function getIqiyiGoldVipQueryList(openId: string): AxiosPromise<ResponseR
 /**
  * --------------------authentication相关接口-------------------------
  */
-export function updateVipRights(orderNo: string): AxiosPromise<ResponseResult<Boolean>> {
+export function updateVipRights(orderNo: string): AxiosPromise<ResponseResult<boolean>> {
   return request({
     url: '/authentication/order/update-vip-rights',
     method: 'get',
-    params: {orderNo }
+    params: {orderNo},
+  });
+}
+
+export function movieV1Policy(mac: string): AxiosPromise<ResponseResult<V1MoviePolicyModel>> {
+  return request({
+    url: '/authentication/order/v1-policy',
+    method: 'get',
+    params: {mac},
   });
 }

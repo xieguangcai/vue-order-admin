@@ -64,7 +64,9 @@
               </tr>
               <tr>
                 <td>mac地址</td>
-                <td>{{ domainInfo.mac }}</td>
+                <td>{{ domainInfo.mac }}
+                  <policy-component :mac="domainInfo.mac"></policy-component>
+                </td>
                 <td>激活ID</td>
                 <td>{{ domainInfo.tvId }}</td>
                 <td>机型</td>
@@ -173,10 +175,11 @@ import {
 } from '../../../types';
 import IqiyiGoldVipList from '../iqiyi-gold-vip/list.vue';
 import {handlerCommonError} from "../../../utils/auth-interceptor";
+import PolicyComponent from "../policy/index";
 
 @Component({
   name: 'BaseMoviesIqiyiOrderBaseDetail',
-  components: {IqiyiGoldVipList, SysAccountDetail, OrderInfoDetail, OrderPermissionsDetail},
+  components: {PolicyComponent, IqiyiGoldVipList, SysAccountDetail, OrderInfoDetail, OrderPermissionsDetail},
 })
 export default class BaseMoviesIqiyiOrderBaseDetail extends Vue {
   loadingData: boolean = false;

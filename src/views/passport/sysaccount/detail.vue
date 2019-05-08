@@ -101,7 +101,9 @@
                 <th>激活状态</th>
               </tr>
               <tr v-for="item in domainInfo.bindDevices">
-                <td>{{ item.deviceId }}</td>
+                <td>{{ item.deviceId }}
+                  <policy-component :mac="item.deviceId" ></policy-component>
+                </td>
                 <td>{{ item.cUdid }}</td>
                 <td>{{ item.lastIp }}</td>
                 <td>{{ item.bindTime}}</td>
@@ -206,7 +208,9 @@
                         <th>创建时间</th>
                       </tr>
                       <tr v-for="item in item.noPassportSignAuths">
-                        <td>{{ item.deviceId }}</td>
+                        <td>{{ item.deviceId }}
+                          <policy-component :mac="item.deviceId" ></policy-component>
+                        </td>
                         <td>{{ item.authTime }}</td>
                         <td>{{ item.createTime }}</td>
                       </tr>
@@ -274,11 +278,11 @@ import {getUserInfoFullByOpenId, nopassportSignStatusToName} from '../../../api/
 import {handlerCommonError} from '../../../utils/auth-interceptor';
 import {checkRole} from '../../../utils/auth';
 import {anyNotEmpty} from '../../../utils/validate';
-import {setLocationToHisotry} from '../../../utils/tools';
+import PolicyComponent from "../../authentication/policy/index";
 
 @Component({
   name: 'SysAccountDetail',
-  components: {},
+  components: {PolicyComponent},
 })
 export default class SysAccountDetail extends Vue {
   loadingData: boolean = false;

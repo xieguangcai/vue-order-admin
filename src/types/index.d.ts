@@ -1375,3 +1375,24 @@ export interface BindUserTerminal {
   modifiedTime?: string;
   userInfo: UserInfo;
 }
+
+/**
+ * 影视v1版本获取策略接口结果，根据mac获取
+ */
+export interface V1MoviePolicyModel {
+  extendAttributes?: string;
+  hallId?: string;
+  homepageId?: string;
+  license?: string;
+  oldIqiyiVersion?: boolean;
+  oldVooleVersion?: boolean;
+  partners?: string;
+  pay?: boolean;
+  payLive?: boolean;
+  resolutionLevel?: string;
+  schemeId?: number;
+  source?: string;
+  supportLive?: boolean;
+  supportSource?: string;
+  testFlag?: number;
+}
