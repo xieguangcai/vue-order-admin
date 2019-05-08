@@ -8,7 +8,7 @@ import {
   ResponseResult, StatusInfo,
   UserInfoFull,
   AutomaticDeductionIframe,
-  SearchIframeModel,
+  SearchIframeModel, BindUserTerminalListQuery, BindUserTerminal,
 } from '@/types';
 // @ts-ignore
 import qs from 'qs';
@@ -256,3 +256,22 @@ export function toRepealIframe(id: number) {
   });
 }
 
+
+export function getBindUserTerminal(params: BindUserTerminalListQuery): AxiosPromise<ResponseResult<Pageable<BindUserTerminal>>> {
+  return request({
+    url: '/pay/bind-user-terminal/list',
+    method: 'get',
+    params,
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
+
+export function unBindUserTerminal(bindUserTerminalId: number, userId: number): AxiosPromise<ResponseResult<Pageable<BindUserTerminal>>> {
+  return request({
+    url: '/pay/bind-user-terminal/unbind',
+    method: 'get',
+    params: {userId, bindUserTerminalId},
+  });
+}

@@ -278,7 +278,7 @@ export interface OrderInfoListQuery extends IPageinfo {
   orderId?: string;
 }
 
-export interface UserInfoFull {
+export interface UserInfo {
   userId: number;
   phoneNo?: string;
   nickname?: string;
@@ -312,7 +312,9 @@ export interface UserInfoFull {
   remark?: string;
   modifiedBy?: string;
   modifiedTime?: string;
+}
 
+export interface UserInfoFull extends UserInfo {
   protocols?: AutomaticDeductionProtocol[];
   noPassportSigns?: PayNoPassportSign[];
 }
@@ -1297,4 +1299,29 @@ export interface IqiyiGoldVipPresentHistory {
 export interface IqiyiGoldVipQueryList {
   reciveInfo?: IqiyiGoldVipReciveInfo;
   historyInfo?: IqiyiGoldVipHistoryInfo;
+}
+
+export interface BindUserTerminalListQuery extends IPageinfo {
+  mac?: string;
+  phoneNo?: string;
+}
+
+/**
+ * oss用户绑定设备
+ */
+export interface BindUserTerminal {
+  bindUserTerminalId: number;
+  terminalId?: number;
+  mac?: string;
+  terminalNo?: string;
+  terminalModel?: string;
+  chipsetCode?: string;
+  prodDate?: string;
+  bindingBy?: string;
+  bindingTime?: string;
+  unbindBy?: string;
+  unbindTime?: string;
+  bindingStatus?: string;
+  modifiedTime?: string;
+  userInfo: UserInfo;
 }

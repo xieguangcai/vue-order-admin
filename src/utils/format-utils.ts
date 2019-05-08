@@ -58,8 +58,11 @@ export function addDateFormatString(num?: number, type?: DateUnit, start?: Date,
   if (fmt == null) {
     fmt = 'yyyy-MM-dd hh:mm:ss';
   }
+  let curStart: Date;
   if (start == null) {
-    start = new Date();
+    curStart = new Date();
+  } else {
+    curStart = new Date(+ start);
   }
   if (null == num) {
     num = 0;
@@ -68,9 +71,9 @@ export function addDateFormatString(num?: number, type?: DateUnit, start?: Date,
     type = 's';
   }
   if (0 !== num) {
-    start = addDate(num, type, start);
+    start = addDate(num, type, curStart);
   }
-  return formatDate(start, fmt);
+  return formatDate(curStart, fmt);
 }
 
 function padLeftZero(str: string): string {

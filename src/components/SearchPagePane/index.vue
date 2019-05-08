@@ -5,7 +5,7 @@
       :current-page="innerPage + 1"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :page-sizes="[1,50, 100, 200, 300]"
+      :page-sizes="[1, 20, 50, 100, 200, 300]"
       :page-size="innerSize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="innerTotal">

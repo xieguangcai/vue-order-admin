@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 import {VuexModule, Module, Mutation, Action, getModule, MutationAction} from 'vuex-module-decorators';
 import store from '@/store';
 import {ElementUIComponentSize} from 'element-ui/types/component';
-import {CascaderDataType, StatusInfo} from '@/types';
+import {CascaderDataType, IPageinfo, StatusInfo} from '@/types';
 import {getCompanyOrderSource} from '@/api/authentication';
 
 export enum DeviceType {
@@ -35,6 +35,8 @@ export interface IAppState {
   expStatus: StatusInfo[];
   uploadAction: string;
   companyOrderSource: CascaderDataType[];
+  // 每个页面默认数量
+  pageTotal: number;
 }
 
 export function propertyToName(code: number | string, valus: StatusInfo[]) {
@@ -55,6 +57,7 @@ class App extends VuexModule {
     opened: Cookies.get('sidebarStatus') !== 'closed',
     withoutAnimation: false,
   };
+  pageTotal = 20;
   device: IAppState['device'] = DeviceType.Desktop;
   formSize: IAppState['formSize'] = 'small';
   formLabelWidth: IAppState['formLabelWidth'] = '120px';

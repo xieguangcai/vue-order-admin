@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script src="https://sdk.appadhoc.com/ab.plus.js" charset="utf-8"></script>
+    <script type="text/javascript">
+      //如果开启了人群AB
+      var randomClientId = Math.random();
+      adhoc('init', {
+        appKey: 'ADHOC_af8e790a-b5c0-47eb-8fd4-19aa5dd4a758',
+        defaultFlags: {pd_db_user_10_pass: '1', pd_db_user_30_pass: '1'},
+        clientId: '12345678913',
+        protocol: 'http:'
+      });
+    </script>
+    <script type="text/javascript" src="jquery-1.11.0.min.js" ></script>
+  </head>
+  <body>
+    <div>
+        <h3>提交指标</h3>
+        <h2 id="flag"></h2>
+    </div>
+    <input type="button" value="提交订单" id="cOrder">
+    <input type="button" value="支付订单" id="pOrder">
+    <script>
+      function loginfo(info){
+        $('#flag').html($('#flag').html() + '<br>' + info);
+      }
+
+      $(document).ready(function(){
+        adhoc('getFlags', function(flags){
+          debugger;
+          if(flags.get('pd_db_user_30_pass') == '1'){
+            loginfo('原始实验版本');
+          }else{
+            loginfo('测试实验版本---');
+          }
+        });
+
+        $("#cOrder").bind('click', function(){
+          adhoc('track', 'c_order', 1);
+          loginfo('提交上报指标：c_order');
+        });
+        $('#pOrder').bind('click', function(){
+          adhoc('track', 'p_order', 1);
+          loginfo('提交上报指标：p_order');
+        });
+      })
+    </script>
+  </body>
+</html>

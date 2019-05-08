@@ -3,15 +3,15 @@
     <list-table-pane>
       <search-pane slot="searchpane" @click="refetchData">
         查询订单类型
-        <el-select size="mini" v-model="listQuery.searchHistory">
+        <el-select size="mini" v-model="listQuery.searchHistory" @change="searchTypeChange">
           <el-option value="1" label="最新订单"/>
           <el-option value="0" label="历史支付订单"/>
           <el-option value="2" label="历史未支付订单"/>
         </el-select>
         酷开openId
-        <el-input v-model="listQuery.coocaaOpenId" placeholder="查询多个可以用逗号分割" style="width:280px" size="mini" ></el-input>
+        <el-input v-model="listQuery.coocaaOpenId" placeholder="查询多个可以用逗号分割" style="width:280px" size="mini"></el-input>
         影视订单号
-        <el-input v-model="listQuery.orderNo" placeholder="查询多个可以用逗号分割" size="mini" style="width:200px;" ></el-input>
+        <el-input v-model="listQuery.orderNo" placeholder="查询多个可以用逗号分割" size="mini" style="width:200px;"></el-input>
         第三openId
         <el-input v-model="listQuery.thirdOpenId" size="mini" style="width:280px" :clearable="true"></el-input>
         支付状态
@@ -60,16 +60,17 @@
                 fit
                 size="mini"
                 highlight-current-row>
-        <el-table-column align="left" label="单号信息" width="300" fixed>
+        <el-table-column align="left" label="单号信息" width="260" fixed>
           <template slot-scope="scope">
             <div>
-              <span>业务订单号：&nbsp;</span> {{ scope.row.orderNo}}<br >
-              <span>第三方订单号：&nbsp;</span> {{ scope.row.synTradeNo}}<br >
-              <span>机器信息：&nbsp;</span> {{ scope.row.mac}} <template v-if="scope.row.tvId">[{{ scope.row.tvId}} ]</template>
+              <span>业务订单号：&nbsp;</span> {{ scope.row.orderNo}}<br>
+              <span>第三方订单号：&nbsp;</span> {{ scope.row.synTradeNo}}<br>
+              <span>机器信息：&nbsp;</span> {{ scope.row.mac}}
+              <template v-if="scope.row.tvId">[{{ scope.row.tvId}} ]</template>
             </div>
           </template>
         </el-table-column>
-        <el-table-column align="left" label="订单状态" width="200">
+        <el-table-column align="left" label="订单状态" width="170">
           <template slot-scope="scope">
             <div>
               <span>支付状态：</span>{{ scope.row.payFlag === 1 ? '已支付' : '未支付'}}<br/>
@@ -79,7 +80,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="left" label="账号信息" width="400">
+        <el-table-column align="left" label="账号信息" width="320">
           <template slot-scope="scope">
             <div>
               <span>酷开openId：&nbsp;</span> <span>{{scope.row.coocaaOpenId}}</span><br/>
@@ -88,7 +89,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="订单时间" width="240">
+        <el-table-column label="订单时间" width="200">
           <template slot-scope="scope">
             <div>
               <span>下单时间：</span>{{ scope.row.createTime }}<br/>
@@ -128,17 +129,18 @@
           </template>
         </el-table-column>
       </el-table>
-     <search-page-pane @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :size="size"
-                       :page="page"
-                       :total="total"
-                       slot="page">
+      <search-page-pane @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :size="size"
+                        :page="page"
+                        :total="total"
+                        slot="page">
       </search-page-pane>
       <el-dialog title="会员业务订单详情" :visible.sync="dialogBaseMoviesIqiyiOrderBaseDetilVisible"
                  :append-to-body="true" :modal-append-to-body="false" width="80%"
                  @close="editDomainInfo.editDomainId = 0">
-        <base-movies-iqiyi-order-base-detail :domain-id="editDomainInfo.editDomainId" :search-history-model="editDomainInfo.searchHistoryModel"/>
+        <base-movies-iqiyi-order-base-detail :domain-id="editDomainInfo.editDomainId"
+                                             :search-history-model="editDomainInfo.searchHistoryModel"/>
       </el-dialog>
 
       <el-dialog title="oss订单详情" :visible.sync="dialogOrderInfoDetilVisible"
@@ -187,10 +189,11 @@ export default class BaseMoviesIqiyiOrderList extends Vue {
   dialogBaseMoviesIqiyiOrderBaseDetilVisible: boolean = false;
   dialogOrderInfoDetilVisible: boolean = false;
 
-  editDomainInfo: EditDomain = {editDomainId: 0, searchHistoryModel: '1', orderNo : ''};
+  editDomainInfo: EditDomain = {editDomainId: 0, searchHistoryModel: '1', orderNo: ''};
 
   data: BaseMoviesIqiyiOrderBase[] = [];
-  listQuery: BaseMoviesIqiyiOrderBaseListQuery = { page: 0, size: 50, total: 0, searchHistory: '1', payFlag: '1', synFlag: '',
+  listQuery: BaseMoviesIqiyiOrderBaseListQuery = {
+    page: 0, size: 50, total: 0, searchHistory: '1', payFlag: '1', synFlag: '',
     createTimes: [addDateFormatString(-1, 'w'), addDateFormatString()],
   };
 
@@ -216,6 +219,32 @@ export default class BaseMoviesIqiyiOrderList extends Vue {
     }).catch(handlerCommonError);
   }
 
+  searchTypeChange(val: string) {
+    let end: number = 0, start: number = 0;
+    if (this.listQuery.createTimes.length > 0) {
+      start = (+new Date(this.listQuery.createTimes[0])) as number;
+    }
+    const now = new Date();
+    let minEnd = 0;
+    if (val === '0') {
+      // 历史已支付订单
+      // 一年以前
+      minEnd = +now.setFullYear(now.getFullYear() - 1);
+      this.listQuery.payFlag = '1';
+
+    } else if (val == '2') {
+      // 历史未支付订单
+      minEnd = +now.setMonth(now.getMonth() - 1);
+      this.listQuery.payFlag = '';
+      this.listQuery.synFlag = '';
+    }
+
+    if (start === 0 || start > minEnd) {
+      console.log(start);
+      console.log(now);
+      this.listQuery.createTimes = [addDateFormatString(-3, 'M', now), addDateFormatString(0, 'w', now)];
+    }
+  }
 
   validSearchCondition(): boolean {
     if (anyNotEmpty(this.listQuery.orderNo, this.listQuery.coocaaOpenId, this.listQuery.tvId, this.listQuery.mac)) {
@@ -227,8 +256,8 @@ export default class BaseMoviesIqiyiOrderList extends Vue {
       return false;
     }
     if (this.listQuery.createTimes.length > 0) {
-      const end = (+ new Date(this.listQuery.createTimes[1])) as number;
-      const start = (+ new Date(this.listQuery.createTimes[0])) as number;
+      const end = (+new Date(this.listQuery.createTimes[1])) as number;
+      const start = (+new Date(this.listQuery.createTimes[0])) as number;
       if (end - start > 31 * 3 * 24 * 3600 * 1000) {
         this.$message.error('查询时间超过指定限制【可查询间隔3个月的订单】');
         return false;

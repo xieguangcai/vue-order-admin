@@ -54,7 +54,7 @@
                 size="mini"
                 highlight-current-row>
 
-        <el-table-column align="left" label="单号信息" width="360" fixed>
+        <el-table-column align="left" label="单号信息" width="270" fixed>
           <template slot-scope="scope">
             <div>
               <span>oss订单号：</span>{{ scope.row.orderNo}}
@@ -71,7 +71,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column align="left" label="订单状态" width="200">
+        <el-table-column align="left" label="订单状态" width="170">
           <template slot-scope="scope">
             <div>
               <span>支付账号：</span>{{ scope.row.phoneNo === '-1' ? '无账号' : scope.row.phoneNo }}<br/>
@@ -81,7 +81,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="订单时间" width="240">
+        <el-table-column label="订单时间" width="200">
           <template slot-scope="scope">
             <div>
               <span>下单时间：</span>{{ scope.row.orderTime }}<br/>

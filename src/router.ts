@@ -190,6 +190,12 @@ export default new Router({
           meta: {title: 'oss订单列表', icon: 'tree', roles: ['ROLE_VIEW']},
         },
         {
+          path: 'oss-bind-user-terminal',
+          name: '终端解绑',
+          component: () => import(/* webpackChunkName: "terminal-list" */ '@/views/pay/user/terminal-list.vue'),
+          meta: {title: '终端解绑',  hidden: !hiddenInCoocaa, icon: 'user', roles: ['ROLE_VIEW', 'VIEW_USER_INFO']},
+        },
+        {
           path: 'movies-order-list',
           name: '业务订单列表',
           component: () => import(/* webpackChunkName: "movies-order-list" */ '@/views/authentication/orders/index.vue'),
