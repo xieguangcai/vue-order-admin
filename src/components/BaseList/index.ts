@@ -5,6 +5,7 @@ import {getAppInfo} from '@/api/account';
 import {pickerOptions} from '@/utils/validate';
 import {setLocationToHisotry} from '@/utils/tools';
 import NProgress from 'nprogress';
+import {AppModule} from "@/store/modules/app";
 
 @Component
 export default class BaseList extends Vue {
@@ -28,7 +29,7 @@ export default class BaseList extends Vue {
   }
   created() {
     this.onCreated();
-    const pageInfo: IPageinfo = {page: 0, size: 50, total: 0};
+    const pageInfo: IPageinfo = {page: 0, size: AppModule.pageSize, total: 0};
     if (this.$route.query.page) {
       pageInfo.page = parseInt(this.$route.query.page, 10);
     }

@@ -1,7 +1,7 @@
 <template>
   <div v-loading="listLoading">
     <div v-if="data != null">
-      <div v-if="data.reciveInfo.haveGift">
+      <div v-if="data.reciveInfo && data.reciveInfo.haveGift">
         <h3><span class="el-icon-success" style="color:green;">【有】黄金VIP领取资格</span></h3>
         <table class="cc-order-table">
           <tr>

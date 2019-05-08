@@ -105,15 +105,9 @@ export default class OrderPermissionsDetail extends Vue {
   // @ts-ignore
   queryDomain: PermissionQueryDomain;
   loadingData: boolean = false;
-  // @Prop({default: '', type: String})
-  //   // @ts-ignore
-  // coocaaOpenId: string;
-  // @Prop({default: '', type: String})
-  //   // @ts-ignore
-  // thirdOpenId: string;
-  // @Prop({default: 0, type: Number})
-  //   // @ts-ignore
-  // permissionsType: string;
+  @Prop({default: false, type: Boolean})
+    // @ts-ignore
+  focusLoad: boolean;
 
   data: OrderPermissionsInfo[] = [];
 
@@ -163,6 +157,20 @@ export default class OrderPermissionsDetail extends Vue {
     };
     this.realFetchData().finally(() => {
       this.loadingData = false;
+    });
+  }
+
+  @Watch("focusLoad")
+  focusLoadChange(newVal: boolean, oldVal: boolean){
+    this.$nextTick(()=> {
+      if (this.loadingData) {
+        return;
+      }
+      this.loadingData = true;
+
+      this.realFetchData().finally(() => {
+        this.loadingData = false;
+      });
     });
   }
 

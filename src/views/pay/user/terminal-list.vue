@@ -120,7 +120,7 @@ export default class OrderRefundInfoList extends Vue {
   editDomainInfo: EditDomain = {editDomainId: 0};
 
   data: BindUserTerminal[] = [];
-  listQuery: BindUserTerminalListQuery = {page: 0, size: AppModule.pageTotal, total: 0};
+  listQuery: BindUserTerminalListQuery = {page: 0, size: AppModule.pageSize, total: 0};
 
   handleUnbind(index: number, row: BindUserTerminal) {
     this.$confirm('确认解除该设备账号绑定关系吗?', '提示', {

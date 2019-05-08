@@ -36,7 +36,7 @@ export interface IAppState {
   uploadAction: string;
   companyOrderSource: CascaderDataType[];
   // 每个页面默认数量
-  pageTotal: number;
+  pageSize: number;
 }
 
 export function propertyToName(code: number | string, valus: StatusInfo[]) {
@@ -57,7 +57,7 @@ class App extends VuexModule {
     opened: Cookies.get('sidebarStatus') !== 'closed',
     withoutAnimation: false,
   };
-  pageTotal = 20;
+  pageSize = 20;
   device: IAppState['device'] = DeviceType.Desktop;
   formSize: IAppState['formSize'] = 'small';
   formLabelWidth: IAppState['formLabelWidth'] = '120px';

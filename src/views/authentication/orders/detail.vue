@@ -25,7 +25,10 @@
               </tr>
               <tr>
                 <td>会员订单号</td>
-                <td colspan="3">{{ domainInfo.orderNo }}</td>
+                <td colspan="3">{{ domainInfo.orderNo }}
+                  <el-button v-if="domainInfo.baseOrderSource && domainInfo.baseOrderSource.sourceType === 0" v-loading="loadingUpdateVipRights"
+                             type="warning"  size="mini" @click="handleUpdateVipRights(domainInfo.orderNo)">重新拉取权益</el-button>
+                </td>
                 <td>第三方业务订单号</td>
                 <td colspan="3">{{ domainInfo.synTradeNo }}</td>
               </tr>
@@ -126,11 +129,11 @@
         </el-collapse>
       </el-tab-pane>
       <el-tab-pane label="会员权益信息" v-if="domainInfo.coocaaOpenId != '' ||  domainInfo.thirdOpenId!= '' ">
-        <order-permissions-detail :query-domain="{coocaaOpenId:domainInfo.coocaaOpenId, permissionsType:'1', thirdOpenId: domainInfo.thirdOpenId}">
+        <order-permissions-detail :query-domain="{coocaaOpenId:domainInfo.coocaaOpenId, permissionsType:'1', thirdOpenId: domainInfo.thirdOpenId}"  :focus-load="focusLoadPermission">
         </order-permissions-detail>
       </el-tab-pane>
       <el-tab-pane label="会员单点影片权益信息"  v-if="domainInfo.coocaaOpenId != '' ||  domainInfo.thirdOpenId!= '' ">
-        <order-permissions-detail :query-domain="{coocaaOpenId:domainInfo.coocaaOpenId, permissionsType:'2', thirdOpenId: domainInfo.thirdOpenId}">
+        <order-permissions-detail :query-domain="{coocaaOpenId:domainInfo.coocaaOpenId, permissionsType:'2', thirdOpenId: domainInfo.thirdOpenId}" :focus-load="focusLoadPermission2">
         </order-permissions-detail>
       </el-tab-pane>
       <el-tab-pane label="OSS支付订单信息" v-if="loadOssDomain">
@@ -159,7 +162,7 @@ import {
   clientTypeToName,
   getBaseMoviesIqiyiOrderBaseDetail,
   orderTypeToName,
-  payFlagClassName,
+  payFlagClassName, updateVipRights,
 } from '../../../api/authentication';
 import {
   BaseMoviesIqiyiOrderBase,
@@ -169,6 +172,7 @@ import {
   SearchHistoryModel,
 } from '../../../types';
 import IqiyiGoldVipList from '../iqiyi-gold-vip/list.vue';
+import {handlerCommonError} from "../../../utils/auth-interceptor";
 
 @Component({
   name: 'BaseMoviesIqiyiOrderBaseDetail',
@@ -176,6 +180,9 @@ import IqiyiGoldVipList from '../iqiyi-gold-vip/list.vue';
 })
 export default class BaseMoviesIqiyiOrderBaseDetail extends Vue {
   loadingData: boolean = false;
+  loadingUpdateVipRights: boolean = false;
+  focusLoadPermission: boolean = false;
+  focusLoadPermission2: boolean = false;
 
   dialogAccountDetilVisible: boolean = false;
   activeNames: string[] = ['1', '2'];
@@ -247,6 +254,25 @@ export default class BaseMoviesIqiyiOrderBaseDetail extends Vue {
 
   @Emit('update:domainId')
   domainIdChange(orderId: number | undefined, orderId2: number | undefined): void {
+  }
+
+  @Emit('reload-vip-rights')
+  reloadVipRights(){
+    this.focusLoadPermission = !this.focusLoadPermission;
+    this.focusLoadPermission2 = !this.focusLoadPermission2;
+  }
+
+  handleUpdateVipRights(orderNo: string){
+    this.loadingUpdateVipRights = true;
+    updateVipRights(orderNo).then((dd)=>{
+      this.$message({
+        type: 'success',
+        message: '权益获取成功',
+      });
+      this.reloadVipRights();
+    }).catch(handlerCommonError).finally(()=>{
+      this.loadingUpdateVipRights = false;
+    })
   }
 }
 </script>

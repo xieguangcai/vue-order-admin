@@ -106,3 +106,10 @@ export function getIqiyiGoldVipQueryList(openId: string): AxiosPromise<ResponseR
 /**
  * --------------------authentication相关接口-------------------------
  */
+export function updateVipRights(orderNo: string): AxiosPromise<ResponseResult<Boolean>> {
+  return request({
+    url: '/authentication/order/update-vip-rights',
+    method: 'get',
+    params: {orderNo }
+  });
+}
