@@ -95,7 +95,7 @@ import {AxiosResponse} from 'axios';
 import BaseList from '../../../components/BaseList';
 import {handlerCommonError} from '../../../utils/auth-interceptor';
 
-import {getDeviceActivePageList} from "@/api/deviceActive";
+import {getDeviceActivePageList} from '@/api/deviceActive';
 
 @Component({
   components: {ListTablePane, SearchPane, SearchPagePane},

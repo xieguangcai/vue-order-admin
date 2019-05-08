@@ -73,11 +73,11 @@
 import {Component, Vue, Watch} from 'vue-property-decorator';
 import SearchPane from '../../../components/SearchPane/index.vue';
 import SearchPagePane from '../../../components/SearchPagePane/index.vue';
-import {UserPhoneListQuery, UserPhone, Pageable, ResponseResult, SearchHistoryModel,} from '../../../types';
+import {UserPhoneListQuery, UserPhone, Pageable, ResponseResult, SearchHistoryModel} from '../../../types';
 import ListTablePane from '../../../components/ListTablePane/index.vue';
 import UserPhoneEdit from './edit.vue';
 import {AxiosResponse} from 'axios';
-import {getUserPhonePageList,deleteUserPhone} from '../../../api/userPhone';
+import {getUserPhonePageList, deleteUserPhone} from '../../../api/userPhone';
 import BaseList from '../../../components/BaseList';
 import BaseTableDelete from '../../../components/BaseTableDelete';
 import {handlerCommonError} from '../../../utils/auth-interceptor';
@@ -86,7 +86,7 @@ interface EditDomain {
 }
 
 @Component({
-  components: {UserPhoneEdit,ListTablePane, SearchPane, SearchPagePane},
+  components: {UserPhoneEdit, ListTablePane, SearchPane, SearchPagePane},
   filters: {},
   mixins: [BaseList],
 })

@@ -30,7 +30,7 @@ export function getUserPhonePageList(params: UserPhoneListQuery): AxiosPromise<R
 export function updateUserPhone(data: UserPhone) {
 
   return request({
-    url: '/active/userPhone/updateUserPhone?id='+data.id+"&mobile="+data.mobile,
+    url: '/active/userPhone/updateUserPhone?id=' + data.id + '&mobile=' + data.mobile,
     method: 'get',
     data,
   });
@@ -49,7 +49,7 @@ export function getUserInfoInfo(id: number): AxiosPromise<ResponseResult<UserPho
  */
 export function saveUserPhone(data: UserPhone) {
   return request({
-    url : '/active/userPhone/saveUserPhone?mobile='+data.mobile,
+    url : '/active/userPhone/saveUserPhone?mobile=' + data.mobile,
     method: 'get',
     data,
   });

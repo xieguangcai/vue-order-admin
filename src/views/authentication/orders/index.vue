@@ -220,9 +220,12 @@ export default class BaseMoviesIqiyiOrderList extends Vue {
   }
 
   searchTypeChange(val: string) {
-    let end: number = 0, start: number = 0;
-    if (this.listQuery.createTimes.length > 0) {
-      start = (+new Date(this.listQuery.createTimes[0])) as number;
+    const end: number = 0;
+    let start: number = 0;
+    if(this.listQuery.createTimes != undefined){
+      if (this.listQuery.createTimes.length > 0) {
+        start = (+new Date(this.listQuery.createTimes[0])) as number;
+      }
     }
     const now = new Date();
     let minEnd = 0;
@@ -232,7 +235,7 @@ export default class BaseMoviesIqiyiOrderList extends Vue {
       minEnd = +now.setFullYear(now.getFullYear() - 1);
       this.listQuery.payFlag = '1';
 
-    } else if (val == '2') {
+    } else if (val === '2') {
       // 历史未支付订单
       minEnd = +now.setMonth(now.getMonth() - 1);
       this.listQuery.payFlag = '';
