@@ -88,6 +88,25 @@ export default new Router({
 
 
       ],
+    }, {
+      path: '/active-manager',
+      component: Layout,
+      name: '设备激活管理',
+      meta: {title: '设备激活管理', icon: 'form', roles: ['ACTIVE_ROLE_VIEW']},
+      children: [
+        {
+          path: 'test-device-list',
+          name: '测试手机号管理',
+          component: () => import(/* webpackChunkName: "account-list" */ '@/views/device-activate/userPhone/index.vue'),
+          meta: {title: '测试手机号列表', icon: 'tree',roles: ['ACTIVE_ROLE_VIEW']},
+        },
+        {
+          path: 'device-list',
+          name: '激活设备查询',
+          component: () => import(/* webpackChunkName: "app-list" */ '@/views/device-activate/device/index.vue'),
+          meta: {title: '激活设备列表', icon: 'tree',roles: ['ACTIVE_ROLE_VIEW']},
+        },
+      ],
     },
     {
       path: '/rights-manage',

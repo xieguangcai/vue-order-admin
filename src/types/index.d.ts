@@ -547,6 +547,12 @@ export interface SysAccount {
   toMergeInfos?: SysUserMergeInfo[];
 }
 
+export interface AccountInfoListQuery extends IPageinfo {
+  openId?: string;
+  nickName?: string;
+  mobile?: string;
+}
+
 export interface SysAccountBindDevice {
   bindId: number;
   accountId?: number;
@@ -1087,6 +1093,50 @@ export interface Company {
   createdDate?: string;
   lastUpdateDate?: string;
 }
+
+export interface DeviceActivityInfoListQuery extends  IPageinfo {
+  deviceActivityId?: number;
+  userId?: string;
+  deviceMac?: string;
+  deviceBarcode?: string;
+  deviceIp?: string;
+  deviceChip?: string;
+  deviceModel?: string;
+  activeTime?: string;
+  updateTime?: string;
+  userCode?: string;
+}
+
+export interface DeviceActivityInfo {
+  deviceActivityId?: number;
+  userId?: string;
+  deviceMac?: string;
+  deviceBarcode?: string;
+  deviceIp?: string;
+  deviceChip?: string;
+  deviceModel?: string;
+  activeTime?: string;
+  updateTime?: string;
+  userCode?: string;
+}
+
+export interface UserPhone {
+  id?: number;
+  mobile?: string;
+  createBy?: string;
+  createTime?: string;
+  states?: number;
+
+}
+
+export interface UserPhoneListQuery extends  IPageinfo {
+  id?: number;
+  mobile?: string;
+  createBy?: string;
+  createTime?: string;
+}
+
+
 
 export interface SourceListQuery extends IPageinfo {
   sourceId?: number;
