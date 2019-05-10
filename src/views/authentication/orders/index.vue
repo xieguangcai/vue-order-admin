@@ -111,7 +111,7 @@
           <template slot-scope="scope">
             <div>
               <span>开始时间：</span>{{ scope.row.beginTime }}<br/>
-              <span>结束时间：</span>{{ scope.row.endTime}}<br/>
+              <span>结束时间：</span>{{ scope.row.dueTime}}<br/>
               <span>退单状态：</span>{{scope.row.serviceStatus === 1 ? '已退单': '正常'}}
             </div>
           </template>
@@ -222,7 +222,7 @@ export default class BaseMoviesIqiyiOrderList extends Vue {
   searchTypeChange(val: string) {
     const end: number = 0;
     let start: number = 0;
-    if(this.listQuery.createTimes != undefined){
+    if (this.listQuery.createTimes !== undefined) {
       if (this.listQuery.createTimes.length > 0) {
         start = (+new Date(this.listQuery.createTimes[0])) as number;
       }

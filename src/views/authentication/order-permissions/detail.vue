@@ -160,9 +160,9 @@ export default class OrderPermissionsDetail extends Vue {
     });
   }
 
-  @Watch("focusLoad")
-  focusLoadChange(newVal: boolean, oldVal: boolean){
-    this.$nextTick(()=> {
+  @Watch('focusLoad')
+  focusLoadChange(newVal: boolean, oldVal: boolean) {
+    this.$nextTick(() => {
       if (this.loadingData) {
         return;
       }

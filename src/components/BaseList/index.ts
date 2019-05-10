@@ -5,7 +5,7 @@ import {getAppInfo} from '@/api/account';
 import {pickerOptions} from '@/utils/validate';
 import {setLocationToHisotry} from '@/utils/tools';
 import NProgress from 'nprogress';
-import {AppModule} from "@/store/modules/app";
+import {AppModule} from '@/store/modules/app';
 
 @Component
 export default class BaseList extends Vue {

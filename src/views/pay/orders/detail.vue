@@ -94,7 +94,7 @@
         <table class="cc-order-table cc-inline-title-table" cellpadding="0" cellspacing="0" v-if="paySerialInfo">
           <tr v-for="item in paySerialInfo">
             <td width="20%">支付方式</td>
-            <td width="30%">{{ item.payMod }}</td>
+            <td width="30%">{{ payModToName(item.payMod) }}</td>
             <td width="20%">支付流水号</td>
             <td width="30%">{{item.serialNo}}</td>
             <!--<td width="10%">支付号</td>-->
@@ -150,7 +150,7 @@ import {
   getOrderInfo,
   getOrderInfoByorigiOrderNo,
   orderStatusClass,
-  orderStatusName,
+  orderStatusName, ossDictName,
   ossOrderSourceName, payExpOrderInfo,
 } from '../../../api/pay';
 import SysAccountDetail from '../../passport/sysaccount/detail.vue';
@@ -192,6 +192,9 @@ export default class OrderInfoDetail extends Vue {
     return ossOrderSourceName(code);
   }
 
+  payModToName(payMod: string) {
+    return ossDictName(payMod);
+  }
   /**
    * 处理异常信息
    * @param item

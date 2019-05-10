@@ -174,8 +174,8 @@ import {
   SearchHistoryModel,
 } from '../../../types';
 import IqiyiGoldVipList from '../iqiyi-gold-vip/list.vue';
-import {handlerCommonError} from "../../../utils/auth-interceptor";
-import PolicyComponent from "../policy/index";
+import {handlerCommonError} from '../../../utils/auth-interceptor';
+import PolicyComponent from '../policy/index.vue';
 
 @Component({
   name: 'BaseMoviesIqiyiOrderBaseDetail',
@@ -260,22 +260,22 @@ export default class BaseMoviesIqiyiOrderBaseDetail extends Vue {
   }
 
   @Emit('reload-vip-rights')
-  reloadVipRights(){
+  reloadVipRights() {
     this.focusLoadPermission = !this.focusLoadPermission;
     this.focusLoadPermission2 = !this.focusLoadPermission2;
   }
 
-  handleUpdateVipRights(orderNo: string){
+  handleUpdateVipRights(orderNo: string) {
     this.loadingUpdateVipRights = true;
-    updateVipRights(orderNo).then((dd)=>{
+    updateVipRights(orderNo).then((dd) => {
       this.$message({
         type: 'success',
         message: '权益获取成功',
       });
       this.reloadVipRights();
-    }).catch(handlerCommonError).finally(()=>{
+    }).catch(handlerCommonError).finally(() => {
       this.loadingUpdateVipRights = false;
-    })
+    });
   }
 }
 </script>

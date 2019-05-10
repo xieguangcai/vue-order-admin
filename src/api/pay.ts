@@ -72,27 +72,10 @@ export function orderStatusClass(orderStatus: string): string {
 }
 
 export function orderStatusName(code: string) {
-  // let name = code;
-  // AppModule.orderStatus.forEach((item) => {
-  //   if (item.value === code) {
-  //     name = item.label;
-  //     return false;
-  //   }
-  // });
-  // return name;
-  return statusToName(code, AppModule.orderStatus);
-
+  return statusToName(code, AppModule.ossDict);
 }
 
 export function ossOrderSourceName(code: number) {
-  // let name = code + '';
-  // AppModule.ossOrderSource.forEach((item) => {
-  //   if (item.value === code) {
-  //     name = item.label;
-  //     return false;
-  //   }
-  // });
-  // return name;
   return statusToName(code, AppModule.ossOrderSource);
 }
 
@@ -110,6 +93,15 @@ export function layoutStatusName(code: number) {
 export function expStatusName(code: string) {
   return statusToName(code, AppModule.expStatus);
 }
+
+export function nopassportSignStatusToName(code: number) {
+  return statusToName(code, AppModule.nopassPortSignStatus);
+}
+
+export function ossDictName(code: string) {
+  return statusToName(code, AppModule.ossDict);
+}
+
 export function statusToName(code: number | string, valus: StatusInfo[]) {
   let name = code + '';
   const strCode = code + '';
@@ -120,10 +112,6 @@ export function statusToName(code: number | string, valus: StatusInfo[]) {
     }
   });
   return name;
-}
-
-export function nopassportSignStatusToName(code: number) {
-   return statusToName(code, AppModule.nopassPortSignStatus);
 }
 
 export function getCardInfoList(params: CardInfoListQuery): AxiosPromise<ResponseResult<Pageable<CardInfo>>> {
@@ -273,5 +261,13 @@ export function unBindUserTerminal(bindUserTerminalId: number, userId: number): 
     url: '/pay/bind-user-terminal/unbind',
     method: 'get',
     params: {userId, bindUserTerminalId},
+  });
+}
+
+export function unSign(userId: number, signId: number): AxiosPromise<ResponseResult<boolean>> {
+  return request({
+    url: '/pay/no-password/unsign',
+    method: 'get',
+    params: {userId, signId},
   });
 }

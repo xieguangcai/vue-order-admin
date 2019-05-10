@@ -40,7 +40,10 @@
               <tr v-if="checkRight()">
                 <td></td>
                 <td>操作</td>
-                <td colspan="3"><el-button :loading="requestOffline" size="mini" type="danger" @click="mandatoryOffline()">强制用户下线</el-button></td>
+                <td colspan="3">
+                  <el-button :loading="requestOffline" size="mini" type="danger" @click="mandatoryOffline()">强制用户下线
+                  </el-button>
+                </td>
               </tr>
             </table>
           </el-collapse-item>
@@ -102,7 +105,7 @@
               </tr>
               <tr v-for="item in domainInfo.bindDevices">
                 <td>{{ item.deviceId }}
-                  <policy-component :mac="item.deviceId" ></policy-component>
+                  <policy-component :mac="item.deviceId"></policy-component>
                 </td>
                 <td>{{ item.cUdid }}</td>
                 <td>{{ item.lastIp }}</td>
@@ -186,8 +189,12 @@
               <template v-for="(item,index) in payUserInfo.noPassportSigns">
                 <tr>
                   <td rowspan="2">{{ index + 1}}</td>
-                  <td>{{ item.payMethod }}</td>
-                  <td>{{ getSignStatus(item.status) }}</td>
+                  <td>{{ payModToName(item.payMethod) }}</td>
+                  <td>{{ getSignStatus(item.status) }}
+                    <el-button v-if="item.status === 1 " :loading="requireUnSign" size="mini" type="danger"
+                               @click="unSignNoPassport(item.userId, item.id, item.mobile, item.payMethod)">解约免密协议
+                    </el-button>
+                  </td>
                   <td>{{ item.signScene }}</td>
                   <td>{{ item.signUserId }}</td>
                 </tr>
@@ -209,7 +216,7 @@
                       </tr>
                       <tr v-for="item in item.noPassportSignAuths">
                         <td>{{ item.deviceId }}
-                          <policy-component :mac="item.deviceId" ></policy-component>
+                          <policy-component :mac="item.deviceId"></policy-component>
                         </td>
                         <td>{{ item.authTime }}</td>
                         <td>{{ item.createTime }}</td>
@@ -274,11 +281,11 @@ import {
   UserInfoFull,
 } from '../../../types';
 import {getSysAccountInfoDetail, passportMandatoryOffline} from '../../../api/passport';
-import {getUserInfoFullByOpenId, nopassportSignStatusToName} from '../../../api/pay';
+import {getUserInfoFullByOpenId, nopassportSignStatusToName, ossDictName, unSign} from '../../../api/pay';
 import {handlerCommonError} from '../../../utils/auth-interceptor';
 import {checkRole} from '../../../utils/auth';
 import {anyNotEmpty} from '../../../utils/validate';
-import PolicyComponent from "../../authentication/policy/index";
+import PolicyComponent from '../../authentication/policy/index.vue';
 
 @Component({
   name: 'SysAccountDetail',
@@ -286,7 +293,10 @@ import PolicyComponent from "../../authentication/policy/index";
 })
 export default class SysAccountDetail extends Vue {
   loadingData: boolean = false;
-  requestOffline: boolean = false; // 请求强制下线
+  // 请求强制下线
+  requestOffline: boolean = false;
+  // 解除签约
+  requireUnSign: boolean = false;
 
   get defPayUserInfo(): UserInfoFull {
     return {
@@ -344,6 +354,10 @@ export default class SysAccountDetail extends Vue {
     noPassportSigns: [],
   };
 
+  payModToName(payMod: string) {
+    return ossDictName(payMod);
+  }
+
   getSignStatus(status: number) {
     return nopassportSignStatusToName(status);
   }
@@ -365,6 +379,7 @@ export default class SysAccountDetail extends Vue {
     const hasRight = checkRole('PASSPORT_ROLE_MANDATORY_OFFLINE');
     return hasRight;
   }
+
   mandatoryOffline() {
 
     this.$confirm('确认要强制下线此用户[' + this.domainInfo.nickName + ']吗?', '警告', {
@@ -388,6 +403,7 @@ export default class SysAccountDetail extends Vue {
     }).catch(() => {
     });
   }
+
   @Watch('active', {immediate: true})
   handleActiveChange(newVal: string[], oldVal: string[]) {
     if (newVal != null && newVal.length > 0) {
@@ -497,6 +513,35 @@ export default class SysAccountDetail extends Vue {
 
   @Emit('update:openId')
   openIdChange(openId: string | undefined, openId2: string | undefined): void {
+  }
+
+  unSignNoPassport(userId: number, signId: number, phoneNo: string, payMod: string) {
+    const payName = this.payModToName(payMod);
+    this.$confirm('确定要解除用户[' + phoneNo + ']的[' + payName + ']免密签约吗?', '警告', {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'error',
+    }).then(() => {
+      this.requireUnSign = true;
+      unSign(userId, signId).then((response) => {
+        this.$notify({
+          title: '解除免密签约',
+          message: '用户[' + phoneNo + ']解除[' + + ']免密签约成功。',
+          type: 'success',
+        });
+
+        getUserInfoFullByOpenId(this.openId).then((rev) => {
+          this.payUserInfo = rev.data.data;
+          this.loadOssUserInfo = true;
+        }).catch((error: ResponseResult<any>) => {
+          this.loadOssUserInfo = false;
+        });
+
+      }).catch(handlerCommonError).finally(() => {
+        this.requireUnSign = false;
+      });
+    }).catch(() => {
+    });
   }
 }
 </script>
