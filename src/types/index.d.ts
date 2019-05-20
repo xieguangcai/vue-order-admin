@@ -724,6 +724,7 @@ interface SysAccountQuery extends Dictionary<any> {
   openId?: string;
   externalFlag?: string;
   externalId?: string;
+  nickName?: string;
 }
 
 interface SysAccountQueryConstructor {

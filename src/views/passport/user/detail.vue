@@ -4,6 +4,8 @@
     <search-pane slot="searchpane" @click="search">
       手机号
       <el-input v-model="listQuery.mobile" size="mini"  placeholder="请输入手机号"></el-input>
+      昵称
+      <el-input v-model="listQuery.nickName" size="mini"  placeholder="请输昵称"></el-input>
       OpenId
       <el-input v-model="listQuery.openId"  size="mini" style="width:260px;" placeholder="请输入OpenId"></el-input>
       第三方账号
@@ -40,9 +42,9 @@ import {setLocationToHisotry} from '../../../utils/tools';
 })
 export default class UserDetail extends Vue {
   activeNames = ['1', '2', '3', '4'];
-  listQuery: SysAccountQuery = {mobile: '', openId: '', externalFlag: 'qq', externalId: '' };
+  listQuery: SysAccountQuery = {mobile: '', nickName: '', openId: '', externalFlag: 'qq', externalId: '' };
   openId = '';
-  innerListQuery: SysAccountQuery = {mobile: '', openId: '', externalFlag: 'qq', externalId: '' };
+  innerListQuery: SysAccountQuery = {mobile: '', nickName: '', openId: '', externalFlag: 'qq', externalId: '' };
 
   created() {
     this.listQuery = Object.assign(this.listQuery, this.$route.query);
@@ -56,7 +58,7 @@ export default class UserDetail extends Vue {
   }
 
   validInput(): boolean {
-    if (this.listQuery.mobile === '' && this.listQuery.openId === '' && this.listQuery.externalId === '') {
+    if (this.listQuery.mobile === '' && this.listQuery.nickName === '' && this.listQuery.openId === '' && this.listQuery.externalId === '') {
       return false;
     }
     return true;
@@ -67,10 +69,12 @@ export default class UserDetail extends Vue {
       this.$message.error('必须输入至少一种查询条件进行查询');
       return;
     }
-    this.innerListQuery = {mobile: this.listQuery.mobile,
+    this.innerListQuery = {
+      mobile: this.listQuery.mobile,
       openId: this.listQuery.openId,
       externalFlag: this.listQuery.externalFlag,
       externalId: this.listQuery.externalId,
+      nickName: this.listQuery.nickName,
     };
     setLocationToHisotry(this, this.listQuery, '广电用户信息查询');
   }

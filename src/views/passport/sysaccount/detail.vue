@@ -428,7 +428,11 @@ export default class SysAccountDetail extends Vue {
       };
       this.payUserInfo = this.defPayUserInfo;
     } else {
-      if (oldVal != null && newVal.externalId === oldVal.externalId && newVal.externalFlag === oldVal.externalId && newVal.openId === oldVal.externalId && newVal.mobile === oldVal.mobile) {
+      if (oldVal != null
+        && newVal.externalId === oldVal.externalId && newVal.externalFlag === oldVal.externalId
+        && newVal.openId === oldVal.externalId && newVal.mobile === oldVal.mobile
+        && newVal.nickName === oldVal.nickName
+      ) {
         return;
       }
 
