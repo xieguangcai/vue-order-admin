@@ -366,7 +366,7 @@ export default class SysAccountDetail extends Vue {
     if (null == newVal) {
       return false;
     }
-    if (anyNotEmpty(newVal.mobile, newVal.externalId, newVal.openId)) {
+    if (anyNotEmpty(newVal.mobile, newVal.externalId, newVal.openId, newVal.nickName)) {
       return true;
     }
     return false;
