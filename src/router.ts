@@ -147,7 +147,7 @@ export default new Router({
         {
           path: 'policy',
           name: 'VIP投放策略',
-          // component: () => import(/* webpackChunkName: "policy" */ '@/views/authentication/policy/index.vue'),
+          component: () => import(/* webpackChunkName: "policy" */ '@/views/authentication/policy/index.vue'),
           meta: {title: 'VIP投放策略', icon: 'tree', roles: ['PRODUCT_ROLE_VIEW']},
         },
         {

@@ -1166,6 +1166,15 @@ export interface ProductChangprice extends IPageinfo {
   product: BaseOrderProducts;
 }
 
+export interface Policy extends IPageinfo {
+  policyId?: number;
+  policyName?: string;
+  localGroupId?: number;
+  sourceId?: number;
+  schemeId?: number;
+  policyStatus?: number;
+}
+
 // --------authentication---------
 
 
