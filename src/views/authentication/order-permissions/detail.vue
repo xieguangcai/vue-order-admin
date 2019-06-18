@@ -15,14 +15,14 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="left" label="权益名称" width="180">
+      <el-table-column align="left" label="权益名称" width="180" fixed>
         <template slot-scope="scope">
           <div>
             {{ scope.row.sourceName }}
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="left" label="权益标识" width="100">
+      <el-table-column align="left" label="权益标识" width="100" fixed>
         <template slot-scope="scope">
           <div>
             {{ scope.row.sourceSign }}
@@ -67,6 +67,13 @@
           </div>
         </template>
       </el-table-column>
+      <el-table-column label="鉴权主体" width="260">
+        <template slot-scope="scope">
+          <div>
+            {{ scope.row.coocaaOpenId}}
+          </div>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 
@@ -79,7 +86,7 @@ import SearchPane from '../../../components/SearchPane/index.vue';
 import SearchPagePane from '../../../components/SearchPagePane/index.vue';
 import {
   CascaderDataType,
-  OrderPermissionListQuery, OrderPermissionsInfo,
+  OrderPermissionListQuery, OrderPermissionsInfo, PermissionQueryDomain,
   ResponseResult,
 } from '../../../types';
 import ListTablePane from '../../../components/ListTablePane/index.vue';
@@ -88,12 +95,6 @@ import {handlerCommonError} from '../../../utils/auth-interceptor';
 import {getOrderPermissionsInfo} from '../../../api/authentication';
 import {AppModule} from '../../../store/modules/app';
 
-export interface PermissionQueryDomain {
-  coocaaOpenId: string;
-  thirdOpenId: string;
-  permissionsType: string;
-
-}
 @Component({
   name: 'OrderPermissionsDetail',
   components: {ListTablePane, SearchPane, SearchPagePane},
@@ -133,17 +134,25 @@ export default class OrderPermissionsDetail extends Vue {
     }
   }
 
-  @Watch('queryDomain')
+  @Watch('queryDomain', {immediate: true, deep: true})
   queryDomainChange(newVal: PermissionQueryDomain, oldVal: PermissionQueryDomain) {
+    console.log('正在执行：queryDomainChange=' + JSON.stringify(newVal) + '--' + JSON.stringify(oldVal));
     if (this.loadingData) {
       return;
     }
-    if (newVal.coocaaOpenId == null && newVal.thirdOpenId == null) {
+    if (newVal.coocaaOpenId === null && newVal.thirdOpenId === null) {
       return;
     }
-    if (newVal.coocaaOpenId === oldVal.coocaaOpenId && newVal.thirdOpenId === oldVal.thirdOpenId) {
+
+    if (newVal.coocaaOpenId === '' && newVal.thirdOpenId === '') {
       return;
     }
+    if (oldVal !== undefined ) {
+      if (newVal.coocaaOpenId === oldVal.coocaaOpenId && newVal.thirdOpenId === oldVal.thirdOpenId) {
+        return;
+      }
+    }
+
     this.loadingData = true;
     this.listQuery = {
       sourceType: '1',

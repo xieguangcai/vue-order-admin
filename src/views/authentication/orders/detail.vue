@@ -11,7 +11,9 @@
                   <span :class="tableRowClassName(domainInfo.payFlag + '')">{{ domainInfo.payFlag === 1 ? '已支付' : '未支付' }}</span>
                 </td>
                 <td>订单信息</td>
-                <td colspan="5"><span class="order-amount">[{{domainInfo.totalPayFee / 100 }}元]</span>{{ domainInfo.title }}</td>
+                <td colspan="5"><span class="order-amount">[{{domainInfo.totalPayFee / 100 }}元]</span>{{
+                  domainInfo.title }}
+                </td>
               </tr>
               <tr>
                 <td>订单时间</td>
@@ -26,8 +28,10 @@
               <tr>
                 <td>会员订单号</td>
                 <td colspan="3">{{ domainInfo.orderNo }}
-                  <el-button v-if="domainInfo.baseOrderSource && domainInfo.baseOrderSource.sourceType === 0" v-loading="loadingUpdateVipRights"
-                             type="warning"  size="mini" @click="handleUpdateVipRights(domainInfo.orderNo)">重新拉取权益</el-button>
+                  <el-button v-if="domainInfo.baseOrderSource && domainInfo.baseOrderSource.sourceType === 0"
+                             v-loading="loadingUpdateVipRights"
+                             type="warning" size="mini" @click="handleUpdateVipRights(domainInfo.orderNo)">重新拉取权益
+                  </el-button>
                 </td>
                 <td>第三方业务订单号</td>
                 <td colspan="3">{{ domainInfo.synTradeNo }}</td>
@@ -41,7 +45,9 @@
               <tr>
                 <td>酷开openId</td>
                 <td colspan="3">{{ domainInfo.coocaaOpenId }}
-                  <el-button v-if="domainInfo.coocaaOpenId" type="primary"  size="mini" @click="viewAccountDetail(domainInfo.coocaaOpenId)">查看用户详情</el-button>
+                  <el-button v-if="domainInfo.coocaaOpenId" type="primary" size="mini"
+                             @click="viewAccountDetail(domainInfo.coocaaOpenId)">查看用户详情
+                  </el-button>
                 </td>
                 <td>第三方openId</td>
                 <td colspan="3">{{ domainInfo.thirdOpenId }}</td>
@@ -70,9 +76,20 @@
                 <td>激活ID</td>
                 <td>{{ domainInfo.tvId }}</td>
                 <td>机型</td>
-                <td> {{domainInfo.phoneNo}}</td>
+                <td> {{getTvModel(domainInfo)}}</td>
                 <td>机芯</td>
-                <td>{{ domainInfo.userId }}</td>
+                <td>{{ getTvChip(domainInfo) }}</td>
+              </tr>
+              <tr>
+                <td>品牌</td>
+                <td>{{ getBrand(domainInfo) }}
+                </td>
+                <td>牌照商</td>
+                <td>{{getLicense(domainInfo) }}</td>
+                <td>sn</td>
+                <td> {{getSn(domainInfo)}}</td>
+                <td>ca</td>
+                <td>{{ getCa(domainInfo) }}</td>
               </tr>
               <tr>
                 <td>ip</td>
@@ -97,17 +114,18 @@
             </table>
           </el-collapse-item>
           <el-collapse-item title="订购产品信息" name="2">
-            <table class="cc-order-table cc-inline-title-table" cellpadding="0" cellspacing="0" v-if="orderProduct != null">
-                <tr>
-                  <td>ErpCode</td>
-                  <td>{{orderProduct.erpCode}}</td>
-                  <td>openMaParams</td>
-                  <td>{{orderProduct.openMaParams}}</td>
-                  <td>产品名称</td>
-                  <td>{{orderProduct.productName}}</td>
-                  <td>产品类型</td>
-                  <td>{{orderProduct.productType}}</td>
-                </tr>
+            <table class="cc-order-table cc-inline-title-table" cellpadding="0" cellspacing="0"
+                   v-if="orderProduct != null">
+              <tr>
+                <td>ErpCode</td>
+                <td>{{orderProduct.erpCode}}</td>
+                <td>openMaParams</td>
+                <td>{{orderProduct.openMaParams}}</td>
+                <td>产品名称</td>
+                <td>{{orderProduct.productName}}</td>
+                <td>产品类型</td>
+                <td>{{orderProduct.productType}}</td>
+              </tr>
               <tr>
                 <td>unicode</td>
                 <td colspan="3">{{orderProduct.uniqueCode}}</td>
@@ -131,12 +149,17 @@
         </el-collapse>
       </el-tab-pane>
       <el-tab-pane label="会员权益信息" v-if="domainInfo.coocaaOpenId != '' ||  domainInfo.thirdOpenId!= '' ">
-        <order-permissions-detail :query-domain="{coocaaOpenId:domainInfo.coocaaOpenId, permissionsType:'1', thirdOpenId: domainInfo.thirdOpenId}"  :focus-load="focusLoadPermission">
+        <order-permissions-detail
+          :query-domain="{coocaaOpenId:domainInfo.coocaaOpenId, permissionsType:'1', thirdOpenId: domainInfo.thirdOpenId}"
+          :focus-load="focusLoadPermission">
         </order-permissions-detail>
       </el-tab-pane>
-      <el-tab-pane label="会员单点影片权益信息"  v-if="domainInfo.coocaaOpenId != '' ||  domainInfo.thirdOpenId!= '' ">
-        <order-permissions-detail :query-domain="{coocaaOpenId:domainInfo.coocaaOpenId, permissionsType:'2', thirdOpenId: domainInfo.thirdOpenId}" :focus-load="focusLoadPermission2">
+      <el-tab-pane label="会员单点影片权益信息" v-if="domainInfo.coocaaOpenId != '' ||  domainInfo.thirdOpenId!= '' ">
+        <order-permissions-detail
+          :query-domain="{coocaaOpenId:domainInfo.coocaaOpenId, permissionsType:'2', thirdOpenId: domainInfo.thirdOpenId}"
+          :focus-load="focusLoadPermission2">
         </order-permissions-detail>
+        f
       </el-tab-pane>
       <el-tab-pane label="OSS支付订单信息" v-if="loadOssDomain">
         <order-info-detail :origi-order-no="domainInfo.orderNo"
@@ -144,140 +167,184 @@
                            @load-entity-success="loadOssDomain = true"/>
       </el-tab-pane>
       <el-tab-pane label="黄金VIP领取资格" v-if="domainInfo.coocaaOpenId != ''">
-        <iqiyi-gold-vip-list :open-id ="domainInfo.coocaaOpenId">
+        <iqiyi-gold-vip-list :open-id="domainInfo.coocaaOpenId">
         </iqiyi-gold-vip-list>
       </el-tab-pane>
     </el-tabs>
-    <el-dialog title="用户详情信息" :visible.sync="dialogAccountDetilVisible" :append-to-body="true" :modal-append-to-body="false" width="70%" @close="accountDetailOpenId = ''">
+    <el-dialog title="用户详情信息" :visible.sync="dialogAccountDetilVisible" :append-to-body="true"
+               :modal-append-to-body="false" width="70%" @close="accountDetailOpenId = ''">
       <sys-account-detail :open-id="accountDetailOpenId"/>
     </el-dialog>
   </div>
 </template>
 
 <script lang="ts">
-import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
-import SysAccountDetail from '../../passport/sysaccount/detail.vue';
-import OrderInfoDetail from '../../pay/orders/detail.vue';
-import OrderPermissionsDetail from '../../authentication/order-permissions/detail.vue';
+  import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
+  import SysAccountDetail from '../../passport/sysaccount/detail.vue';
+  import OrderInfoDetail from '../../pay/orders/detail.vue';
+  import OrderPermissionsDetail from '../../authentication/order-permissions/detail.vue';
 
-import {
-  clientTypeToName,
-  getBaseMoviesIqiyiOrderBaseDetail,
-  orderTypeToName,
-  payFlagClassName, updateVipRights,
-} from '../../../api/authentication';
-import {
-  BaseMoviesIqiyiOrderBase,
-  BaseOrderProducts,
-  BaseOrderSource,
-  OrderFlag,
-  SearchHistoryModel,
-} from '../../../types';
-import IqiyiGoldVipList from '../iqiyi-gold-vip/list.vue';
-import {handlerCommonError} from '../../../utils/auth-interceptor';
-import PolicyComponent from '../policy/index.vue';
+  import {
+    clientTypeToName,
+    getBaseMoviesIqiyiOrderBaseDetail,
+    orderTypeToName,
+    payFlagClassName, updateVipRights,
+  } from '../../../api/authentication';
+  import {
+    BaseMoviesIqiyiOrderBase,
+    BaseOrderProducts,
+    BaseOrderSource,
+    OrderFlag,
+    SearchHistoryModel,
+  } from '../../../types';
+  import IqiyiGoldVipList from '../iqiyi-gold-vip/list.vue';
+  import {handlerCommonError} from '../../../utils/auth-interceptor';
+  import PolicyComponent from '../policy/index.vue';
 
-@Component({
-  name: 'BaseMoviesIqiyiOrderBaseDetail',
-  components: {PolicyComponent, IqiyiGoldVipList, SysAccountDetail, OrderInfoDetail, OrderPermissionsDetail},
-})
-export default class BaseMoviesIqiyiOrderBaseDetail extends Vue {
-  loadingData: boolean = false;
-  loadingUpdateVipRights: boolean = false;
-  focusLoadPermission: boolean = false;
-  focusLoadPermission2: boolean = false;
+  @Component({
+    name: 'BaseMoviesIqiyiOrderBaseDetail',
+    components: {PolicyComponent, IqiyiGoldVipList, SysAccountDetail, OrderInfoDetail, OrderPermissionsDetail},
+  })
+  export default class BaseMoviesIqiyiOrderBaseDetail extends Vue {
+    loadingData: boolean = false;
+    loadingUpdateVipRights: boolean = false;
+    focusLoadPermission: boolean = false;
+    focusLoadPermission2: boolean = false;
 
-  dialogAccountDetilVisible: boolean = false;
-  activeNames: string[] = ['1', '2'];
-  domainInfo: BaseMoviesIqiyiOrderBase = {id: 0, orderNo: ''};
-  accountDetailOpenId = '';
-  loadOssDomain: boolean = true;
+    dialogAccountDetilVisible: boolean = false;
+    activeNames: string[] = ['1', '2'];
+    domainInfo: BaseMoviesIqiyiOrderBase = {id: 0, orderNo: ''};
+    accountDetailOpenId = '';
+    loadOssDomain: boolean = true;
 
-  @Prop({type: Number, default: 0})
-    // @ts-ignore
-  domainId: number;
-  @Prop({type : String, default: '1'})
-    // @ts-ignore
-  searchHistoryModel: SearchHistoryModel;
+    @Prop({type: Number, default: 0})
+      // @ts-ignore
+    domainId: number;
+    @Prop({type: String, default: '1'})
+      // @ts-ignore
+    searchHistoryModel: SearchHistoryModel;
 
-  clientTypeToName(code: number) {
-    return clientTypeToName(code);
-  }
+    clientTypeToName(code: number) {
+      return clientTypeToName(code);
+    }
 
-  get orderSource(): BaseOrderSource | undefined {
-    return this.domainInfo.baseOrderSource;
-  }
-  get orderProduct(): BaseOrderProducts | undefined {
-    return this.domainInfo.orderProduct;
-  }
+    getTvModel(domainInfo: BaseMoviesIqiyiOrderBase): string {
+      if (domainInfo.atrributeInfo === undefined || domainInfo.atrributeInfo.model === undefined) {
+        return '';
+      }
+      return domainInfo.atrributeInfo.model;
+    }
 
-  orderTypeToName(code: number) {
-    return orderTypeToName(code);
-  }
+    getTvChip(domainInfo: BaseMoviesIqiyiOrderBase): string {
+      if (domainInfo.atrributeInfo === undefined || domainInfo.atrributeInfo.chip === undefined) {
+        return '';
+      }
+      return domainInfo.atrributeInfo.chip;
+    }
 
-  viewAccountDetail(openId: string): void {
-    this.dialogAccountDetilVisible = true;
-    console.log('点击选择的用户的openid为' + openId);
-    this.$nextTick(() => this.accountDetailOpenId = openId);
+    getBrand(domainInfo: BaseMoviesIqiyiOrderBase): string {
+      if (domainInfo.atrributeInfo === undefined || domainInfo.atrributeInfo.brand === undefined) {
+        return '';
+      }
+      return domainInfo.atrributeInfo.brand;
+    }
 
-  }
+    getLicense(domainInfo: BaseMoviesIqiyiOrderBase): string {
+      if (domainInfo.atrributeInfo === undefined || domainInfo.atrributeInfo.license === undefined) {
+        return '';
+      }
+      return domainInfo.atrributeInfo.license;
+    }
 
-  tableRowClassName(payFlag: OrderFlag) {
-    return payFlagClassName(payFlag);
-  }
+    getCa(domainInfo: BaseMoviesIqiyiOrderBase): string {
+      if (domainInfo.atrributeInfo === undefined || domainInfo.atrributeInfo.ca === undefined) {
+        return '';
+      }
+      return domainInfo.atrributeInfo.ca;
+    }
 
-  @Watch('domainId', {immediate: true})
-  handleDomainIdhange(newVal: number | undefined, oldVal: number | undefined) {
-    this.loadOssDomain = true;
-    if (null == newVal || newVal === 0) {
-      this.domainInfo = {id: 0, orderNo: ''};
-    } else {
-      this.loadingData = true;
-      getBaseMoviesIqiyiOrderBaseDetail(this.domainId, this.searchHistoryModel).then((resolve) => {
-        this.domainInfo = resolve.data.data;
-      }).finally(() => {
-        this.loadingData = false;
+    getSn(domainInfo: BaseMoviesIqiyiOrderBase): string {
+      if (domainInfo.atrributeInfo === undefined || domainInfo.atrributeInfo.sn === undefined) {
+        return '';
+      }
+      return domainInfo.atrributeInfo.sn;
+    }
+
+    get orderSource(): BaseOrderSource | undefined {
+      return this.domainInfo.baseOrderSource;
+    }
+
+    get orderProduct(): BaseOrderProducts | undefined {
+      return this.domainInfo.orderProduct;
+    }
+
+    orderTypeToName(code: number) {
+      return orderTypeToName(code);
+    }
+
+    viewAccountDetail(openId: string): void {
+      this.dialogAccountDetilVisible = true;
+      console.log('点击选择的用户的openid为' + openId);
+      this.$nextTick(() => this.accountDetailOpenId = openId);
+
+    }
+
+    tableRowClassName(payFlag: OrderFlag) {
+      return payFlagClassName(payFlag);
+    }
+
+    @Watch('domainId', {immediate: true})
+    handleDomainIdhange(newVal: number | undefined, oldVal: number | undefined) {
+      this.loadOssDomain = true;
+      if (null == newVal || newVal === 0) {
+        this.domainInfo = {id: 0, orderNo: ''};
+      } else {
+        this.loadingData = true;
+        getBaseMoviesIqiyiOrderBaseDetail(this.domainId, this.searchHistoryModel).then((resolve) => {
+          this.domainInfo = resolve.data.data;
+        }).finally(() => {
+          this.loadingData = false;
+        });
+      }
+    }
+
+    @Watch('domainInfo', {immediate: true})
+    handleInternalDomainInfoChange(newVal: BaseMoviesIqiyiOrderBase, oldVal?: BaseMoviesIqiyiOrderBase): void {
+      if (null == newVal && null == oldVal) {
+        return;
+      }
+      if (newVal != null && oldVal != null) {
+        this.domainIdChange(newVal.id, oldVal.id);
+      } else if (oldVal != null) {
+        this.domainIdChange(0, oldVal.id);
+      } else if (newVal != null) {
+        this.domainIdChange(newVal.id, 0);
+      }
+    }
+
+    @Emit('update:domainId')
+    domainIdChange(orderId: number | undefined, orderId2: number | undefined): void {
+    }
+
+    @Emit('reload-vip-rights')
+    reloadVipRights() {
+      this.focusLoadPermission = !this.focusLoadPermission;
+      this.focusLoadPermission2 = !this.focusLoadPermission2;
+    }
+
+    handleUpdateVipRights(orderNo: string) {
+      this.loadingUpdateVipRights = true;
+      updateVipRights(orderNo).then((dd) => {
+        this.$message({
+          type: 'success',
+          message: '权益获取成功',
+        });
+        this.reloadVipRights();
+      }).catch(handlerCommonError).finally(() => {
+        this.loadingUpdateVipRights = false;
       });
     }
   }
-
-  @Watch('domainInfo', {immediate: true})
-  handleInternalDomainInfoChange(newVal: BaseMoviesIqiyiOrderBase, oldVal?: BaseMoviesIqiyiOrderBase): void {
-    if (null == newVal && null == oldVal) {
-      return;
-    }
-    if (newVal != null && oldVal != null) {
-      this.domainIdChange(newVal.id, oldVal.id);
-    } else if (oldVal != null) {
-      this.domainIdChange(0, oldVal.id);
-    } else if (newVal != null) {
-      this.domainIdChange(newVal.id, 0);
-    }
-  }
-
-  @Emit('update:domainId')
-  domainIdChange(orderId: number | undefined, orderId2: number | undefined): void {
-  }
-
-  @Emit('reload-vip-rights')
-  reloadVipRights() {
-    this.focusLoadPermission = !this.focusLoadPermission;
-    this.focusLoadPermission2 = !this.focusLoadPermission2;
-  }
-
-  handleUpdateVipRights(orderNo: string) {
-    this.loadingUpdateVipRights = true;
-    updateVipRights(orderNo).then((dd) => {
-      this.$message({
-        type: 'success',
-        message: '权益获取成功',
-      });
-      this.reloadVipRights();
-    }).catch(handlerCommonError).finally(() => {
-      this.loadingUpdateVipRights = false;
-    });
-  }
-}
 </script>
 
 

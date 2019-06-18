@@ -52,8 +52,8 @@
               <tr>
                 <th>头像</th>
                 <th>类型</th>
-                <th>第三方昵称</th>
                 <th>第三方openId</th>
+                <th>第三方昵称</th>
                 <th>绑定时间</th>
               </tr>
               <template v-for="item in domainInfo.bindExternals">

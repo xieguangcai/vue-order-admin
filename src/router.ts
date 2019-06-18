@@ -15,6 +15,7 @@ Vue.use(Router);
     keepAlive: true              cache the view if need useful for edit from
     roles: []                    拥有全新到用户组
   }
+  path name 不能重复，切换标签的时候会根据name去路由。
 */
 
 const hiddenInCoocaa: boolean = process.env.VUE_APP_CHANNEL === 'coocaa';
@@ -254,7 +255,7 @@ export default new Router({
         },
         {
           path: 'permissions',
-          name: '会员权益',
+          name: '查询会员权益',
           component: () => import(/* webpackChunkName: "add-oss-retaining-window" */ '@/views/authentication/order-permissions/index.vue'),
           meta: {title: '查询会员权益', icon: 'form', hidden: false},
         },

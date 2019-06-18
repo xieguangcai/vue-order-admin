@@ -80,7 +80,7 @@
                   <table class="cc-order-table " style="width:100%;">
                     <tr>
                       <td width="20%">ID</td>
-                      <td width="30%">{{selectJscnUserInfo.id}}{{openId}}</td>
+                      <td width="30%">{{selectJscnUserInfo.id}}</td>
                       <td width="20%">用户编码</td>
                       <td width="30%">{{selectJscnUserInfo.userId}}</td>
                     </tr>
@@ -164,18 +164,29 @@
                     </tr>
                     <tr>
                       <td>操作</td>
-                      <td colspan="3"><el-button size="mini" type="primary" @click="viewUserOrder" v-if="selectJscnUserInfo.smartCardId != null && openId != '' ">查询用户订购记录</el-button></td>
+                      <td colspan="3">
+                        <el-button size="mini" type="primary" @click="viewUserOrder"
+                                   v-if="selectJscnUserInfo.smartCardId != null && openId != '' ">查询用户订购记录
+                        </el-button>
+                      </td>
                     </tr>
                   </table>
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
           </template>
-          <template slot = "tabSuffix">
+          <template slot="tabSuffix">
             <el-tab-pane label="线下订购记录">
-                <jscn-order-sync-detail :user-id="userId">
-
-                </jscn-order-sync-detail>
+              <jscn-order-sync-detail :user-id="userId">
+              </jscn-order-sync-detail>
+            </el-tab-pane>
+            <el-tab-pane label="会员权益信息" v-if="openId != '' ">
+              <order-permissions-detail :query-domain="rightQueryPerMission">
+              </order-permissions-detail>
+            </el-tab-pane>
+            <el-tab-pane label="会员单点影片权益信息" v-if="openId != '' ">
+              <order-permissions-detail :query-domain="movieQueryPerMission">
+              </order-permissions-detail>
             </el-tab-pane>
           </template>
         </sys-account-detail>
@@ -185,9 +196,9 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Vue, Watch} from 'vue-property-decorator';
 import {
-  JscnUserInfo, JscnUserInfoQuery, ResponseResult, SysAccountQuery,
+  JscnUserInfo, JscnUserInfoQuery, PermissionQueryDomain, ResponseResult, SysAccountQuery,
 } from '../../../types';
 
 import SearchPane from '../../../components/SearchPane/index.vue';
@@ -197,10 +208,11 @@ import {handlerCommonError} from '../../../utils/auth-interceptor';
 import {jscnUserInfoList} from '../../../api/passport';
 import {setLocationToHisotry} from '../../../utils/tools';
 import JscnOrderSyncDetail from './jscn-order-sync-detail.vue';
+import OrderPermissionsDetail from '../../authentication/order-permissions/detail.vue';
 
 @Component({
   name: 'JscnUserInfoDetail',
-  components: {JscnOrderSyncDetail, SysAccountDetail, SearchPane},
+  components: {JscnOrderSyncDetail, SysAccountDetail, SearchPane, OrderPermissionsDetail},
 })
 export default class JscnUserInfoDetail extends Vue {
   activeNames = ['1', '2', '3', '4'];
@@ -211,6 +223,9 @@ export default class JscnUserInfoDetail extends Vue {
   data: JscnUserInfo[] = [];
   openId: string = '';
   userId: string = ''; // 广电用户的id
+  rightQueryPerMission: PermissionQueryDomain = {coocaaOpenId: '', thirdOpenId: '', permissionsType: '1'};
+  movieQueryPerMission: PermissionQueryDomain = {coocaaOpenId: '', thirdOpenId: '', permissionsType: '2'};
+
 
   created() {
     this.listQuery = Object.assign(this.listQuery, this.$route.query);
@@ -218,6 +233,7 @@ export default class JscnUserInfoDetail extends Vue {
       this.fetchData();
     }
   }
+
   get inputValueIsValid(): boolean {
     return this.validInput();
   }
@@ -229,12 +245,41 @@ export default class JscnUserInfoDetail extends Vue {
     return true;
   }
 
+  @Watch('openId')
+  openIdChanged(newVal: string, oldVal: string) {
+    console.log('openIdChanged' + this.openId);
+    if (newVal === undefined || newVal === '') {
+      return ;
+    }
+    console.log('openIdChanged ----');
+    const coocaaOpenId = this.getGdOpenId();
+    this.rightQueryPerMission.coocaaOpenId = coocaaOpenId;
+    this.movieQueryPerMission.coocaaOpenId = coocaaOpenId;
+    console.log('openIdChanged 1----');
+
+  }
   search(): void {
     if (!this.validInput()) {
       this.$message.error('必须输入至少一种查询条件进行查询');
       return;
     }
+    this.openId = '';
+    this.userId = '';
     this.fetchData();
+  }
+
+  getGdOpenId(): string {
+    const openIds = [];
+    if (this.openId !== undefined) {
+      openIds.push(this.openId);
+    }
+    if (this.selectJscnUserInfo !== undefined) {
+      openIds.push(this.selectJscnUserInfo.smartCardId);
+      if (this.selectJscnUserInfo.stbMac !== null) {
+        openIds.push(this.selectJscnUserInfo.stbMac);
+      }
+    }
+    return openIds.join(',');
   }
 
   fetchData() {
@@ -260,6 +305,8 @@ export default class JscnUserInfoDetail extends Vue {
 
   loadCoocaaUserInfo(row: JscnUserInfo) {
     console.log(process.env.VUE_APP_JSCN_EXT_ID);
+    this.selectJscnUserInfo = row;
+
     if (row.customerCode != null && row.customerCode !== '') {
       this.innerListQuery = {externalId: row.customerCode, externalFlag: process.env.VUE_APP_JSCN_EXT_ID};
       console.log(this.innerListQuery);
@@ -271,7 +318,10 @@ export default class JscnUserInfoDetail extends Vue {
 
   viewUserOrder() {
     if (this.selectJscnUserInfo.smartCardId != null && this.openId !== '') {
-      this.$router.push({path: '/orders/movies-order-list', query: {coocaaOpenId: this.openId + ',' + this.selectJscnUserInfo.smartCardId}});
+      this.$router.push({
+        path: '/orders/movies-order-list',
+        query: {coocaaOpenId: this.openId + ',' + this.selectJscnUserInfo.smartCardId},
+      });
     }
   }
 }

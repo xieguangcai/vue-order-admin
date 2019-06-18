@@ -45,6 +45,13 @@
                 fit
                 size="mini"
                 highlight-current-row>
+        <el-table-column align="left" label="权益名称" width="180" fixed>
+          <template slot-scope="scope">
+            <div>
+              {{ scope.row.sourceName }}
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column align="left" label="酷开OpenId" width="300" fixed>
           <template slot-scope="scope">
             <div>
@@ -59,13 +66,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column align="left" label="权益名称" width="180">
-          <template slot-scope="scope">
-            <div>
-              {{ scope.row.sourceName }}
-            </div>
-          </template>
-        </el-table-column>
+
         <el-table-column align="left" label="权益开始时间" width="160">
           <template slot-scope="scope">
             <div>

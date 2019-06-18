@@ -8,7 +8,7 @@
               size="mini"
               @row-click="loadCoocaaUserInfo"
               highlight-current-row>
-      <el-table-column align="left" label="ID" width="60" fixed>
+      <el-table-column align="left" label="ID" width="80" fixed>
         <template slot-scope="scope">
           <div>
             {{scope.row.id}}

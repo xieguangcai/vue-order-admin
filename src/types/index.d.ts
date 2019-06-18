@@ -895,6 +895,20 @@ export interface BaseMoviesIqiyiOrderBase {
   flag?: number;
   orderProduct?: BaseOrderProducts;
   baseOrderSource?: BaseOrderSource;
+  atrributeInfo?: BaseOrderAtrributeInfo;
+}
+
+export interface BaseOrderAtrributeInfo {
+  orderNo: string;
+  chip?: string;
+  model?: string;
+  brand?: string;
+  license?: string;
+  ca?: string;
+  sn?: string;
+  gdGroupId?: string;
+  districtCode?: string;
+  parentOrderNo?: string;
 }
 
 // export interface BaseMoviesIqiyiOrder extends BaseMoviesIqiyiOrderBase {
@@ -1396,4 +1410,11 @@ export interface V1MoviePolicyModel {
   supportLive?: boolean;
   supportSource?: string;
   testFlag?: number;
+}
+
+export interface PermissionQueryDomain {
+  coocaaOpenId: string;
+  thirdOpenId: string;
+  permissionsType: string;
+
 }
