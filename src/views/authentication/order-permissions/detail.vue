@@ -147,11 +147,11 @@ export default class OrderPermissionsDetail extends Vue {
     if (newVal.coocaaOpenId === '' && newVal.thirdOpenId === '') {
       return;
     }
-    if (oldVal !== undefined ) {
-      if (newVal.coocaaOpenId === oldVal.coocaaOpenId && newVal.thirdOpenId === oldVal.thirdOpenId) {
-        return;
-      }
-    }
+    // if (oldVal !== undefined ) {
+    //   if (newVal.coocaaOpenId === oldVal.coocaaOpenId && newVal.thirdOpenId === oldVal.thirdOpenId) {
+    //     return;
+    //   }
+    // }
 
     this.loadingData = true;
     this.listQuery = {

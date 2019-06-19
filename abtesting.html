@@ -8,7 +8,7 @@
       var randomClientId = Math.random();
       adhoc('init', {
         appKey: 'ADHOC_af8e790a-b5c0-47eb-8fd4-19aa5dd4a758',
-        defaultFlags: {pd_db_user_10_pass: '1', pd_db_user_30_pass: '1'},
+        defaultFlags: {pd_db_user_10_pass: '1'},
         clientId: '12345678913',
         protocol: 'http:'
       });
@@ -20,8 +20,8 @@
         <h3>提交指标</h3>
         <h2 id="flag"></h2>
     </div>
-    <input type="button" value="提交订单" id="cOrder">
-    <input type="button" value="支付订单" id="pOrder">
+    <input type="button" value="登录曝光" id="cOrder">
+    <input type="button" value="未登录曝光" id="pOrder">
     <script>
       function loginfo(info){
         $('#flag').html($('#flag').html() + '<br>' + info);
@@ -30,7 +30,7 @@
       $(document).ready(function(){
         adhoc('getFlags', function(flags){
           debugger;
-          if(flags.get('pd_db_user_30_pass') == '1'){
+          if(flags.get('pd_db_user_30_pass') == 1){
             loginfo('原始实验版本');
           }else{
             loginfo('测试实验版本---');
@@ -38,13 +38,14 @@
         });
 
         $("#cOrder").bind('click', function(){
-          adhoc('track', 'c_order', 1);
-          loginfo('提交上报指标：c_order');
+          adhoc('track', 'p_login_user_view', 1);
+          loginfo('提交上报指标：p_login_user_view');
         });
         $('#pOrder').bind('click', function(){
-          adhoc('track', 'p_order', 1);
-          loginfo('提交上报指标：p_order');
+          adhoc('track', 'p_un_login_user_view', 1);
+          loginfo('提交上报指标：p_un_login_user_view');
         });
+
       })
     </script>
   </body>

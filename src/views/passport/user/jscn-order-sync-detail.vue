@@ -22,13 +22,6 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="left" label="来源IP" width="120">
-        <template slot-scope="scope">
-          <div>
-            {{scope.row.sourceIp}}
-          </div>
-        </template>
-      </el-table-column>
       <el-table-column align="left" label="来源操作" width="80">
         <template slot-scope="scope">
           <div>
@@ -50,6 +43,13 @@
           </div>
         </template>
       </el-table-column>
+      <el-table-column align="left" label="智能卡号" width="200">
+        <template slot-scope="scope">
+          <div>
+            {{scope.row.smartCardId}}
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column label="参数" width="600">
         <template slot-scope="scope">
           <div>
@@ -57,10 +57,10 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="left" label="智能卡号" width="200">
+      <el-table-column align="left" label="来源IP" width="120">
         <template slot-scope="scope">
           <div>
-            {{scope.row.smartCardId}}
+            {{scope.row.sourceIp}}
           </div>
         </template>
       </el-table-column>
