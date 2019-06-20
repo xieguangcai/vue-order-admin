@@ -3,24 +3,17 @@
     <list-table-pane>
       <search-pane slot="searchpane" @click="refetchData">
 
-        ID
-        <el-input v-model="listQuery.testInfoId" size="mini" :clearable="true"></el-input>
-        测试策略名称
-        <el-input v-model="listQuery.policyName" size="mini" :clearable="true"></el-input>
-        MAC
-        <el-input v-model="listQuery.mac" size="mini" :clearable="true"></el-input>
-        测试账号
-        <el-input v-model="listQuery.openId" size="mini" :clearable="true"></el-input>
-        测试状态
-        <el-select size="mini" v-model="listQuery.testStatus">
-          <el-option value="" label="全部"/>
-          <el-option value="0" label="待测试"/>
-          <el-option value="1" label="测试通过"/>
-          <el-option value="2" label="测试不通过"/>
-        </el-select>
-        测试方案
-        <el-input v-model="listQuery.schemeId" size="mini" :clearable="true"></el-input>
+        原产品包ID
+        <el-input v-model="listQuery.mainProductId" size="mini" :clearable="true"></el-input>
+        开通产品包ID
+        <el-input v-model="listQuery.subProductId" size="mini" :clearable="true"></el-input>
 
+        测试状态
+        <el-select size="mini" v-model="listQuery.relationStatus">
+          <el-option value="" label="全部"/>
+          <el-option value="1" label="上架"/>
+          <el-option value="0" label="下架"/>
+        </el-select>
       </search-pane>
       <el-table v-loading="listLoading" height="600" style="width: 100%"
                 :data="data"
@@ -30,37 +23,27 @@
                 highlight-current-row>
         <el-table-column align="left" label="ID" width="80" fixed>
           <template slot-scope="scope">
-             {{ scope.row.testInfoId}}
+             {{ scope.row.productRlsId}}
           </template>
         </el-table-column>
-        <el-table-column align="left" label="测试策略名称" width="240">
+        <el-table-column align="left" label="原产品包" width="240">
           <template slot-scope="scope">
-            {{ scope.row.policyName}}
+            产品包ID:{{ scope.row.mainProductId}}<br/>
+            产品包标题：{{ scope.row.mainProduct.productTitle}}<br/>
+            产品包销售价：{{ scope.row.mainProduct.discountFee | NumFormat }} 元
           </template>
         </el-table-column>
 
-        <el-table-column align="left" label="测试账号" width="240">
+        <el-table-column align="left" label="开通产品" width="240">
           <template slot-scope="scope">
-            测试MAC：{{ scope.row.mac}} <br/>
-            测试账号： {{ scope.row.openId }}
-          </template>
-        </el-table-column>
-        <el-table-column label="关联方案" width="300">
-          <template slot-scope="scope">
-            {{  }}
+            产品包ID:{{ scope.row.subProductId}}<br/>
+            产品包标题：{{ scope.row.subProduct.productTitle}}<br/>
+            产品包销售价：{{ scope.row.subProduct.discountFee | NumFormat }} 元
           </template>
         </el-table-column>
         <el-table-column label="状态" width="100">
           <template slot-scope="scope">
-            <span v-if="scope.row.testStatus == 0">待测试</span>
-            <span v-else-if="scope.row.testStatus == 1">测试通过</span>
-            <span v-else="scope.row.testStatus == 2">测试不通过</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="测试信息" width="280">
-          <template slot-scope="scope">
-            测试人：{{ scope.row.testUser }} <br/>
-            测试时间：{{ scope.row.testDate }}
+            {{ scope.row.relationStatus == 1 ? "上架" : "下架"}}
           </template>
         </el-table-column>
 
@@ -95,15 +78,15 @@ import {Component, Vue, Watch} from 'vue-property-decorator';
 import SearchPane from '../../../components/SearchPane/index.vue';
 import SearchPagePane from '../../../components/SearchPagePane/index.vue';
 import {
-  SchemeTestListQuery,
-  SchemeTest,
+  ProductRlsListQuery,
+  ProductRls,
   Pageable,
   ResponseResult,
   SearchHistoryModel,
 } from '../../../types';
 import ListTablePane from '../../../components/ListTablePane/index.vue';
 import {AxiosResponse} from 'axios';
-import {getSchemeTestPageList} from '../../../api/authentication/schemeTest';
+import {getProductRlsList} from '../../../api/authentication/productRls';
 import BaseList from '../../../components/BaseList';
 import {handlerCommonError} from '../../../utils/auth-interceptor';
 import {addDateFormatString} from '../../../utils/format-utils';
@@ -113,16 +96,20 @@ import {AppModule, propertyToName} from '../../../store/modules/app';
 
 @Component({
   components: {ListTablePane, SearchPane, SearchPagePane},
-  filters: {},
+  filters: {
+    NumFormat(value: number) {
+      return (value / 100).toFixed(2);
+    },
+  },
   mixins: [BaseList],
 })
-export default class SchemeTestList extends Vue {
+export default class ProductRlsList extends Vue {
 
-  data: SchemeTest[] = [];
-  listQuery: SchemeTestListQuery = { page: 0, size: 50, total: 0};
+  data: ProductRls[] = [];
+  listQuery: ProductRlsListQuery = { page: 0, size: 50, total: 0};
 
   realFetchData() {
-    return getSchemeTestPageList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<SchemeTest>>>) => {
+    return getProductRlsList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<ProductRls>>>) => {
       const responseData = response.data.data;
       this.data = responseData.content;
       this.listQuery.page = responseData.number;

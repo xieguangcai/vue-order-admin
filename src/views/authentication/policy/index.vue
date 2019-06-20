@@ -130,7 +130,7 @@ import {AppModule, propertyToName} from '../../../store/modules/app';
   filters: {},
   mixins: [BaseList],
 })
-export default class OrderSchemeList extends Vue {
+export default class OrderPolicyList extends Vue {
 
   data: Policy[] = [];
   listQuery: Policy = { page: 0, size: 50, total: 0};

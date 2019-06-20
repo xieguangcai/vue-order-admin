@@ -162,7 +162,7 @@ export default new Router({
         {
           path: 'scheme-test',
           name: '方案测试管理',
-          // component: () => import(/* webpackChunkName: "scheme-test" */ '@/views/authentication/scheme-test/index.vue'),
+          component: () => import(/* webpackChunkName: "scheme-test" */ '@/views/authentication/scheme-test/index.vue'),
           meta: {title: '方案测试管理', icon: 'tree', roles: ['PRODUCT_ROLE_VIEW']},
         },
         {
@@ -186,7 +186,7 @@ export default new Router({
         {
           path: 'open-product',
           name: '开通产品包管理',
-          // component: () => import(/* webpackChunkName: "open-product" */ '@/views/authentication/open-product/index.vue'),
+          component: () => import(/* webpackChunkName: "open-product" */ '@/views/authentication/open-product/index.vue'),
           meta: {title: '开通产品包管理', icon: 'tree', roles: ['PRODUCT_ROLE_VIEW']},
         },
         {

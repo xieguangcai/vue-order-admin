@@ -1242,6 +1242,49 @@ export interface Policy extends IPageinfo {
   policyStatus?: number;
 }
 
+export interface SchemeTest {
+  testInfoId?: number;
+  policyName?: string;
+  mac?: string;
+  openId?: string;
+  testStatus?: number;
+  testDescription?: string;
+  testUser?: string;
+  testDate?: string;
+  creater?: number;
+  createdDate?: string;
+  modifier?: number;
+  lastUpdateDate?: string;
+}
+
+export interface SchemeTestListQuery extends IPageinfo {
+  testInfoId?: number;
+  policyName?: string;
+  mac?: string;
+  openId?: string;
+  testStatus?: number;
+  schemeId?: number;
+}
+
+export interface ProductRls {
+  productRlsId?: number;
+  mainProductId?: number;
+  subProductId?: number;
+  relationType?: number;
+  relationModel?: number;
+  timedDay?: number;
+  relationStatus?: number;
+  createdDate?: string;
+  lastUpdateDate?: string;
+}
+
+export interface ProductRlsListQuery extends IPageinfo {
+  mainProductId?: number;
+  subProductId?: number;
+  relationStatus?: number;
+}
+
+
 // --------authentication---------
 
 
