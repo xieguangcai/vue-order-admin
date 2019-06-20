@@ -285,7 +285,7 @@ import {getUserInfoFullByOpenId, nopassportSignStatusToName, ossDictName, unSign
 import {handlerCommonError} from '../../../utils/auth-interceptor';
 import {checkRole} from '../../../utils/auth';
 import {anyNotEmpty} from '../../../utils/validate';
-import PolicyComponent from '../../authentication/policy/index.vue';
+import PolicyComponent from '../../authentication/policy/device-policy.vue';
 
 @Component({
   name: 'SysAccountDetail',

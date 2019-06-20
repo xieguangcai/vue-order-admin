@@ -199,7 +199,7 @@
   } from '../../../types';
   import IqiyiGoldVipList from '../iqiyi-gold-vip/list.vue';
   import {handlerCommonError} from '../../../utils/auth-interceptor';
-  import PolicyComponent from '../policy/index.vue';
+  import PolicyComponent from '../policy/device-policy.vue';
 
   @Component({
     name: 'BaseMoviesIqiyiOrderBaseDetail',

@@ -385,21 +385,24 @@ class App extends VuexModule {
     };
   }
 
-  @MutationAction({ mutate: [ 'companyOrderSource'] })
+  // @MutationAction({ mutate: [ 'companyOrderSource'] })
+  @Mutation
   async GetCompanyOrderSource(refresh: boolean) {
+    console.log('GetCompanyOrderSource');
     if (refresh || this.companyOrderSource == null || this.companyOrderSource.length === 0) {
       const {data} = await getCompanyOrderSource();
       if (data.data) {
-        return {
-          companyOrderSource: data.data,
-        };
+        // return {
+        //   companyOrderSource: data.data,
+        // };
+        this.companyOrderSource = data.data;
       } else {
         throw Error('GetAllValidRoles: data must be a non-null array!');
       }
     } else {
-      return {
-        companyOrderSource: this.companyOrderSource,
-      };
+      // return {
+      //   companyOrderSource: this.companyOrderSource,
+      // };
     }
   }
 }

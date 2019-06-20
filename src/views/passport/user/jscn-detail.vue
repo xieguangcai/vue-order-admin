@@ -14,6 +14,7 @@
     </search-pane>
     <div v-loading="listLoading">
       <el-table style="width: 100%"
+                ref="userInfoTable"
                 :data="data"
                 element-loading-text="Loading"
                 border
@@ -208,6 +209,7 @@
   import {setLocationToHisotry} from '../../../utils/tools';
   import JscnOrderSyncDetail from './jscn-order-sync-detail.vue';
   import OrderPermissionsDetail from '../../authentication/order-permissions/detail.vue';
+  import {ElTable} from "element-ui/types/table";
 
   @Component({
     name: 'JscnUserInfoDetail',
@@ -246,15 +248,12 @@
 
     @Watch('openId')
     openIdChanged(newVal: string, oldVal: string) {
-      console.log('openIdChanged' + this.openId);
       if (newVal === undefined || newVal === '') {
         return;
       }
-      console.log('openIdChanged ----');
       const coocaaOpenId = this.getGdOpenId();
       this.rightQueryPerMission.coocaaOpenId = coocaaOpenId;
       this.movieQueryPerMission.coocaaOpenId = coocaaOpenId;
-      console.log('openIdChanged 1----');
     }
 
     search(): void {
@@ -296,6 +295,7 @@
           const row = this.data[0];
           this.selectJscnUserInfo = row;
           this.loadCoocaaUserInfo(row);
+          (this.$refs.userInfoTable as ElTable).setCurrentRow(row);
         }
         // 设置路由
         setLocationToHisotry(this, this.listQuery, '广电用户信息查询');
@@ -307,7 +307,7 @@
       this.selectJscnUserInfo = row;
 
       if (row.customerCode !== null && row.customerCode !== ''
-        && (this.innerListQuery.externalId === undefined
+        && (this.openId === undefined || this.openId === '' || this.innerListQuery.externalId === undefined
         || row.customerCode !== this.innerListQuery.externalId)) {
         this.innerListQuery = {externalId: row.customerCode, externalFlag: process.env.VUE_APP_JSCN_EXT_ID};
       } else {
