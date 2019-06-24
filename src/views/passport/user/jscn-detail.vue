@@ -248,9 +248,7 @@
 
     @Watch('openId')
     openIdChanged(newVal: string, oldVal: string) {
-      if (newVal === undefined || newVal === '') {
-        return;
-      }
+      console.log('openIdChanged ===');
       const coocaaOpenId = this.getGdOpenId();
       this.rightQueryPerMission.coocaaOpenId = coocaaOpenId;
       this.movieQueryPerMission.coocaaOpenId = coocaaOpenId;

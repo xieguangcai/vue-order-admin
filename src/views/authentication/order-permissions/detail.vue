@@ -52,7 +52,13 @@
           </div>
         </template>
       </el-table-column>
-
+      <el-table-column label="鉴权主体" width="260">
+        <template slot-scope="scope">
+          <div>
+            {{ scope.row.coocaaOpenId}}
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column label="创建时间" width="200">
         <template slot-scope="scope">
           <div>
@@ -64,13 +70,6 @@
         <template slot-scope="scope">
           <div>
             {{ scope.row.lastUpdateDate}}
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="鉴权主体" width="260">
-        <template slot-scope="scope">
-          <div>
-            {{ scope.row.coocaaOpenId}}
           </div>
         </template>
       </el-table-column>
@@ -141,10 +140,12 @@ export default class OrderPermissionsDetail extends Vue {
       return;
     }
     if (newVal.coocaaOpenId === null && newVal.thirdOpenId === null) {
+      this.data = [];
       return;
     }
 
     if (newVal.coocaaOpenId === '' && newVal.thirdOpenId === '') {
+      this.data = [];
       return;
     }
     // if (oldVal !== undefined ) {
@@ -186,7 +187,9 @@ export default class OrderPermissionsDetail extends Vue {
   realFetchData() {
     return getOrderPermissionsInfo(this.listQuery).then((response: AxiosResponse<ResponseResult<OrderPermissionsInfo[]>>) => {
       this.data = response.data.data;
-    }).catch(handlerCommonError);
+    }).catch((arg)=>{
+      handlerCommonError(arg);
+    });
   }
 }
 </script>
