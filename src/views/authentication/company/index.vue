@@ -127,146 +127,146 @@
 
 
 <script lang="ts">
-  import {Component, Vue, Watch} from 'vue-property-decorator';
-  import SearchPane from '../../../components/SearchPane/index.vue';
-  import SearchPagePane from '../../../components/SearchPagePane/index.vue';
-  import {
-    CompanyListQuery,
-    Company,
-    Pageable,
-    ResponseResult,
-    SearchHistoryModel,
-  } from '../../../types';
-  import ListTablePane from '../../../components/ListTablePane/index.vue';
-  import {AxiosResponse} from 'axios';
-  import {getCompanyPageList, addCompany, getCompanyById, updateStatus} from '../../../api/authentication/company';
-  import BaseList from '../../../components/BaseList';
-  import {handlerCommonError} from '../../../utils/auth-interceptor';
-  import {addDateFormatString} from '../../../utils/format-utils';
-  import {anyNotEmpty} from '../../../utils/validate';
-  import {ElForm} from 'element-ui/types/form';
+import {Component, Vue, Watch} from 'vue-property-decorator';
+import SearchPane from '../../../components/SearchPane/index.vue';
+import SearchPagePane from '../../../components/SearchPagePane/index.vue';
+import {
+  CompanyListQuery,
+  Company,
+  Pageable,
+  ResponseResult,
+  SearchHistoryModel,
+} from '../../../types';
+import ListTablePane from '../../../components/ListTablePane/index.vue';
+import {AxiosResponse} from 'axios';
+import {getCompanyPageList, addCompany, getCompanyById, updateStatus} from '../../../api/authentication/company';
+import BaseList from '../../../components/BaseList';
+import {handlerCommonError} from '../../../utils/auth-interceptor';
+import {addDateFormatString} from '../../../utils/format-utils';
+import {anyNotEmpty} from '../../../utils/validate';
+import {ElForm} from 'element-ui/types/form';
 
-  @Component({
-    components: {ListTablePane, SearchPane, SearchPagePane},
-    filters: {},
-    mixins: [BaseList],
-  })
-  export default class OrderCompanyList extends Vue {
+@Component({
+  components: {ListTablePane, SearchPane, SearchPagePane},
+  filters: {},
+  mixins: [BaseList],
+})
+export default class OrderCompanyList extends Vue {
 
-    dialogFormVisible = false;
-    form: Company = {flag: 0};
-    data: Company[] = [];
-    listQuery: CompanyListQuery = {page: 0, size: 50, total: 0};
-    rules = {
-      companyCnName: [
-        {required: true, message: '请输入供应商名称', trigger: 'blur'}
-      ],
-      company: [
-        {required: true, message: '请输入标识', trigger: 'blur'}
-      ],
-      appcode: [
-        {required: true, message: '请输入APPCODE', trigger: 'blur'}
-      ],
-      appkey: [
-        {required: true, message: '请输入秘钥', trigger: 'blur'}
-      ]
-    };
-
-
-    realFetchData() {
-      return getCompanyPageList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<Company>>>) => {
-        const responseData = response.data.data;
-        this.data = responseData.content;
-        this.listQuery.page = responseData.number;
-        this.listQuery.size = responseData.size;
-        this.listQuery.total = responseData.totalElements;
-      }).catch(handlerCommonError);
-    }
+  dialogFormVisible = false;
+  form: Company = {flag: 0};
+  data: Company[] = [];
+  listQuery: CompanyListQuery = {page: 0, size: 50, total: 0};
+  rules = {
+    companyCnName: [
+      {required: true, message: '请输入供应商名称', trigger: 'blur'},
+    ],
+    company: [
+      {required: true, message: '请输入标识', trigger: 'blur'},
+    ],
+    appcode: [
+      {required: true, message: '请输入APPCODE', trigger: 'blur'},
+    ],
+    appkey: [
+      {required: true, message: '请输入秘钥', trigger: 'blur'},
+    ],
+  };
 
 
-    validSearchCondition(): boolean {
-
-      return true;
-    }
-
-    getElForm(): ElForm {
-      return this.$refs.OrderCompanyList as ElForm;
-    }
-
-    add() {
-      if(this.getElForm() !==undefined){
-        this.getElForm().resetFields();
-      }
-      this.dialogFormVisible = true;
-    }
-
-    submitForm() {
-      //必填项
-      this.getElForm().validate((valid: boolean) => {
-        if (valid) {
-          addCompany(this.form).then((response: AxiosResponse<ResponseResult<boolean>>) => {
-            if (response.data.success && response.data.data) {
-              //保存成功
-              this.dialogFormVisible = false;
-              this.$message({
-                message: '保存供应商信息成功',
-                type: 'success',
-              });
-              this.realFetchData();//重新加载数据
-            } else {
-              //保存失败
-              this.dialogFormVisible = false;
-              this.$message.error('保存供应商信息失败');
-            }
-          }).catch(handlerCommonError);
-        } else {
-          return false;
-        }
-      });
-    }
-
-    edit(id: number) {
-      if(this.getElForm() !==undefined){
-        this.getElForm().resetFields();
-      }
-      this.dialogFormVisible = true;
-      getCompanyById(id).then((response: AxiosResponse<ResponseResult<Company>>) => {
-        this.form = response.data.data;
-      });
-    }
-
-    update(id: number, status: number) {
-        let des: string;
-        if(status == 1){
-            des = "启用"
-        }else if(status == 0){
-            des = "停用"
-        }else {
-            return;
-        }
-        this.$confirm('确定要'+des+'操作吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          updateStatus(id, status).then((response: AxiosResponse<ResponseResult<boolean>>) => {
-            if (response.data.success && response.data.data) {
-              //保存成功
-              this.$message({
-                message: '状态更新成功',
-                type: 'success',
-              });
-              this.realFetchData();//重新加载数据
-            } else {
-              //保存失败
-              this.$message.error('状态更新成功');
-            }
-          });
-        }).catch(() => {
-
-        });
-    }
+  realFetchData() {
+    return getCompanyPageList(this.listQuery).then((response: AxiosResponse<ResponseResult<Pageable<Company>>>) => {
+      const responseData = response.data.data;
+      this.data = responseData.content;
+      this.listQuery.page = responseData.number;
+      this.listQuery.size = responseData.size;
+      this.listQuery.total = responseData.totalElements;
+    }).catch(handlerCommonError);
   }
+
+
+  validSearchCondition(): boolean {
+
+    return true;
+  }
+
+  getElForm(): ElForm {
+    return this.$refs.OrderCompanyList as ElForm;
+  }
+
+  add() {
+    if (this.getElForm() !== undefined) {
+      this.getElForm().resetFields();
+    }
+    this.dialogFormVisible = true;
+  }
+
+  submitForm() {
+    // 必填项
+    this.getElForm().validate((valid: boolean) => {
+      if (valid) {
+        addCompany(this.form).then((response: AxiosResponse<ResponseResult<boolean>>) => {
+          if (response.data.success && response.data.data) {
+            // 保存成功
+            this.dialogFormVisible = false;
+            this.$message({
+              message: '保存供应商信息成功',
+              type: 'success',
+            });
+            this.realFetchData(); // 重新加载数据
+          } else {
+            // 保存失败
+            this.dialogFormVisible = false;
+            this.$message.error('保存供应商信息失败');
+          }
+        }).catch(handlerCommonError);
+      } else {
+        return false;
+      }
+    });
+  }
+
+  edit(id: number) {
+    if (this.getElForm() !== undefined) {
+      this.getElForm().resetFields();
+    }
+    this.dialogFormVisible = true;
+    getCompanyById(id).then((response: AxiosResponse<ResponseResult<Company>>) => {
+      this.form = response.data.data;
+    });
+  }
+
+  update(id: number, status: number) {
+      let des: string;
+      if (status === 1) {
+          des = '启用';
+      } else if (status === 0) {
+          des = '停用';
+      } else {
+          return;
+      }
+      this.$confirm('确定要' + des + '操作吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        updateStatus(id, status).then((response: AxiosResponse<ResponseResult<boolean>>) => {
+          if (response.data.success && response.data.data) {
+            // 保存成功
+            this.$message({
+              message: '状态更新成功',
+              type: 'success',
+            });
+            this.realFetchData(); // 重新加载数据
+          } else {
+            // 保存失败
+            this.$message.error('状态更新成功');
+          }
+        });
+      }).catch(() => {
+
+      });
+  }
+}
 </script>
 
 <style>
