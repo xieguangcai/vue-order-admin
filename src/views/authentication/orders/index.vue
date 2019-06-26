@@ -80,7 +80,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="left" label="账号信息" width="320">
+        <el-table-column align="left" label="账号信息" width="340">
           <template slot-scope="scope">
             <div>
               <span>酷开openId：&nbsp;</span> <span>{{scope.row.coocaaOpenId}}</span><br/>

@@ -187,7 +187,7 @@ export default class OrderPermissionsDetail extends Vue {
   realFetchData() {
     return getOrderPermissionsInfo(this.listQuery).then((response: AxiosResponse<ResponseResult<OrderPermissionsInfo[]>>) => {
       this.data = response.data.data;
-    }).catch((arg)=>{
+    }).catch((arg) => {
       handlerCommonError(arg);
     });
   }
