@@ -29,3 +29,36 @@ export function getCompanyList(): AxiosPromise<ResponseResult<Company[]>> {
     },
   });
 }
+
+export function addCompany(data: Company): AxiosPromise<ResponseResult<boolean>> {
+  return request({
+    url: '/authentication/company/add',
+    method: 'post',
+    params: data,
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
+
+export function getCompanyById(id: number): AxiosPromise<ResponseResult<Company>> {
+  return request({
+    url: '/authentication/company/getCompanyById',
+    method: 'get',
+    params: {id},
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
+
+export function updateStatus(id: number, status: number): AxiosPromise<ResponseResult<boolean>> {
+  return request({
+    url: '/authentication/company/updateStatus',
+    method: 'post',
+    params: {id, status},
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}

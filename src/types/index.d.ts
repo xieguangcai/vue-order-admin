@@ -1102,6 +1102,7 @@ export interface Company {
   company?: string;
   compaynCnName?: string;
   appcode?: string;
+  appkey?: string;
   webVipcenterBg?: string;
   remark?: string;
   flag?: number;
