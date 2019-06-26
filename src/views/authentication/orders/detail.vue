@@ -229,42 +229,42 @@
     }
 
     getTvModel(domainInfo: BaseMoviesIqiyiOrderBase): string {
-      if (domainInfo === null || domainInfo.atrributeInfo === undefined || domainInfo.atrributeInfo.model === undefined) {
+      if (domainInfo === null || domainInfo.atrributeInfo === undefined || domainInfo.atrributeInfo === null || domainInfo.atrributeInfo.model === undefined) {
         return '';
       }
       return domainInfo.atrributeInfo.model;
     }
 
     getTvChip(domainInfo: BaseMoviesIqiyiOrderBase): string {
-      if (domainInfo === null || domainInfo.atrributeInfo === undefined || domainInfo.atrributeInfo.chip === undefined) {
+      if (domainInfo === null || domainInfo.atrributeInfo === undefined || domainInfo.atrributeInfo === null || domainInfo.atrributeInfo.chip === undefined) {
         return '';
       }
       return domainInfo.atrributeInfo.chip;
     }
 
     getBrand(domainInfo: BaseMoviesIqiyiOrderBase): string {
-      if (domainInfo === null || domainInfo.atrributeInfo === undefined || domainInfo.atrributeInfo.brand === undefined) {
+      if (domainInfo === null || domainInfo.atrributeInfo === undefined || domainInfo.atrributeInfo === null || domainInfo.atrributeInfo.brand === undefined) {
         return '';
       }
       return domainInfo.atrributeInfo.brand;
     }
 
     getLicense(domainInfo: BaseMoviesIqiyiOrderBase): string {
-      if (domainInfo === null || domainInfo.atrributeInfo === undefined || domainInfo.atrributeInfo.license === undefined) {
+      if (domainInfo === null || domainInfo.atrributeInfo === undefined || domainInfo.atrributeInfo === null || domainInfo.atrributeInfo.license === undefined) {
         return '';
       }
       return domainInfo.atrributeInfo.license;
     }
 
     getCa(domainInfo: BaseMoviesIqiyiOrderBase): string {
-      if (domainInfo === null || domainInfo.atrributeInfo === undefined || domainInfo.atrributeInfo.ca === undefined) {
+      if (domainInfo === null || domainInfo.atrributeInfo === undefined || domainInfo.atrributeInfo === null || domainInfo.atrributeInfo.ca === undefined) {
         return '';
       }
       return domainInfo.atrributeInfo.ca;
     }
 
     getSn(domainInfo: BaseMoviesIqiyiOrderBase): string {
-      if (domainInfo === null || domainInfo.atrributeInfo === undefined || domainInfo.atrributeInfo.sn === undefined) {
+      if (domainInfo === null || domainInfo.atrributeInfo === undefined || domainInfo.atrributeInfo === null || domainInfo.atrributeInfo.sn === undefined) {
         return '';
       }
       return domainInfo.atrributeInfo.sn;
