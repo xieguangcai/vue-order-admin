@@ -253,7 +253,6 @@ export default class JscnUserInfoDetail extends Vue {
     this.rightQueryPerMission.coocaaOpenId = coocaaOpenId;
     this.movieQueryPerMission.coocaaOpenId = coocaaOpenId;
   }
-
   search(): void {
     if (!this.validInput()) {
       this.$message.error('必须输入至少一种查询条件进行查询');
@@ -266,12 +265,14 @@ export default class JscnUserInfoDetail extends Vue {
 
   getGdOpenId(): string {
     const openIds = [];
-    if (this.openId !== undefined) {
+    if (this.openId !== undefined && this.openId !== '') {
       openIds.push(this.openId);
     }
     if (this.selectJscnUserInfo !== undefined) {
-      openIds.push(this.selectJscnUserInfo.smartCardId);
-      if (this.selectJscnUserInfo.stbMac !== null) {
+      if(this.selectJscnUserInfo.smartCardId != null ){
+        openIds.push(this.selectJscnUserInfo.smartCardId);
+      }
+      if (this.selectJscnUserInfo.stbMac != null) {
         openIds.push(this.selectJscnUserInfo.stbMac);
       }
     }
