@@ -20,3 +20,15 @@ export function getRightsInfoList(params: RightsInfoListQuery): AxiosPromise<Res
   });
 }
 
+
+export function saveData(data: RightsInfo): AxiosPromise<ResponseResult<boolean>> {
+  return request({
+    url: '/authentication/rightsinfo/add',
+    method: 'post',
+    params: data,
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
+
