@@ -42,7 +42,7 @@
                 秘钥：{{ scope.row.appkey }}<br/>
                 状态：{{ scope.row.flag == 1 ? '已启用' : '已停用' }}<br/>
               </div>
-              <el-link type="primary" :underline="false">{{ scope.row.companyCnName}}</el-link>
+              <a style="color: cornflowerblue">{{ scope.row.companyCnName}}</a>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -69,7 +69,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="100" fixed="right">
           <template slot-scope="scope">
-            <el-tooltip placement="top" content="编辑" effect="dark">
+            <el-tooltip placement="top" content="编辑" effect="dark" v-if="scope.row.flag==0">
               <el-button type="primary" circle size="mini" icon="el-icon-edit"
                          @click="edit(scope.row.id)"></el-button>
             </el-tooltip>
@@ -93,32 +93,36 @@
                         slot="page">
       </search-page-pane>
 
-      <el-dialog title="新增供应商" :visible.sync="dialogFormVisible">
-        <div style="text-align:center;width: 100%">
-          <el-form :model="form" :rules="rules" ref="OrderCompanyList">
-            <div class="inputClass">
-              <el-form-item label="供应商名称" :label-width="formLabelWidth" prop="companyCnName">
-                <el-input v-model="form.companyCnName"></el-input>
-              </el-form-item>
-              <el-form-item label="标识" :label-width="formLabelWidth" prop="company">
-                <el-input v-model="form.company"></el-input>
-              </el-form-item>
-              <el-form-item label="APPCODE" :label-width="formLabelWidth" prop="appcode">
-                <el-input v-model="form.appcode"></el-input>
-              </el-form-item>
-              <el-form-item label="秘钥" :label-width="formLabelWidth" prop="appkey">
-                <el-input v-model="form.appkey"></el-input>
-              </el-form-item>
-              <el-form-item label="状态" :label-width="formLabelWidth" style="display: none">
-                <el-input v-model="form.flag"></el-input>
-              </el-form-item>
+      <el-dialog title="新增供应商" :visible.sync="dialogFormVisible" :close-on-click-modal="false" >
+        <template>
+          <div style="text-align:center;width: 100%">
+            <el-form :model="form" :rules="rules" ref="OrderCompanyList">
+              <div style="width: 100px;text-align: center !important;">
+              <div class="inputClass">
+                <el-form-item label="供应商名称" :label-width="formLabelWidth" prop="companyCnName">
+                  <el-input v-model="form.companyCnName" clearable="true"></el-input>
+                </el-form-item>
+                <el-form-item label="标识" :label-width="formLabelWidth" prop="company">
+                  <el-input v-model="form.company" clearable="true"></el-input>
+                </el-form-item>
+                <el-form-item label="APPCODE" :label-width="formLabelWidth" prop="appcode">
+                  <el-input v-model="form.appcode" clearable="true"></el-input>
+                </el-form-item>
+                <el-form-item label="秘钥" :label-width="formLabelWidth" prop="appkey">
+                  <el-input v-model="form.appkey" clearable="true"></el-input>
+                </el-form-item>
+                <el-form-item label="状态" :label-width="formLabelWidth" style="display: none">
+                  <el-input v-model="form.flag"></el-input>
+                </el-form-item>
+              </div>
+              </div>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button type="primary" :disabled="disabled" @click="submitForm()">保 存</el-button>
+              <el-button @click="dialogFormVisible = false">取 消</el-button>
             </div>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="submitForm()">保 存</el-button>
           </div>
-        </div>
+        </template>
       </el-dialog>
 
     </list-table-pane>
@@ -153,7 +157,8 @@ import {ElForm} from 'element-ui/types/form';
 })
 export default class OrderCompanyList extends Vue {
 
-  dialogFormVisible = false;
+  dialogFormVisible: boolean = false;
+  disabled: boolean = false;
   form: Company = {flag: 0};
   data: Company[] = [];
   listQuery: CompanyListQuery = {page: 0, size: 50, total: 0};
@@ -201,6 +206,7 @@ export default class OrderCompanyList extends Vue {
   }
 
   submitForm() {
+    this.disabled = true;
     // 必填项
     this.getElForm().validate((valid: boolean) => {
       if (valid) {
@@ -208,6 +214,7 @@ export default class OrderCompanyList extends Vue {
           if (response.data.success && response.data.data) {
             // 保存成功
             this.dialogFormVisible = false;
+            this.disabled = false;
             this.$message({
               message: '保存供应商信息成功',
               type: 'success',
@@ -220,6 +227,7 @@ export default class OrderCompanyList extends Vue {
           }
         }).catch(handlerCommonError);
       } else {
+        this.disabled = false;
         return false;
       }
     });
@@ -272,6 +280,6 @@ export default class OrderCompanyList extends Vue {
 <style>
   .inputClass {
     width: 350px;
-    text-align: center;
+    text-align: center !important;
   }
 </style>
