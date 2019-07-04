@@ -93,7 +93,7 @@ export default new Router({
       path: '/active-manager',
       component: Layout,
       name: '设备激活管理',
-      meta: {title: '设备激活管理', icon: 'form', roles: ['ACTIVE_ROLE_VIEW']},
+      meta: {title: '设备激活管理', hidden: !hiddenInCoocaa, icon: 'form', roles: ['ACTIVE_ROLE_VIEW']},
       children: [
         {
           path: 'test-device-list',
@@ -113,7 +113,7 @@ export default new Router({
       path: '/rights-manage',
       component: Layout,
       name: '权益管理',
-      meta: {title: '权益管理', icon: 'form', roles: ['PRODUCT_ROLE_VIEW']},
+      meta: {title: '权益管理', hidden: !hiddenInCoocaa, icon: 'form', roles: ['PRODUCT_ROLE_VIEW']},
       children: [
         {
           path: 'company-list',
@@ -133,7 +133,7 @@ export default new Router({
       path: '/product-manage',
       component: Layout,
       name: '产品包管理',
-      meta: {title: '产品包管理', icon: 'form', roles: ['PRODUCT_ROLE_VIEW', 'OFFLINE_ROLE_EDIT_PRICE']},
+      meta: {title: '产品包管理', hidden: !hiddenInCoocaa, icon: 'form', roles: ['PRODUCT_ROLE_VIEW', 'OFFLINE_ROLE_EDIT_PRICE']},
       children: [
         {
           path: 'source',

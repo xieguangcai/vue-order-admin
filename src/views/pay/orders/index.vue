@@ -94,7 +94,11 @@
           <template slot-scope="scope">
             <div>
               <span>订单名称：</span>{{ scope.row.prodName }}<br/>
-              <span>订单金额：</span>{{ scope.row.actualAmount }} 元<br/>
+              <span>订单金额：</span>{{ scope.row.actualAmount }} 元
+              <span>
+                <template v-if="scope.row.payModValue">({{ scope.row.payModValue }})</template>
+              </span>
+              <br/>
               <span>供应商：</span>[{{scope.row.appCode}}]{{ scope.row.appName }}
             </div>
           </template>
