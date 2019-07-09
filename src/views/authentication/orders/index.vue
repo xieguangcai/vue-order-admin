@@ -52,6 +52,32 @@
                         start-placeholder="开始日期"
                         end-placeholder="结束日期">
         </el-date-picker>
+        购买产品
+        <!--<el-cascader  size="mini"-->
+        <!--:show-all-levels="false"-->
+        <!--:options="products"-->
+        <!--v-model="listQuery.productId"-->
+        <!--:props="prodProps"-->
+        <!--clearable></el-cascader>-->
+        <el-select
+          style="width:200px"
+          v-model="listQuery.productId"
+          filterable
+          remote
+          clearable
+          reserve-keyword
+          size="mini"
+          placeholder="请输入产品ID"
+          :remote-method="loadProducts"
+          :loading="loadingProducts">
+          <el-option
+            v-for="item in products"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+        {{listQuery}}
       </search-pane>
       <el-table v-loading="listLoading" height="600" style="width: 100%"
                 :data="data"
@@ -159,8 +185,8 @@ import SearchPane from '../../../components/SearchPane/index.vue';
 import SearchPagePane from '../../../components/SearchPagePane/index.vue';
 import {
   BaseMoviesIqiyiOrderBase,
-  BaseMoviesIqiyiOrderBaseListQuery,
-  Pageable,
+  BaseMoviesIqiyiOrderBaseListQuery, BaseOrderProducts, CascaderDataType,
+  Pageable, ProductListQuery,
   ResponseResult,
   SearchHistoryModel,
 } from '../../../types';
@@ -173,6 +199,8 @@ import OrderInfoDetail from '../../pay/orders/detail.vue';
 import {handlerCommonError} from '../../../utils/auth-interceptor';
 import {addDateFormatString} from '../../../utils/format-utils';
 import {anyNotEmpty} from '../../../utils/validate';
+import {AppModule} from '../../../store/modules/app';
+import {getProductList} from '../../../api/authentication/product';
 
 interface EditDomain {
   editDomainId: number | undefined;
@@ -190,6 +218,8 @@ export default class BaseMoviesIqiyiOrderList extends Vue {
   dialogOrderInfoDetilVisible: boolean = false;
 
   editDomainInfo: EditDomain = {editDomainId: 0, searchHistoryModel: '1', orderNo: ''};
+  loadingProducts: boolean = false;
+  products: CascaderDataType[] = [];
 
   data: BaseMoviesIqiyiOrderBase[] = [];
   listQuery: BaseMoviesIqiyiOrderBaseListQuery = {
@@ -197,15 +227,86 @@ export default class BaseMoviesIqiyiOrderList extends Vue {
     createTimes: [addDateFormatString(-1, 'w'), addDateFormatString()],
   };
 
+  onCreated() {
+    AppModule.GetCompanyOrderSource(false);
+  }
+
+  loadProducts(query: string) {
+    if (query !== '') {
+      this.loadingProducts = true;
+      const productId = parseInt(query, 10);
+      const param: ProductListQuery = {page: 0, size: 10000, total: 0};
+
+      if (!isNaN(productId)) {
+        param.productId = productId;
+      } else {
+        param.productTitle = query;
+      }
+
+      getProductList(param).then((response: AxiosResponse<ResponseResult<Pageable<BaseOrderProducts>>>) => {
+        const responseData = response.data.data;
+        const data = responseData.content;
+        console.log(data);
+        const nodes: CascaderDataType[] = data.map((item) => {
+          const x: CascaderDataType = {
+            label: '[' + item.productId + '-' + item.sourceSign + ']' + item.productTitle + '(' + item.erpCode + ')',
+            value: '' + item.productId,
+          };
+          return x;
+        });
+        this.loadingProducts = false;
+        console.log(nodes);
+        this.products = nodes;
+      });
+    }
+  }
+
+  /**
+   *
+   */
+  // get prodProps() {
+  //   let props = {
+  //     lazy: true,
+  //     lazyLoad(node, resolve) {
+  //       console.log(node);
+  //       let cdata = node.data as CascaderDataType;
+  //       if (null != cdata) {
+  //         if(!cdata.children){
+  //           let value2: number = parseInt(cdata.value2);
+  //           if (!isNaN(value2)) {
+  //             let param: ProductListQuery = {sourceId: value2, page: 0, size: 10000, total: 0};
+  //             getProductList(param).then((response: AxiosResponse<ResponseResult<Pageable<BaseOrderProducts>>>) => {
+  //               const responseData = response.data.data;
+  //               const data = responseData.content;
+  //               let nodes = data.map(item => ({
+  //                 value: item.productId,
+  //                 label: '[' + item.productId + ']'+ item.productName,
+  //                 leaf: true
+  //               }));
+  //               resolve(nodes);
+  //             });
+  //           }
+  //         }else{
+  //           resolve(null);
+  //         }
+  //       }
+  //     },
+  //     // checkStrictly: true,
+  //   };
+  //   return props;
+  // }
+  //
+  // get products() {
+  //   return AppModule.companyOrderSource;
+  // }
+
   handleViewBaseMoviesIqiyiOrderBaseDetail(index: number, row: BaseMoviesIqiyiOrderBase) {
     this.dialogBaseMoviesIqiyiOrderBaseDetilVisible = true;
-    console.log('点击选择的订单id为' + row.id);
     this.$nextTick(() => this.editDomainInfo.editDomainId = row.id);
   }
 
   handleViewOrderInfoDetail(index: number, row: BaseMoviesIqiyiOrderBase) {
     this.dialogOrderInfoDetilVisible = true;
-    console.log('点击选择的订单id为' + row.id);
     this.$nextTick(() => this.editDomainInfo.orderNo = row.orderNo);
   }
 

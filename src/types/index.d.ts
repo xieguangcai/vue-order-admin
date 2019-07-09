@@ -1063,8 +1063,9 @@ export interface OrderPermissionsInfo {
 export interface CascaderDataType {
   value: string;
   label: string;
+  value2?: string;
   disabled?: boolean;
-  children: CascaderDataType[];
+  children?: CascaderDataType[];
 }
 
 export interface RightsInfoListQuery extends IPageinfo {

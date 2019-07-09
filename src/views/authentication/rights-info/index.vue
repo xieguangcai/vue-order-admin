@@ -121,7 +121,7 @@ import {
 } from '../../../types';
 import ListTablePane from '../../../components/ListTablePane/index.vue';
 import {AxiosResponse} from 'axios';
-import {getRightsInfoList,saveData} from '../../../api/authentication/rightsInfo';
+import {getRightsInfoList, saveData} from '../../../api/authentication/rightsInfo';
 import {getCompanyList} from '../../../api/authentication/company';
 import BaseList from '../../../components/BaseList';
 import {handlerCommonError} from '../../../utils/auth-interceptor';
@@ -145,17 +145,17 @@ export default class OrderRightsInfoList extends Vue {
 
   rules = {
     rightsName: [
-      {required: true, message: '请输入权益名称', trigger: 'blur'}
+      {required: true, message: '请输入权益名称', trigger: 'blur'},
     ],
     company: [
-      {required: true, message: '请选择供应商', trigger: 'blur'}
+      {required: true, message: '请选择供应商', trigger: 'blur'},
     ],
     sourceSign: [
-      {required: true, message: '请输入权益标识', trigger: 'blur'}
+      {required: true, message: '请输入权益标识', trigger: 'blur'},
     ],
     businessType: [
-      {required: true, message: '请选择业务类型', trigger: 'blur'}
-    ]
+      {required: true, message: '请选择业务类型', trigger: 'blur'},
+    ],
   };
 
   created() {
@@ -186,27 +186,27 @@ export default class OrderRightsInfoList extends Vue {
   }
 
   add() {
-    if(this.getElForm() !==undefined){
+    if (this.getElForm() !== undefined) {
       this.getElForm().resetFields();
     }
     this.dialogFormVisible = true;
   }
 
   submitForm() {
-    //必填项
+    // 必填项
     this.getElForm().validate((valid: boolean) => {
       if (valid) {
         saveData(this.form).then((response: AxiosResponse<ResponseResult<boolean>>) => {
           if (response.data.success && response.data.data) {
-            //保存成功
+            // 保存成功
             this.dialogFormVisible = false;
             this.$message({
               message: '保存供应商信息成功',
               type: 'success',
             });
-            this.realFetchData();//重新加载数据
+            this.realFetchData(); // 重新加载数据
           } else {
-            //保存失败
+            // 保存失败
             this.dialogFormVisible = false;
             this.$message.error('保存供应商信息失败');
           }

@@ -39,8 +39,24 @@ export default class BaseList extends Vue {
     if (this.$route.query.total) {
       pageInfo.total = parseInt(this.$route.query.total, 10);
     }
-
-    this.listQuery = Object.assign(this.listQuery, this.$route.query, pageInfo);
+    // 添加响应式的属性，才能动态更新视图，否则一些组件无法更新，比如 select
+    Object.keys(this.$route.query).forEach((key) => {
+      Vue.set(this.listQuery, key, this.$route.query[key]);
+    });
+    // for (const i in  Object.keys(this.$route.query)) {
+    //   Vue.set(this.listQuery, i, this.$route.query[i]);
+    // }
+    Object.keys(pageInfo).forEach((key) => {
+      if (this.listQuery[key] === undefined) {
+        Vue.set(this.listQuery, key, pageInfo[key]);
+      }
+    });
+    // for (const i in  Object.keys(pageInfo)) {
+    //   if (this.listQuery[i] === undefined) {
+    //     Vue.set(this.listQuery, i, pageInfo[i]);
+    //   }
+    // }
+    console.log('初始化之后的请求参数对象为：', this.listQuery);
     if (this.needLoadOnCreate) {
       this.fetchData();
     }
@@ -80,17 +96,6 @@ export default class BaseList extends Vue {
     }
     this.listLoading = true;
     this.realFetchData().then(() => {
-      // const path = this.$route.path;
-      // // history.pushState(null, '条件查询', path + '?' + qs.stringify(this.listQuery, {arrayFormat: 'repeat'}));
-      // const newLocation: RawLocation = {} ;
-      // const oldRoute = this.$route;
-      // newLocation.path = oldRoute.path;
-      // newLocation.query = this.listQuery;
-      // newLocation.name = oldRoute.name;
-      // newLocation.params = oldRoute.params;
-      // newLocation.hash = oldRoute.hash;
-      // history.pushState(null, '条件查询', path + '?' + qs.stringify(this.listQuery, {arrayFormat: 'repeat'}));
-      // this.$store.dispatch('addVisitedViews', newLocation);
       setLocationToHisotry(this, this.listQuery, '条件查询');
     }).finally(() => {
       this.listLoading = false;

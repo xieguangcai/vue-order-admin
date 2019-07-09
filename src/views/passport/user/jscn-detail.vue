@@ -269,7 +269,7 @@ export default class JscnUserInfoDetail extends Vue {
       openIds.push(this.openId);
     }
     if (this.selectJscnUserInfo !== undefined) {
-      if(this.selectJscnUserInfo.smartCardId != null ){
+      if (this.selectJscnUserInfo.smartCardId != null ) {
         openIds.push(this.selectJscnUserInfo.smartCardId);
       }
       if (this.selectJscnUserInfo.stbMac != null) {
