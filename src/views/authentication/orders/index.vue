@@ -77,7 +77,6 @@
             :value="item.value">
           </el-option>
         </el-select>
-        {{listQuery}}
       </search-pane>
       <el-table v-loading="listLoading" height="600" style="width: 100%"
                 :data="data"
