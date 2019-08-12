@@ -264,8 +264,8 @@ export default new Router({
     {
       path: '/oss',
       component: Layout,
-      name: '解约挽留弹窗',
-      meta: {title: '解约挽留弹窗', hidden: !hiddenInCoocaa, icon: 'layout', roles: ['DEDUCTION_ROLE_VIEW']},
+      name: '自动续费管理',
+      meta: {title: '自动续费管理', hidden: !hiddenInCoocaa, icon: 'form', roles: ['DEDUCTION_ROLE_VIEW']},
       children: [
         {
           path: 'autimatic-deduction-iframe',
@@ -284,6 +284,19 @@ export default new Router({
           name: '新增挽留弹窗',
           component: () => import(/* webpackChunkName: "add-oss-retaining-window" */ '@/views/pay/Autimatic-deduction-iframe/new-iframe.vue'),
           meta: {title: '新增/修改挽留弹窗', icon: 'form', hidden: true, roles: ['DEDUCTION_ROLE_EDIT']},
+        },
+        {
+          path: 'autimatic-app-scene',
+          name: '第三方自动续费',
+          component: () => import(/* webpackChunkName: "oss-retaining-window" */ '@/views/pay/Automatic-app-scene/index.vue'),
+          meta: {title: '第三方自动续费', icon: 'layout1', roles: ['DEDUCTION_ROLE_VIEW']},
+        },
+        {
+          path: 'add-autimatic-app-scene',
+          name: '新增第三方自动续费',
+          component: () => import(/* webpackChunkName: "add-oss-retaining-window" */ '@/views/pay/Automatic-app-scene/new-app-scene.vue'),
+          meta: {title: '新增/修改第三方自动续费', icon: 'form', hidden: true, roles: ['DEDUCTION_ROLE_EDIT']},
+          //meta: {title: '新增/修改第三方自动续费', icon: 'form', hidden: true },
         },
       ],
     },

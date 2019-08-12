@@ -505,6 +505,28 @@ export interface SearchIframeModel extends IPageinfo {
   scene?: string;
 }
 
+export interface AutomaticDeductionAppScene {
+  id?: number;
+  appCode?: string;
+  scene?: string;
+  prodName?: string;
+  status?: number;
+  payLimit?: number;
+  payTypeUnit?: string;
+  createBy?: string;
+  createTime?: string;
+  modifyBy?: string;
+  modifyTime?: string;
+}
+
+export interface SearchAppSceneModel extends IPageinfo{
+  appCode?: string;
+  scene?: string;
+  prodName?: string;
+  status?: number;
+  payTypeUnit?: string;
+}
+
 // ------------pay------------
 
 
