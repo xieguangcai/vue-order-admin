@@ -328,6 +328,9 @@ export function getAppCode(): AxiosPromise<ResponseResult<AutomaticDeductionAppS
   return request({
     url: '/pay/automatic-deduction-app-scene/app-code',
     method: 'get',
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
   });
 }
 
