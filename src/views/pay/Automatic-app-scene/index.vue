@@ -7,7 +7,7 @@
                      v-if="checkUserRole('DEDUCTION_ROLE_EDIT')" >新建
           </el-button>
           <el-button type="danger" icon="el-icon-circle-close" size="mini" @click="handleDel"
-                     v-if="checkUserRole('DEDUCTION_ROLE_AUDIT')" >删除
+                     v-if="checkUserRole('DEDUCTION_ROLE_EDIT')" >删除
           </el-button>
         </el-button-group>
 
@@ -15,8 +15,22 @@
           <el-input v-model="listQuery.appCode" size="mini" placeholder="请输入appCode"></el-input>
           <el-input v-model="listQuery.scene" size="mini" placeholder="请输入scene"></el-input>
           <el-input v-model="listQuery.prodName" size="mini" placeholder="请输入产品包名称"></el-input>
-          <el-input v-model="listQuery.status" size="mini" placeholder="请输入状态值"></el-input>
-          <el-input v-model="listQuery.payTypeUnit" size="mini" placeholder="请输入产品包类型"></el-input>
+          <!--<el-input v-model="listQuery.status" size="mini" placeholder="请输入状态值"></el-input>-->
+          状态值
+          <el-select size="mini" v-model="listQuery.status">
+            <el-option value="" label="全部"/>
+            <el-option label="未使用" value="0" :key="0" />
+            <el-option label="使用中" value="1" :key="1" />
+          </el-select>
+          产品包类型
+          <el-select size="mini" v-model="listQuery.payTypeUnit">
+            <el-option value="" label="全部"/>
+            <el-option label="包月" value="1" :key="1" />
+            <el-option label="包季" value="2" :key="2" />
+            <el-option label="包半年" value="3" :key="3" />
+            <el-option label="包年" value="4" :key="4" />
+          </el-select>
+          <!--<el-input v-model="listQuery.payTypeUnit" size="mini" placeholder="请输入产品包类型"></el-input>-->
         </search-pane>
 
       <el-table v-loading="listLoading" :data="data"
@@ -57,7 +71,7 @@
         </el-table-column>
         <el-table-column label="产品类型">
           <template slot-scope="scope">
-            {{ scope.row.payTypeUnit }}
+            {{ scope.row.payTypeUnit | windowsPayTypeUnit }}
           </template>
         </el-table-column>
         <el-table-column label="创建人员">
@@ -82,8 +96,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="120px">
           <template slot-scope="scope">
-            <!--<el-tooltip content="编辑" v-if="(scope.row.status === 0) && checkUserRole('DEDUCTION_ROLE_EDIT')">-->
-            <el-tooltip content="编辑" v-if="(scope.row.status === 0)">
+            <el-tooltip content="编辑" v-if="checkUserRole('DEDUCTION_ROLE_EDIT')">
               <el-button type="warning" size="mini" circle icon="el-icon-edit"
                          @click="handleEditLayoutDetail(scope.$index, scope.row)"></el-button>
             </el-tooltip>
@@ -129,6 +142,17 @@ import BaseTableDelete from '@/components/BaseTableDelete';
         return '未使用';
       } else if (value === 1) {
         return '使用中';
+      }
+    },
+    windowsPayTypeUnit(value: string){
+      if (value === '1') {
+        return '包月';
+      } else if (value === '2') {
+        return '包季';
+      } else if (value === '3'){
+        return '包半年';
+      } else if (value === '4'){
+        return '包年';
       }
     },
   },

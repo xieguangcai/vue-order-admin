@@ -109,9 +109,7 @@ import {getFullToken} from '../../../utils/auth';
             this.addModel = false;
             getAutomaticDeductionAppSceneDetail(x).then((response: AxiosResponse<ResponseResult<AutomaticDeductionAppScene>>) => {
             const responseData = response.data.data;
-            console.log(responseData);
             this.editItem = responseData;
-            //this.getSceneInfo(this.editItem.appCode);
           }).catch(handlerCommonError);
         }
         this.getAppCode();
