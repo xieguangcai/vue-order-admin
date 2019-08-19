@@ -14,6 +14,7 @@ import router from  '../router';
 import store from '@/store';
 import '@/registerServiceWorker';
 
+
 Vue.use(ElementUI);
 Vue.use(SvgIcon, {
   tagName: 'svg-icon',

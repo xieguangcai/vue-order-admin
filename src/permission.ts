@@ -1,4 +1,4 @@
-import router from './router';
+import router from './pages/router';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import {Message, MessageBox} from 'element-ui';
@@ -6,7 +6,7 @@ import { getToken } from '@/utils/auth';
 import { Route } from 'vue-router';
 import { UserModule } from '@/store/modules/user';
 
-const whiteList = ['/login', '/qiyu/login'];
+const whiteList = ['/login', '/qiyu/login','/404'];
 let prefix = '';
 if(dashboard === 'qiyu'){
   prefix = '/qiyu';
