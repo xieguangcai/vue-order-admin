@@ -93,7 +93,7 @@ export default class TagsView extends Vue {
         const route = tag.to as Route;
         if (route.path === this.$route.path) {
           const scrollPane = (this.$refs.scrollPane) as ScrollPane;
-          scrollPane.moveToTarget(tag.$el);
+          scrollPane.moveToTarget(tag.$el as HTMLElement);
           break;
         }
       }

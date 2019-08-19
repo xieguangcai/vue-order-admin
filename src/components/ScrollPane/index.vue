@@ -34,7 +34,7 @@
 
     moveToTarget($target: HTMLElement) {
       const ref: Vue = this.$refs.scrollContainer as Vue;
-      const $container = ref.$el;
+      const $container = ref.$el as HTMLElement;
       const $containerWidth = $container.offsetWidth;
       const $scrollWrapper = ref.$refs.wrap as (HTMLElement);
       const $targetLeft = $target.offsetLeft;

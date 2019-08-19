@@ -6,6 +6,10 @@
 
 import {Dictionary} from 'vue-router/types/router';
 
+declare global{
+  let dashboard: string;
+}
+
 export interface IPageinfo extends Dictionary<any> {
   page: number;
   size: number;

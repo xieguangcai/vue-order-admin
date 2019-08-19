@@ -6,13 +6,20 @@ import { getToken } from '@/utils/auth';
 import { Route } from 'vue-router';
 import { UserModule } from '@/store/modules/user';
 
-const whiteList = ['/login'];
+const whiteList = ['/login', '/qiyu/login'];
+let prefix = '';
+if(dashboard === 'qiyu'){
+  prefix = '/qiyu';
+}
+let loginAction = prefix + '/login';
+let mainAction = prefix + '/';
 
 router.beforeEach((to: Route, from: Route, next: any) => {
   NProgress.start();
+  console.log('路由发生变化了。。。。');
   if (getToken()) {
-    if (to.path === '/login') {
-      next({ path: '/' });
+    if (to.path === loginAction) {
+      next({ path: mainAction });
       NProgress.done(); // If current page is dashboard will not trigger afterEach hook, so manually handle it
     } else {
       if (UserModule.roles.length === 0) {
@@ -21,7 +28,7 @@ router.beforeEach((to: Route, from: Route, next: any) => {
         }).catch((err) => {
           UserModule.FedLogOut().then(() => {
             Message.error(err || '授权失败，请重新登录');
-            next({ path: '/login' });
+            next({ path: loginAction });
           });
         });
       } else {
@@ -32,11 +39,11 @@ router.beforeEach((to: Route, from: Route, next: any) => {
     if (whiteList.indexOf(to.path) !== -1) {
       next();
     } else {
-      if (to.path === '/login' || from.path === '/login') {
+      if (to.path === loginAction || from.path === loginAction) {
         NProgress.done();
       } else {
-        if (to.path === '/') {
-          next('/login');
+        if (to.path === mainAction) {
+          next(loginAction);
           NProgress.done();
         } else {
           MessageBox.alert(
@@ -47,7 +54,7 @@ router.beforeEach((to: Route, from: Route, next: any) => {
             },
           ).then(
             () => {
-              next('/login');
+              next(loginAction);
               NProgress.done();
             },
           );

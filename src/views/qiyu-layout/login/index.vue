@@ -2,7 +2,7 @@
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on"
              label-position="left">
-      <h3 class="title">欢迎使用coocaa智能订单系统</h3>
+      <h3 class="title">欢迎使用coocaa智能订单系统(七鱼)</h3>
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
           <svg-icon name="user"/>
@@ -56,7 +56,7 @@ const validatePass = (rule: any, value: string, callback: any) => {
     callback();
   }
 };
-let path = dashboard === 'coocaa' ? '/' : '/qiyu/';
+
 @Component
 export default class Login extends Vue {
   loginForm = {
@@ -84,7 +84,7 @@ export default class Login extends Vue {
         this.loading = true;
         UserModule.Login(this.loginForm).then(( ) => {
           this.loading = false;
-          this.$router.push({path: path});
+          this.$router.push({path: '/'});
         });
       } else {
         console.error('Login: error submit!!');
@@ -96,7 +96,7 @@ export default class Login extends Vue {
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-  @import '../../../src/styles/variables.scss';
+  @import '../../../../src/styles/variables.scss';
 
   $bg: $mainBg;
   $light_gray: #ee832d;

@@ -1,7 +1,5 @@
 import request from '@/utils/request-account';
 import {getToken} from '@/utils/auth';
-import {AxiosPromise} from 'axios';
-import {AccountInfo, Pageable, ResponseResult} from '@/types';
 
 export function login(username: string, password: string) {
   return request({
