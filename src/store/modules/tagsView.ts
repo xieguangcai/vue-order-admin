@@ -29,9 +29,11 @@ class TagsView extends VuexModule {
     if (find === true) {
       return;
     }
+    var title = view.name;
+    title = (view.meta !== undefined && view.meta !== null )? view.meta.title || title : title;
     this.visitedViews.push(
       Object.assign({}, view, {
-        title: view.meta.title || 'no-name',
+        title: title,
       }),
     );
     if (!view.meta.noCache) {

@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Layout from '@/views/layout/Layout.vue';
+import QiyuLayout from '@/views/qiyu-layout/QiyuLayout.vue';
 
 Vue.use(Router);
 
@@ -400,21 +401,21 @@ if (dashboard === "coocaa") {
       {path: '/404', component: () => import(/* webpackChunkName: "404" */ '@/views/404.vue')},
       {
         path: '/qiyu.html',
-        component: Layout,
+        component: QiyuLayout,
         redirect: '/qiyu/dashboard',
         name: title,
         meta: {hidden: true},
       },
       {
         path: '/qiyu/',
-        component: Layout,
+        component: QiyuLayout,
         redirect: '/qiyu/dashboard',
         name: title,
         meta: {hidden: true},
       },
       {
         path: '/',
-        component: Layout,
+        component: QiyuLayout,
         redirect: '/qiyu/dashboard',
         name: title,
         meta: {hidden: true},
@@ -427,7 +428,7 @@ if (dashboard === "coocaa") {
       },
       {
         path: '/qiyu/orders',
-        component: Layout,
+        component: QiyuLayout,
         name: '会员信息管理',
         meta: {title: '会员信息管理', icon: 'form', roles: ['ROLE_VIEW']},
         children: [
@@ -491,7 +492,7 @@ if (dashboard === "coocaa") {
       },
       {
         path: '/qiyu/me',
-        component: Layout,
+        component: QiyuLayout,
         name: '个人设置',
         meta: {title: '个人设置', hidden: true}, children: [
           {
