@@ -8,7 +8,7 @@ import {
   ResponseResult, StatusInfo,
   UserInfoFull,
   AutomaticDeductionIframe,
-  SearchIframeModel, BindUserTerminalListQuery, BindUserTerminal,
+  SearchIframeModel, BindUserTerminalListQuery, BindUserTerminal, SearchAppSceneModel, AutomaticDeductionAppScene,
 } from '@/types';
 // @ts-ignore
 import qs from 'qs';
@@ -271,3 +271,68 @@ export function unSign(userId: number, signId: number): AxiosPromise<ResponseRes
     params: {userId, signId},
   });
 }
+
+/**
+ * --------------------第三方自动续费相关接口-------------------------
+ */
+export function getAutomaticDeductionAppSceneList(params: SearchAppSceneModel): AxiosPromise<ResponseResult<Pageable<AutomaticDeductionAppScene>>> {
+  return request({
+    url: '/pay/automatic-deduction-app-scene/view/list',
+    method: 'get',
+    params,
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
+
+export function getAutomaticDeductionAppSceneDetail(id: number): AxiosPromise<ResponseResult<AutomaticDeductionAppScene>> {
+  return request({
+    url: '/pay/automatic-deduction-app-scene/view/detail',
+    method: 'get',
+    params: {id},
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
+
+export function addAutomaticDeductionAppScene(data: AutomaticDeductionAppScene): AxiosPromise<ResponseResult<boolean>> {
+  return request({
+    url : '/pay/automatic-deduction-app-scene/add',
+    method: 'post',
+    data,
+  });
+}
+
+export function editAutomaticDeductionAppScene(data: AutomaticDeductionAppScene): AxiosPromise<ResponseResult<boolean>> {
+  return request({
+    url : '/pay/automatic-deduction-app-scene/edit',
+    method: 'post',
+    data,
+  });
+}
+
+export function deleteAutomaticDeductionAppScene(ids: Array<number | undefined>) {
+  return request({
+    url : '/pay/automatic-deduction-app-scene/delete',
+    method: 'get',
+    params: {ids},
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
+
+export function getAppCode(): AxiosPromise<ResponseResult<AutomaticDeductionAppScene>> {
+  return request({
+    url: '/pay/automatic-deduction-app-scene/app-code',
+    method: 'get',
+    paramsSerializer(p: any) {
+      return qs.stringify(p, {arrayFormat: 'repeat'});
+    },
+  });
+}
+
+
+

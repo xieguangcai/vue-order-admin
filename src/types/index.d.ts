@@ -505,6 +505,28 @@ export interface SearchIframeModel extends IPageinfo {
   scene?: string;
 }
 
+export interface AutomaticDeductionAppScene {
+  id?: number;
+  appCode?: string;
+  scene?: string;
+  prodName?: string;
+  status?: number;
+  payLimit?: number;
+  payTypeUnit?: string;
+  createBy?: string;
+  createTime?: string;
+  modifyBy?: string;
+  modifyTime?: string;
+}
+
+export interface SearchAppSceneModel extends IPageinfo{
+  appCode?: string;
+  scene?: string;
+  prodName?: string;
+  status?: number;
+  payTypeUnit?: string;
+}
+
 // ------------pay------------
 
 
@@ -1064,8 +1086,9 @@ export interface OrderPermissionsInfo {
 export interface CascaderDataType {
   value: string;
   label: string;
+  value2?: string;
   disabled?: boolean;
-  children: CascaderDataType[];
+  children?: CascaderDataType[];
 }
 
 export interface RightsInfoListQuery extends IPageinfo {

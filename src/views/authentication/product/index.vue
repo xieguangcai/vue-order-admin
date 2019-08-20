@@ -133,15 +133,12 @@ import {
   BaseOrderProducts,
   Pageable,
   ResponseResult,
-  SearchHistoryModel,
 } from '../../../types';
 import ListTablePane from '../../../components/ListTablePane/index.vue';
 import {AxiosResponse} from 'axios';
 import {getProductList} from '../../../api/authentication/product';
 import BaseList from '../../../components/BaseList';
 import {handlerCommonError} from '../../../utils/auth-interceptor';
-import {addDateFormatString} from '../../../utils/format-utils';
-import {anyNotEmpty} from '../../../utils/validate';
 import {AppModule, propertyToName} from '../../../store/modules/app';
 
 

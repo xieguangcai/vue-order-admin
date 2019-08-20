@@ -18,6 +18,6 @@ export function setLocationToHisotry(com: Vue, listQuery: Dictionary<string>, ti
   newLocation.name = oldRoute.name;
   newLocation.params = oldRoute.params;
   newLocation.hash = oldRoute.hash;
-  history.pushState(null, title, path + '?' + qs.stringify(listQuery, {arrayFormat: 'repeat'}));
+  //history.pushState(null, title, path + '?' + qs.stringify(listQuery, {arrayFormat: 'repeat'}));
   com.$store.dispatch('addVisitedViews', newLocation);
 }
