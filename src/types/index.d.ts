@@ -1015,6 +1015,7 @@ export interface BaseOrderSource {
   authenticationSubject?: number;
   backUrl?: string;
   rightsName?: string;
+  baseOrderCompany?: Company;
 }
 
 

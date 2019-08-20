@@ -156,6 +156,7 @@ class App extends VuexModule {
   businessType: IAppState['businessType'] = [
     {value: '0', label: '影视'},
     {value: '1', label: '教育'},
+    {value: '2', label: 'IPTV'},
     {value: '3', label: '体育'},
     {value: '4', label: '宽带提速	'},
     {value: '6', label: '游戏'}];
