@@ -12,6 +12,8 @@
         <el-input v-model="listQuery.coocaaOpenId" placeholder="查询多个可以用逗号分割" style="width:280px" size="mini"></el-input>
         影视订单号
         <el-input v-model="listQuery.orderNo" placeholder="查询多个可以用逗号分割" size="mini" style="width:200px;"></el-input>
+        支付订单号
+        <el-input v-model="listQuery.payTradeNo" placeholder="查询多个可以用逗号分割" size="mini" style="width:200px;"></el-input>
         第三openId
         <el-input v-model="listQuery.thirdOpenId" size="mini" style="width:280px" :clearable="true"></el-input>
         支付状态
@@ -89,6 +91,7 @@
           <template slot-scope="scope">
             <div>
               <span>业务订单号：&nbsp;</span> {{ scope.row.orderNo}}<br>
+              <span>支付订单号：&nbsp;</span> {{ scope.row.payTradeNo}}<br>
               <span>第三方订单号：&nbsp;</span> {{ scope.row.synTradeNo}}<br>
               <span>机器信息：&nbsp;</span> {{ scope.row.mac}}
               <template v-if="scope.row.tvId">[{{ scope.row.tvId}} ]</template>
@@ -169,8 +172,8 @@
       </el-dialog>
 
       <el-dialog title="oss订单详情" :visible.sync="dialogOrderInfoDetilVisible"
-                 :append-to-body="true" :modal-append-to-body="false" width="80%" @close="editDomainInfo.orderNo = ''">
-        <order-info-detail :origi-order-no="editDomainInfo.orderNo"/>
+                 :append-to-body="true" :modal-append-to-body="false" width="80%" @close="editDomainInfo.orderNo = ''; editDomainInfo.payTradeNo =''">
+        <order-info-detail :origi-order-no="editDomainInfo.payTradeNo || editDomainInfo.orderNo"/>
       </el-dialog>
 
     </list-table-pane>
