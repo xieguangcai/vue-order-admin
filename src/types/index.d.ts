@@ -747,6 +747,7 @@ interface SysAccountQuery extends Dictionary<any> {
   externalFlag?: string;
   externalId?: string;
   nickName?: string;
+  licenseAccountId?: string;
 }
 
 interface SysAccountQueryConstructor {
@@ -1174,6 +1175,45 @@ export interface UserPhoneListQuery extends  IPageinfo {
   mobile?: string;
   createBy?: string;
   createTime?: string;
+}
+
+export interface VideoImg {
+  id?: number;
+  tvSource?: string;
+  startTime?: string;
+  endTime?: string;
+  sortOrder?: number;
+  createTime?: string;
+  userType?: number;
+  imgUrl?: string;
+}
+
+export interface VideoImgListQuery extends IPageinfo{
+  id?: number;
+  tvSource?: string;
+  userType?: number;
+}
+
+export interface BindLicenseAccount {
+  bindId?: number;
+  accountId?: number;
+  license?: string;
+  source?: string;
+  licenseAccountId?: string;
+  mac?: string;
+  deviceId?: string;
+  chip?: String;
+  model?: string;
+  brand?: string;
+  ip?: string;
+  createTime?: string;
+}
+
+export interface BindLicenseAccountListQuery extends IPageinfo{
+  id?: number;
+  accountId?: number;
+  license?: string;
+  source?: string;
 }
 
 

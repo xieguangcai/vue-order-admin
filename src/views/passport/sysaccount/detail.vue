@@ -268,6 +268,8 @@
           </el-collapse-item>
         </el-collapse>
       </el-tab-pane>
+
+
       <slot name="tabSuffix"></slot>
     </el-tabs>
   </div>
@@ -333,7 +335,7 @@ export default class SysAccountDetail extends Vue {
     // @ts-ignore
   searchModel: SysAccountQuery;
 
-  activeNames: string[] = ['1', '2', '3', '4'];
+  activeNames: string[] = ['1', '2', '3', '4', '5'];
 
   payUserActiveNames: string[] = ['1'];
   loadOssUserInfo: boolean = false;
@@ -366,7 +368,7 @@ export default class SysAccountDetail extends Vue {
     if (null == newVal) {
       return false;
     }
-    if (anyNotEmpty(newVal.mobile, newVal.externalId, newVal.openId, newVal.nickName)) {
+    if (anyNotEmpty(newVal.mobile, newVal.externalId, newVal.openId, newVal.nickName, newVal.licenseAccountId)) {
       return true;
     }
     return false;
@@ -431,7 +433,7 @@ export default class SysAccountDetail extends Vue {
       if (oldVal != null
         && newVal.externalId === oldVal.externalId && newVal.externalFlag === oldVal.externalId
         && newVal.openId === oldVal.externalId && newVal.mobile === oldVal.mobile
-        && newVal.nickName === oldVal.nickName
+        && newVal.nickName === oldVal.nickName && newVal.licenseAccountId === oldVal.licenseAccountId
       ) {
         return;
       }

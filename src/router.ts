@@ -259,6 +259,18 @@ export default new Router({
           component: () => import(/* webpackChunkName: "add-oss-retaining-window" */ '@/views/authentication/order-permissions/index.vue'),
           meta: {title: '查询会员权益', icon: 'form', hidden: false},
         },
+        {
+          path: 'cibn-account-list',
+          name: 'CIBN用户列表',
+          component: () => import(/* webpackChunkName: "add-oss-retaining-window" */ '@/views/passport/cibnlicense/index.vue'),
+          meta: {title: 'CIBN用户列表', icon: 'form', hidden: false},
+        },
+        {
+          path: 'video-img-list',
+          name: 'VIP运营管理',
+          component: () => import(/* webpackChunkName: "add-oss-retaining-window" */ '@/views/passport/videoimg/index.vue'),
+          meta: {title: 'VIP运营管理', icon: 'form', hidden: false},
+        },
       ],
     },
     {
