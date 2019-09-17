@@ -35,14 +35,17 @@ import {
 } from '../../../types';
 
 import SearchPane from '../../../components/SearchPane/index.vue';
+import SearchPagePane from '../../../components/SearchPagePane/index.vue';
+import ListTablePane from '../../../components/ListTablePane/index.vue';
 import SysAccountDetail from '../sysaccount/detail.vue';
 import {setLocationToHisotry} from '../../../utils/tools';
 
 @Component({
   name: 'UserDetail',
-  components: {SysAccountDetail, SearchPane},
+  components: {SysAccountDetail, SearchPane, SearchPagePane, ListTablePane},
 })
 export default class UserDetail extends Vue {
+
   activeNames = ['1', '2', '3', '4', '5'];
   listQuery: SysAccountQuery = {mobile: '', nickName: '', openId: '', externalFlag: 'qq', externalId: '', licenseAccountId: ''};
   openId = '';
@@ -66,7 +69,12 @@ export default class UserDetail extends Vue {
     return true;
   }
 
+  realFetchData() {
+
+  }
+
   search(): void {
+    console.log('user detail created 22222');
     if (!this.validInput()) {
       this.$message.error('必须输入至少一种查询条件进行查询');
       return;
@@ -79,9 +87,13 @@ export default class UserDetail extends Vue {
       nickName: this.listQuery.nickName,
       licenseAccountId: this.listQuery.licenseAccountId,
     };
+
     setLocationToHisotry(this, this.listQuery, '广电用户信息查询');
   }
+
 }
+
+
 </script>
 
 

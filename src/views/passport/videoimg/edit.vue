@@ -1,10 +1,9 @@
-<template class="addWindows">
+<template>
+  <div class="addWindows" style="margin-top: 25px;">
   <el-form :model="domainInfo" ref="editForm" :rules="rules" :size="formSize">
-    <el-form-item label="视频源" :label-width="formLabelWidth">
-      <el-select v-model="domainInfo.tvSource" placeholder="选择视频源" size="mini" >
-        <el-option label="腾讯" value="tencent"></el-option>
-        <el-option label="爱奇艺" value="yinhe"></el-option>
-        <el-option label="优酷" value="youku"></el-option>
+    <el-form-item label="视频源" :label-width="formLabelWidth" >
+      <el-select v-model="domainInfo.tvSource" placeholder="选择视频">
+        <el-option v-for="item in videoSource" :label="item.label" :value="item.value" :key="item.value"/>
       </el-select>
     </el-form-item>
     <el-form-item label="用户类型" :label-width="formLabelWidth">
@@ -25,7 +24,7 @@
     </el-form-item>
     <el-form-item label="VIP运营图标" :label-width="formLabelWidth">
       <el-upload :disabled="innerViewModel"
-                 class="upload-demo el-upload-dragger"
+                 class="upload-demo"
                  :action="getActionUrl()"
                  :show-file-list="false"
                  :drag="true"
@@ -44,19 +43,19 @@
       <el-button type="info" icon="el-icon-close" @click="cancel">取消</el-button>
     </div>
   </el-form>
+  </div>
 </template>
 
 
 <script lang="ts">
   import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
-  import {AutomaticDeductionIframe, ResponseResult, UploadFileInfo, VideoImg} from '../../../types/index';
-  import {getVideoImgInfo, updateVideoImg, saveVideoImg} from '../../../api/passport';
+  import { ResponseResult, UploadFileInfo, VideoImg} from '../../../types/index';
+  import {getVideoImgInfo, saveVideoImg} from '../../../api/passport';
   import BaseEdit from '../../../components/BaseEdit';
   import {handlerCommonError} from '../../../utils/auth-interceptor';
   import {AppModule} from "@/store/modules/app";
   import {getFullToken} from "@/utils/auth";
   import {Dictionary} from "vuex";
-  import {addAutomaticDeductionIframe} from "@/api/pay";
   import {AxiosResponse} from "axios";
 
   @Component({
@@ -68,15 +67,13 @@
     domainInfo: VideoImg = {sortOrder: 1,imgUrl:undefined};
     @Prop({type: Number, default: 0})
     domainId: number = 0;
+    addModel: boolean = true ;
 
-    // rules = {
-    //   mobile: [{required: true, message: '请输入手机号', trigger: 'blur'}, {
-    //     min: 11,
-    //     max: 11,
-    //     message: '长度必须是11个字符',
-    //     trigger: 'blur',
-    //   }],
-    // };
+    rules = {
+      startTime: [{required: true, message: '请输入有效期开始时间', trigger: 'blur'}, {
+        trigger: 'blur',
+      }],
+    };
 
 
     @Watch('domainId', {immediate: true})
@@ -122,14 +119,36 @@
       return headerInfo;
     }
 
-    handleCancelFocusSuccess(res: ResponseResult<UploadFileInfo>, file: any, editItem: VideoImg) {
-      console.log("===="+res);
+    handleCancelFocusSuccess(res: ResponseResult<UploadFileInfo>, file: any, domainInfo: VideoImg) {
+      console.log("===="+res.data.url);
       if (res.success) {
-        editItem.imgUrl = res.data.url;
+        domainInfo.imgUrl = res.data.url;
       } else {
         this.$message.error(res.message);
       }
     }
+
+    created() {
+      const x = parseInt(this.$route.query.id, 0);
+      try  {
+        const model = this.$route.query.viewModel;
+        if (model === 'add') {
+          console.log('新增模式');
+          this.addModel = true;
+        } else {
+          console.log('编辑模式');
+          this.addModel = false;
+          getVideoImgInfo(x).then((response: AxiosResponse<ResponseResult<VideoImg>>) => {
+            const responseData = response.data.data;
+            this.domainInfo = responseData;
+          }).catch(handlerCommonError);
+        }
+        //this.getAppCode();
+      } catch (e) {
+
+      }
+    }
+
 
     uploadError(res: ResponseResult<string>) {
       const msg = (res != null ? res.message : null) || '上传文件失败';
@@ -137,30 +156,23 @@
     }
 
     submitForm(formName: VideoImg ) {
+      console.log("===="+formName.imgUrl);
       saveVideoImg(this.domainInfo).then((response: AxiosResponse<ResponseResult<boolean>>) => {
         if (response.data.success && response.data.data) {
-          this.$router.push({path: 'autimatic-deduction-iframe'});
+          this.$message.success('保存成功');
+
+
         }
       }).catch(handlerCommonError);
     }
 
-
-    saveFormData(): Promise<any> {
-      if (this.domainInfo.id != null && this.domainInfo.id !== 0) {
-        return updateVideoImg(this.domainInfo).catch(handlerCommonError);
-      } else {
-        return saveVideoImg(this.domainInfo).catch(handlerCommonError);
-      }
-    }
   }
 </script>
-<style scoped>
+<style rel="stylesheet/scss" lang="scss">
 
-
-  .el-upload-dragger {
-    height: 100%;
-    text-align: left;
-    width: 100%;
+  .upload-demo .el-upload-dragger {
+    width: 152px;
+    height: 152px;
   }
 
   .addWindows >>> .el-upload-dragger .bgImg{

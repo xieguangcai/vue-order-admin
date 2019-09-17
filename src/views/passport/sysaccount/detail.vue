@@ -1,4 +1,4 @@
-<template>
+<template xmlns:c="http://www.w3.org/1999/XSL/Transform">
   <div v-loading="loadingData">
     <el-tabs type="border-card">
       <slot name="tabPrefix"></slot>
@@ -173,6 +173,65 @@
               无合并账号信息
             </div>
           </el-collapse-item>
+          <el-collapse-item title="观影历史" name="5" v-if="loadVideoInfo">
+            <list-table-pane>
+              <el-table height="600" style="width: 100%"
+                        :data="data"
+                        element-loading-text="Loading"
+                        @selection-change="handleSelectionChange"
+                        border
+                        fit
+                        highlight-current-row>
+                <el-table-column align="left" label="影片ID" width="120">
+                  <template slot-scope="scope">
+                    {{ scope.row.historyId}}
+                  </template>
+                </el-table-column>
+                <el-table-column align="left" label="影片名称" width="320">
+                  <template slot-scope="scope">
+                    {{ scope.row.title}}
+                  </template>
+                </el-table-column>
+                <el-table-column align="left" label="视频源" width="100">
+                  <template slot-scope="scope">
+                    {{scope.row.provider}}
+                  </template>
+                </el-table-column>
+                <el-table-column align="left" label="影片长度" width="100">
+                  <template slot-scope="scope">
+                    {{scope.row.totalLength}}
+                  </template>
+                </el-table-column>
+                <el-table-column label="类型" width="150">
+                  <template slot-scope="scope">
+                    {{ scope.row.type }}
+                  </template>
+                </el-table-column>
+                <el-table-column label="集数" width="120">
+                  <template slot-scope="scope">
+                    {{ scope.row.index }}
+                  </template>
+                </el-table-column>
+                <el-table-column label="播放进度" width="100">
+                  <template slot-scope="scope">
+                    {{ scope.row.point }}
+                  </template>
+                </el-table-column>
+                <el-table-column label="最后观影时间" width="200">
+                  <template slot-scope="scope">
+                    {{ scope.row.lastViewDate}}
+                  </template>
+                </el-table-column>
+              </el-table>
+              <search-page-pane @size-change="handleSizeChange"
+                                @current-change="handleCurrentHistoryChange"
+                                :size="size"
+                                :page="page"
+                                :total="total"
+                                slot="page">
+              </search-page-pane>
+            </list-table-pane>
+          </el-collapse-item>
         </el-collapse>
       </el-tab-pane>
       <el-tab-pane label="账号支付相关信息" v-if="loadOssUserInfo">
@@ -269,7 +328,6 @@
         </el-collapse>
       </el-tab-pane>
 
-
       <slot name="tabSuffix"></slot>
     </el-tabs>
   </div>
@@ -278,20 +336,26 @@
 <script lang="ts">
 import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
 import {
+  Pageable,
   ResponseResult,
-  SysAccount, SysAccountQuery, SysUser,
+  SysAccount, SysAccountQuery, SysUser, SysVideoInfo,
   UserInfoFull,
 } from '../../../types';
-import {getSysAccountInfoDetail, passportMandatoryOffline} from '../../../api/passport';
+import {getSysAccountInfoDetail, getUserHistoryVideByOpenId, passportMandatoryOffline} from '../../../api/passport';
 import {getUserInfoFullByOpenId, nopassportSignStatusToName, ossDictName, unSign} from '../../../api/pay';
 import {handlerCommonError} from '../../../utils/auth-interceptor';
 import {checkRole} from '../../../utils/auth';
 import {anyNotEmpty} from '../../../utils/validate';
 import PolicyComponent from '../../authentication/policy/device-policy.vue';
+import SearchPagePane from '../../../components/SearchPagePane/indexPage.vue';
+import ListTablePane from '../../../components/ListTablePane/index.vue';
+import SearchPane from '../../../components/SearchPane/index.vue';
+import BaseList from '../../../components/BaseList';
 
 @Component({
   name: 'SysAccountDetail',
-  components: {PolicyComponent},
+  components: {PolicyComponent,SearchPagePane,ListTablePane,SearchPane},
+  mixins: [BaseList],
 })
 export default class SysAccountDetail extends Vue {
   loadingData: boolean = false;
@@ -299,6 +363,7 @@ export default class SysAccountDetail extends Vue {
   requestOffline: boolean = false;
   // 解除签约
   requireUnSign: boolean = false;
+  data: SysVideoInfo[] = [];
 
   get defPayUserInfo(): UserInfoFull {
     return {
@@ -333,12 +398,14 @@ export default class SysAccountDetail extends Vue {
 
   @Prop()
     // @ts-ignore
-  searchModel: SysAccountQuery;
+  searchModel: SysAccountQuery ;
 
+  listQuery: SysVideoInfo = { page: 0, size: 15, total: 0};
   activeNames: string[] = ['1', '2', '3', '4', '5'];
 
   payUserActiveNames: string[] = ['1'];
   loadOssUserInfo: boolean = false;
+  loadVideoInfo: boolean = false;
   domainInfo: SysAccount = {
     accountId: 0,
     bindDevices: [],
@@ -348,6 +415,9 @@ export default class SysAccountDetail extends Vue {
     user: [],
     fromMergeInfos: [],
     toMergeInfos: [],
+    sysVideoInfo: [],
+    totalNum: 0,
+    impl: []
   };
 
   payUserInfo: UserInfoFull = {
@@ -358,6 +428,27 @@ export default class SysAccountDetail extends Vue {
 
   payModToName(payMod: string) {
     return ossDictName(payMod);
+  }
+
+  handleCurrentHistoryChange(page: number){
+    console.log('当前页码为：' + page);
+    this.listQuery.page = page;
+    console.log('11111111');
+    getUserHistoryVideByOpenId(this.searchModel.openId,page).then((rev) => {
+      const responseData = rev.data.data;
+      console.log('result='+rev.data.data);
+      this.data = responseData.content;
+      console.log('data='+responseData.content);
+      this.listQuery.page = responseData.number;
+      console.log('data='+responseData.number);
+      console.log('data='+responseData.size);
+      console.log('data='+responseData.totalElements);
+      this.listQuery.size = responseData.size;
+      this.listQuery.total = responseData.totalElements;
+      this.loadVideoInfo = true;
+    }).catch((error: ResponseResult<any>) => {
+      this.loadVideoInfo = false;
+    });;
   }
 
   getSignStatus(status: number) {
@@ -408,6 +499,7 @@ export default class SysAccountDetail extends Vue {
 
   @Watch('active', {immediate: true})
   handleActiveChange(newVal: string[], oldVal: string[]) {
+    console.log('handleActiveChange ------');
     if (newVal != null && newVal.length > 0) {
       this.activeNames = newVal;
     }
@@ -415,6 +507,7 @@ export default class SysAccountDetail extends Vue {
 
   @Watch('searchModel', {immediate: true})
   handleSearchModelChange(newVal: SysAccountQuery, oldVal: SysAccountQuery) {
+    console.log('handleSearchModelChange');
     const checkInput = this.validInput(newVal);
     this.loadOssUserInfo = false;
     if (checkInput !== true) {
@@ -437,7 +530,6 @@ export default class SysAccountDetail extends Vue {
       ) {
         return;
       }
-
       this.loadingData = true;
 
       getSysAccountInfoDetail(newVal).then((resolve) => {
@@ -449,6 +541,24 @@ export default class SysAccountDetail extends Vue {
           }).catch((error: ResponseResult<any>) => {
             this.loadOssUserInfo = false;
           });
+          console.log('result==========================================='+this.domainInfo.openId);
+          getUserHistoryVideByOpenId(this.domainInfo.openId,0).then((rev) => {
+            const responseData = rev.data.data;
+            console.log('result='+rev.data.data);
+            this.data = responseData.content;
+            console.log('data='+responseData.content);
+            console.log('number='+responseData.number);
+            console.log('size='+responseData.size);
+            console.log('totalElements='+responseData.totalElements);
+            this.listQuery.page = responseData.number;
+            this.listQuery.size = responseData.size;
+            this.listQuery.total = responseData.totalElements;
+            this.loadVideoInfo = true;
+          }).catch((error: ResponseResult<any>) => {
+            console.log('result===========================================');
+            this.loadVideoInfo = false;
+          });;
+
         }
       }).catch((res) => {
         handlerCommonError(res);
@@ -463,6 +573,7 @@ export default class SysAccountDetail extends Vue {
           toMergeInfos: [],
         };
         this.payUserInfo = this.defPayUserInfo;
+        this.loadVideoInfo = false;
       }).finally(() => {
         this.loadingData = false;
       });
@@ -487,11 +598,11 @@ export default class SysAccountDetail extends Vue {
       this.payUserInfo = this.defPayUserInfo;
     } else {
       this.loadingData = true;
-      getSysAccountInfoDetail({openId: this.openId}).then((resolve) => {
-        this.domainInfo = resolve.data.data;
-      }).catch(handlerCommonError).finally(() => {
-        this.loadingData = false;
-      });
+      // getSysAccountInfoDetail({openId: this.openId}).then((resolve) => {
+      //   this.domainInfo = resolve.data.data;
+      // }).catch(handlerCommonError).finally(() => {
+      //   this.loadingData = false;
+      // });
       getUserInfoFullByOpenId(this.openId).then((rev) => {
         this.payUserInfo = rev.data.data;
         this.loadOssUserInfo = true;
@@ -504,7 +615,6 @@ export default class SysAccountDetail extends Vue {
   @Watch('domainInfo', {immediate: true})
   handleInternalDomainInfoChange(newVal: SysAccount, oldVal?: SysAccount): void {
     console.log('handleInternalDomainInfoChange');
-
     if (null == newVal && null == oldVal) {
       return;
     }

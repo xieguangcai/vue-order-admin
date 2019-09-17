@@ -16,7 +16,7 @@
         </el-select>
       </search-pane>
       <el-button-group slot="action" class="cc-action-button-group">
-        <el-button type="success" icon="el-icon-circle-plus" size="mini" @click="handleNew">新增活动图标</el-button>
+        <el-button type="success" icon="el-icon-circle-plus" size="mini" @click="handleNew" v-if="checkUserRole('VIDEO_IMG_ADD')">新增活动图标</el-button>
       </el-button-group>
       <el-table v-loading="listLoading" height="600" style="width: 100%"
                 :data="data"
@@ -71,7 +71,7 @@
           <template slot-scope="scope">
             <el-tooltip content="编辑">
               <el-button type="primary" size="mini" circle icon="el-icon-edit"
-                         @click="handleEdit(scope.$index, scope.row)"></el-button>
+                         @click="handleEditLayoutDetail(scope.$index, scope.row)"  v-if="checkUserRole('VIDEO_IMG_EDIT')"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -106,6 +106,7 @@
   import {getVideoImgPageList} from '../../../api/passport';
   import BaseList from '../../../components/BaseList';
   import {handlerCommonError} from '../../../utils/auth-interceptor';
+  import RightComponent from '../../../components/RightComponent';
   interface EditDomain {
     editDomainId: number | undefined;
   }
@@ -113,7 +114,7 @@
   @Component({
     components: {VideoImgEdit, ListTablePane, SearchPane, SearchPagePane},
     filters: {},
-    mixins: [BaseList],
+    mixins: [BaseList,RightComponent],
   })
   export default class VideoImgList extends Vue {
 
@@ -124,8 +125,7 @@
 
     handleNew() {
       // 创建新用户弹窗
-      this.dialogEditFormVisible = true;
-      this.editDomainInfo.editDomainId = 0;
+      this.$router.push({path: 'add-video-img', query: {viewModel: 'add'}});
     }
 
     handleEdit(index: number, row: VideoImg): void {
@@ -147,6 +147,11 @@
         this.listQuery.total = responseData.totalElements;
       }).catch(handlerCommonError);
     }
+
+    handleEditLayoutDetail(index: number, row: VideoImg) {
+      this.$router.push({path: 'edit-video-img', query: {viewModel: 'edit', id: '' + row.id}});
+    }
+
 
   }
 </script>

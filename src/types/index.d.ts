@@ -567,6 +567,10 @@ export interface SysAccount {
   user?: SysUser[];
   fromMergeInfos?: SysUserMergeInfo[];
   toMergeInfos?: SysUserMergeInfo[];
+  sysVideoInfo?: SysVideoInfo[];
+  totalNum?: number;
+  pagehtml?: string;
+  impl?: object;
 }
 
 export interface AccountInfoListQuery extends IPageinfo {
@@ -705,6 +709,17 @@ export interface SysUserMergeInfo {
   modifyTime?: string;
 }
 
+export interface  SysVideoInfo extends IPageinfo{
+  historyId?: number;
+  title?: string;
+  provider?: string;
+  lastViewDate?: string;
+  totalLength?: number;
+  point?: number;
+  type?: string;
+  index?: number;
+}
+
 export interface OrderRefundInfo {
   id?: number;
   refundNo?: string;
@@ -741,7 +756,7 @@ export interface RedisValueInfo {
   ttlTime?: number;
 }
 
-interface SysAccountQuery extends Dictionary<any> {
+interface SysAccountQuery extends IPageinfo {
   mobile?: string;
   openId?: string;
   externalFlag?: string;

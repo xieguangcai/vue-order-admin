@@ -78,11 +78,6 @@
             {{ scope.row.createTime}}
           </template>
         </el-table-column>
-        <el-table-column label="最后登录时间" width="160">
-          <template slot-scope="scope">
-            {{ scope.row.loginTime}}
-          </template>
-        </el-table-column>
       </el-table>
       <search-page-pane @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
