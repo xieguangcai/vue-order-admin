@@ -351,6 +351,7 @@ import SearchPagePane from '../../../components/SearchPagePane/indexPage.vue';
 import ListTablePane from '../../../components/ListTablePane/index.vue';
 import SearchPane from '../../../components/SearchPane/index.vue';
 import BaseList from '../../../components/BaseList';
+import {AxiosResponse} from "axios";
 
 @Component({
   name: 'SysAccountDetail',
@@ -432,7 +433,8 @@ export default class SysAccountDetail extends Vue {
 
   handleCurrentHistoryChange(page: number){
     this.listQuery.page = page;
-    getUserHistoryVideByOpenId(this.searchModel.openId,page).then((rev) => {
+
+    getUserHistoryVideByOpenId(this.searchModel,page).then((rev: AxiosResponse<ResponseResult<Pageable<SysVideoInfo>>>) => {
       const responseData = rev.data.data;
       this.data = responseData.content;
       this.listQuery.page = responseData.number;
@@ -533,7 +535,7 @@ export default class SysAccountDetail extends Vue {
           }).catch((error: ResponseResult<any>) => {
             this.loadOssUserInfo = false;
           });
-          getUserHistoryVideByOpenId(this.domainInfo.openId,0).then((rev) => {
+          getUserHistoryVideByOpenId(this.searchModel,0).then((rev) => {
             const responseData = rev.data.data;
             this.data = responseData.content;
             this.listQuery.page = responseData.number;

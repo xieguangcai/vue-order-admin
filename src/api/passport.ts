@@ -232,7 +232,8 @@ export function getCibnAccountPageList(params: VideoImgListQuery): AxiosPromise<
   });
 }
 
-export function getUserHistoryVideByOpenId(openId: string,pageNumber: number): AxiosPromise<ResponseResult<Pageable<SysVideoInfo>>> {
+export function getUserHistoryVideByOpenId(params: SysAccountQuery,pageNumber: number): AxiosPromise<ResponseResult<Pageable<SysVideoInfo>>> {
+ var openId = params.openId;
   return request({
     url: '/passport/sys-account/history/get2',
     method: 'get',
