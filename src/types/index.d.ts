@@ -756,7 +756,7 @@ export interface RedisValueInfo {
   ttlTime?: number;
 }
 
-interface SysAccountQuery extends IPageinfo {
+interface SysAccountQuery extends Dictionary<any> {
   mobile?: string;
   openId?: string;
   externalFlag?: string;
