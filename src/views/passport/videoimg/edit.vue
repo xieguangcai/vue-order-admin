@@ -1,12 +1,12 @@
 <template>
   <div class="addWindows" style="margin-top: 25px;">
   <el-form :model="domainInfo" ref="editForm" :rules="rules" :size="formSize">
-    <el-form-item label="视频源" :label-width="formLabelWidth" >
+    <el-form-item label="视频源" :label-width="formLabelWidth" prop="tvSource">
       <el-select v-model="domainInfo.tvSource" placeholder="选择视频">
         <el-option v-for="item in videoSource" :label="item.label" :value="item.value" :key="item.value"/>
       </el-select>
     </el-form-item>
-    <el-form-item label="用户类型" :label-width="formLabelWidth">
+    <el-form-item label="用户类型" :label-width="formLabelWidth" prop="userType">
       <el-select v-model="domainInfo.userType" placeholder="选择用户类型" size="mini" >
         <el-option label="非会员用户" value="1"></el-option>
         <el-option label="会员用户" value="2"></el-option>
@@ -70,9 +70,18 @@
     addModel: boolean = true ;
 
     rules = {
+      tvSource: [{required: true, message: '请选择视频源', trigger: 'blur'}, {
+        trigger: 'blur',
+      }],
+      userType: [{required: true, message: '请选择用户类型', trigger: 'blur'}, {
+        trigger: 'blur',
+      }],
       startTime: [{required: true, message: '请输入有效期开始时间', trigger: 'blur'}, {
         trigger: 'blur',
       }],
+      endTime: [{required: true, message: '请输入有效期结束时间', trigger: 'blur'}, {
+        trigger: 'blur',
+      }]
     };
 
 

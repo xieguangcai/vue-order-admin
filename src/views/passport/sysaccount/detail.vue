@@ -431,24 +431,17 @@ export default class SysAccountDetail extends Vue {
   }
 
   handleCurrentHistoryChange(page: number){
-    console.log('当前页码为：' + page);
     this.listQuery.page = page;
-    console.log('11111111');
     getUserHistoryVideByOpenId(this.searchModel.openId,page).then((rev) => {
       const responseData = rev.data.data;
-      console.log('result='+rev.data.data);
       this.data = responseData.content;
-      console.log('data='+responseData.content);
       this.listQuery.page = responseData.number;
-      console.log('data='+responseData.number);
-      console.log('data='+responseData.size);
-      console.log('data='+responseData.totalElements);
       this.listQuery.size = responseData.size;
       this.listQuery.total = responseData.totalElements;
       this.loadVideoInfo = true;
     }).catch((error: ResponseResult<any>) => {
       this.loadVideoInfo = false;
-    });;
+    });
   }
 
   getSignStatus(status: number) {
@@ -499,7 +492,6 @@ export default class SysAccountDetail extends Vue {
 
   @Watch('active', {immediate: true})
   handleActiveChange(newVal: string[], oldVal: string[]) {
-    console.log('handleActiveChange ------');
     if (newVal != null && newVal.length > 0) {
       this.activeNames = newVal;
     }
@@ -541,21 +533,14 @@ export default class SysAccountDetail extends Vue {
           }).catch((error: ResponseResult<any>) => {
             this.loadOssUserInfo = false;
           });
-          console.log('result==========================================='+this.domainInfo.openId);
           getUserHistoryVideByOpenId(this.domainInfo.openId,0).then((rev) => {
             const responseData = rev.data.data;
-            console.log('result='+rev.data.data);
             this.data = responseData.content;
-            console.log('data='+responseData.content);
-            console.log('number='+responseData.number);
-            console.log('size='+responseData.size);
-            console.log('totalElements='+responseData.totalElements);
             this.listQuery.page = responseData.number;
             this.listQuery.size = responseData.size;
             this.listQuery.total = responseData.totalElements;
             this.loadVideoInfo = true;
           }).catch((error: ResponseResult<any>) => {
-            console.log('result===========================================');
             this.loadVideoInfo = false;
           });;
 

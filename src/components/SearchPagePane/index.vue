@@ -21,17 +21,14 @@
   })
   export default class SearchPagePane extends Vue {
     get innerPage(): number {
-      console.log('page==='+this.page);
       return this.page;
     }
 
     get innerSize(): number {
-      console.log('size==='+this.size);
       return this.size || 1;
     }
 
     get innerTotal(): number {
-      console.log('total==='+this.total);
       return this.total || 0;
     }
 
