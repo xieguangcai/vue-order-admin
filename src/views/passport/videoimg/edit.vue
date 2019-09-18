@@ -32,7 +32,7 @@
                  :on-success="(res,file)=>{return handleCancelFocusSuccess(res, file, domainInfo)}"
                  :on-error="uploadError"
                  list-type="picture-card">
-        <img v-if="domainInfo.imgUrl" :src="domainInfo.imgUrl" class="img">
+        <img v-if="domainInfo.imgUrl" :src="domainInfo.imgUrl" class="img" id="videoImgUrl">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         <div slot="tip" class="el-upload__tip">180px*45px 只能上传jpg/png文件，且不超过500kb</div>
       </el-upload>
@@ -64,7 +64,7 @@
     mixins: [ BaseEdit ],
   })
   export default class VideoImgEdit extends Vue {
-    domainInfo: VideoImg = {sortOrder: 1,imgUrl:undefined};
+    domainInfo: VideoImg = {sortOrder: 1, imgUrl: undefined};
     @Prop({type: Number, default: 0})
     domainId: number = 0;
     addModel: boolean = true ;
@@ -79,7 +79,7 @@
     @Watch('domainId', {immediate: true})
     handleDomainIdChange(newVal: number | undefined, oldVal: number| undefined) {
       if ( null == newVal || newVal === 0) {
-        this.domainInfo = {sortOrder: 1};
+        this.domainInfo = {sortOrder: 1, imgUrl: undefined};
       } else {
         // @ts-ignore
         this.showLoading();
@@ -120,9 +120,9 @@
     }
 
     handleCancelFocusSuccess(res: ResponseResult<UploadFileInfo>, file: any, domainInfo: VideoImg) {
-      console.log("===="+res.data.url);
       if (res.success) {
         domainInfo.imgUrl = res.data.url;
+
       } else {
         this.$message.error(res.message);
       }
@@ -133,17 +133,14 @@
       try  {
         const model = this.$route.query.viewModel;
         if (model === 'add') {
-          console.log('新增模式');
           this.addModel = true;
         } else {
-          console.log('编辑模式');
           this.addModel = false;
           getVideoImgInfo(x).then((response: AxiosResponse<ResponseResult<VideoImg>>) => {
             const responseData = response.data.data;
             this.domainInfo = responseData;
           }).catch(handlerCommonError);
         }
-        //this.getAppCode();
       } catch (e) {
 
       }
@@ -156,7 +153,6 @@
     }
 
     submitForm(formName: VideoImg ) {
-      console.log("===="+formName.imgUrl);
       saveVideoImg(this.domainInfo).then((response: AxiosResponse<ResponseResult<boolean>>) => {
         if (response.data.success && response.data.data) {
           this.$message.success('保存成功');
@@ -171,8 +167,8 @@
 <style rel="stylesheet/scss" lang="scss">
 
   .upload-demo .el-upload-dragger {
-    width: 152px;
-    height: 152px;
+    width: 190px;
+    height: 148px;
   }
 
   .addWindows >>> .el-upload-dragger .bgImg{
