@@ -569,8 +569,6 @@ export interface SysAccount {
   toMergeInfos?: SysUserMergeInfo[];
   sysVideoInfo?: SysVideoInfo[];
   totalNum?: number;
-  pagehtml?: string;
-  impl?: object;
 }
 
 export interface AccountInfoListQuery extends IPageinfo {

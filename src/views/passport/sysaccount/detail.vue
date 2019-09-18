@@ -351,11 +351,11 @@ import SearchPagePane from '../../../components/SearchPagePane/indexPage.vue';
 import ListTablePane from '../../../components/ListTablePane/index.vue';
 import SearchPane from '../../../components/SearchPane/index.vue';
 import BaseList from '../../../components/BaseList';
-import {AxiosResponse} from "axios";
+import {AxiosResponse} from 'axios';
 
-@Component({
+ @Component({
   name: 'SysAccountDetail',
-  components: {PolicyComponent,SearchPagePane,ListTablePane,SearchPane},
+  components: {PolicyComponent, SearchPagePane, ListTablePane, SearchPane},
   mixins: [BaseList],
 })
 export default class SysAccountDetail extends Vue {
@@ -418,7 +418,6 @@ export default class SysAccountDetail extends Vue {
     toMergeInfos: [],
     sysVideoInfo: [],
     totalNum: 0,
-    impl: []
   };
 
   payUserInfo: UserInfoFull = {
@@ -431,10 +430,10 @@ export default class SysAccountDetail extends Vue {
     return ossDictName(payMod);
   }
 
-  handleCurrentHistoryChange(page: number){
+  handleCurrentHistoryChange(page: number) {
     this.listQuery.page = page;
 
-    getUserHistoryVideByOpenId(this.searchModel,page).then((rev: AxiosResponse<ResponseResult<Pageable<SysVideoInfo>>>) => {
+    getUserHistoryVideByOpenId(this.searchModel, page).then((rev: AxiosResponse<ResponseResult<Pageable<SysVideoInfo>>>) => {
       const responseData = rev.data.data;
       this.data = responseData.content;
       this.listQuery.page = responseData.number;
@@ -535,7 +534,7 @@ export default class SysAccountDetail extends Vue {
           }).catch((error: ResponseResult<any>) => {
             this.loadOssUserInfo = false;
           });
-          getUserHistoryVideByOpenId(this.searchModel,0).then((rev) => {
+          getUserHistoryVideByOpenId(this.searchModel, 0).then((rev) => {
             const responseData = rev.data.data;
             this.data = responseData.content;
             this.listQuery.page = responseData.number;
@@ -544,8 +543,7 @@ export default class SysAccountDetail extends Vue {
             this.loadVideoInfo = true;
           }).catch((error: ResponseResult<any>) => {
             this.loadVideoInfo = false;
-          });;
-
+          });
         }
       }).catch((res) => {
         handlerCommonError(res);

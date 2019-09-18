@@ -53,10 +53,10 @@
   import {getVideoImgInfo, saveVideoImg} from '../../../api/passport';
   import BaseEdit from '../../../components/BaseEdit';
   import {handlerCommonError} from '../../../utils/auth-interceptor';
-  import {AppModule} from "@/store/modules/app";
-  import {getFullToken} from "@/utils/auth";
-  import {Dictionary} from "vuex";
-  import {AxiosResponse} from "axios";
+  import {AppModule} from '@/store/modules/app';
+  import {getFullToken} from '@/utils/auth';
+  import {Dictionary} from 'vuex';
+  import {AxiosResponse} from 'axios';
 
   @Component({
     name: 'VideoImgEdit',
@@ -68,7 +68,6 @@
     @Prop({type: Number, default: 0})
     domainId: number = 0;
     addModel: boolean = true ;
-
     rules = {
       tvSource: [{required: true, message: '请选择视频源', trigger: 'blur'}, {
         trigger: 'blur',
@@ -81,7 +80,7 @@
       }],
       endTime: [{required: true, message: '请输入有效期结束时间', trigger: 'blur'}, {
         trigger: 'blur',
-      }]
+      }],
     };
 
 

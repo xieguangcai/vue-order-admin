@@ -112,9 +112,9 @@
   }
 
   @Component({
-    components: {VideoImgEdit, ListTablePane, SearchPane, SearchPagePane},
+    components: { ListTablePane, SearchPane, SearchPagePane},
     filters: {},
-    mixins: [BaseList,RightComponent],
+    mixins: [BaseList, RightComponent],
   })
   export default class VideoImgList extends Vue {
 

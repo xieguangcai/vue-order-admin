@@ -11,7 +11,8 @@ import {
   JscnUserInfoQuery,
   ExternalAccessRecords,
   VideoImg,
-  VideoImgListQuery, UserInfoFull, SysVideoInfo
+  VideoImgListQuery,
+  SysVideoInfo,
 } from '@/types';
 // @ts-ignore
 import qs from 'qs';
@@ -176,7 +177,10 @@ export function externalAccessRecordsList(userId: string): AxiosPromise<Response
 
 }
 
-//vip运营图标
+/***
+ * vip运营图标
+ * @param params
+ */
 export function getVideoImgPageList(params: VideoImgListQuery): AxiosPromise<ResponseResult<Pageable<VideoImg>>> {
   return request({
     url: '/passport/video-img/videoImgList',
@@ -187,8 +191,10 @@ export function getVideoImgPageList(params: VideoImgListQuery): AxiosPromise<Res
     },
   });
 }
-
-//修改vip购买运营图片信息
+/***
+ * 修改vip购买运营图片信息
+ * @param params
+ */
 export function updateVideoImg(data: VideoImg) {
 
   return request({
@@ -210,7 +216,6 @@ export function getVideoImgInfo(id: number): AxiosPromise<ResponseResult<VideoIm
  * 添加vip购买运营图片信息
  */
 export function saveVideoImg(data: VideoImg): AxiosPromise<ResponseResult<boolean>> {
-  console.log("===="+data.endTime);
   return request({
     url : '/passport/video-img/saveVideoImg',
     method: 'post',
@@ -232,12 +237,12 @@ export function getCibnAccountPageList(params: VideoImgListQuery): AxiosPromise<
   });
 }
 
-export function getUserHistoryVideByOpenId(params: SysAccountQuery,pageNumber: number): AxiosPromise<ResponseResult<Pageable<SysVideoInfo>>> {
- var openId = params.openId;
+export function getUserHistoryVideByOpenId(params: SysAccountQuery, pageNumber: number): AxiosPromise<ResponseResult<Pageable<SysVideoInfo>>> {
+  const openId = params.openId;
   return request({
     url: '/passport/sys-account/history/get2',
     method: 'get',
-    params: {openId,pageNumber},
+    params: {openId, pageNumber},
     paramsSerializer(p: any) {
       return qs.stringify(p, {arrayFormat: 'repeat'});
     },
