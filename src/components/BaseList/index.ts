@@ -103,7 +103,7 @@ export default class BaseList extends Vue {
   }
 
   realFetchData(): AxiosPromise<any> {
-    return getAppInfo(0);
+    return getAppInfo(1);
   }
 
   /**

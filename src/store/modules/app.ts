@@ -19,6 +19,7 @@ export interface IAppState {
   formSize: ElementUIComponentSize;
   formLabelWidth: string;
   recordeStatus: StatusInfo[];
+  videoSource: StatusInfo[];
   // orderStatus: StatusInfo[];
   productStatus: StatusInfo[];
   businessType: StatusInfo[];
@@ -64,6 +65,7 @@ class App extends VuexModule {
   formSize: IAppState['formSize'] = 'small';
   formLabelWidth: IAppState['formLabelWidth'] = '120px';
   recordeStatus: IAppState['recordeStatus'] = [{value: 1, label: '正常'}, {value: 2, label: '禁用'}];
+  videoSource: IAppState['videoSource'] = [{value: 'tencent', label: '腾讯'}, {value: 'yinhe', label: '爱奇艺'}, {value: 'youku', label: '优酷'}];
   // orderStatus: IAppState['orderStatus'] = [
   //   {value: 'CC00501', label: '待支付'},
   //   {value: 'CC00502', label: '待授信'},
@@ -156,6 +158,7 @@ class App extends VuexModule {
   businessType: IAppState['businessType'] = [
     {value: '0', label: '影视'},
     {value: '1', label: '教育'},
+    {value: '2', label: 'IPTV'},
     {value: '3', label: '体育'},
     {value: '4', label: '宽带提速	'},
     {value: '6', label: '游戏'}];

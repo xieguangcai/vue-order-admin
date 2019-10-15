@@ -18,6 +18,8 @@
       </el-select>
       <el-input placeholder="请输入第三方openId" size="mini"  v-model="listQuery.externalId"  style="width:260px;" class="input-with-select">
       </el-input>
+      CIBN账号ID
+      <el-input v-model="listQuery.licenseAccountId"  size="mini" style="width:260px;" placeholder="请输入CIBN账号ID"></el-input>
     </search-pane>
     <div style="padding-top:20px;">
       <sys-account-detail v-bind:search-model="innerListQuery" :active="activeNames">
@@ -33,18 +35,21 @@ import {
 } from '../../../types';
 
 import SearchPane from '../../../components/SearchPane/index.vue';
+import SearchPagePane from '../../../components/SearchPagePane/index.vue';
+import ListTablePane from '../../../components/ListTablePane/index.vue';
 import SysAccountDetail from '../sysaccount/detail.vue';
 import {setLocationToHisotry} from '../../../utils/tools';
 
 @Component({
   name: 'UserDetail',
-  components: {SysAccountDetail, SearchPane},
+  components: {SysAccountDetail, SearchPane, SearchPagePane, ListTablePane},
 })
 export default class UserDetail extends Vue {
-  activeNames = ['1', '2', '3', '4'];
-  listQuery: SysAccountQuery = {mobile: '', nickName: '', openId: '', externalFlag: 'qq', externalId: '' };
+
+  activeNames = ['1', '2', '3', '4', '5'];
+  listQuery: SysAccountQuery = {mobile: '', nickName: '', openId: '', externalFlag: 'qq', externalId: '', licenseAccountId: ''};
   openId = '';
-  innerListQuery: SysAccountQuery = {mobile: '', nickName: '', openId: '', externalFlag: 'qq', externalId: '' };
+  innerListQuery: SysAccountQuery = {mobile: '', nickName: '', openId: '', externalFlag: 'qq', externalId: '', licenseAccountId: ''};
 
   created() {
     this.listQuery = Object.assign(this.listQuery, this.$route.query);
@@ -58,13 +63,18 @@ export default class UserDetail extends Vue {
   }
 
   validInput(): boolean {
-    if (this.listQuery.mobile === '' && this.listQuery.nickName === '' && this.listQuery.openId === '' && this.listQuery.externalId === '') {
+    if (this.listQuery.mobile === '' && this.listQuery.nickName === '' && this.listQuery.openId === '' && this.listQuery.externalId === '' && this.listQuery.licenseAccountId === '') {
       return false;
     }
     return true;
   }
 
+  realFetchData() {
+
+  }
+
   search(): void {
+    console.log('user detail created 22222');
     if (!this.validInput()) {
       this.$message.error('必须输入至少一种查询条件进行查询');
       return;
@@ -75,10 +85,15 @@ export default class UserDetail extends Vue {
       externalFlag: this.listQuery.externalFlag,
       externalId: this.listQuery.externalId,
       nickName: this.listQuery.nickName,
+      licenseAccountId: this.listQuery.licenseAccountId,
     };
+
     setLocationToHisotry(this, this.listQuery, '广电用户信息查询');
   }
+
 }
+
+
 </script>
 
 

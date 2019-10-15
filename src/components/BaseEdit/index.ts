@@ -22,6 +22,10 @@ export default class BaseEdit extends Vue {
   get recordeStatus() {
     return AppModule.recordeStatus;
   }
+
+  get videoSource() {
+    return AppModule.videoSource;
+  }
   get formSize() {
     return AppModule.formSize;
   }

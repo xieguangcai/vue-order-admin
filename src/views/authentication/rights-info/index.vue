@@ -24,7 +24,7 @@
              {{ scope.row.rightsId}}
           </template>
         </el-table-column>
-        <el-table-column align="left" label="权益名称" width="400">
+        <el-table-column align="left" label="权益名称" width="200">
           <template slot-scope="scope">
             <el-tooltip placement="right" effect="light">
               <div slot="content">
@@ -32,7 +32,7 @@
                 权益名称：{{ scope.row.rightsName}}<br/>
                 权益标识：{{scope.row.sourceSign}}<br/>
                 供应商：{{ scope.row.baseOrderCompany.companyCnName }}<br/>
-                业务类型：{{ scope.row.businessType }}<br/>
+                业务类型：{{ businessTypeToName(scope.row.businessType) }}<br/>
               </div>
               <a style="color: cornflowerblue">{{ scope.row.rightsName}}</a>
             </el-tooltip>
@@ -51,7 +51,7 @@
         </el-table-column>
         <el-table-column label="业务类型" width="100">
           <template slot-scope="scope">
-            {{ scope.row.businessType }}
+            {{ businessTypeToName(scope.row.businessType) }}
           </template>
         </el-table-column>
         <el-table-column label="创建时间" width="320">
@@ -87,12 +87,7 @@
             </el-form-item>
             <el-form-item label="业务类型" :label-width="formLabelWidth" prop="businessType">
               <el-select v-model="form.businessType" clearable="true">
-                <el-option value="0" label="影视" />
-                <el-option value="1" label="教育" />
-                <el-option value="2" label="IPTV" />
-                <el-option value="3" label="体育" />
-                <el-option value="4" label="宽带提速" />
-                <el-option value="6" label="游戏" />
+                <el-option v-for="item in this.businessTypes" :label="item.label" :key="item.value" :value="item.value" />
               </el-select>
             </el-form-item>
           </div>
@@ -128,6 +123,7 @@ import {handlerCommonError} from '../../../utils/auth-interceptor';
 import {addDateFormatString} from '../../../utils/format-utils';
 import {anyNotEmpty} from '../../../utils/validate';
 import {ElForm} from 'element-ui/types/form';
+import {AppModule, propertyToName} from '../../../store/modules/app';
 
 
 @Component({
@@ -180,6 +176,13 @@ export default class OrderRightsInfoList extends Vue {
     return true;
   }
 
+  get businessTypes() {
+    return AppModule.businessType;
+  }
+
+  businessTypeToName(code: string) {
+    return propertyToName(code, AppModule.businessType);
+  }
 
   getElForm(): ElForm {
     return this.$refs.OrderRightsInfoList as ElForm;
