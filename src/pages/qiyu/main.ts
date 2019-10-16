@@ -15,12 +15,11 @@ import store from '@/store';
 import '@/registerServiceWorker';
 
 Vue.use(ElementUI);
-Vue.use(SvgIcon, {
-    tagName: 'svg-icon',
-    defaultWidth: '1em',
-    defaultHeight: '1em',
+Vue.use(() => (SvgIcon), {
+  tagName: 'svg-icon',
+  defaultWidth: '1em',
+  defaultHeight: '1em',
 });
-
 Vue.config.productionTip = false;
 
 new Vue({
