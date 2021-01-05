@@ -15,7 +15,7 @@
     "@types/js-cookie": "^2.1.0",
     "@types/nprogress": "^0.0.29",
     "@types/webpack-env": "^1.13.6",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "element-ui": "^2.3.6",
     "js-cookie": "^2.2.0",
     "normalize.css": "^8.0.0",
